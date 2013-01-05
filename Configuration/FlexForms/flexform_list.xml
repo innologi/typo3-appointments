@@ -1,0 +1,96 @@
+<T3DataStructure>
+ <meta>
+   <langDisable>1</langDisable>
+ </meta>
+ <sheets>
+  <sDEF>
+   <ROOT>
+     <TCEforms>
+    	<sheetTitle>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_sheet_sDEF</sheetTitle>
+    	<cshFile>LLL:EXT:appointments/Resources/Private/Language/locallang_csh_flexform_list.xml</cshFile>
+     </TCEforms>
+     <type>array</type>
+     <el>
+		<settings.agendaUid>
+			<TCEforms>
+				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_agendaUid</label>
+				<config>
+					<type>select</type>
+					<items type="array">
+						<numIndex index="0" type="array">
+							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_tsDefault</numIndex>
+							<numIndex index="1">--TYPOSCRIPT--</numIndex>
+						</numIndex>
+						<numIndex index="1" type="array">
+							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_div_agendas</numIndex>
+							<numIndex index="1">--div--</numIndex>
+						</numIndex>
+					</items>
+					<foreign_table>tx_appointments_domain_model_agenda</foreign_table>
+					<foreign_table_where>ORDER BY tx_appointments_domain_model_agenda.name</foreign_table_where>
+					<allowNonIdValues>1</allowNonIdValues>
+					<size>1</size>
+					<maxitems>1</maxitems>
+					<multiple>0</multiple>
+				</config>
+			</TCEforms>
+		</settings.agendaUid>
+		<settings.appointmentTypeList>
+			<TCEforms>
+				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_appointmentTypeList</label>
+				<config>
+					<type>select</type>
+					<items type="array">
+						<numIndex index="0" type="array">
+							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_tsDefault</numIndex>
+							<numIndex index="1">--TYPOSCRIPT--</numIndex>
+						</numIndex>
+						<numIndex index="1" type="array">
+							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_select_all_types</numIndex>
+							<numIndex index="1"></numIndex>
+						</numIndex>
+						<numIndex index="2" type="array">
+							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_div_types</numIndex>
+							<numIndex index="1">--div--</numIndex>
+						</numIndex>
+					</items>
+					<foreign_table>tx_appointments_domain_model_type</foreign_table>
+					<foreign_table_where>ORDER BY tx_appointments_domain_model_type.name</foreign_table_where>
+					<allowNonIdValues>1</allowNonIdValues>
+					<exclusiveKeys>--TYPOSCRIPT--,</exclusiveKeys>
+					<size>5</size>
+					<maxitems>999</maxitems>
+					<autoSizeMax>20</autoSizeMax>
+					<multiple>0</multiple>
+				</config>
+			</TCEforms>
+		</settings.appointmentTypeList>
+		<settings.suGroup>
+			<TCEforms>
+				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_suGroup</label>
+				<config>
+					<type>select</type>
+					<items type="array">
+						<numIndex index="0" type="array">
+							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_tsDefault</numIndex>
+							<numIndex index="1">--TYPOSCRIPT--</numIndex>
+						</numIndex>
+						<numIndex index="1" type="array">
+							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_div_userGroups</numIndex>
+							<numIndex index="1">--div--</numIndex>
+						</numIndex>
+					</items>
+					<foreign_table>fe_groups</foreign_table>
+					<foreign_table_where>ORDER BY fe_groups.title</foreign_table_where>
+					<allowNonIdValues>1</allowNonIdValues>
+					<size>1</size>
+					<maxitems>1</maxitems>
+					<multiple>0</multiple>
+				</config>
+			</TCEforms>
+		</settings.suGroup>
+     </el>
+   </ROOT>
+  </sDEF>
+ </sheets>
+</T3DataStructure>

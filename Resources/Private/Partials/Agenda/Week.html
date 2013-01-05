@@ -1,0 +1,23 @@
+<f:for each="{week}" as="date">
+	<td class="agendaDay{f:if(condition: date.isHoliday, then: ' holiday')}{f:if(condition: '{date.dateString} == {currentDate}', then: ' current')}">
+		<div class="dayBar">
+			<f:if condition="{date.timestamp} >= {startCreateTime}">
+				<f:then>
+					<f:link.action controller="Appointment" arguments="{agenda : agenda, dateFirst : date.timestamp}" action="new" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[buildCreate]',2:'tx_appointments_list[type]',3:'tx_appointments_list[beginTime]',4:'tx_appointments_list[dateFirst]'}">
+						{date.dayNumber} {date.monthShort}
+					</f:link.action>
+				</f:then>
+				<f:else>
+					{date.dayNumber} {date.monthShort}
+				</f:else>
+			</f:if>
+		</div>
+		<f:for each="{date.appointments}" as="appointment">
+			<f:link.action controller="Appointment" action="show" arguments="{appointment : appointment}" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[buildCreate]',1:'tx_appointments_list[type]',2:'tx_appointments_list[beginTime]',3:'tx_appointments_list[dateFirst]'}" class="link_appointment">
+				<f:format.date format="H:i">{appointment.beginTime}</f:format.date>
+				{appointment.type.name}
+			</f:link.action>
+			<br />
+		</f:for>
+	</td>
+</f:for>

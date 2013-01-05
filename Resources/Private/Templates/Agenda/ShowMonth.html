@@ -1,0 +1,48 @@
+{namespace fed=Tx_Fed_ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<f:if condition="{agenda}">
+
+<div class="agendaBar">
+	<f:if condition="{month.canBack}">
+		<f:link.action arguments="{monthModifier : month.backModifier}" addQueryString="TRUE" class="button_agendaBack"><f:translate key="tx_appointments_domain_model_agenda_month.month_back" /></f:link.action>
+	</f:if>
+	{month.name} {month.year}
+	<f:if condition="{month.canForward}">
+		<f:link.action arguments="{monthModifier : month.forwardModifier}" addQueryString="TRUE" class="button_agendaForward"><f:translate key="tx_appointments_domain_model_agenda_month.month_forward" /></f:link.action>
+	</f:if>
+</div>
+
+<table class="agendaShow" summary="{f:translate(key:'tx_appointments_agenda.summary_month')}">
+	<caption><f:translate key="tx_appointments_agenda.caption_month" /></caption>
+	<f:render partial="Agenda/TableHeader" />
+	
+	<tr>
+		<fed:loop count="{month.weekdaysBeforeFirst}">
+			<td>&nbsp;</td>
+		</fed:loop>
+	
+	<f:for each="{month.weeks}" as="week" iteration="iterationInfo">
+		<f:render partial="Agenda/Week" arguments="{agenda : agenda, week : week, currentDate : currentDate, startCreateTime : startCreateTime}" />
+		
+		<f:if condition="{iterationInfo.isLast}">
+			<f:then></f:then>
+			<f:else>
+				</tr>
+				<tr>
+			</f:else>			
+		</f:if>
+	</f:for>
+	
+		<fed:loop count="{month.weekdaysAfterLast}">
+			<td>&nbsp;</td>
+		</fed:loop>
+	</tr>
+		
+</table>
+
+</f:if>
+
+</f:section>

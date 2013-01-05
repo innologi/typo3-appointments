@@ -1,0 +1,38 @@
+<tr>
+	<td scope="row">
+		<f:translate key="tx_appointments_domain_model_address.name" />
+	</td>
+	<td>
+		{address.name}
+	</td>
+</tr>
+<tr>
+	<td scope="row">
+		<f:translate key="tx_appointments_domain_model_address.gender" />
+	</td>
+	<td>
+		<f:for each="{m: '{f:translate(key: \'tx_appointments_domain_model_address.gender.m\')}', f: '{f:translate(key: \'tx_appointments_domain_model_address.gender.f\')}'}" as="gender" key="index">
+			<f:if condition="{index} == {address.gender}">
+				{gender}
+			</f:if>
+		</f:for>
+		
+	</td>
+</tr>
+<tr>
+	<td scope="row">
+		<f:translate key="tx_appointments_domain_model_address.birthday" />
+	</td>
+	<td><f:format.date format="d-m-Y">{address.birthday}</f:format.date></td>
+</tr>
+<tr>
+	<td scope="row">
+		<f:translate key="tx_appointments_domain_model_address" />
+	</td>
+	<td>
+		{address.address}
+		<br />
+		{address.zip}
+		{address.city}
+	</td>
+</tr>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for the Appointment Scheduler extension in the BACKEND</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_appointments_plugin_agenda_title">Appointment Scheduler: Show Agenda</label>
+			<label index="tx_appointments_plugin_list_title">Appointment Scheduler: Appointment List</label>
+			
+			<label index="tx_appointments_constants_templateRootPath">Path to template root (FE)</label>
+			<label index="tx_appointments_constants_partialRootPath">Path to template partials (FE)</label>
+			<label index="tx_appointments_constants_layoutRootPath">Path to template layouts (FE)</label>
+			<label index="tx_appointments_constants_storagePid">Default storage PID</label>
+			<label index="tx_appointments_constants_agendaUid">Agenda UID</label>
+			<label index="tx_appointments_constants_appointmentTypeList">Appointment Types: Comma separated list of UIDs</label>
+			<label index="tx_appointments_constants_agendaBack">Agenda Navigation Back: The number of navigation units to allow backwards from the initial display</label>
+			<label index="tx_appointments_constants_agendaForward">Agenda Navigation Forward: The number of navigation units to allow forward from the initial display</label>
+			<label index="tx_appointments_constants_agendaWeeksBeforeCurrent">Agenda Weeks Before Current: The number of weeks to display before the current</label>
+			<label index="tx_appointments_constants_agendaWeeksAfterCurrent">Agenda Weeks After Current: The number of weeks to display after the current</label>
+			<label index="tx_appointments_constants_freeSlotInMinutes">Free Reserved Time-slot: The number of minutes to free up a reserved time-slot if not saved before this number is reached, counting from start</label>
+			<label index="tx_appointments_constants_suGroup">Super User Group UID</label>
+			
+			<label index="tx_appointments_extconf_emailFrom">Default sending email address: The default email address used for emails sent by this extension.</label>
+			<label index="tx_appointments_extconf_emailName">Default email name: The name used for the sending email address. (not required)</label>
+						
+			<label index="tx_appointments_flexform_sheet_sDEF">Settings</label>
+			<label index="tx_appointments_flexform_switchableControllerActions">Agenda View</label>
+			<label index="tx_appointments_flexform_switchableControllerActions.item1">Month</label>
+			<label index="tx_appointments_flexform_switchableControllerActions.item2">Weeks</label>
+			<label index="tx_appointments_flexform_tsDefault">defined by TypoScript</label>
+			<label index="tx_appointments_flexform_agendaUid">Agenda</label>
+			<label index="tx_appointments_flexform_div_agendas">Agendas</label>
+			<label index="tx_appointments_flexform_appointmentTypeList">Appointment Types</label>
+			<label index="tx_appointments_flexform_select_all_types">All types (selects none)</label>
+			<label index="tx_appointments_flexform_div_types">__Types:__</label>
+			<label index="tx_appointments_flexform_div_userGroups">__User Groups:__</label>
+			<label index="tx_appointments_flexform_suGroup">Superuser group</label>
+			<label index="tx_appointments_flexform_agendaNavOverride">Set Agenda Navigation from:</label>
+			<label index="tx_appointments_flexform_agendaNavOverride.item1">TypoScript</label>
+			<label index="tx_appointments_flexform_agendaNavOverride.item2">Flexform</label>
+			<label index="tx_appointments_flexform_agendaBack">Max Agenda Navigation Back</label>
+			<label index="tx_appointments_flexform_agendaForward">Max Agenda Navigation Forward</label>
+			<label index="tx_appointments_flexform_agendaWeeksBeforeCurrent">Number Of Weeks Before Current</label>
+			<label index="tx_appointments_flexform_agendaWeeksAfterCurrent">Number Of Weeks After Current</label>
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="tx_appointments_plugin_agenda_title">Afspraken Planner: Toon Agenda</label>
+			<label index="tx_appointments_plugin_list_title">Afspraken Planner: Afspraken Lijst</label>
+			
+			<label index="tx_appointments_constants_templateRootPath">Pad naar template root (FE)</label>
+			<label index="tx_appointments_constants_partialRootPath">Pad naar template partials (FE)</label>
+			<label index="tx_appointments_constants_layoutRootPath">Pad naar template layouts (FE)</label>
+			<label index="tx_appointments_constants_storagePid">Standaard Opslag PID</label>
+			<label index="tx_appointments_constants_agendaUid">Agenda UID</label>
+			<label index="tx_appointments_constants_appointmentTypeList">Afspraak Typen: Komma-gescheiden lijst van UID's</label>
+			<label index="tx_appointments_constants_agendaBack">Agenda Navigatie Terug: De hoeveelheid navigatie eenheden terug waarnaar genavigeerd kan worden</label>
+			<label index="tx_appointments_constants_agendaForward">Agenda Navigatie Vooruit: De hoeveelheid navigatie eenheden vooruit waarnaar genavigeerd kan worden</label>
+			<label index="tx_appointments_constants_agendaWeeksBeforeCurrent">Agenda Weken Voor Huidig: Het aantal weken om te tonen voor de huidige</label>
+			<label index="tx_appointments_constants_agendaWeeksAfterCurrent">Agenda Weken Na Huidig: Het aantal weken om te tonen na de huidige</label>
+			<label index="tx_appointments_constants_freeSlotInMinutes">Geef Gereserveerde Tijdsslot Vrij: Het aantal minuten waarna een gereserveerde tijdsslot wordt vrijgegeven als de afspraak niet opgeslagen is voordat het aantal bereikt is, tellend vanaf het begin van het aanmaakproces</label>
+			<label index="tx_appointments_constants_suGroup">Super User Groep UID</label>
+			
+			<label index="tx_appointments_extconf_emailFrom">Standaard email adres: Het standaard email adres dat gebruikt wordt bij de door deze extensie verstuurde emails.</label>
+			<label index="tx_appointments_extconf_emailName">Standaard email naam: De standaard naam dat gebruikt wordt bij de door deze extensie verstuurde emails. (niet noodzakelijk)</label>
+						
+			<label index="tx_appointments_flexform_sheet_sDEF">Instellingen</label>
+			<label index="tx_appointments_flexform_switchableControllerActions">Agenda Weergave</label>
+			<label index="tx_appointments_flexform_switchableControllerActions.item1">Maand</label>
+			<label index="tx_appointments_flexform_switchableControllerActions.item2">Weken</label>
+			<label index="tx_appointments_flexform_tsDefault">Gedefinieerd in TypoScript</label>
+			<label index="tx_appointments_flexform_agendaUid">Agenda</label>
+			<label index="tx_appointments_flexform_div_agendas">Agenda's</label>
+			<label index="tx_appointments_flexform_appointmentTypeList">Afspraak Typen</label>
+			<label index="tx_appointments_flexform_select_all_types">Alle typen (selecteert geen)</label>
+			<label index="tx_appointments_flexform_div_types">__Typen:__</label>
+			<label index="tx_appointments_flexform_div_userGroups">__Gebruikersgroepen:__</label>
+			<label index="tx_appointments_flexform_suGroup">Superuser groep</label>
+			<label index="tx_appointments_flexform_agendaNavOverride">Lees Agenda Navigatie uit:</label>
+			<label index="tx_appointments_flexform_agendaNavOverride.item1">TypoScript</label>
+			<label index="tx_appointments_flexform_agendaNavOverride.item2">Dit Formulier</label>
+			<label index="tx_appointments_flexform_agendaBack">Aantal Navigatie Eenheden Terug</label>
+			<label index="tx_appointments_flexform_agendaForward">Aantal Navigatie Eenheden Vooruit</label>
+			<label index="tx_appointments_flexform_agendaWeeksBeforeCurrent">Aantal Weken Voor Huidig</label>
+			<label index="tx_appointments_flexform_agendaWeeksAfterCurrent">Aantal Weken Na Huidig</label>
+		</languageKey>
+	</data>
+</T3locallang>

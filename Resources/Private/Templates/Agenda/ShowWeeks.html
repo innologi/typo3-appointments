@@ -1,0 +1,30 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<f:if condition="{agenda}">
+
+<div class="agendaBar">
+	<f:if condition="{weeks.canBack}">
+		<f:link.action arguments="{weeksModifier : weeks.backModifier}" addQueryString="TRUE" class="button_agendaBack"><f:translate key="tx_appointments_agenda.weeks_back" /></f:link.action>
+	</f:if>
+	<f:if condition="{weeks.canForward}">
+		<f:link.action arguments="{weeksModifier : weeks.forwardModifier}" addQueryString="TRUE" class="button_agendaForward"><f:translate key="tx_appointments_agenda.weeks_forward" /></f:link.action>
+	</f:if>
+</div>
+
+<table class="agendaShow" summary="{f:translate(key:'tx_appointments_agenda.summary_weeks')}">
+	<caption><f:translate key="tx_appointments_agenda.caption_weeks" /></caption>
+	<f:render partial="Agenda/TableHeader" />
+	
+	<f:for each="{weeks.weeks}" as="week">
+		<tr>
+			<f:render partial="Agenda/Week" arguments="{agenda : agenda, week : week, currentDate : currentDate, startCreateTime : startCreateTime}" />
+		</tr>
+	</f:for>
+		
+</table>
+
+</f:if>
+
+</f:section>

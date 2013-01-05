@@ -1,0 +1,39 @@
+{namespace fed=Tx_Fed_ViewHelpers}
+<f:layout name="FeUserOnly" />
+
+<f:section name="FeUser">
+
+<f:if condition="{agenda}">
+	<f:link.action action="new" arguments="{agenda : agenda}" addQueryString="TRUE" class="button_new"><f:translate key="tx_appointments_list.appointment_new" /></f:link.action>
+</f:if>
+
+<table class="appointmentList" summary="{f:translate(key:'tx_appointments_list.summary_list')}">
+	<caption><f:translate key="tx_appointments_list.caption_list" /></caption>
+	<tr>
+		<th scope="col"><f:translate key="tx_appointments_domain_model_appointment" /></th>
+		<th scope="col">&nbsp;</th>
+		<th scope="col">&nbsp;</th>
+	</tr>
+
+	<f:for each="{appointments}" as="appointment">
+		<tr>
+			<td>
+				<f:link.action action="show" arguments="{appointment : appointment}" addQueryString="TRUE" class="link_appointment">
+					<f:format.date format="d-m-Y, H:i">{appointment.beginTime}</f:format.date>:
+					{appointment.type.name}
+				</f:link.action>
+			</td>
+			<fed:math as="maxAllowedTime">{appointment.type.hoursMutable}*60*60+{appointment.crdate}</fed:math>
+			<f:if condition="{now} < {maxAllowedTime}">
+				<f:then>
+					<td><f:link.action action="edit" arguments="{appointment : appointment, agenda : agenda}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action></td>
+					<td><f:link.action action="delete" arguments="{appointment : appointment, agenda : agenda}" class="button_delete"><f:translate key="tx_appointments_list.appointment_delete" /><span class="delete_confirm_text"><f:translate key="tx_appointments_list.appointment_delete_confirm" /></span></f:link.action></td>
+				</f:then>
+				<f:else>
+					<td colspan="2">&nbsp;</td>
+				</f:else>
+			</f:if>
+		</tr>
+	</f:for>
+</table>
+</f:section>

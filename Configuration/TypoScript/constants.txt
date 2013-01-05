@@ -1,0 +1,44 @@
+plugin.tx_appointments {
+	view {
+		# cat=plugin.tx_appointments/file; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_templateRootPath
+		templateRootPath = EXT:appointments/Resources/Private/Templates/
+		# cat=plugin.tx_appointments/file; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_partialRootPath
+		partialRootPath = EXT:appointments/Resources/Private/Partials/
+		# cat=plugin.tx_appointments/file; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_layoutRootPath
+		layoutRootPath = EXT:appointments/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_appointments//a; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_storagePid
+		storagePid = 
+	}
+	settings {
+		# cat=plugin.tx_appointments//b; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaUid
+		agendaUid = 
+		# cat=plugin.tx_appointments//c; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_appointmentTypeList
+		appointmentTypeList =
+		# cat=plugin.tx_appointments//d; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaBack
+		agendaBack = 0
+		# cat=plugin.tx_appointments//e; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaForward
+		agendaForward = 0
+		# cat=plugin.tx_appointments//f; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaWeeksBeforeCurrent
+		agendaWeeksBeforeCurrent = 0
+		# cat=plugin.tx_appointments//g; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaWeeksAfterCurrent
+		agendaWeeksAfterCurrent = 0
+		# cat=plugin.tx_appointments//h; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_freeSlotInMinutes
+		freeSlotInMinutes = 15
+		# cat=plugin.tx_appointments//i; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_suGroup
+		suGroup = 
+	}
+	js {
+		# cat=plugin.tx_appointments/javascript; type=boolean; label= Enable jQuery inclusion: Will include the jQuery library through the configured CDN. If for some reason there already is a jQuery library present, you can disable appointments' here to prevent conflicts.
+		includeJquery = 1
+		# cat=plugin.tx_appointments/javascript; type=boolean; label= Enable Javascript inclusion: Will include appointments Javascript. It's all jQuery dependent, so make sure to have jQuery enabled through this or another extension.
+		includeJS = 1
+		# cat=plugin.tx_appointments/javascript; type=boolean; label= Place Javascript in page footer: If enabled, will move the appointments Javascript out of the header and into the footer.
+		toFooter = 1
+		# cat=plugin.tx_appointments/javascript; type=string; label= jQuery CDN url: The url from which jQuery is included. Configurable to easily allow jQuery version changes.
+		jQueryCDN = http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js
+		
+		libFile = EXT:appointments/Resources/Private/Scripts/jslib.js
+	}
+}

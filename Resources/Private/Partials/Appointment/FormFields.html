@@ -1,0 +1,37 @@
+<f:if condition="{timeSlots}">
+	<fieldset>
+		<f:form.select property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select" />
+	</fieldset>
+</f:if>
+
+<fieldset>
+<h4><f:translate key="tx_appointments_domain_model_appointment.form_field_values" /></h4>
+<f:for each="{formFieldValues}" as="value">
+	<f:render partial="FormField/FormFields" arguments="{formFieldValue : value, formField : value.formField}" />
+</f:for>
+</fieldset>
+
+<fieldset>
+<h4><f:translate key="tx_appointments_domain_model_appointment.address" /></h4>
+<f:render partial="Address/FormFields" arguments="{address : appointment.address}" />
+</fieldset>
+
+<fieldset>
+<br />
+<label>
+	<f:translate key="tx_appointments_domain_model_appointment.notes" />
+	<br />
+	<f:form.textarea property="notes" cols="40" rows="15" />
+</label>
+
+<f:if condition="{superUser}">
+<br />
+<br />
+<label>
+	<f:translate key="tx_appointments_domain_model_appointment.notes_su" />
+	<br />
+	<f:form.textarea property="notesSu" cols="40" rows="15" />
+</label>
+</f:if>
+
+</fieldset>

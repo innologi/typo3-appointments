@@ -1,0 +1,8 @@
+{namespace fed=Tx_Fed_ViewHelpers}
+<div class="tx-appointments">
+	
+	<f:flashMessages />
+	
+	<fed:auth.allow anyFrontendUser="TRUE" then="{f:render(section:'FeUser')}" else="{f:translate(key: 'tx_appointments.no_access')}" />
+	
+</div>

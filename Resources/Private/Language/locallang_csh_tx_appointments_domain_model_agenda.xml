@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Context Sensitive Help (CSH) for table tx_appointments_domain_model_agenda</description>
+		<type>CSH</type>
+		<csh_table>tx_appointments_domain_model_agenda</csh_table>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">	   
+			<label index="name.description">Name of agenda</label>
+			<label index="holidays.description">Holiday dates in dd-mm-yyyy format, one per line</label>
+			<label index="email_address.description">Emails a confirmation on every scheduled appointment to the selected addresses</label>
+			<label index="email_text.description">Email body text, as it appears in the email. See details for supported variables.</label>
+			<label index="email_text.details">
+				The following variables are supported:
+				
+				###USER### : Name of the frontend user who owns the appointment   
+				###AGENDA### : Name of the agenda
+				###TYPE### : Appointment type
+				###DATE### : Appointment date
+				###START_TIME### : Appointment start time 
+				###END_TIME### : Appointment end time
+				###NOTES### : Notes
+				###ADDRESS### : Name and address information
+				###LINK### : Link to appointment
+			</label>
+			<label index="calendar_invite_address.description">Emails a calendar invitation on every scheduled appointment to the selected addresses</label>
+			<label index="calendar_invite_text.description">Calendar invitation description, which is shown in the invitation. See detail helptext of 'Email Body Text' for supported variables.</label>
+			<label index="email_types.description">Determines when to send the configured confirmation email to the configured addresses</label>
+			<label index="email_owner_types.description">Determines when to send the configured confirmation email to the frontend user</label>
+			<label index="calendar_invite_types.description">Determines when to send the configured calendar invitation to the configured addresses</label>
+		</languageKey>
+		<languageKey index="nl" type="array">
+			<label index="name.description">Naam van agenda</label>
+			<label index="holidays.description">Feestdagen in dd-mm-jjjj formaat, per regel één</label>
+			<label index="email_address.description">Emailt een bevestiging bij elk geplande afspraak naar de geselecteerde adressen</label>
+			<label index="email_text.description">E-mail tekst, zoals het te zien zal zijn in de e-mail. Zie details voor ondersteunde variabelen.</label>
+			<label index="email_text.details">
+				De volgende variabelen worden ondersteund:
+				
+				###USER### : Naam van de frontend gebruiker die eigenaar is van de afspraak   
+				###AGENDA### : Name van de agenda
+				###TYPE### : Afspraak type
+				###DATE### : Afspraak datum
+				###START_TIME### : Afspraak start tijd 
+				###END_TIME### : Afspraak eind tijd
+				###NOTES### : Opmerkingen
+				###ADDRESS### : NAW gegevens
+				###LINK### : Link naar afspraak
+			</label>
+			<label index="calendar_invite_address.description">E-mailt een kalender uitnodiging bij elk geplande afspraak naar de geselecteerde adressen</label>
+			<label index="calendar_invite_text.description">Kalender uitnodiging omschrijving, getoond in de uitnodiging. Zie de detail helptekst van 'E-mail Tekst' voor de ondersteunde variabelen.</label>
+			<label index="email_types.description">Bepaalt wanneer een bevestigingsmail verstuurd moet worden naar de ingestelde adressen</label>
+			<label index="email_owner_types.description">Bepaalt wanneer een bevestigingsmail verstuurd moet worden naar de frontend gebruiker</label>
+			<label index="calendar_invite_types.description">Bepaalt wanneer een kalender uitnodiging verstuurd moet worden naar de ingestelde adressen</label>
+		</languageKey>
+	</data>
+</T3locallang>

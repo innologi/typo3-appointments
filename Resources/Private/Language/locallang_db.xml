@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'appointments'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+            
+			<label index="tx_appointments_domain_model_appointment">Appointment</label>
+			<label index="tx_appointments_domain_model_appointment.temporary">Temporary</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time">Appointment Time</label>
+			<label index="tx_appointments_domain_model_appointment.end_time">End Time</label>
+			<label index="tx_appointments_domain_model_appointment.begin_reserved">Start Reservation Time</label>
+			<label index="tx_appointments_domain_model_appointment.end_reserved">End Reservation Time</label>
+			<label index="tx_appointments_domain_model_appointment.notes">Notes</label>
+			<label index="tx_appointments_domain_model_appointment.notes_su">Administrator Notes</label>
+			<label index="tx_appointments_domain_model_appointment.type">Appointment Type</label>
+			<label index="tx_appointments_domain_model_appointment.form_field_values">Form Field Values</label>
+			<label index="tx_appointments_domain_model_appointment.address">Address</label>
+			<label index="tx_appointments_domain_model_appointment.fe_user">User</label>
+			<label index="tx_appointments_domain_model_appointment.agenda">Agenda</label>
+			<label index="tx_appointments_domain_model_appointment.palette.times">Times</label>
+			
+			<label index="tx_appointments_domain_model_agenda">Agenda</label>
+			<label index="tx_appointments_domain_model_agenda.name">Name</label>
+			<label index="tx_appointments_domain_model_agenda.holidays">Holidays</label>
+			<label index="tx_appointments_domain_model_agenda.email_address">Email Address</label>
+			<label index="tx_appointments_domain_model_agenda.email_text">Email Body Text</label>
+			<label index="tx_appointments_domain_model_agenda.calendar_invite_address">Calendar Invite Address</label>
+			<label index="tx_appointments_domain_model_agenda.calendar_invite_text">Calendar Invite Description</label>
+			<label index="tx_appointments_domain_model_agenda.email_owner_types">To User On:</label>
+			<label index="tx_appointments_domain_model_agenda.email_types">To Configured Addresses On:</label>
+			<label index="tx_appointments_domain_model_agenda.calendar_invite_types">Send Calendar Invitation/Update On:</label>
+			<label index="tx_appointments_domain_model_agenda.types.create">created appointments</label>
+			<label index="tx_appointments_domain_model_agenda.types.update">updated appointments</label>
+			<label index="tx_appointments_domain_model_agenda.types.delete">cancelled appointments</label>
+			<label index="tx_appointments_domain_model_agenda.div.email">Email Settings</label>
+			<label index="tx_appointments_domain_model_agenda.div.calendar_invite">Calendar Invite Settings</label>
+			<label index="tx_appointments_domain_model_agenda.palette.email_types">Send Confirmation Email ..</label>
+
+			<label index="tx_appointments_domain_model_type">Appointment Type</label>
+			<label index="tx_appointments_domain_model_type.name">Name</label>
+			<label index="tx_appointments_domain_model_type.superuser_only">Superuser Type</label>
+			<label index="tx_appointments_domain_model_type.default_duration">Appointment Duration</label>
+			<label index="tx_appointments_domain_model_type.start_time">Start Time</label>
+			<label index="tx_appointments_domain_model_type.start_time_monday">Start Time Monday</label>
+			<label index="tx_appointments_domain_model_type.start_time_tuesday">Start Time Tuesday</label>
+			<label index="tx_appointments_domain_model_type.start_time_wednesday">Start Time Wednesday</label>
+			<label index="tx_appointments_domain_model_type.start_time_thursday">Start Time Thursday</label>
+			<label index="tx_appointments_domain_model_type.start_time_friday">Start Time Friday</label>
+			<label index="tx_appointments_domain_model_type.start_time_saturday">Start Time Saturday</label>
+			<label index="tx_appointments_domain_model_type.start_time_sunday">Start Time Sunday</label>
+			<label index="tx_appointments_domain_model_type.stop_time">Stop Time</label>
+			<label index="tx_appointments_domain_model_type.stop_time_monday">Stop Time Monday</label>
+			<label index="tx_appointments_domain_model_type.stop_time_tuesday">Stop Time Tuesday</label>
+			<label index="tx_appointments_domain_model_type.stop_time_wednesday">Stop Time Wednesday</label>
+			<label index="tx_appointments_domain_model_type.stop_time_thursday">Stop Time Thursday</label>
+			<label index="tx_appointments_domain_model_type.stop_time_friday">Stop Time Friday</label>
+			<label index="tx_appointments_domain_model_type.stop_time_saturday">Stop Time Saturday</label>
+			<label index="tx_appointments_domain_model_type.stop_time_sunday">Stop Time Sunday</label>
+			<label index="tx_appointments_domain_model_type.exclude_holidays">Don't Allow Holidays</label>
+			<label index="tx_appointments_domain_model_type.max_amount">Allowed Appointments</label>
+			<label index="tx_appointments_domain_model_type.max_amount_monday">Allowed Appointments Monday</label>
+			<label index="tx_appointments_domain_model_type.max_amount_tuesday">Allowed Appointments Tuesday</label>
+			<label index="tx_appointments_domain_model_type.max_amount_wednesday">Allowed Appointments Wednesday</label>
+			<label index="tx_appointments_domain_model_type.max_amount_thursday">Allowed Appointments Thursday</label>
+			<label index="tx_appointments_domain_model_type.max_amount_friday">Allowed Appointments Friday</label>
+			<label index="tx_appointments_domain_model_type.max_amount_saturday">Allowed Appointments Saturday</label>
+			<label index="tx_appointments_domain_model_type.max_amount_sunday">Allowed Appointments Sunday</label>
+			<label index="tx_appointments_domain_model_type.minute_interval">Appointment Interval</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_monday">Appointment Interval Monday</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_tuesday">Appointment Interval Tuesday</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_wednesday">Appointment Interval Wednesday</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_thursday">Appointment Interval Thursday</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_friday">Appointment Interval Friday</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_saturday">Appointment Interval Saturday</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_sunday">Appointment Interval Sunday</label>
+			<label index="tx_appointments_domain_model_type.max_amount_per_var_days">Allowed Appointments</label>
+			<label index="tx_appointments_domain_model_type.per_var_days">Per .. Days</label>
+			<label index="tx_appointments_domain_model_type.per_var_days_interval">Buffer</label>
+			<label index="tx_appointments_domain_model_type.between_minutes">Reserved Time Block</label>
+			<label index="tx_appointments_domain_model_type.hours_mutable">Mutable Hours</label>
+			<label index="tx_appointments_domain_model_type.blocked_hours">Hours Before First Timeslot</label>
+			<label index="tx_appointments_domain_model_type.blocked_hours_workdays">Workday Hours Before First Timeslot</label>
+			<label index="tx_appointments_domain_model_type.max_days_forward">Days Available</label>
+			<label index="tx_appointments_domain_model_type.form_fields">Form Fields</label>
+			<label index="tx_appointments_domain_model_type.palette.overrule">Overrule</label>
+			<label index="tx_appointments_domain_model_type.div.day_config">Per Day Configuration</label>
+
+			<label index="tx_appointments_domain_model_formfield">Form Field</label>
+			<label index="tx_appointments_domain_model_formfield.title">Title</label>
+			<label index="tx_appointments_domain_model_formfield.label">Label</label>
+			<label index="tx_appointments_domain_model_formfield.required">Required</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types">Validation Types</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.alphanum">Alphanumeric</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.datetime">Date/Time</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.email">Email Address</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.float">Float</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.integer">Integer</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.notempty">Not Empty</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.number">Number</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.string">String</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.text">Text</label>
+			<label index="tx_appointments_domain_model_formfield.field_type">Field Type</label>
+			<label index="tx_appointments_domain_model_formfield.field_type.boolean">Checkbox</label>
+			<label index="tx_appointments_domain_model_formfield.field_type.select">Selection Box</label>
+			<label index="tx_appointments_domain_model_formfield.field_type.textsmall">Small Textfield</label>
+			<label index="tx_appointments_domain_model_formfield.field_type.textlarge">Large Textarea</label>
+			<label index="tx_appointments_domain_model_formfield.choices">Choices</label>
+			<label index="tx_appointments_domain_model_formfield.function">Function</label>
+			<label index="tx_appointments_domain_model_formfield.function.info">Informational</label>
+			<label index="tx_appointments_domain_model_formfield.function.addtime">Adds user-specified minutes</label>
+			<label index="tx_appointments_domain_model_formfield.time_add">Time Add</label>
+			<label index="tx_appointments_domain_model_formfield.enable_field">Enable Field</label>
+
+			<label index="tx_appointments_domain_model_address">Address</label>
+			<label index="tx_appointments_domain_model_address.first_name">First Name</label>
+			<label index="tx_appointments_domain_model_address.middle_name">Middle Name</label>
+			<label index="tx_appointments_domain_model_address.last_name">Last Name</label>
+			<label index="tx_appointments_domain_model_address.name">Name</label>
+			<label index="tx_appointments_domain_model_address.gender">Gender</label>
+			<label index="tx_appointments_domain_model_address.birthday">Birthday</label>
+			<label index="tx_appointments_domain_model_address.address">Address</label>
+			<label index="tx_appointments_domain_model_address.zip">Zip</label>
+			<label index="tx_appointments_domain_model_address.city">City</label>
+			<label index="tt_address.tx_extbase_type.Tx_Appointments_Address">Appointment Scheduler Address</label>
+			
+			<label index="tx_appointments_domain_model_formfieldvalue">Form Field Value</label>
+			<label index="tx_appointments_domain_model_formfieldvalue.value">Value</label>
+			<label index="tx_appointments_domain_model_formfieldvalue.form_field">Form Field</label>
+
+		</languageKey>
+		<languageKey index="nl" type="array">
+            
+			<label index="tx_appointments_domain_model_appointment">Afspraak</label>
+			<label index="tx_appointments_domain_model_appointment.temporary">Niet Definitief</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time">Begintijd</label>
+			<label index="tx_appointments_domain_model_appointment.end_time">Eindtijd</label>
+			<label index="tx_appointments_domain_model_appointment.begin_reserved">Start Reserveringstijd</label>
+			<label index="tx_appointments_domain_model_appointment.end_reserved">Einde Reserveringstijd</label>
+			<label index="tx_appointments_domain_model_appointment.notes">Opmerkingen</label>
+			<label index="tx_appointments_domain_model_appointment.notes_su">Opmerkingen Beheerder</label>
+			<label index="tx_appointments_domain_model_appointment.type">Afspraak Type</label>
+			<label index="tx_appointments_domain_model_appointment.form_field_values">Formulier Veld Waardes</label>
+			<label index="tx_appointments_domain_model_appointment.address">Adresgegevens</label>
+			<label index="tx_appointments_domain_model_appointment.fe_user">Gebruiker</label>
+			<label index="tx_appointments_domain_model_appointment.agenda">Agenda</label>
+			<label index="tx_appointments_domain_model_appointment.palette.times">Tijden</label>
+			
+			<label index="tx_appointments_domain_model_agenda">Agenda</label>
+			<label index="tx_appointments_domain_model_agenda.name">Naam</label>
+			<label index="tx_appointments_domain_model_agenda.holidays">Feestdagen</label>
+			<label index="tx_appointments_domain_model_agenda.email_address">E-mail Adres</label>
+			<label index="tx_appointments_domain_model_agenda.email_text">E-mail Tekst</label>
+			<label index="tx_appointments_domain_model_agenda.calendar_invite_address">Kalender Uitnodiging Adres</label>
+			<label index="tx_appointments_domain_model_agenda.calendar_invite_text">Kalender Uitnodiging Omschrijving</label>
+			<label index="tx_appointments_domain_model_agenda.email_owner_types">Naar Gebruiker Bij:</label>
+			<label index="tx_appointments_domain_model_agenda.email_types">Naar Ingestelde Adressen Bij:</label>
+			<label index="tx_appointments_domain_model_agenda.calendar_invite_types">Stuur Kalender Uitnodiging/Wijziging Bij:</label>
+			<label index="tx_appointments_domain_model_agenda.types.create">aangemaakte afspraken</label>
+			<label index="tx_appointments_domain_model_agenda.types.update">gewijzigde afspraken</label>
+			<label index="tx_appointments_domain_model_agenda.types.delete">geannuleerde afspraken</label>
+			<label index="tx_appointments_domain_model_agenda.div.email">E-mail Instellingen</label>
+			<label index="tx_appointments_domain_model_agenda.div.calendar_invite">Kalender Uitnodiging Instellingen</label>
+			<label index="tx_appointments_domain_model_agenda.palette.email_types">Stuur Bevestigingsmail ..</label>
+
+			<label index="tx_appointments_domain_model_type">Afspraak Type</label>
+			<label index="tx_appointments_domain_model_type.name">Naam</label>
+			<label index="tx_appointments_domain_model_type.superuser_only">Superuser Type</label>
+			<label index="tx_appointments_domain_model_type.default_duration">Duur Afspraak</label>
+			<label index="tx_appointments_domain_model_type.start_time">Start Tijd</label>
+			<label index="tx_appointments_domain_model_type.start_time_monday">Start Tijd Maandag</label>
+			<label index="tx_appointments_domain_model_type.start_time_tuesday">Start Tijd Dinsdag</label>
+			<label index="tx_appointments_domain_model_type.start_time_wednesday">Start Tijd Woensdag</label>
+			<label index="tx_appointments_domain_model_type.start_time_thursday">Start Tijd Donderdag</label>
+			<label index="tx_appointments_domain_model_type.start_time_friday">Start Tijd Vrijdag</label>
+			<label index="tx_appointments_domain_model_type.start_time_saturday">Start Tijd Zaterdag</label>
+			<label index="tx_appointments_domain_model_type.start_time_sunday">Start Tijd Zondag</label>
+			<label index="tx_appointments_domain_model_type.stop_time">Stop Tijd</label>
+			<label index="tx_appointments_domain_model_type.stop_time_monday">Stop Tijd Maandag</label>
+			<label index="tx_appointments_domain_model_type.stop_time_tuesday">Stop Tijd Dinsdag</label>
+			<label index="tx_appointments_domain_model_type.stop_time_wednesday">Stop Tijd Woensdag</label>
+			<label index="tx_appointments_domain_model_type.stop_time_thursday">Stop Tijd Donderdag</label>
+			<label index="tx_appointments_domain_model_type.stop_time_friday">Stop Tijd Vrijdag</label>
+			<label index="tx_appointments_domain_model_type.stop_time_saturday">Stop Tijd Zaterdag</label>
+			<label index="tx_appointments_domain_model_type.stop_time_sunday">Stop Tijd Zondag</label>
+			<label index="tx_appointments_domain_model_type.exclude_holidays">Niet Toestaan Op Feestdagen</label>
+			<label index="tx_appointments_domain_model_type.max_amount">Toegestane Afspraken</label>
+			<label index="tx_appointments_domain_model_type.max_amount_monday">Toegestane Afspraken Maandag</label>
+			<label index="tx_appointments_domain_model_type.max_amount_tuesday">Toegestane Afspraken Dinsdag</label>
+			<label index="tx_appointments_domain_model_type.max_amount_wednesday">Toegestane Afspraken Woensdag</label>
+			<label index="tx_appointments_domain_model_type.max_amount_thursday">Toegestane Afspraken Donderdag</label>
+			<label index="tx_appointments_domain_model_type.max_amount_friday">Toegestane Afspraken Vrijdag</label>
+			<label index="tx_appointments_domain_model_type.max_amount_saturday">Toegestane Afspraken Zaterdag</label>
+			<label index="tx_appointments_domain_model_type.max_amount_sunday">Toegestane Afspraken Zondag</label>
+			<label index="tx_appointments_domain_model_type.minute_interval">Afspraak Interval</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_monday">Afspraak Interval Maandag</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_tuesday">Afspraak Interval Dinsdag</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_wednesday">Afspraak Interval Woensdag</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_thursday">Afspraak Interval Donderdag</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_friday">Afspraak Interval Vrijdag</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_saturday">Afspraak Interval Zaterdag</label>
+			<label index="tx_appointments_domain_model_type.minute_interval_sunday">Afspraak Interval Zondag</label>
+			<label index="tx_appointments_domain_model_type.max_amount_per_var_days">Toegestane Afspraken</label>
+			<label index="tx_appointments_domain_model_type.per_var_days">Per .. Dagen</label>
+			<label index="tx_appointments_domain_model_type.per_var_days_interval">Buffer</label>
+			<label index="tx_appointments_domain_model_type.between_minutes">Reservering Tijdsblok</label>
+			<label index="tx_appointments_domain_model_type.hours_mutable">Uren Te Wijzigen</label>
+			<label index="tx_appointments_domain_model_type.blocked_hours">Uren Voor Eerste Tijdsslot</label>
+			<label index="tx_appointments_domain_model_type.blocked_hours_workdays">Werkdag Uren Voor Eerste Tijdsslot</label>
+			<label index="tx_appointments_domain_model_type.max_days_forward">Dagen Beschikbaar</label>
+			<label index="tx_appointments_domain_model_type.form_fields">Formulier Velden</label>
+			<label index="tx_appointments_domain_model_type.palette.overrule">Regels Met Voorrang</label>
+			<label index="tx_appointments_domain_model_type.div.day_config">Per Dag Configuratie</label>
+
+			<label index="tx_appointments_domain_model_formfield">Formulier Veld</label>
+			<label index="tx_appointments_domain_model_formfield.title">Titel</label>
+			<label index="tx_appointments_domain_model_formfield.label">Label</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types">Validatie Types</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.alphanum">Alphanumeriek</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.datetime">Datum/Tijd</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.email">Email Adres</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.float">Breuk</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.integer">Heel Getal</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.notempty">Vereist</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.number">Nummer</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.string">Tekenreeks</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.text">Tekst</label>
+			<label index="tx_appointments_domain_model_formfield.field_type">Veld Type</label>
+			<label index="tx_appointments_domain_model_formfield.field_type.boolean">Vinkje</label>
+			<label index="tx_appointments_domain_model_formfield.field_type.select">Selectie</label>
+			<label index="tx_appointments_domain_model_formfield.field_type.textsmall">Klein Tekstveld</label>
+			<label index="tx_appointments_domain_model_formfield.field_type.textlarge">Groot Tekstveld</label>
+			<label index="tx_appointments_domain_model_formfield.choices">Keuzes</label>
+			<label index="tx_appointments_domain_model_formfield.function">Functie</label>
+			<label index="tx_appointments_domain_model_formfield.function.info">Informatief</label>
+			<label index="tx_appointments_domain_model_formfield.function.addtime">Telt minuten bij afspraak op</label>
+			<label index="tx_appointments_domain_model_formfield.time_add">Tijd Optellen</label>
+			<label index="tx_appointments_domain_model_formfield.enable_field">Veld Activeren</label>
+
+			<label index="tx_appointments_domain_model_address">Adres</label>
+			<label index="tx_appointments_domain_model_address.first_name">Voornaam</label>
+			<label index="tx_appointments_domain_model_address.middle_name">Tussenvoegsel</label>
+			<label index="tx_appointments_domain_model_address.last_name">Achternaam</label>
+			<label index="tx_appointments_domain_model_address.name">Naam</label>
+			<label index="tx_appointments_domain_model_address.gender">Geslacht</label>
+			<label index="tx_appointments_domain_model_address.birthday">Geboortedag</label>
+			<label index="tx_appointments_domain_model_address.address">Adres</label>
+			<label index="tx_appointments_domain_model_address.zip">Postcode</label>
+			<label index="tx_appointments_domain_model_address.city">Plaats</label>
+			<label index="tt_address.tx_extbase_type.Tx_Appointments_Address">Afspraken Planner Adres</label>
+			
+			<label index="tx_appointments_domain_model_formfieldvalue">Formulier Veld Waarde</label>
+			<label index="tx_appointments_domain_model_formfieldvalue.value">Waarde</label>
+			<label index="tx_appointments_domain_model_formfieldvalue.form_field">Formulier Veld</label>
+
+		</languageKey>
+	</data>
+</T3locallang>

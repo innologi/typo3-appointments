@@ -1,0 +1,81 @@
+<table class="tx-appointments" summary="{f:translate(key:'tx_appointments_list.summary_show')}">
+	<caption><f:translate key="tx_appointments_list.caption_show" /></caption>
+	
+	<tr>
+		<td scope="row">
+			<f:translate key="tx_appointments_domain_model_appointment.type" />
+		</td>
+		<td>
+			{appointment.type.name}
+		</td>
+	</tr>
+	<tr>
+		<td scope="row">
+			<f:translate key="tx_appointments_domain_model_appointment.begin_time.date" />
+		</td>
+		<td>
+			<f:format.date format="d-m-Y">{appointment.beginTime}</f:format.date>
+		</td>
+	</tr>
+	<tr>
+		<td scope="row">
+			<f:translate key="tx_appointments_domain_model_appointment.begin_time.time" />
+		</td>
+		<td>
+			<f:format.date format="H:i">{appointment.beginTime}</f:format.date>
+			-
+			<f:format.date format="H:i">{appointment.endTime}</f:format.date>
+		</td>
+	</tr>
+	
+	<tr>
+		<td scope="row">
+			<f:translate key="tx_appointments_domain_model_appointment.fe_user" />
+		</td>
+		<td>
+			{appointment.feUser.name}
+		</td>
+	</tr>
+	
+	<tr>
+		<th colspan="2" scope="col">
+			<f:translate key="tx_appointments_domain_model_appointment.form_field_values" />
+		</th>
+	</tr>
+	<f:for each="{appointment.formFieldValues}" as="value">
+		<f:render partial="FormField/Properties" arguments="{formFieldValue : value, formField : value.formField}" />
+	</f:for>
+	
+	<f:if condition="{showMore}">
+		<tr>
+			<th colspan="2" scope="col">
+				<f:translate key="tx_appointments_domain_model_appointment.address" />
+			</th>
+		</tr>
+		<f:render partial="Address/Properties" arguments="{address : appointment.address}" />
+	
+		<tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+		
+		<tr>
+			<td scope="row">
+				<f:translate key="tx_appointments_domain_model_appointment.notes" />
+			</td>
+			<td>
+				{appointment.notes}
+			</td>
+		</tr>
+	</f:if>
+	
+	<f:if condition="{superUser}">
+		<tr>
+			<td scope="row">
+				<f:translate key="tx_appointments_domain_model_appointment.notes_su" />
+			</td>
+			<td>
+				{appointment.notesSu}
+			</td>
+		</tr>
+	</f:if>
+</table>

@@ -1,0 +1,5 @@
+  # cat=basic//a; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_extconf_emailFrom
+email_from = 
+
+  # cat=basic//b; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_extconf_emailName
+email_name = 

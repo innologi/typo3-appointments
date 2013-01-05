@@ -1,0 +1,30 @@
+{namespace fed=Tx_Fed_ViewHelpers}
+<tr>
+	<td scope="row">
+		{formField.label}
+	</td>
+	<td>
+		<fed:switch value="{formField.fieldType}">
+			<fed:case case="1" break="TRUE"> <!-- Boolean / Checkbox -->
+				<f:if condition="{formFieldValue.value} == 1">
+					<f:then>
+						<f:translate key="tx_appointments_list.yes" />
+					</f:then>
+					<f:else>
+						<f:translate key="tx_appointments_list.no" />
+					</f:else>
+				</f:if>
+			</fed:case>
+			<fed:case case="2" break="TRUE">  <!-- Select -->
+				<fed:contains haystack="{formField.choices}" needle="{formFieldValue.value}" >
+					{formFieldValue.value}
+				</fed:contains>
+			</fed:case>
+			<fed:case case="3"> <!-- Textsmall / Input -->
+			</fed:case>
+			<fed:case case="4"> <!-- Textlarge / Textarea -->
+				{formFieldValue.value}
+			</fed:case>
+		</fed:switch>
+	</td>
+</tr>

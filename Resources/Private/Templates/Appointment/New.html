@@ -1,0 +1,94 @@
+<f:layout name="FeUserOnly" />
+
+<f:section name="FeUser">
+<h3><f:translate key="tx_appointments_list.appointment_new" /></h3>
+
+<f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[buildCreate]',2:'tx_appointments_list[type]',3:'tx_appointments_list[beginTime]',4:'tx_appointments_list[dateFirst]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
+
+<f:render partial="FormErrors" arguments="{for: 'appointment', formFields : appointment.type.formFields}" />
+
+<span class="required">*</span> = <f:translate key="tx_appointments_list.required" />
+
+<f:if condition="{types}">
+	<f:form enctype="multipart/form-data" method="post" action="new" arguments="{agenda : agenda}" id="typeForm" object="{appointment}" objectName="appointment">
+		<fieldset>
+			<f:form.select property="type" options="{types}" optionValueField="uid" optionLabelField="name" class="select" />
+			<f:form.hidden property="beginTime" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
+			<f:form.hidden name="dateFirst" value="{dateFirst}" />
+			<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_type')}" class="submit" />
+		</fieldset>
+	</f:form>
+</f:if>
+
+<f:if condition="{dateSlots}">
+	<f:if condition="{buildCreate}">
+		<f:then>
+			<f:form enctype="multipart/form-data" method="post" action="free" arguments="{agenda : agenda}" id="freeForm" object="{appointment}" objectName="appointment">
+				<fieldset>
+					<f:form.select property="beginTime" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" disabled="TRUE" />
+				</fieldset>
+			</f:form>
+		</f:then>
+		<f:else>
+			<f:if condition="{dateFirst}">
+				<f:then>
+					<f:form enctype="multipart/form-data" method="post" action="free" arguments="{agenda : agenda}" id="freeForm" object="{appointment}" objectName="appointment">
+						<fieldset>
+							<f:form.select property="beginTime" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" disabled="TRUE" />
+						</fieldset>
+					</f:form>
+				</f:then>
+				<f:else>
+					<f:form enctype="multipart/form-data" method="post" action="new" arguments="{agenda : agenda}" id="dateForm" object="{appointment}" objectName="appointment">
+						<fieldset>
+							<f:form.select property="beginTime" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" />
+							<f:form.hidden property="type" />
+							<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_date_slot')}" class="submit" />
+						</fieldset>
+					</f:form>
+				</f:else>
+			</f:if>
+		</f:else>
+	</f:if>
+</f:if>
+	
+<f:if condition="{timeSlots}">
+	<f:if condition="{buildCreate}">
+		<f:then>
+			<f:form enctype="multipart/form-data" method="post" action="free" arguments="{agenda : agenda}" id="freeForm" object="{appointment}" objectName="appointment">
+				<fieldset>
+					<f:form.select property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select" disabled="TRUE" />
+					<f:form.hidden property="type" />
+					<f:form.hidden name="dateFirst" value="{dateFirst}" />
+					<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_free')}" class="submit" />
+				</fieldset>
+			</f:form>
+		</f:then>
+		<f:else>
+			<f:form enctype="multipart/form-data" method="post" action="new" arguments="{agenda : agenda}" id="timeForm" object="{appointment}" objectName="appointment">
+				<fieldset>
+					<f:form.select property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select" />
+					<f:form.hidden property="type" />
+					<f:form.hidden name="buildCreate" value="1" />
+					<f:form.hidden name="dateFirst" value="{dateFirst}" />
+					<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_time_slot')}" class="submit" />
+				</fieldset>
+			</f:form>
+		</f:else>
+	</f:if>
+</f:if>
+
+<f:if condition="{buildCreate}">
+	<f:form enctype="multipart/form-data" method="post" action="create" arguments="{agenda : agenda, buildCreate : buildCreate}" id="appointment" object="{appointment}" objectName="appointment">
+		<f:form.hidden property="agenda" />
+		<f:form.hidden property="type" />
+		<f:form.hidden property="beginTime" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
+		<f:form.hidden property="temporary" />
+		<f:form.hidden property="feUser" />
+		<f:form.hidden name="dateFirst" value="{dateFirst}" />
+		<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, superUser : superUser}" />
+		<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_new')}" class="submit" />
+	</f:form>
+</f:if>
+
+</f:section>
