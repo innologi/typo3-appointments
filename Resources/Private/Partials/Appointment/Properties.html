@@ -37,14 +37,16 @@
 		</td>
 	</tr>
 	
-	<tr>
-		<th colspan="2" scope="col">
-			<f:translate key="tx_appointments_domain_model_appointment.form_field_values" />
-		</th>
-	</tr>
-	<f:for each="{appointment.formFieldValues}" as="value">
-		<f:render partial="FormField/Properties" arguments="{formFieldValue : value, formField : value.formField}" />
-	</f:for>
+	<f:if condition="{appointment.formFieldValues}">
+		<tr>
+			<th colspan="2" scope="col">
+				<f:translate key="tx_appointments_domain_model_appointment.form_field_values" />
+			</th>
+		</tr>
+		<f:for each="{appointment.formFieldValues}" as="value">
+			<f:render partial="FormField/Properties" arguments="{formFieldValue : value, formField : value.formField}" />
+		</f:for>
+	</f:if>
 	
 	<f:if condition="{showMore}">
 		<tr>

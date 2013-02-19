@@ -105,7 +105,7 @@ class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistenc
 		if (isset($this->storage[$key])) {
 			return $this->storage[$key]['obj'];
 		}
-		return FALSE;
+		return FALSE; #@FIXME formfields partial properties veroorzaken warnings wanneer je net een nieuwe aanmaakt, dus niet wanneer je edit of wanneer je validatie crap krijgt
 	}
 
 	/**

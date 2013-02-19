@@ -37,7 +37,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * First Name
 	 *
 	 * @var string
-	 * @validate NotEmpty
 	 */
 	protected $firstName;
 
@@ -52,7 +51,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Last Name
 	 *
 	 * @var string
-	 * @validate NotEmpty
 	 */
 	protected $lastName;
 
@@ -75,7 +73,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Birthday
 	 *
 	 * @var DateTime
-	 * @validate DateTime
 	 */
 	protected $birthday;
 
@@ -90,25 +87,29 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Address
 	 *
 	 * @var string
-	 * @validate NotEmpty
 	 */
-	protected $address; #@TODO regex validator?
+	protected $address; #@TODO regex validator? but GEMHMK doesn't want to
 
 	/**
 	 * Zip code
 	 *
 	 * @var string
-	 * @validate RegularExpression(regularExpression=/[0-9]{4}[A-Z]{2}/)
 	 */
-	protected $zip;
+	protected $zip; #@SHOULD validate RegularExpression(regularExpression=/[0-9]{4}[A-Z]{2}/) but GEMHMK doesn't want to
 
 	/**
 	 * City
 	 *
 	 * @var string
-	 * @validate NotEmpty
 	 */
 	protected $city;
+
+	/**
+	 * Social Security Number
+	 *
+	 * @var string
+	 */
+	protected $socialSecurityNumber;
 
 	/**
 	 * Returns the firstName
@@ -302,5 +303,23 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 		$this->city = $city;
 	}
 
+	/**
+	 * Returns the social security number
+	 *
+	 * @return string $socialSecurityNumber
+	 */
+	public function getSocialSecurityNumber() {
+		return $this->socialSecurityNumber;
+	}
+
+	/**
+	 * Sets the social security number
+	 *
+	 * @param string $socialSecurityNumber
+	 * @return void
+	 */
+	public function setSocialSecurityNumber($socialSecurityNumber) {
+		$this->socialSecurityNumber = $socialSecurityNumber;
+	}
 }
 ?>

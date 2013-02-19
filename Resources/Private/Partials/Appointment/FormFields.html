@@ -4,12 +4,14 @@
 	</fieldset>
 </f:if>
 
+<f:if condition="{formFieldValues}">
 <fieldset>
 <h4><f:translate key="tx_appointments_domain_model_appointment.form_field_values" /></h4>
 <f:for each="{formFieldValues}" as="value">
 	<f:render partial="FormField/FormFields" arguments="{formFieldValue : value, formField : value.formField}" />
 </f:for>
 </fieldset>
+</f:if>
 
 <fieldset>
 <h4><f:translate key="tx_appointments_domain_model_appointment.address" /></h4>

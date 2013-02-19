@@ -3,6 +3,9 @@ config.tx_extbase {
 		Tx_Appointments_Domain_Model_Appointment {
 			mapping.columns.crdate.mapOnProperty = crdate
 		}
+		Tx_Appointments_Domain_Model_Address {
+			mapping.columns.tx_appointments_social_security_number.mapOnProperty = socialSecurityNumber
+		}
 	}
 	
 	# keep this in mind for when I require it for a property that isn't somewhere deep down another property 

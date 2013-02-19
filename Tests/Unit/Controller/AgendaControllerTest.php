@@ -4,7 +4,7 @@
  *  Copyright notice
  *
  *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
- *  			
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

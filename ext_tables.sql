@@ -241,7 +241,8 @@ CREATE TABLE tt_address (
 	email varchar(80) DEFAULT '' NOT NULL,
 	address tinytext NOT NULL,
 	zip varchar(20) DEFAULT '' NOT NULL,
-	city varchar(80) DEFAULT '' NOT NULL
+	city varchar(80) DEFAULT '' NOT NULL,
+	tx_appointments_social_security_number varchar(255) DEFAULT '' NOT NULL,
 );
 
 #

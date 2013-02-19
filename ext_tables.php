@@ -151,10 +151,24 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 #if (!isset($TCA['tt_address']['ctrl']['type'])) {
 #	$TCA['tt_address']['ctrl']['type'] = 'tx_extbase_type';
 #}
+#t3lib_div::loadTCA('tt_address');
 #$TCA['tt_address']['columns'][$TCA['tt_address']['ctrl']['type']]['config']['items'][] = array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tt_address.tx_extbase_type.Tx_Appointments_Address','Tx_Appointments_Address');
 #$TCA['tt_address']['types']['Tx_Appointments_Address']['showitem'] = $TCA['tt_address']['types']['1']['showitem'];
 #$TCA['tt_address']['types']['Tx_Appointments_Address']['showitem'] .= ',--div--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_address,';
 #$TCA['tt_address']['types']['Tx_Appointments_Address']['showitem'] = 'first_name, middle_name, last_name, name, gender, birthday, email, address, zip, city';
+t3lib_extMgm::addTCAcolumns('tt_address', array(
+	'tx_appointments_social_security_number' => array (
+		'exclude' => 0,
+		'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_address.social_security_number',
+		'config' => array (
+			'type' => 'input',
+			'size' => 25,
+			'max' => 255,
+			'eval' => 'trim'
+		)
+	),
+), 1);
+t3lib_extMgm::addToAllTCAtypes('tt_address','tx_appointments_social_security_number');
 
 t3lib_extMgm::addLLrefForTCAdescr('tx_appointments_domain_model_formfieldvalue', 'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_formfieldvalue.xml');
 t3lib_extMgm::allowTableOnStandardPages('tx_appointments_domain_model_formfieldvalue');

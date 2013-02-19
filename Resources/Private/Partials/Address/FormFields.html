@@ -1,25 +1,27 @@
-{namespace a=Tx_Appointments_ViewHelpers}
 <label>
-	<f:translate key="tx_appointments_domain_model_address.first_name" />
-	<span class="required">*</span>
-	<br />
-	<a:form.textfield property="address.firstName" id="firstName" class="textinput" required="TRUE" />
+	<f:translate key="tx_appointments_domain_model_address.first_name" /><br />
+	<f:form.textfield property="address.firstName" id="firstName" class="textinput" />
 </label>
 <br />
 <br />
 
 <label>
 	<f:translate key="tx_appointments_domain_model_address.middle_name" /><br />
-	<a:form.textfield property="address.middleName" id="middleName" class="textinput" />
+	<f:form.textfield property="address.middleName" id="middleName" class="textinput" />
 </label>
 <br />
 <br />
 
 <label>
-	<f:translate key="tx_appointments_domain_model_address.last_name" />
-	<span class="required">*</span>
-	<br />
-	<a:form.textfield property="address.lastName" id="lastName" class="textinput" required="TRUE" />
+	<f:translate key="tx_appointments_domain_model_address.last_name" /><br />
+	<f:form.textfield property="address.lastName" id="lastName" class="textinput" />
+</label>
+<br />
+<br />
+
+<label>
+	<f:translate key="tx_appointments_domain_model_address.social_security_number" /><br />
+	<f:form.textfield property="address.socialSecurityNumber" id="socialSecurityNumber" class="textinput" />
 </label>
 <br />
 <br />
@@ -32,37 +34,29 @@
 <br />
 
 <label>
-	<f:translate key="tx_appointments_domain_model_address.birthday" />
-	<span class="required">*</span>
-	<br />
-	<a:form.textfield property="address.birthday" value="{address.birthday -> f:format.date(format:'d-m-Y')}" id="birthday" class="textinput" required="TRUE" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.birthday.placeholder')}" />
+	<f:translate key="tx_appointments_domain_model_address.birthday" /><br />
+	<f:form.textfield property="address.birthday" value="{address.birthday -> f:format.date(format:'d-m-Y')}" id="birthday" class="textinput" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.birthday.placeholder')}" />
 </label>
 <br />
 <br />
 
 <label>
-	<f:translate key="tx_appointments_domain_model_address" />
-	<span class="required">*</span>
-	<br />
-	<a:form.textfield property="address.address" id="address" class="textinput" required="TRUE" />
+	<f:translate key="tx_appointments_domain_model_address" /><br />
+	<f:form.textfield property="address.address" id="address" class="textinput" />
 </label>
 <br />
 <br />
 
 <label>
-	<f:translate key="tx_appointments_domain_model_address.zip" />
-	<span class="required">*</span>
-	<br />
-	<a:form.textfield property="address.zip" id="zip" class="textinput" required="TRUE" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.zip.placeholder')}" />
+	<f:translate key="tx_appointments_domain_model_address.zip" /><br />
+	<f:form.textfield property="address.zip" id="zip" class="textinput" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.zip.placeholder')}" />
 </label>
 <br />
 <br />
 
 <label>
-	<f:translate key="tx_appointments_domain_model_address.city" />
-	<span class="required">*</span>
-	<br />
-	<a:form.textfield property="address.city" id="city" class="textinput" required="TRUE" />
+	<f:translate key="tx_appointments_domain_model_address.city" /><br />
+	<f:form.textfield property="address.city" id="city" class="textinput" />
 </label>
 <br />
 <br />
