@@ -42,6 +42,7 @@
 			<label index="tx_appointments_domain_model_type">Appointment Type</label>
 			<label index="tx_appointments_domain_model_type.name">Name</label>
 			<label index="tx_appointments_domain_model_type.superuser_only">Superuser Type</label>
+			<label index="tx_appointments_domain_model_type.exclusive_availability">Exclusive Availability</label>
 			<label index="tx_appointments_domain_model_type.default_duration">Appointment Duration</label>
 			<label index="tx_appointments_domain_model_type.start_time">Start Time</label>
 			<label index="tx_appointments_domain_model_type.start_time_monday">Start Time Monday</label>
@@ -169,6 +170,7 @@
 			<label index="tx_appointments_domain_model_type">Afspraak Type</label>
 			<label index="tx_appointments_domain_model_type.name">Naam</label>
 			<label index="tx_appointments_domain_model_type.superuser_only">Superuser Type</label>
+			<label index="tx_appointments_domain_model_type.exclusive_availability">Exclusieve Beschikbaarheid</label>
 			<label index="tx_appointments_domain_model_type.default_duration">Duur Afspraak</label>
 			<label index="tx_appointments_domain_model_type.start_time">Start Tijd</label>
 			<label index="tx_appointments_domain_model_type.start_time_monday">Start Tijd Maandag</label>

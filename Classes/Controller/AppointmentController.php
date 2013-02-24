@@ -352,7 +352,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * action create
 	 *
-	 * We need $agenda here in case of a validation error sending us back to newAction.
+	 * We need $agenda here in case of a validation error sending us back to newAction. @TODO why did I not use $appointment->getAgenda() again?
 	 *
 	 * Notice that the appointment isn't added but updated. This is because the newAction
 	 * will have already added a temporary appointment. We just need to change its temporary flag.

@@ -79,10 +79,10 @@ class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Extbase_Persis
 	/**
 	 * Returns the type with the smallest 'blocked_hours' value.
 	 *
-	 * @param Tx_Extbase_Persistence_QueryResultInterface $types Contains type uid's to filter by
+	 * @param array $types Contains type uid's to filter by
 	 * @return Tx_Appointments_Domain_Model_Type The type
 	 */
-	public function findBySmallestBlockedHours(Tx_Extbase_Persistence_QueryResultInterface $types) {
+	public function findBySmallestBlockedHours(array $types) {
 		$query = $this->createQuery();
 		$result = $query->matching(
 				$query->in('uid', $types)

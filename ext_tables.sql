@@ -107,6 +107,7 @@ CREATE TABLE tx_appointments_domain_model_type (
 
 	name varchar(255) DEFAULT '' NOT NULL,
 	superuser_only tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	exclusive_availability tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	default_duration int(4) DEFAULT '0' NOT NULL,
 	start_time_monday varchar(5) DEFAULT '' NOT NULL,
 	start_time_tuesday varchar(5) DEFAULT '' NOT NULL,

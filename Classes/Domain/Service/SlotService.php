@@ -459,7 +459,10 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 					}
 
 
-					$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, 24, $excludeAppointment);
+					//if exclusive availability enabled, only include appointments of this type in the search
+					$types = $type->getExclusiveAvailability() ? array($type) : NULL;
+
+					$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, 24, $excludeAppointment,$types);
 					$appointmentsCurrent = isset($appointments[$currentDate]) ? $appointments[$currentDate] : array();
 					$appointmentAmount = count($appointmentsCurrent);
 					if ($appointmentAmount < $maxAmount) {
@@ -475,7 +478,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 							if ($interval > 0) {
 								$startDateTime->modify("-$interval hours");
 								$endDateTime->modify("+$interval hours");
-								$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, $interval, $excludeAppointment);
+								$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, $interval, $excludeAppointment,$types);
 								if (!$this->processPerVarDaysInterval($appointments, $startDateTime, $endDateTime, $dateTime, $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval)) {
 									$notAllowed = TRUE;
 								}

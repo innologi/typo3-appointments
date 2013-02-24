@@ -49,6 +49,13 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	protected $superuserOnly = FALSE;
 
 	/**
+	 * Exclusive availability?
+	 *
+	 * @var boolean
+	 */
+	protected $exclusiveAvailability = FALSE;
+
+	/**
 	 * Default duration
 	 *
 	 * @var integer
@@ -405,6 +412,25 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 */
 	public function setSuperuserOnly($superuserOnly) {
 		$this->superuserOnly = $superuserOnly;
+	}
+
+	/**
+	 * Returns exclusideAvailability
+	 *
+	 * @return boolean $exclusiveAvailability
+	 */
+	public function getExclusiveAvailability() {
+		return $this->exclusiveAvailability;
+	}
+
+	/**
+	 * Sets exclusiveAvailability
+	 *
+	 * @param boolean $exclusiveAvailability
+	 * @return void
+	 */
+	public function setExclusiveAvailability($exclusiveAvailability) {
+		$this->exclusiveAvailability = $exclusiveAvailability;
 	}
 
 	/**

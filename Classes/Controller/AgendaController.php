@@ -168,6 +168,8 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		$showTypes = $superUser ? $allowTypes : ( #@TODO enable/disable whether superuser type APPOINTMENTS should be SHOWN to non-superusers?
 				empty($typeArray) ? $this->typeRepository->findAll(TRUE) : $this->typeRepository->findIn($typeArray,TRUE)
 		);
+		$allowTypes = $allowTypes->toArray();
+		$showTypes = $showTypes->toArray();
 
 		if ($agenda !== NULL && !empty($allowTypes)) { //because there could be no agenda or no agenda selected, or even no types created
 			$modifier = intval($modifier);
@@ -192,10 +194,10 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 *
 	 * @param integer $monthModifier Relative modifier of month to get
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to display appointments from
-	 * @param Tx_Extbase_Persistence_QueryResultInterface $types Types to show on the agenda
+	 * @param array $types Types to show on the agenda
 	 * @return Tx_Appointments_Domain_Model_Agenda_Month
 	 */
-	protected function createAgendaMonth($monthModifier, Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Extbase_Persistence_QueryResultInterface $types) {
+	protected function createAgendaMonth($monthModifier, Tx_Appointments_Domain_Model_Agenda $agenda, array $types) {
 		$month = new Tx_Appointments_Domain_Model_Agenda_Month();
 
 		$start = new DateTime(); //will represent the first minute of the month
@@ -228,10 +230,10 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 *
 	 * @param integer $weeksModifier Relative modifier of weeks to get
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to display appointments from
-	 * @param Tx_Extbase_Persistence_QueryResultInterface $types Types to show on the agenda
+	 * @param array $types Types to show on the agenda
 	 * @return Tx_Appointments_Domain_Model_Agenda_Weeks
 	 */
-	protected function createAgendaWeeks($weeksModifier, Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Extbase_Persistence_QueryResultInterface $types) {
+	protected function createAgendaWeeks($weeksModifier, Tx_Appointments_Domain_Model_Agenda $agenda, array $types) {
 		$weeks = new Tx_Appointments_Domain_Model_Agenda_Weeks();
 		$weeksBefore = intval($this->settings['agendaWeeksBeforeCurrent']);
 		$weeksAfter = intval($this->settings['agendaWeeksAfterCurrent']);
@@ -263,11 +265,11 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 * @param integer $modEndModifier Modifier value for container endtime
 	 * @param string  $modEndUnit Modifier unit for container endtime
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to display appointments from
-	 * @param Tx_Extbase_Persistence_QueryResultInterface $types Types to show on the agenda
+	 * @param array $types Types to show on the agenda
 	 * @param DateTime $start container starttime
 	 * @return void
 	 */
-	protected function setGeneralContainerProperties(Tx_Appointments_Domain_Model_Agenda_AbstractContainer $container, $modifier, $modEndModifier, $modEndUnit, Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Extbase_Persistence_QueryResultInterface $types, DateTime $start) {
+	protected function setGeneralContainerProperties(Tx_Appointments_Domain_Model_Agenda_AbstractContainer $container, $modifier, $modEndModifier, $modEndUnit, Tx_Appointments_Domain_Model_Agenda $agenda, array $types, DateTime $start) {
 		//set standard container properties
 		$container->setMaxBack(-intval($this->settings['agendaBack']));
 		$container->setBackModifier($modifier-1);

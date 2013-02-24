@@ -105,10 +105,10 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @param boolean $includeTemporary On true, includes temporary appointments
 	 * @param integer $rearrangePerHours On true, rebuilds the array through rearrangeAppointmentArray()
 	 * @param integer $excludeAppointment UID of an appointment that is ignored in retrieving appointments
-	 * @param Tx_Extbase_Persistence_QueryResultInterface $types Types to limit appointments by, if not NULL
+	 * @param array $types Types to limit appointments by, if not NULL
 	 * @return array An array of objects, empty if no objects found
 	 */
-	public function findBetween(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $start, DateTime $end, $includeTemporary = FALSE, $rearrangePerHours = 0, $excludeAppointment = 0, Tx_Extbase_Persistence_QueryResultInterface $types = NULL) {
+	public function findBetween(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $start, DateTime $end, $includeTemporary = FALSE, $rearrangePerHours = 0, $excludeAppointment = 0, array $types = NULL) {
 		$query = $this->createQuery();
 
 		$constraint = array(
@@ -157,48 +157,55 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @return array An array of objects, empty if no objects found
 	 */
 	public function findCrossAppointments(Tx_Appointments_Domain_Model_Appointment $appointment) {
+		$query = $this->createQuery();
+
 		$beginReserved = $appointment->getBeginReserved()->getTimestamp();
 		$endReserved = $appointment->getEndReserved()->getTimestamp();
 		$beginTime = $appointment->getBeginTime()->getTimestamp();
 		$endTime = $appointment->getEndTime()->getTimestamp();
+		$exclusive = $appointment->getType()->getExclusiveAvailability();
 
-		$query = $this->createQuery();
-		$result = $query->matching(
-				$query->logicalAnd( array(
-						//apparently, if $agenda isn't validated separately, its lazy storages aren't resolved, which generates an exception, hence we'll stick with its uid
-						$query->equals('agenda', $appointment->getAgenda()->getUid()),
-						$query->logicalNot(
-								$query->equals('uid', $appointment->getUid())
-						),
-						$query->logicalOr( array(
-								$query->logicalAnd( array( //looks for an overlap @ beginTime
-										$query->lessThanOrEqual('beginTime', $beginTime),
-										$query->logicalOr( array( //ignores overlapping reserved blocks
-												$query->greaterThan('endTime', $beginReserved),
-												$query->greaterThan('endReserved', $beginTime)
-											)
-										)
-									)
-								),
-								$query->logicalAnd( array( //looks for an overlap @ endTime
-										$query->greaterThanOrEqual('endTime', $endTime),
-										$query->logicalOr( array( //ignores overlapping reserved blocks
-												$query->lessThan('beginTime', $endReserved),
-												$query->lessThan('beginReserved', $endTime)
-											)
-										)
-									)
-								),
-								$query->logicalAnd( array( //looks for an overlap between beginTime & endTime
-										$query->greaterThan('beginTime', $beginTime),
-										$query->lessThan('endTime', $endTime)
-									)
+		$constraint = array(
+			//apparently, if $agenda isn't validated separately, its lazy storages aren't resolved, which generates an exception, hence we'll stick with its uid
+			$query->equals('agenda', $appointment->getAgenda()->getUid()),
+			$query->logicalNot(
+					$query->equals('uid', $appointment->getUid())
+			),
+			$query->logicalOr( array(
+					$query->logicalAnd( array( //looks for an overlap @ beginTime
+							$query->lessThanOrEqual('beginTime', $beginTime),
+							$query->logicalOr( array( //ignores overlapping reserved blocks
+									$query->greaterThan('endTime', $beginReserved),
+									$query->greaterThan('endReserved', $beginTime)
 								)
 							)
 						)
-
+					),
+					$query->logicalAnd( array( //looks for an overlap @ endTime
+							$query->greaterThanOrEqual('endTime', $endTime),
+							$query->logicalOr( array( //ignores overlapping reserved blocks
+									$query->lessThan('beginTime', $endReserved),
+									$query->lessThan('beginReserved', $endTime)
+								)
+							)
+						)
+					),
+					$query->logicalAnd( array( //looks for an overlap between beginTime & endTime
+							$query->greaterThan('beginTime', $beginTime),
+							$query->lessThan('endTime', $endTime)
+						)
 					)
 				)
+			)
+		);
+
+		//if exclusive availability, will only be influenced by appointments of the same type
+		if ($exclusive) {
+			$conditions[] = $query->equals('type', $appointment->getType());
+		}
+
+		$result = $query->matching(
+				$query->logicalAnd($constraint)
 		)->execute()->toArray();
 
 		return $result;
