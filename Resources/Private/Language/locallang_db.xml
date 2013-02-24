@@ -91,6 +91,7 @@
 			<label index="tx_appointments_domain_model_formfield">Form Field</label>
 			<label index="tx_appointments_domain_model_formfield.title">Title</label>
 			<label index="tx_appointments_domain_model_formfield.label">Label</label>
+			<label index="tx_appointments_domain_model_formfield.csh">Helptext</label>
 			<label index="tx_appointments_domain_model_formfield.required">Required</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types">Validation Types</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.alphanum">Alphanumeric</label>
@@ -217,6 +218,7 @@
 			<label index="tx_appointments_domain_model_formfield">Formulier Veld</label>
 			<label index="tx_appointments_domain_model_formfield.title">Titel</label>
 			<label index="tx_appointments_domain_model_formfield.label">Label</label>
+			<label index="tx_appointments_domain_model_formfield.csh">Toelichtingstekst</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types">Validatie Types</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.alphanum">Alphanumeriek</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.datetime">Datum/Tijd</label>

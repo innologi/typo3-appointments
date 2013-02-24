@@ -224,10 +224,34 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 		margin-right:15px;
 	}
 	
+	.tx-appointments .csh {
+		overflow:hidden;
+		width:16px;
+		height:18px;
+		display:inline-block;
+		position:absolute;
+		margin-left:8px;
+	}
+	
+	.tx-appointments .tooltip {
+		position:absolute;
+		display:inline-block;
+		opacity:0.9;
+		background-color:#000;
+		border:1px solid #555;
+		color:#fff;
+		font-size:0.9em;
+		max-width:240px;
+		margin-left:32px;
+		padding:3px 5px;
+		z-index:999;
+	}
+	
 	.tx-appointments .button_new:before,
 	.tx-appointments .button_edit:before,
 	.tx-appointments .button_delete:before,
 	.tx-appointments .button_back:before,
+	.tx-appointments .csh:before,
 	.tx-appointments .agendaDay .dayBar a:before {
 		background-image:url("/typo3conf/ext/appointments/Resources/Public/Icons/t3skin.png");
 		content:"";
@@ -249,6 +273,9 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	}
 	.tx-appointments .button_back:before {
 		background-position:-18px -36px;
+	}
+	.tx-appointments .csh:before {
+		background-position:-306px -54px;
 	}
 	
 	.tx-appointments .button_delete .delete_confirm_text {

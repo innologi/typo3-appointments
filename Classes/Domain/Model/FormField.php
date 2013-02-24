@@ -68,6 +68,14 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	protected $label;
 
 	/**
+	 * Context Sensitive Help
+	 *
+	 * @var string
+	 * @validate NotEmpty
+	 */
+	protected $csh;
+
+	/**
 	 * Validation Types
 	 *
 	 * @var string
@@ -147,6 +155,25 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 */
 	public function setLabel($label) {
 		$this->label = $label;
+	}
+
+	/**
+	 * Returns the CSH
+	 *
+	 * @return string $csh
+	 */
+	public function getCsh() {
+		return $this->csh;
+	}
+
+	/**
+	 * Sets the CSH
+	 *
+	 * @param string $csh
+	 * @return void
+	 */
+	public function setCsh($csh) {
+		$this->csh = $csh;
 	}
 
 	/**

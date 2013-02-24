@@ -15,6 +15,7 @@
 			<label index="tx_appointments_list.appointment_delete_confirm">Are you sure you want to cancel this appointment?</label>
 			<label index="tx_appointments_list.appointment_show_header">Appointment details</label>
 			<label index="tx_appointments_list.submit_type">Pick type</label>
+			<label index="tx_appointments_list.submit_type_free">Change type</label>
 			<label index="tx_appointments_list.submit_date_slot">Pick date</label>
 			<label index="tx_appointments_list.submit_time_slot">Pick time</label>
 			<label index="tx_appointments_list.submit_new">Create new</label>
@@ -104,11 +105,20 @@
 		
 			<label index="tx_appointments_domain_model_appointment">Appointment</label>
 			<label index="tx_appointments_domain_model_appointment.type">Appointment type</label>
+			<label index="tx_appointments_domain_model_appointment.type.csh_new">Here you may choose the appointment type. Each appointment type may differ. If you have picked a date first, the currently available choices are limited to what types are (still) possible on the chosen date.</label>
+			<label index="tx_appointments_domain_model_appointment.type.csh_free">U may still change the appointment type for the chosen timeslot. Please note: the currently available choices are limited to what types (still) have the chosen timeslot available. If your desired appointment type is missing, then it's not available for the chosen timeslot and you'll have to change the timeslot first.</label>
+			<label index="tx_appointments_domain_model_appointment.type.csh_edit">The appointment type cannot be changed for any already scheduled appointment. If you wish to create a different appointment type, you will need to schedule a new appointment for that instead.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.date">Appointment date</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_new">The date of the appointment. The available choices consist of all dates that (still) have timeslots available, for this particular appointment type. Different appointment types may result in different available dates.</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_free">To change the date, you'll have to free up the currently chosen timeslot first.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time">Time of appointment</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new">The time of the appointment. The available choices consist of all (still) available timeslots on the picked date, for this particular appointment type. Different dates and/or appointment types may result in different available timeslots.</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_free">To change the timeslot, you'll have to free up the currently chosen timeslot first.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_reserved">Agenda reserved</label>
 			<label index="tx_appointments_domain_model_appointment.notes">Notes</label>
+			<label index="tx_appointments_domain_model_appointment.notes.csh">You may set (private) notes here, relevant to the appointment.</label>
 			<label index="tx_appointments_domain_model_appointment.notes_su">Administrator notes</label>
+			<label index="tx_appointments_domain_model_appointment.notes_su.csh">You may set administrator notes here that are only viewable by administrators.</label>
 			<label index="tx_appointments_domain_model_appointment.form_field_values">Additional information</label>
 			<label index="tx_appointments_domain_model_appointment.address">Name and address information</label>
 			<label index="tx_appointments_domain_model_appointment.fe_user">Created by</label>
@@ -127,6 +137,8 @@
 			<label index="tx_appointments_domain_model_address.zip.placeholder">1000AD</label>
 			<label index="tx_appointments_domain_model_address.city">City</label>
 			<label index="tx_appointments_domain_model_address.social_security_number">Social Security Number</label>
+			<label index="tx_appointments_domain_model_formfield.csh">Help</label>
+			
 			<label index="tx_appointments_domain_model_agenda_month.month_back">Previous month</label>
 			<label index="tx_appointments_domain_model_agenda_month.month_forward">Next month</label>
 			<label index="tx_appointments_domain_model_agenda_date.is_holiday">Holiday</label>
@@ -141,6 +153,7 @@
 			<label index="tx_appointments_list.appointment_delete_confirm">Weet u zeker dat u de afspraak wilt annuleren?</label>
 			<label index="tx_appointments_list.appointment_show_header">Afspraak details</label>
 			<label index="tx_appointments_list.submit_type">Kies type</label>
+			<label index="tx_appointments_list.submit_type_free">Wijzig type</label>
 			<label index="tx_appointments_list.submit_date_slot">Kies datum</label>
 			<label index="tx_appointments_list.submit_time_slot">Kies tijd</label>
 			<label index="tx_appointments_list.submit_new">Aanmaken</label>
@@ -163,6 +176,7 @@
 			<label index="tx_appointments_list.calendar_update_subject">Wijziging afspraak</label>
 			<label index="tx_appointments_list.calendar_delete_subject">Annulering afspraak</label>
 			<label index="tx_appointments_list.email_link_label">Bekijk afspraak</label>
+			<label index="tx_appointments_list.csh">Toelichting</label>
 			
 			<label index="error.address.firstName.1221560718">Mag niet leeg zijn.</label>
 			<label index="error.address.lastName.1221560718">Mag niet leeg zijn.</label>
@@ -230,11 +244,20 @@
 			
 			<label index="tx_appointments_domain_model_appointment">Afspraak</label>
 			<label index="tx_appointments_domain_model_appointment.type">Afspraak type</label>
+			<label index="tx_appointments_domain_model_appointment.type.csh_new">Hier kiest u wat voor type afspraak u wilt. Elk afspraak type verschilt en heeft daarmee mogelijk ook een andere invulling. Als u eerst een datum had gekozen, dan zijn de huidig beschikbare keuzes beperkt tot de mogelijkheden op de gekozen datum.</label>
+			<label index="tx_appointments_domain_model_appointment.type.csh_free">U kunt nu nog het afspraak type wijzigen voor het gekozen tijdstip. Let op: de huidige beschikbare keuzes zijn beperkt tot de mogelijkheden op het gekozen tijdstip. Als het door u gewenste afspraak type ontbreekt, dan is het niet beschikbaar op de door u gekozen tijdstip en zult u eerst het tijdstip moeten wijzigen.</label>
+			<label index="tx_appointments_domain_model_appointment.type.csh_edit">Het afspraak type. Het afspraak type kunt u niet meer wijzigen bij een al ingeplande afspraak. Mocht u alsnog een andere afspraak type willen, dan zult u daarvoor een nieuwe afspraak moeten inplannen.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.date">Datum afspraak</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_new">De datum van de afspraak. De beschikbare keuzes bestaan uit alle dagen met (nog) beschikbare tijden, voor het specifieke afspraak type. Een andere afspraak type kan andere beschikbare dagen tot gevolg hebben.</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_free">Als u de datum wilt wijzigen, dient u eerst het gekozen tijdstip vrij te geven.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time">Tijd afspraak</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new">De tijd van de afspraak. De beschikbare keuzes bestaan uit alle (nog) beschikbare tijden op de gekozen datum, voor het specifieke afspraak type. Een andere datum en/of afspraak type kan andere beschikbare tijden tot gevolg hebben.</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_free">Als u het tijdstip wilt wijzigen, dient u eerst het gekozen tijdstip vrij te geven.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_reserved">Gereserveerd</label>
 			<label index="tx_appointments_domain_model_appointment.notes">Opmerkingen</label>
+			<label index="tx_appointments_domain_model_appointment.notes.csh">U kunt hier (privé) opmerkingen kwijt die relevant zijn voor de afspraak.</label>
 			<label index="tx_appointments_domain_model_appointment.notes_su">Opmerkingen van beheerder</label>
+			<label index="tx_appointments_domain_model_appointment.notes_su.csh">U kunt hier opmerkingen kwijt die alleen in te zien zijn door beheerders.</label>
 			<label index="tx_appointments_domain_model_appointment.form_field_values">Aanvullende informatie</label>
 			<label index="tx_appointments_domain_model_appointment.address">NAW gegevens</label>
 			<label index="tx_appointments_domain_model_appointment.fe_user">Aangemaakt door</label>
@@ -253,6 +276,7 @@
 			<label index="tx_appointments_domain_model_address.zip.placeholder">1000AD</label>
 			<label index="tx_appointments_domain_model_address.city">Woonplaats</label>
 			<label index="tx_appointments_domain_model_address.social_security_number">BSN</label>
+			
 			<label index="tx_appointments_domain_model_agenda_month.month_back">Vorige maand</label>
 			<label index="tx_appointments_domain_model_agenda_month.month_forward">Volgende maand</label>
 			<label index="tx_appointments_domain_model_agenda_date.is_holiday">Feestdag</label>

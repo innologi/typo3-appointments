@@ -189,6 +189,7 @@ CREATE TABLE tx_appointments_domain_model_formfield (
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	label text NOT NULL,
+	csh text NOT NULL,
 	validation_types varchar(255) DEFAULT '' NOT NULL,
 	field_type int(11) DEFAULT '0' NOT NULL,
 	choices text NOT NULL,

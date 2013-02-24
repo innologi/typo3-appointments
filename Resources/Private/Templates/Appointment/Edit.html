@@ -12,6 +12,7 @@
 <br />
 <br />
 {appointment.type.name}
+<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.type.csh_edit')}"><f:translate key="tx_appointments_list.csh" /></span>
 <br />
 <br />
 
@@ -20,11 +21,18 @@
 		<fieldset>
 			<f:form.select name="changedDate" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" />
 			<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_date_slot')}" class="submit" />
+			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_new')}"><f:translate key="tx_appointments_list.csh" /></span>
 		</fieldset>
 	</f:form>
 </f:if>
 	
 <f:form action="update" name="appointment" object="{appointment}">
+	<f:if condition="{timeSlots}">
+		<fieldset>
+			<f:form.select property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select" />
+			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.time.csh_new')}"><f:translate key="tx_appointments_list.csh" /></span>
+		</fieldset>
+	</f:if>
 	<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, timeSlots : timeSlots, superUser : superUser}" />
 	<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_update')}" />
 </f:form>

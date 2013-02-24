@@ -6,10 +6,10 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_appointments_domain_model_formfield'] = array(
 	'ctrl' => $TCA['tx_appointments_domain_model_formfield']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, label, field_type, validation_types, choices, function'/*, time_add, enable_field'*/, #@TODO wat ga je hier uiteindelijk mee doen?
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, label, csh, field_type, validation_types, choices, function'/*, time_add, enable_field'*/, #@TODO wat ga je hier uiteindelijk mee doen?
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, label, field_type, choices, function, validation_types'./*, time_add, enable_field*/',--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, label, csh, field_type, choices, function, validation_types'./*, time_add, enable_field*/',--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -110,6 +110,16 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 				'cols' => 40,
 				'rows' => 15,
 				'eval' => 'trim,required'
+			),
+		),
+		'csh' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.csh',
+			'config' => array(
+				'type' => 'text',
+				'cols' => 40,
+				'rows' => 15,
+				'eval' => 'trim'
 			),
 		),
 		'validation_types' => array(

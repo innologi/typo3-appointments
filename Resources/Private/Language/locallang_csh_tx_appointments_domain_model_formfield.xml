@@ -10,6 +10,7 @@
 	   
 			<label index="title.description">Internal field title</label>
 			<label index="label.description">Field label as shown on Frontend</label>
+			<label index="csh.description">Helptext shown on Frontend next to the field</label>
 			<label index="validation_types.description">Validation types can force the field to be validated as the chosen types of content. If the field content does not match the validation type, the form will inform the user and not save until corrected.</label>
 			<label index="field_type.description">The field type determines its appearance and input method</label>
 			<label index="choices.description">Selection choices, one per line</label>
@@ -21,6 +22,7 @@
 	   
 			<label index="title.description">Interne veld titel</label>
 			<label index="label.description">Veld label zoals getoond op Frontend</label>
+			<label index="csh.description">Toelichting dat op de Frontend naast het veld wordt getoond</label>
 			<label index="validation_types.description">Validatie types forceren een veld om zich te valideren als het gekozen type inhoud. Als een veld niet voldoet aan een validatie type, dan zal het formulier dit aangeven en niet opgeslagen worden voor dit gecorrigeerd is.</label>
 			<label index="field_type.description">Het veld type bepaalt zijn uiterlijk en invoerwijze</label>
 			<label index="choices.description">Selectie keuzes, per regel één</label>

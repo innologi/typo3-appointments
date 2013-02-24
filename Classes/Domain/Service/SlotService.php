@@ -153,7 +153,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 			$dateSlot = $dateSlotStorage->getObjectByKey($dateSlotKey);
 			if ($dateSlot !== FALSE) {
 				$dateSlotStorage = new Tx_Appointments_Persistence_KeyObjectStorage();
-				$dateSlotStorage->attach($dateslot);
+				$dateSlotStorage->attach($dateSlot);
 				#@FIXME assign to singleDateSlots
 				return $dateSlotStorage;
 			}

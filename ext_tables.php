@@ -31,6 +31,10 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO currently, month and day names are taken from locallang. I should see if the php locale can be changed to the typo3 locale in order to rely on strftime and/or f:format.date
 #@TODO in hoeverre zijn mijn models entity of valueObject?
 #@TODO fluid kan {settings} benaderen? :O
+#@FIXME F5 op new appointment pagina = NOOOOOOO weg timeslot + time choice
+#@TODO wat gebeurt er als je bij edit de datum wijzigt?
+#@TODO kunnen we datumkeuze niet gewoon nog steeds beschikbaar houden zodra je dateFirst doet?
+#@FIXME datumkeuze csh dateFirst!
 
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Appointment Scheduler');
 

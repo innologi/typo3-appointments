@@ -294,10 +294,13 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				//step 2 reached
 
 				if (($timeSlots = $this->slotService->getTimeSlots($dateSlots,$appointment)) !== FALSE) {
-					if ($buildCreate !== NULL) {
+					if ($buildCreate !== NULL) { #@TODO all the earlier buttons will not save fields that are set in the final form, what can be done about it?
 						//step 3 reached
 
 						if ($this->slotService->isTimeSlotAllowed($timeSlots,$appointment) !== FALSE) {
+							//limit the still available types by the already chosen timeslot
+							$types = $this->limitTypesByTime($types, $agenda, $beginTime->getTimestamp()); #@TODO cache?
+
 							$appointment->setAgenda($agenda);
 
 							$formFieldValues = $appointment->getFormFieldValues();
@@ -316,6 +319,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 							//when a validation error ensues, we don't want the temporary appointment being re-added, hence the check
 							if ($appointment->getTemporary()) {
+								#@FIXME als ik hier ben ten gevolge van change type, en de 'freeSlotInMinutes' is al verstreken, dan heb je kans dat de temporary appointment al niet meer bestaat en dan krijgen we hier een error
 								$this->appointmentRepository->update($appointment); #@FIXME soms als ik aan het debuggen ben, komt het zover dat dit geen geldige $appointment is
 							} else {
 								$appointment->setTemporary(TRUE);
