@@ -271,10 +271,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$typeArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1);
 		$types = empty($typeArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($typeArray,$superUser);
 		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
-		#$freeSlotInMinutes = 1; #@FIXME remove!
+		$freeSlotInMinutes = 1; #@FIXME remove!
 
 		if (isset($dateFirst[0])) { //overrides in case an appointment-date is picked through agenda
-			//removes types that can't produce timeslots on the dateFirst date
+			//removes types that can't produce timeslots on the dateFirst date #@FIXME dateFirst selection doesn't seem to update the available types if freeSlotMinutes has passed? But it isn't even cached..
 			$types = $this->limitTypesByTime($types, $agenda, $dateFirst); #@TODO cache?
 			if (!empty($types)) {
 				$type = $appointment === NULL ? current($types) : $appointment->getType();
@@ -398,9 +398,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		//this is necessary in case the temporary appointment was already removed due to a timeout
 		if ($this->crossAppointments($appointment)) {
 			//an appointment was found that makes the current one's times not possible
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName);
+			$flashMessage = str_replace('$1',intval($this->settings['freeSlotInMinutes']),
+					Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName)
+			);
 			$this->flashMessageContainer->add($flashMessage);
-			$this->forward('new'); //hopefully acts like a validation error
+			$this->forward('new'); //seems to work similar to a validation error #@SHOULD mark the time field like a validation error
 		} else {
 			$appointment->setTemporary(FALSE);
 			$this->appointmentRepository->update($appointment);
@@ -478,17 +480,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$this->flashMessageContainer->add($flashMessage);
 			$this->forward('edit'); //hopefully acts like a validation error
 		} else {
-			#$parentDataMap = $this->dataMapper->getDataMap('Tx_Appointments_Domain_Model_Appointment');
-			#$parentColumnMap = $parentDataMap->getColumnMap('formFieldValues');
-			#$childSortByFieldName = $parentColumnMap->getChildSortByFieldName();
-			#$parentColumnMap->setChildSortByFieldName('');
-
 			$this->appointmentRepository->update($appointment);
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage);
 
 			$this->slotService->resetStorageObject($appointment->getType(),$appointment->getAgenda()); //persist changes in timeslots, in case they were freed up for some reason
-			#$parentColumnMap->setChildSortByFieldName($childSortByFieldName);
 
 			$this->performMailingActions('update',$appointment);
 
@@ -652,13 +648,13 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * Limits the allowed types based on available timeslots on the given timestamp.
 	 *
-	 * @param Tx_Extbase_Persistence_QueryResultInterface $types Original types result
+	 * @param Iterator|Array $types Previous types result
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda to check
 	 * @param string $timestamp Timestamp to get dateslot for
 	 * @param integer $excludeAppointment UID of appointment to exclude in available timeslot calculation
 	 * @return array Contains types that have an available timeslot
 	 */
-	protected function limitTypesByTime(Tx_Extbase_Persistence_QueryResultInterface $types, Tx_Appointments_Domain_Model_Agenda $agenda, $timestamp, $excludeAppointment = 0) {
+	protected function limitTypesByTime($types, Tx_Appointments_Domain_Model_Agenda $agenda, $timestamp, $excludeAppointment = 0) {
 		$newTypes = array();
 		foreach ($types as $type) {
 			$slotStorage = $this->slotService->getSingleDateSlot($type, $agenda, intval($this->settings['freeSlotInMinutes']), $timestamp, $excludeAppointment);
