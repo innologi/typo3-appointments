@@ -38,6 +38,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * Creation timestamp
 	 *
 	 * @var integer
+	 * @copy ignore
 	 */
 	protected $crdate;
 
@@ -45,6 +46,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * Temporary record / not finalized
 	 *
 	 * @var boolean
+	 * @copy clone
 	 */
 	protected $temporary;
 
@@ -53,6 +55,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var DateTime
 	 * @validate DateTime
+	 * @copy clone
 	 */
 	protected $beginTime; #@FIXME wat als iemand deze waarde probeert te manipuleren?
 
@@ -60,6 +63,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * End time
 	 *
 	 * @var DateTime
+	 * @copy clone
 	 */
 	protected $endTime;
 
@@ -67,6 +71,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * Start reserved
 	 *
 	 * @var DateTime
+	 * @copy clone
 	 */
 	protected $beginReserved;
 
@@ -74,6 +79,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * End time
 	 *
 	 * @var DateTime
+	 * @copy clone
 	 */
 	protected $endReserved;
 
@@ -81,6 +87,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * Notes
 	 *
 	 * @var string
+	 * @copy clone
 	 */
 	protected $notes;
 
@@ -88,6 +95,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * Notes SU
 	 *
 	 * @var string
+	 * @copy clone
 	 */
 	protected $notesSu;
 
@@ -96,6 +104,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var Tx_Appointments_Domain_Model_Type
 	 * @validate NotEmpty
+	 * @copy clone
 	 */
 	protected $type;
 
@@ -104,6 +113,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
 	 * @validate Tx_Appointments_Domain_Validator_ObjectStorageValidator(containsVariable=1)
+	 * @copy clone
 	 */
 	protected $formFieldValues;
 
@@ -112,23 +122,25 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var Tx_Appointments_Domain_Model_Address
 	 * @validate Tx_Appointments_Domain_Validator_ObjectPropertiesValidator
+	 * @copy clone
 	 */
 	protected $address;
-
+	#@TODO make this one lazy AND work with cloning
 	/**
 	 * User who created this appointment
 	 *
 	 * @var Tx_Extbase_Domain_Model_FrontendUser
 	 * @validate NotEmpty
-	 * @lazy
+	 * @copy clone
 	 */
 	protected $feUser;
-
+	#@TODO why not lazy again?
 	/**
 	 * Agenda in which this appointment was made
 	 *
 	 * @var Tx_Appointments_Domain_Model_Agenda
 	 * @validate NotEmpty
+	 * @copy clone
 	 */
 	protected $agenda;
 
@@ -413,6 +425,8 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	public function setFeUser(Tx_Extbase_Domain_Model_FrontendUser $feUser) {
 		$this->feUser = $feUser;
 	}
+
+
 
 }
 ?>

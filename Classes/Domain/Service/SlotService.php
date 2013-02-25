@@ -131,7 +131,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 	#@FIXME blabla
 	#@TODO doc
-	public function getSingleDateSlot(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes, $timestamp) {
+	public function getSingleDateSlot(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes, $timestamp, $excludeAppointment = 0) {
 		$typeUid = $type->getUid();
 		$dateTime = new DateTime();
 		$dateTime->setTimestamp($timestamp);
@@ -159,7 +159,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 			}
 		}
 
-		$this->singleDateSlots[$typeUid][$dateSlotKey] = $this->buildSingleStorageObject($type,$agenda,$dateTime);
+		$this->singleDateSlots[$typeUid][$dateSlotKey] = $this->buildSingleStorageObject($type,$agenda,$dateTime,$excludeAppointment);
 		return $this->singleDateSlots[$typeUid][$dateSlotKey];
 	}
 

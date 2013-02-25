@@ -120,6 +120,13 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	protected $enableField;
 
 	/**
+	 * Sorting priority in its type
+	 *
+	 * @var integer
+	 */
+	protected $sorting;
+
+	/**
 	 * Returns the title
 	 *
 	 * @return string $title
@@ -295,6 +302,25 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 */
 	public function setEnableField(Tx_Appointments_Domain_Model_FormField $enableField) {
 		$this->enableField = $enableField;
+	}
+
+	/**
+	 * Returns the sorting
+	 *
+	 * @return string $sorting
+	 */
+	public function getSorting() {
+		return $this->sorting;
+	}
+
+	/**
+	 * Sets the sorting
+	 *
+	 * @param string $sorting
+	 * @return void
+	 */
+	public function setSorting($sorting) {
+		$this->sorting = $sorting;
 	}
 
 }

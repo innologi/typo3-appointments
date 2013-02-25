@@ -46,13 +46,14 @@ jQuery(document).ready(function() {
 			if (appear) {
 				jQuery(this).removeAttr('title'); //removes the actual tooltip
 				//fadeToggle() and fadeIn() touch the display style property, hence animate()
-				jQuery(this).next().css('display','inline-block').animate({'opacity':0.9},200);
+				jQuery(this).next().css('display','inline-block').animate({'opacity':0.85},150);
 			}
 		},
 		function() {
 			elem = jQuery(this).next();
 			if (elem.is('.tx-appointments span.tooltip')) {
-				jQuery(elem).fadeOut(200, function() {
+				//fadeOut() doesn't change the final opacity style edited by animate(), so again animate()
+				jQuery(elem).animate({'opacity':0},150, function() {
 					jQuery(this).css('display','none');
 				});
 				jQuery(this).attr('title',jQuery(this).data('title')); //returns the title attribute to its original value

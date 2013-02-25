@@ -151,11 +151,11 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 	),
 );
 
+#t3lib_div::loadTCA('tt_address');
 #@SHOULD make it set a type as soon as IRRE supports it
 #if (!isset($TCA['tt_address']['ctrl']['type'])) {
 #	$TCA['tt_address']['ctrl']['type'] = 'tx_extbase_type';
 #}
-#t3lib_div::loadTCA('tt_address');
 #$TCA['tt_address']['columns'][$TCA['tt_address']['ctrl']['type']]['config']['items'][] = array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tt_address.tx_extbase_type.Tx_Appointments_Address','Tx_Appointments_Address');
 #$TCA['tt_address']['types']['Tx_Appointments_Address']['showitem'] = $TCA['tt_address']['types']['1']['showitem'];
 #$TCA['tt_address']['types']['Tx_Appointments_Address']['showitem'] .= ',--div--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_address,';

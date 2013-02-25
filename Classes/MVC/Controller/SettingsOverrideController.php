@@ -112,7 +112,7 @@ class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Extba
 			parent::mapRequestArgumentsToControllerArguments();
 		} catch (/*Tx_Extbase_MVC_Exception_InvalidArgumentValue*/ Exception $e) {
 			#@TODO nalopen wat de exacte voorwaarden zijn voor onderstaande message
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_temp_deleted', $this->extensionName);
+			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_temp_deleted', $this->extensionName); #@FIXME this needs some serious testing
 			$this->flashMessageContainer->add($flashMessage);
 			$this->redirect('list');
 		}

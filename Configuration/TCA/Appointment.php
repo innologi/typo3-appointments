@@ -198,7 +198,8 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_appointments_domain_model_formfieldvalue',
 				'foreign_field' => 'appointment',
-				'maxitems'      => 9999,
+				'foreign_unique' => 'form_field',
+				'maxitems' => 9999,
 				'appearance' => array(
 					'collapseAll' => 1,
 					'levelLinksPosition' => 'top',
@@ -213,7 +214,7 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.address',
 			'config' => array(
 				'type' => 'inline',
-				'foreign_table' => 'tt_address',
+				'foreign_table' => 'tt_address', #@TODO foreign_types! [4.7]
 				'minitems' => 1,
 				'maxitems' => 1,
 				'appearance' => array(
@@ -247,5 +248,10 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 		),
 	),
 );
+
+//extbase supports propertypaths for showing the storage in correct sort order, but this still requires a workaround in updating/creating records
+if (TYPO3_MODE === 'FE') {
+	$TCA['tx_appointments_domain_model_appointment']['columns']['form_field_values']['config']['foreign_sortby'] = 'formField.sorting';
+}
 
 ?>

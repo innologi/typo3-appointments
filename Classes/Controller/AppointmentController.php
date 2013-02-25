@@ -79,6 +79,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	protected $emailService;
 
 	/**
+	 * @var Tx_Fed_Service_Clone
+	 */
+	protected $cloningService;
+
+	/**
 	 * injectAppointmentRepository
 	 *
 	 * @param Tx_Appointments_Domain_Repository_AppointmentRepository $appointmentRepository
@@ -149,6 +154,15 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->emailService = $emailService;
 	}
 
+	/**
+	 * injects Cloning Service
+	 *
+	 * @param Tx_Fed_Service_Clone
+	 * @return void
+	 */
+	public function injectCloningService(Tx_Fed_Service_Clone $cloningService) {
+		$this->cloningService = $cloningService;
+	}
 
 
 	/**
@@ -257,6 +271,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$typeArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1);
 		$types = empty($typeArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($typeArray,$superUser);
 		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
+		#$freeSlotInMinutes = 1; #@FIXME remove!
 
 		if (isset($dateFirst[0])) { //overrides in case an appointment-date is picked through agenda
 			//removes types that can't produce timeslots on the dateFirst date
@@ -299,7 +314,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 						if ($this->slotService->isTimeSlotAllowed($timeSlots,$appointment) !== FALSE) {
 							//limit the still available types by the already chosen timeslot
-							$types = $this->limitTypesByTime($types, $agenda, $beginTime->getTimestamp()); #@TODO cache?
+							$excludeAppointment = $appointment->getUid() ? $appointment->getUid() : 0;
+							$types = $this->limitTypesByTime($types, $agenda, $beginTime->getTimestamp(), $excludeAppointment); #@TODO cache?
 
 							$appointment->setAgenda($agenda);
 
@@ -319,8 +335,22 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 							//when a validation error ensues, we don't want the temporary appointment being re-added, hence the check
 							if ($appointment->getTemporary()) {
-								#@FIXME als ik hier ben ten gevolge van change type, en de 'freeSlotInMinutes' is al verstreken, dan heb je kans dat de temporary appointment al niet meer bestaat en dan krijgen we hier een error
-								$this->appointmentRepository->update($appointment); #@FIXME soms als ik aan het debuggen ben, komt het zover dat dit geen geldige $appointment is
+								#@TODO kan ik net zoals change type niet een change time en change date hierin verwerken?
+								#@SHOULD in een functie?
+								try { //it's possible to get here while $freeSlotInMinutes has expired and the appointment no longer exists, thus throwing an exception
+									$this->appointmentRepository->update($appointment);
+								} catch (Tx_Extbase_Persistence_Exception_IllegalObjectType $e) {
+									if ($this->crossAppointments($appointment)) { //make sure the timeslot is still available
+										$flashMessage = str_replace('$1',$freeSlotInMinutes,
+												Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName)
+										);
+										$this->flashMessageContainer->add($flashMessage);
+										#@FIXME .. and then?
+									} else {
+										$appointment = $this->cloningService->copy($appointment);
+										$this->appointmentRepository->add($appointment);
+									}
+								}
 							} else {
 								$appointment->setTemporary(TRUE);
 								$this->appointmentRepository->add($appointment);
@@ -448,11 +478,17 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$this->flashMessageContainer->add($flashMessage);
 			$this->forward('edit'); //hopefully acts like a validation error
 		} else {
+			#$parentDataMap = $this->dataMapper->getDataMap('Tx_Appointments_Domain_Model_Appointment');
+			#$parentColumnMap = $parentDataMap->getColumnMap('formFieldValues');
+			#$childSortByFieldName = $parentColumnMap->getChildSortByFieldName();
+			#$parentColumnMap->setChildSortByFieldName('');
+
 			$this->appointmentRepository->update($appointment);
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage);
 
 			$this->slotService->resetStorageObject($appointment->getType(),$appointment->getAgenda()); //persist changes in timeslots, in case they were freed up for some reason
+			#$parentColumnMap->setChildSortByFieldName($childSortByFieldName);
 
 			$this->performMailingActions('update',$appointment);
 
@@ -535,20 +571,29 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
 	 */
 	protected function addMissingFormFields($formFieldArray, Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
-		$present = array();
+		$items = array();
+		$order = array();
 		$newStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$newStorage->addAll($formFieldValues);
+		#$newStorage->addAll($formFieldValues);
+		$formFieldValues = $formFieldValues->toArray();
 		foreach ($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
-			$present[] = $formField->getUid();
+			$items[$formField->getUid()] = $formFieldValue;
+			$order[$formField->getUid()] = $formField->getSorting();
 		}
 
 		foreach ($formFieldArray as $formField) {
-			if (!in_array($formField->getUid(),$present)) {
+			if (!isset($items[$formField->getUid()])) {
 				$formFieldValue = new Tx_Appointments_Domain_Model_FormFieldValue();
 				$formFieldValue->setFormField($formField);
-				$newStorage->attach($formFieldValue); #@SHOULD take care of sorting once extbase supports sorting storages
+				$items[$formField->getUid()] = $formFieldValue;
+				$order[$formField->getUid()] = $formField->getSorting();
 			}
+		}
+		#@TODO doc
+		asort($order);
+		foreach($order as $uid=>$sorting) {
+			$newStorage->attach($items[$uid]);
 		}
 
 		return $newStorage;
@@ -610,12 +655,13 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Extbase_Persistence_QueryResultInterface $types Original types result
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda to check
 	 * @param string $timestamp Timestamp to get dateslot for
+	 * @param integer $excludeAppointment UID of appointment to exclude in available timeslot calculation
 	 * @return array Contains types that have an available timeslot
 	 */
-	protected function limitTypesByTime(Tx_Extbase_Persistence_QueryResultInterface $types, Tx_Appointments_Domain_Model_Agenda $agenda, $timestamp) {
+	protected function limitTypesByTime(Tx_Extbase_Persistence_QueryResultInterface $types, Tx_Appointments_Domain_Model_Agenda $agenda, $timestamp, $excludeAppointment = 0) {
 		$newTypes = array();
 		foreach ($types as $type) {
-			$slotStorage = $this->slotService->getSingleDateSlot($type, $agenda, intval($this->settings['freeSlotInMinutes']), $timestamp);
+			$slotStorage = $this->slotService->getSingleDateSlot($type, $agenda, intval($this->settings['freeSlotInMinutes']), $timestamp, $excludeAppointment);
 			if ($slotStorage->valid()) { //returns true only if it contains at least one valid dateslot
 				$newTypes[] = $type;
 			}

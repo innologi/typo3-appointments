@@ -6,14 +6,16 @@ config.tx_extbase {
 		Tx_Appointments_Domain_Model_Address {
 			mapping.columns.tx_appointments_social_security_number.mapOnProperty = socialSecurityNumber
 		}
+	} 
+	objects {
+		Tx_Extbase_Persistence_Storage_BackendInterface {
+			className = Tx_Appointments_Persistence_Storage_Typo3DbBackend
+		}
+		# keep this in mind for when I require it for a property that isn't somewhere deep down another property
+		#Tx_Extbase_Validation_ValidatorResolver {
+		#	className = Tx_Appointments_Validation_VariableValidatorResolver
+		#}
 	}
-	
-	# keep this in mind for when I require it for a property that isn't somewhere deep down another property 
-	#objects {
-	#	Tx_Extbase_Validation_ValidatorResolver {
-	#		className = Tx_Appointments_Validation_VariableValidatorResolver
-	#	}
-	#}
 }
 
 plugin.tx_appointments {
@@ -236,7 +238,7 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments .tooltip {
 		position:absolute;
 		display:inline-block;
-		opacity:0.9;
+		opacity:0.85;
 		background-color:#000;
 		border:1px solid #555;
 		color:#fff;

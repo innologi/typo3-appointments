@@ -103,12 +103,14 @@ $TCA['tx_appointments_domain_model_formfieldvalue'] = array(
 				'eval' => 'trim' #@SHOULD make this depend on formfield validation types!
 			),
 		),
-		'form_field' => array( #@TODO afhankelijk maken van appointment->type?
+		'form_field' => array( #@TODO afhankelijk maken van appointment->type? filter! [6.0]
 			'exclude' => 0,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfieldvalue.form_field',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'tx_appointments_domain_model_formfield',
+				'foreign_table_where' => '
+					AND tx_appointments_domain_model_formfield.hidden=0',
 				'minitems' => 0,
 				'maxitems' => 1,
 			),
