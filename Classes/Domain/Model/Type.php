@@ -349,6 +349,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 *
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormField>
 	 * @lazy
+	 * @cascade remove
 	 */
 	protected $formFields;
 

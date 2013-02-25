@@ -38,6 +38,7 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	 *
 	 * @var string
 	 * @validate Tx_Appointments_Domain_Validator_VariableValidator(validationTypes=$formField::validationTypes)
+	 * @copy clone
 	 */
 	protected $value;
 
@@ -46,6 +47,7 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	 *
 	 * @var Tx_Appointments_Domain_Model_FormField
 	 * @validate NotEmpty
+	 * @copy reference
 	 */
 	protected $formField;
 

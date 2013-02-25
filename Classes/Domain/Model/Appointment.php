@@ -104,7 +104,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var Tx_Appointments_Domain_Model_Type
 	 * @validate NotEmpty
-	 * @copy clone
+	 * @copy reference
 	 */
 	protected $type;
 
@@ -114,6 +114,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
 	 * @validate Tx_Appointments_Domain_Validator_ObjectStorageValidator(containsVariable=1)
 	 * @copy clone
+	 * @cascade remove
 	 */
 	protected $formFieldValues;
 
@@ -123,6 +124,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @var Tx_Appointments_Domain_Model_Address
 	 * @validate Tx_Appointments_Domain_Validator_ObjectPropertiesValidator
 	 * @copy clone
+	 * @cascade remove
 	 */
 	protected $address;
 	#@TODO make this one lazy AND work with cloning
@@ -131,7 +133,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var Tx_Extbase_Domain_Model_FrontendUser
 	 * @validate NotEmpty
-	 * @copy clone
+	 * @copy reference
 	 */
 	protected $feUser;
 	#@TODO why not lazy again?
@@ -140,7 +142,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var Tx_Appointments_Domain_Model_Agenda
 	 * @validate NotEmpty
-	 * @copy clone
+	 * @copy reference
 	 */
 	protected $agenda;
 

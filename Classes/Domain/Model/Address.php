@@ -37,6 +37,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * First Name
 	 *
 	 * @var string
+	 * @copy clone
 	 */
 	protected $firstName;
 
@@ -44,6 +45,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Middle Name
 	 *
 	 * @var string
+	 * @copy clone
 	 */
 	protected $middleName;
 
@@ -51,6 +53,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Last Name
 	 *
 	 * @var string
+	 * @copy clone
 	 */
 	protected $lastName;
 
@@ -58,6 +61,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Name
 	 *
 	 * @var string
+	 * @copy clone
 	 */
 	protected $name;
 
@@ -66,6 +70,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 *
 	 * @var string
 	 * @validate StringLength(minimum=1, maximum=1)
+	 * @copy clone
 	 */
 	protected $gender;
 
@@ -73,6 +78,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Birthday
 	 *
 	 * @var DateTime
+	 * @copy clone
 	 */
 	protected $birthday;
 
@@ -80,6 +86,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Email
 	 *
 	 * @var string
+	 * @copy clone
 	 */
 	protected $email;
 
@@ -87,6 +94,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Address
 	 *
 	 * @var string
+	 * @copy clone
 	 */
 	protected $address; #@TODO regex validator? but GEMHMK doesn't want to
 
@@ -94,6 +102,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Zip code
 	 *
 	 * @var string
+	 * @copy clone
 	 */
 	protected $zip; #@SHOULD validate RegularExpression(regularExpression=/[0-9]{4}[A-Z]{2}/) but GEMHMK doesn't want to
 
@@ -101,6 +110,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * City
 	 *
 	 * @var string
+	 * @copy clone
 	 */
 	protected $city;
 
@@ -108,6 +118,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Social Security Number
 	 *
 	 * @var string
+	 * @copy clone
 	 */
 	protected $socialSecurityNumber;
 
