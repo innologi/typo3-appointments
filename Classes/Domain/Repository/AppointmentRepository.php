@@ -201,7 +201,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 
 		//if exclusive availability, will only be influenced by appointments of the same type
 		if ($exclusive) {
-			$conditions[] = $query->equals('type', $appointment->getType());
+			$constraint[] = $query->equals('type', $appointment->getType());
 		}
 
 		$result = $query->matching(
