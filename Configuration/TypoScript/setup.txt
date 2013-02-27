@@ -1,16 +1,30 @@
 config.tx_extbase {
 	persistence.classes {
 		Tx_Appointments_Domain_Model_Appointment {
-			mapping.columns.crdate.mapOnProperty = crdate
+			mapping.columns {
+				crdate.mapOnProperty = crdate
+				deleted.mapOnProperty = deleted
+			}
 		}
 		Tx_Appointments_Domain_Model_Address {
-			mapping.columns.tx_appointments_social_security_number.mapOnProperty = socialSecurityNumber
+			mapping.columns {
+				tx_appointments_social_security_number.mapOnProperty = socialSecurityNumber
+				tx_appointments_temporary.mapOnProperty = temporary
+				deleted.mapOnProperty = deleted
+			}
+		}
+		Tx_Appointments_Domain_Model_FormFieldValue {
+			mapping.columns.deleted.mapOnProperty = deleted
 		}
 	} 
 	objects {
 		Tx_Extbase_Persistence_Storage_BackendInterface {
 			className = Tx_Appointments_Persistence_Storage_Typo3DbBackend
 		}
+		# this can only be done globally, which means another extension can mess this up, so I've opted for a different approach for now
+		#Tx_Extbase_Property_Mapper {
+		#	className = Tx_Appointments_Property_ExpiredAppointmentMapper
+		#}
 		# keep this in mind for when I require it for a property that isn't somewhere deep down another property
 		#Tx_Extbase_Validation_ValidatorResolver {
 		#	className = Tx_Appointments_Validation_VariableValidatorResolver

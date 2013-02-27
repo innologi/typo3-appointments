@@ -6,7 +6,7 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_appointments_domain_model_formfieldvalue'] = array(
 	'ctrl' => $TCA['tx_appointments_domain_model_formfieldvalue']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, value, form_field',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, temporary, value, form_field',
 	),
 	'types' => array(
 		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, form_field, value, --div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,starttime, endtime'),
@@ -91,6 +91,15 @@ $TCA['tx_appointments_domain_model_formfieldvalue'] = array(
 				'range' => array(
 					'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
 				),
+			),
+		),
+		'temporary' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfieldvalue.temporary',
+			'config' => array(
+					'type' => 'check',
+					'default' => 0,
+					'readOnly' => 1
 			),
 		),
 		'value' => array(

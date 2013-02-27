@@ -34,6 +34,14 @@
 class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
+	 * Deleted
+	 *
+	 * @var boolean
+	 * @copy ignore
+	 */
+	protected $deleted;
+
+	/**
 	 * value
 	 *
 	 * @var string
@@ -50,6 +58,14 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	 * @copy reference
 	 */
 	protected $formField;
+
+	/**
+	 * Temporary record / not finalized
+	 *
+	 * @var boolean
+	 * @copy clone
+	 */
+	protected $temporary = TRUE;
 
 	/**
 	 * Returns the value
@@ -87,6 +103,44 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	 */
 	public function setFormField(Tx_Appointments_Domain_Model_FormField $formField) {
 		$this->formField = $formField;
+	}
+
+	/**
+	 * Returns the temporary flag
+	 *
+	 * @return boolean $temporary
+	 */
+	public function getTemporary() {
+		return $this->temporary;
+	}
+
+	/**
+	 * Sets the temporary flag
+	 *
+	 * @param boolean $temporary
+	 * @return void
+	 */
+	public function setTemporary($temporary) {
+		$this->temporary = $temporary;
+	}
+
+	/**
+	 * Returns the deleted flag
+	 *
+	 * @return boolean $deleted
+	 */
+	public function getDeleted() {
+		return $this->deleted;
+	}
+
+	/**
+	* Sets the deleted flag
+	*
+	* @param boolean $deleted
+	* @return void
+	*/
+	public function setDeleted($deleted) {
+		$this->deleted = $deleted;
 	}
 
 }

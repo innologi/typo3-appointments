@@ -32,6 +32,14 @@
  *
  */
 class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_AbstractEntity {
+	#@SHOULD make these configurable in TCA
+	/**
+	 * Deleted
+	 *
+	 * @var boolean
+	 * @copy ignore
+	 */
+	protected $deleted;
 
 	/**
 	 * First Name
@@ -121,6 +129,14 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * @copy clone
 	 */
 	protected $socialSecurityNumber;
+
+	/**
+	 * Temporary record / not finalized
+	 *
+	 * @var boolean
+	 * @copy clone
+	 */
+	protected $temporary = TRUE;
 
 	/**
 	 * Returns the firstName
@@ -331,6 +347,44 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 */
 	public function setSocialSecurityNumber($socialSecurityNumber) {
 		$this->socialSecurityNumber = $socialSecurityNumber;
+	}
+
+	/**
+	 * Returns the temporary flag
+	 *
+	 * @return boolean $temporary
+	 */
+	public function getTemporary() {
+		return $this->temporary;
+	}
+
+	/**
+	 * Sets the temporary flag
+	 *
+	 * @param boolean $temporary
+	 * @return void
+	 */
+	public function setTemporary($temporary) {
+		$this->temporary = $temporary;
+	}
+
+	/**
+	 * Returns the deleted flag
+	 *
+	 * @return boolean $deleted
+	 */
+	public function getDeleted() {
+		return $this->deleted;
+	}
+
+	/**
+	* Sets the deleted flag
+	*
+	* @param boolean $deleted
+	* @return void
+	*/
+	public function setDeleted($deleted) {
+		$this->deleted = $deleted;
 	}
 }
 ?>

@@ -33,7 +33,6 @@
  */
 class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_AbstractEntity {
 	#@FIXME probeer eens een new/edit form gigantisch te verknallen, en kijk wat je moet beveiligen
-
 	/**
 	 * Creation timestamp
 	 *
@@ -43,12 +42,20 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	protected $crdate;
 
 	/**
+	 * Deleted
+	 *
+	 * @var boolean
+	 * @copy ignore
+	 */
+	protected $deleted;
+
+	/**
 	 * Temporary record / not finalized
 	 *
 	 * @var boolean
 	 * @copy clone
 	 */
-	protected $temporary;
+	protected $temporary = TRUE;
 
 	/**
 	 * Start time
@@ -178,6 +185,35 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 */
 	public function getCrdate() {
 		return $this->crdate;
+	}
+
+	/**
+	 * Sets the creation timestamp
+	 *
+	 * @param integer $crdate
+	 * @return void
+	 */
+	public function setCrdate($crdate) {
+		$this->crdate = $crdate;
+	}
+
+	/**
+	 * Returns the deleted flag
+	 *
+	 * @return boolean $deleted
+	 */
+	public function getDeleted() {
+		return $this->deleted;
+	}
+	#@SHOULD make these chainable?
+	/**
+	 * Sets the deleted flag
+	 *
+	 * @param boolean $deleted
+	 * @return void
+	 */
+	public function setDeleted($deleted) {
+		$this->deleted = $deleted;
 	}
 
 	/**

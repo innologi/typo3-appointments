@@ -35,12 +35,15 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO wat gebeurt er als je bij edit de datum wijzigt?
 #@TODO kunnen we datumkeuze niet gewoon nog steeds beschikbaar houden zodra je dateFirst doet?
 #@FIXME datumkeuze csh dateFirst!
+#@TODO test cascade delete on TCA! (appointment->address+formfieldvalues, type->formfield)
+#@TODO following a login timeout with clicking links in the list plugin, will result in fatal errors
+#@TODO try to create an alternative to the DI override, like you did with the mapper
 
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Appointment Scheduler');
 
 t3lib_extMgm::addLLrefForTCAdescr('tx_appointments_domain_model_appointment', 'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_appointment.xml');
 t3lib_extMgm::allowTableOnStandardPages('tx_appointments_domain_model_appointment');
-$TCA['tx_appointments_domain_model_appointment'] = array(
+$TCA['tx_appointments_domain_model_appointment'] = array( #@SHOULD editlock => temporary?
 	'ctrl' => array(
 		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment',
 		'label' => 'begin_time',
@@ -164,6 +167,18 @@ t3lib_extMgm::addTCAcolumns('tt_address', array(
 	'tx_appointments_social_security_number' => array (
 		'exclude' => 0,
 		'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_address.social_security_number',
+		'config' => array (
+			'type' => 'input',
+			'size' => 25,
+			'max' => 255,
+			'eval' => 'trim'
+		)
+	),
+), 1);
+t3lib_extMgm::addTCAcolumns('tt_address', array(
+	'tx_appointments_temporary' => array (
+		'exclude' => 0,
+		'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_address.temporary',
 		'config' => array (
 			'type' => 'input',
 			'size' => 25,

@@ -161,7 +161,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function injectCloningService(Tx_Fed_Service_Clone $cloningService) {
-		$this->cloningService = $cloningService;
+		$this->cloningService = $cloningService; #@TODO can be removed?
+		#@FIXME replace FED dependency b/c of security issues!
 	}
 
 
@@ -257,6 +258,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function newAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = NULL, $dateFirst = NULL, Tx_Appointments_Domain_Model_Type $type = NULL, $beginTime = NULL) {
 		//is user superuser?
+		#@TODO look at the template.. are all those hidden properties really necessary?
 		global $TSFE; #@TODO move to a service/helper class?
 		$superUser = FALSE;
 		if ($TSFE->fe_user) {
@@ -271,11 +273,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$typeArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1);
 		$types = empty($typeArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($typeArray,$superUser);
 		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
-		$freeSlotInMinutes = 1; #@FIXME remove!
+		$freeSlotInMinutes = 1; #@FIXME _remove!
 
 		if (isset($dateFirst[0])) { //overrides in case an appointment-date is picked through agenda
 			//removes types that can't produce timeslots on the dateFirst date #@FIXME dateFirst selection doesn't seem to update the available types if freeSlotMinutes has passed? But it isn't even cached..
 			$types = $this->limitTypesByTime($types, $agenda, $dateFirst); #@TODO cache?
+			#@FIXME doesn't seem to work when an exclusive availability type is the only type allowed.. might also be the cause of the above FIXME
 			if (!empty($types)) {
 				$type = $appointment === NULL ? current($types) : $appointment->getType();
 				$beginTime = $dateFirst; //this is only useful for the next block if appointment === NULL, so it never overwrites an already picked beginTime
@@ -298,7 +301,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		if ($appointment !== NULL) {
 			//step 1 reached
 
-			$type = $appointment->getType();
+			$type = $appointment->getType(); #@FIXME er is een probleem met htmlspecialchars in de hiddenviewhelper na mislukte poging aanmaken en als ik kies tijd doe
 
 			if (!isset($dateSlots)) { //helps to avoid overwriting an override
 				$dateSlots = $this->slotService->getDateSlots($type, $agenda, $freeSlotInMinutes); #@TODO can we throw error somewhere when this one is empty?
@@ -334,29 +337,28 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 							$this->calculateTimes($appointment); //set the remaining DateTime properties
 
 							//when a validation error ensues, we don't want the temporary appointment being re-added, hence the check
-							if ($appointment->getTemporary()) {
+							if ($appointment->getUid() === NULL) { #@TODO check all the inline doc around these changes
+								$this->appointmentRepository->add($appointment);
+								#@TODO message
+								#$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_new_temporary', $this->extensionName);
+								#$this->flashMessageContainer->add($flashMessage);
+							} else {
 								#@TODO kan ik net zoals change type niet een change time en change date hierin verwerken?
-								#@SHOULD in een functie?
-								try { //it's possible to get here while $freeSlotInMinutes has expired and the appointment no longer exists, thus throwing an exception
-									$this->appointmentRepository->update($appointment);
-								} catch (Tx_Extbase_Persistence_Exception_IllegalObjectType $e) {
+								#@SHOULD split up in functions!
+								#@TODO doc
+								if ($appointment->getDeleted()) { //it's possible to get here while $freeSlotInMinutes has expired and the appointment no longer exists, thus throwing an exception
 									if ($this->crossAppointments($appointment)) { //make sure the timeslot is still available
 										$flashMessage = str_replace('$1',$freeSlotInMinutes,
 												Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName)
 										);
 										$this->flashMessageContainer->add($flashMessage);
-										#@FIXME .. and then?
+										#@FIXME __werkt nog niet helemaal zoals ik wil: je moet de tijd eerst vrijgeven voor je verder kunt kiezen, en als je eerst aanmaken hebt gedaan worden de address en formFieldValues niet opgehaald, wat tevens unexpireAppointment doet crashen ;)
+										#@TODO dus misschien de de vrijmaak knop los van een wijzig knop doen, en de wijzig knoppen via ajax o.i.d. doorsturen?
 									} else {
-										$appointment = $this->cloningService->copy($appointment);
-										$this->appointmentRepository->add($appointment);
+										$this->unexpireAppointment($appointment);
 									}
 								}
-							} else {
-								$appointment->setTemporary(TRUE);
-								$this->appointmentRepository->add($appointment);
-								#@TODO message
-								#$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_new_temporary', $this->extensionName);
-								#$this->flashMessageContainer->add($flashMessage);
+								$this->appointmentRepository->update($appointment);
 							}
 							$this->slotService->resetStorageObject($type,$agenda); //necessary to persist changes to the available timeslots
 						} else {
@@ -382,7 +384,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * action create
 	 *
-	 * We need $agenda here in case of a validation error sending us back to newAction. @TODO why did I not use $appointment->getAgenda() again?
+	 * We need $agenda here in case of a validation error sending us back to newAction.
 	 *
 	 * Notice that the appointment isn't added but updated. This is because the newAction
 	 * will have already added a temporary appointment. We just need to change its temporary flag.
@@ -392,19 +394,30 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function createAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment) {
+		$updateOnCross = FALSE;
 		$this->calculateTimes($appointment);
+
+		#@TODO doc
+		if ($appointment->getDeleted()) {
+			$this->unexpireAppointment($appointment);
+			$updateOnCross = TRUE;
+		}
 
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
 		//this is necessary in case the temporary appointment was already removed due to a timeout
-		if ($this->crossAppointments($appointment)) {
+		if ($this->crossAppointments($appointment)) { #@TODO wellicht kunnen we dit in een speciale action stoppen die vervolgens forward of redirect
 			//an appointment was found that makes the current one's times not possible
 			$flashMessage = str_replace('$1',intval($this->settings['freeSlotInMinutes']),
 					Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName)
 			);
 			$this->flashMessageContainer->add($flashMessage);
+
+			if ($updateOnCross) { //appointments is changed, so update before forwarding
+				$this->appointmentRepository->update($appointment);
+			}
 			$this->forward('new'); //seems to work similar to a validation error #@SHOULD mark the time field like a validation error
 		} else {
-			$appointment->setTemporary(FALSE);
+			$this->makeAppointmentDefinitive($appointment);
 			$this->appointmentRepository->update($appointment);
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_success', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage);
@@ -478,7 +491,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			//an appointment was found that makes the current one's times not possible
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_crosstime', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage);
-			$this->forward('edit'); //hopefully acts like a validation error
+			$this->forward('edit'); //hopefully acts like a validation error #@TODO compare with changes @ create
 		} else {
 			$this->appointmentRepository->update($appointment);
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
@@ -672,6 +685,29 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 		$this->emailService->sendEmailAction($action,$appointment); #@TODO add message on success and fail? (maybe sys_log?)
 		$this->emailService->sendCalendarAction($action,$appointment); #@TODO add message on success and fail?
+	}
+
+	#@TODO doc
+	protected function makeAppointmentDefinitive(Tx_Appointments_Domain_Model_Appointment $appointment) {
+		$appointment->setTemporary(FALSE);
+		$appointment->getAddress()->setTemporary(FALSE);
+		$formFieldValues = $appointment->getFormFieldValues();
+		foreach ($formFieldValues as $formFieldValue) {
+			$formFieldValue->setTemporary(FALSE);
+		}
+	}
+
+	#@TODO doc
+	protected function unexpireAppointment(Tx_Appointments_Domain_Model_Appointment $appointment) {
+		if ($appointment->getTemporary()) { //last minute check to confirm this is actually an _expired_ appointment
+			$appointment->setDeleted(FALSE);
+			$appointment->setCrdate(time());
+			$appointment->getAddress()->setDeleted(FALSE);
+			$formFieldValues = $appointment->getFormFieldValues();
+			foreach ($formFieldValues as $formFieldValue) {
+				$formFieldValue->setDeleted(FALSE);
+			}
+		}
 	}
 
 }

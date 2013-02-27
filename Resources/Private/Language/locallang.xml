@@ -26,7 +26,7 @@
 			<label index="tx_appointments_list.appointment_create_success">Your new appointment was created.</label>
 			<label index="tx_appointments_list.appointment_create_no_types">It is not possible to schedule an appointment on the chosen day (anymore), please pick another day.</label>
 			<label index="tx_appointments_list.appointment_create_crosstime">The timeslot you picked is no longer available. Keep in mind the timelimit of $1 minutes the system keeps the timeslot reserved for you while filling out the form. Please pick another time or try again later.</label>
-			<label index="tx_appointments_list.appointment_create_temp_deleted">You have taken too long since taking up the timeslot. The timeslot has been made available again. Please try again.</label>
+			<label index="tx_appointments_list.appointment_no_longer_available">The appointment is no longer available. It may have been cancelled or deleted by someone after you visited the page.</label>
 			<label index="tx_appointments_list.appointment_update_success">Your appointment was updated.</label>
 			<label index="tx_appointments_list.appointment_update_crosstime">The appointment could not be updated, because your time-changes would result in an overlap of appointments due to changes in schedule since you've started to edit the appointment. Please pick another time or try again later.</label>
 			<label index="tx_appointments_list.appointment_delete_success">Your appointment was cancelled.</label>
@@ -164,7 +164,7 @@
 			<label index="tx_appointments_list.appointment_create_success">Uw nieuwe afspraak is aangemaakt.</label>
 			<label index="tx_appointments_list.appointment_create_no_types">Er zijn geen (nieuwe) afspraken mogelijk op de door u gekozen datum, kies s.v.p. een andere dag.</label>
 			<label index="tx_appointments_list.appointment_create_crosstime">Het door u gekozen tijdstip is niet meer beschikbaar. Denk aan de tijdslimiet van $1 minuten waarin het systeem het tijdstip voor u reserveert terwijl u het formulier invult. Probeer een ander tijdstip of probeer het later opnieuw.</label>
-			<label index="tx_appointments_list.appointment_create_temp_deleted">U heeft te lang gewacht sinds het in bewerking nemen van een tijdstip, deze is weer vrijgegeven. Probeert u het opnieuw.</label>
+			<label index="tx_appointments_list.appointment_no_longer_available">De afspraak is niet meer beschikbaar. Het is mogelijk geannuleerd of verwijderd door iemand nadat u de pagina bezocht.</label>
 			<label index="tx_appointments_list.appointment_update_success">Uw afspraak is opgeslagen.</label>
 			<label index="tx_appointments_list.appointment_update_crosstime">De afspraak kon niet opgeslagen worden, omdat de door u gewenste tijdswijzigingen in conflict zijn met tijden van andere afspraken die ingepland zijn sinds u de afspraak in bewerking heeft genomen. Probeer een ander tijdstip of probeer het later opnieuw.</label>
 			<label index="tx_appointments_list.appointment_delete_success">Uw afspraak is geannuleerd.</label>

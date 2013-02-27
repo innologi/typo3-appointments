@@ -32,6 +32,9 @@
  * feature is more customization to how/when Flexform settings override
  * TypoScript settings and vice versa.
  *
+ * It also sets a different Arguments implementation to make a different Mapper available.
+ * (alternative to TS DI override)
+ *
  * Furthermore, it disables the flasherror messages and provides a (necessary)
  * try and catch construction for resolving controller arguments from the
  * database.
@@ -41,6 +44,22 @@
  *
  */
 class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Extbase_MVC_Controller_ActionController {
+
+	/**
+	 * @var Tx_Appointments_MVC_Controller_Arguments Arguments passed to the controller
+	 */
+	protected $arguments;
+
+	/**
+	 * Injects the object manager
+	 *
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+		$this->arguments = $this->objectManager->create('Tx_Appointments_MVC_Controller_Arguments');
+	}
 
 	/**
 	 * Injects the configuration manager and resolves the plugin settings.
@@ -100,19 +119,26 @@ class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Extba
 	 * Maps arguments delivered by the request object to the local controller arguments.
 	 *
 	 * Try and catch construction makes sure a controller argument which no longer exists
-	 * in the database, doesn't produce a crash. It catches it, and produces a flashMessage.
+	 * in the database, doesn't produce a full stop. It catches it, and produces a flashMessage.
 	 *
-	 * This concerns f.e. an object that was deleted in TCA or a temporary appointment
-	 * which has expired, while said object is still being edited in FE.
+	 * This concerns f.e. an object that was deleted in TCA or FE. A temporary appointment which
+	 * has expired, should no longer produce an exception thanks to the changed mapper.
 	 *
 	 * @return void
 	 */
 	protected function mapRequestArgumentsToControllerArguments() {
+		$objectDeleted = FALSE;
+
 		try {
 			parent::mapRequestArgumentsToControllerArguments();
-		} catch (/*Tx_Extbase_MVC_Exception_InvalidArgumentValue*/ Exception $e) {
-			#@TODO nalopen wat de exacte voorwaarden zijn voor onderstaande message
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_temp_deleted', $this->extensionName); #@FIXME this needs some serious testing
+		} catch (Tx_Extbase_MVC_Exception_InvalidArgumentValue $e) {
+			$objectDeleted = TRUE;
+		} catch (Tx_Extbase_Property_Exception_TargetNotFound $e) {
+			$objectDeleted = TRUE;
+		}
+
+		if ($objectDeleted) {
+			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_no_longer_available', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage);
 			$this->redirect('list');
 		}
@@ -126,7 +152,8 @@ class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Extba
 	 * @return string|boolean The flash message or FALSE if no flash message should be set
 	 */
 	protected function getErrorFlashMessage() {
-		return FALSE;
+		return parent::getErrorFlashMessage();
+		#return FALSE; #@FIXME extConf this! #@TODO can't we make it rely on a TYPO3 general debug var?
 	}
 
 }

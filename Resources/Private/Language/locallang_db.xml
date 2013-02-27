@@ -128,10 +128,12 @@
 			<label index="tx_appointments_domain_model_address.city">City</label>
 			<label index="tt_address.tx_extbase_type.Tx_Appointments_Address">Appointment Scheduler Address</label>
 			<label index="tx_appointments_domain_model_address.social_security_number">Social Security Number</label>
+			<label index="tx_appointments_domain_model_address.temporary">Temporary</label>
 			
 			<label index="tx_appointments_domain_model_formfieldvalue">Form Field Value</label>
 			<label index="tx_appointments_domain_model_formfieldvalue.value">Value</label>
 			<label index="tx_appointments_domain_model_formfieldvalue.form_field">Form Field</label>
+			<label index="tx_appointments_domain_model_formfieldvalue.temporary">Temporary</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
             
@@ -255,10 +257,12 @@
 			<label index="tx_appointments_domain_model_address.city">Plaats</label>
 			<label index="tt_address.tx_extbase_type.Tx_Appointments_Address">Afspraken Planner Adres</label>
 			<label index="tx_appointments_domain_model_address.social_security_number">BSN</label>
+			<label index="tx_appointments_domain_model_address.temporary">Niet Definitief</label>
 			
 			<label index="tx_appointments_domain_model_formfieldvalue">Formulier Veld Waarde</label>
 			<label index="tx_appointments_domain_model_formfieldvalue.value">Waarde</label>
 			<label index="tx_appointments_domain_model_formfieldvalue.form_field">Formulier Veld</label>
+			<label index="tx_appointments_domain_model_formfieldvalue.temporary">Niet Definitief</label>
 		</languageKey>
 	</data>
 </T3locallang>

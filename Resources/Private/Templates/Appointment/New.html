@@ -98,7 +98,6 @@
 		<f:form.hidden property="agenda" />
 		<f:form.hidden property="type" />
 		<f:form.hidden property="beginTime" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
-		<f:form.hidden property="temporary" />
 		<f:form.hidden property="feUser" />
 		<f:form.hidden name="dateFirst" value="{dateFirst}" />
 		<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, superUser : superUser}" />
