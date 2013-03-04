@@ -37,6 +37,21 @@
  */
 class Tx_Appointments_ViewHelpers_Form_TextfieldViewHelper extends Tx_Fluid_ViewHelpers_Form_TextfieldViewHelper {
 
+	#@TODO doc
+	/**
+	 * Get the value of this form element.
+	 * Either returns arguments['value'], or the correct value for Object Access.
+	 *
+	 * @param boolean $convertObjects whether or not to convert objects to identifiers
+	 * @return mixed Value
+	 */
+	protected function getValue($convertObjects = TRUE) {
+		if ($this->arguments['value'] === NULL) {
+			$this->arguments['value'] = '';
+		}
+		return parent::getValue($convertObjects);
+	}
+
 	#@SHOULD make a version that copes well with both normal properties and properties of properties
 	/**
 	 * Get errors for the property and form name of this view helper

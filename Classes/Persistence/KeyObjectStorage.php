@@ -101,11 +101,11 @@ class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistenc
 	 * @param string $key Object key
 	 * @return mixed The object or boolean false
 	 */
-	public function getObjectByKey($key) {
+	public function getObjectByKey($key) { #@SHOULD maakt het feit dat de class ArrayAccess is dit niet onnodig? gewoon $objectStorage[$key]?
 		if (isset($this->storage[$key])) {
 			return $this->storage[$key]['obj'];
 		}
-		return FALSE; #@FIXME formfields partial properties veroorzaken warnings wanneer je net een nieuwe aanmaakt, dus niet wanneer je edit of wanneer je validatie crap krijgt
+		return FALSE;
 	}
 
 	/**
