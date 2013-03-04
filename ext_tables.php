@@ -35,7 +35,6 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO wat gebeurt er als je bij edit de datum wijzigt?
 #@TODO kunnen we datumkeuze niet gewoon nog steeds beschikbaar houden zodra je dateFirst doet?
 #@FIXME datumkeuze csh dateFirst!
-#@TODO test cascade delete on TCA! (appointment->address+formfieldvalues, type->formfield)
 #@TODO following a login timeout with clicking links in the list plugin, will result in fatal errors
 #@TODO try to create an alternative to the DI override, like you did with the mapper
 
@@ -43,7 +42,7 @@ t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Appointment S
 
 t3lib_extMgm::addLLrefForTCAdescr('tx_appointments_domain_model_appointment', 'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_appointment.xml');
 t3lib_extMgm::allowTableOnStandardPages('tx_appointments_domain_model_appointment');
-$TCA['tx_appointments_domain_model_appointment'] = array( #@SHOULD editlock => temporary?
+$TCA['tx_appointments_domain_model_appointment'] = array(
 	'ctrl' => array(
 		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment',
 		'label' => 'begin_time',
@@ -64,6 +63,7 @@ $TCA['tx_appointments_domain_model_appointment'] = array( #@SHOULD editlock => t
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
+			'tx_appointments_creation_progress' => 'creation_progress', #@TODO add to enable fields with hook $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns']
 		),
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Appointment.php',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_appointments_domain_model_appointment.gif'
@@ -176,14 +176,11 @@ t3lib_extMgm::addTCAcolumns('tt_address', array(
 	),
 ), 1);
 t3lib_extMgm::addTCAcolumns('tt_address', array(
-	'tx_appointments_temporary' => array (
-		'exclude' => 0,
-		'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_address.temporary',
+	'tx_appointments_creation_progress' => array (
+		'exclude' => 1,
+		'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_address.creation_progress',
 		'config' => array (
-			'type' => 'input',
-			'size' => 25,
-			'max' => 255,
-			'eval' => 'trim'
+			'type' => 'none',
 		)
 	),
 ), 1);
@@ -220,4 +217,11 @@ $TCA['tx_appointments_domain_model_formfieldvalue'] = array(
 );
 
 ## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
+
+//set overlay icons
+if (TYPO3_MODE === 'BE') {
+	$TBE_STYLES['spriteIconApi']['spriteIconRecordOverlayNames']['tx_appointments_unfinished'] = 'status-overlay-missing';
+	$TBE_STYLES['spriteIconApi']['spriteIconRecordOverlayNames']['tx_appointments_expired'] = 'status-overlay-deleted';
+	array_unshift($TBE_STYLES['spriteIconApi']['spriteIconRecordOverlayPriorities'],'tx_appointments_expired','tx_appointments_unfinished');
+}
 ?>
