@@ -44,7 +44,8 @@ jQuery(document).ready(function() {
 			}
 			
 			if (appear) {
-				jQuery(this).removeAttr('title'); //removes the actual tooltip
+				//removes the actual tooltip
+				jQuery(this).prop('title', ''); //need to use prop() because removeAttr() doesn't work well in IE (7,8,9)
 				//fadeToggle() and fadeIn() touch the display style property, hence animate()
 				jQuery(this).next().css('display','inline-block').animate({'opacity':0.85},150);
 			}
@@ -56,7 +57,7 @@ jQuery(document).ready(function() {
 				jQuery(elem).animate({'opacity':0},150, function() {
 					jQuery(this).css('display','none');
 				});
-				jQuery(this).attr('title',jQuery(this).data('title')); //returns the title attribute to its original value
+				jQuery(this).prop('title',jQuery(this).data('title')); //returns the title attribute to its original value
 			}
 		}
 	);
