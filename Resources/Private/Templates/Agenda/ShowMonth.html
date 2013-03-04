@@ -1,4 +1,4 @@
-{namespace fed=Tx_Fed_ViewHelpers}
+{namespace v=Tx_Vhs_ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="main">
@@ -20,9 +20,9 @@
 	<f:render partial="Agenda/TableHeader" />
 	
 	<tr>
-		<fed:loop count="{month.weekdaysBeforeFirst}">
+		<v:iterator.loop count="{month.weekdaysBeforeFirst}">
 			<td>&nbsp;</td>
-		</fed:loop>
+		</v:iterator.loop>
 	
 	<f:for each="{month.weeks}" as="week" iteration="iterationInfo">
 		<f:render partial="Agenda/Week" arguments="{agenda : agenda, week : week, currentDate : currentDate, startCreateTime : startCreateTime}" />
@@ -36,9 +36,9 @@
 		</f:if>
 	</f:for>
 	
-		<fed:loop count="{month.weekdaysAfterLast}">
+		<v:iterator.loop count="{month.weekdaysAfterLast}">
 			<td>&nbsp;</td>
-		</fed:loop>
+		</v:iterator.loop>
 	</tr>
 		
 </table>

@@ -149,8 +149,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->emailService = $emailService;
 	}
 
-	#@FIXME replace FED dependency b/c of security issues!
-
 	/**
 	 * action list
 	 *
@@ -205,7 +203,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			//check if current user is member of the superuser group
 			$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
 			if ($feUser->getUsergroup()->contains($suGroup)) {
-				//we're not using fed viewhelpers for this, because we need to set $showMore anyway and a viewhelper-alternative is overkill
+				//we're not using vhs viewhelpers for this, because we need to set $showMore anyway and a viewhelper-alternative is overkill
 				$superUser = TRUE;
 				$showMore = TRUE;
 				$endTime = $appointment->getBeginReserved()->getTimestamp();

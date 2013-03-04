@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 			'fluid' => '1.3',
 			'typo3' => '4.5',
 			'tt_address' => '2.2.1',
-			'fed' => '4.7',
+			'vhs' => '1.6',
 		),
 		'conflicts' => array(
 		),
