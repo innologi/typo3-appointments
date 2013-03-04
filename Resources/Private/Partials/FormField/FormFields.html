@@ -18,7 +18,7 @@
 		</v:case>
 		<v:case case="2" break="TRUE">  <!-- Select -->
 			<br />
-			<f:form.select property="formFieldValues.{formField.uid}.value" options="{formField.choices}" value="{formFieldValue.value}" class="select" />
+			<a:form.select property="formFieldValues.{formField.uid}.value" options="{formField.choices}" value="{formFieldValue.value}" class="select" />
 		</v:case>
 		<v:case case="3" break="TRUE"> <!-- Textsmall / Input -->
 			<f:if condition="{formField.validationTypes}">
