@@ -558,20 +558,23 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$order = array();
 		$newStorage = new Tx_Extbase_Persistence_ObjectStorage(); #@SHOULD clone instead?
 		$formFieldValues = $formFieldValues->toArray();
+
+		//formfieldvalues already available
 		foreach ($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
-			$items[$formField->getUid()] = $formFieldValue;
-			$order[$formField->getUid()] = $formField->getSorting();
-			//I'd prefer $items[$sorting] = $formFieldValue, but the sorting value can be messed with to cause duplicate keys
+			$uid = $formField->getUid();
+			$items[$uid] = $formFieldValue;
 		}
 
+		//formfieldvalues to add
 		foreach ($formFieldArray as $formField) { #@SHOULD experiment with this still being an objectstorage, a clone perhaps
-			if (!isset($items[$formField->getUid()])) {
+			$uid = $formField->getUid();
+			if (!isset($items[$uid])) {
 				$formFieldValue = new Tx_Appointments_Domain_Model_FormFieldValue();
 				$formFieldValue->setFormField($formField);
-				$items[$formField->getUid()] = $formFieldValue;
-				$order[$formField->getUid()] = $formField->getSorting();
+				$items[$uid] = $formFieldValue;
 			}
+			$order[$uid] = $formField->getSorting(); //I'd prefer $items[$sorting] = $formFieldValue, but the sorting value can be messed with to cause duplicate keys
 		}
 
 		//NOTE: extbase will set sorting value to the currently arranged order, when persisted
@@ -580,7 +583,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$newStorage->attach($items[$uid]);
 		}
 
-
+		//newStorage will not contain formfieldvalues which belonged to formfield that have been removed
 		return $newStorage;
 	}
 
