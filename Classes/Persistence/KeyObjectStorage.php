@@ -36,7 +36,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistence_ObjectStorage {
+class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistence_ObjectStorage { #@SHOULD make this usable for more general usecases, if array-test doesn't work out
 
 	/**
 	 * Associates data to an object in the storage. offsetSet() is an alias of attach().

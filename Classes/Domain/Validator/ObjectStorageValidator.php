@@ -70,7 +70,7 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Extbase
 			$validator = $this->objectManager->get('Tx_Appointments_Validation_VariableValidatorResolver')->createValidator('Tx_Appointments_Domain_Validator_ObjectPropertiesValidator',$this->options);
 			$valid = TRUE;
 			foreach ($value as $obj) {
-				if (!$validator->isValid($obj)) {
+				if (!$validator->isValid($obj)) { #@FIXME if false because not an object, (e.g. when it was deleted internally) the following interactions with $obj are going to produce a fatal error
 					$valid = FALSE;
 
 					if (!isset($storageError)) {

@@ -35,7 +35,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 
 	/**
 	 * Returns all objects of this repository belonging to Agenda and FrontendUser, and optionally
-	 * from, between or up to a start and/or end time. No temporary appointments.
+	 * from, between or up to a start and/or end time. Only finished appointments.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda which the appointments belong to
 	 * @param Tx_Extbase_Domain_Model_FrontendUser $feUser The user which the appointments belong to
@@ -49,7 +49,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		$constraints = array(
 				$query->equals('agenda', $agenda),
 				$query->equals('feUser', $feUser),
-				$query->equals('temporary', 0)
+				$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::FINISHED)
 		);
 		if ($start !== NULL) {
 			$constraints[] = $query->greaterThanOrEqual('beginTime', $start->getTimestamp());
@@ -73,7 +73,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 
 	#@SHOULD no longer used, clean up?
 	/**
-	 * Returns all objects of this repository belonging to the specified day. Includes temporary appointments.
+	 * Returns all objects of this repository belonging to the specified day. No expired appointments.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda which the appointments belong to
 	 * @param DateTime $day Day to which appointments belong to
@@ -83,6 +83,9 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		$query = $this->createQuery();
 		$result = $query->matching(
 				$query->logicalAnd( array(
+						$query->logicalNot(
+								$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::EXPIRED)
+						),
 						$query->equals('agenda', $agenda),
 						$query->greaterThanOrEqual('beginTime', $day->setTime(0,0)->getTimestamp()),
 						$query->lessThanOrEqual('beginTime', $day->setTime(23,59)->getTimestamp())
@@ -102,13 +105,13 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda which the appointments belong to
 	 * @param DateTime $start The starting time
 	 * @param DateTime $end The ending time
-	 * @param boolean $includeTemporary On true, includes temporary appointments
+	 * @param boolean $includeUnfinished On true, includes unfinished appointments
 	 * @param integer $rearrangePerHours On true, rebuilds the array through rearrangeAppointmentArray()
 	 * @param integer $excludeAppointment UID of an appointment that is ignored in retrieving appointments
 	 * @param array $types Types to limit appointments by, if not NULL
 	 * @return array An array of objects, empty if no objects found
 	 */
-	public function findBetween(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $start, DateTime $end, $includeTemporary = FALSE, $rearrangePerHours = 0, $excludeAppointment = 0, array $types = NULL) {
+	public function findBetween(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $start, DateTime $end, $includeUnfinished = FALSE, $rearrangePerHours = 0, $excludeAppointment = 0, array $types = NULL) {
 		$query = $this->createQuery();
 
 		$constraint = array(
@@ -121,8 +124,12 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 				$constraint[] = $query->in('type', $types);
 		}
 
-		if (!$includeTemporary) {
-			$constraint[] = $query->equals('temporary', 0);
+		if ($includeUnfinished) { //aka no expired appointments
+			$constraint[] = $query->logicalNot(
+					$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::EXPIRED)
+			);
+		} else { //aka only finished appointments
+			$constraint[] = $query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::FINISHED);
 		}
 
 		if ($excludeAppointment > 0) {
@@ -151,7 +158,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	/**
 	 * Returns all objects of this repository that take place at or somewhere during the same time
 	 * as the given appointment. Note that appointments are allowed to overlap in their reserveblocks.
-	 * (aka "BETWEEN Minutes") The query adheres to that rule.
+	 * (aka "BETWEEN Minutes") The query adheres to that rule. No expired appointments.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment
 	 * @return array An array of objects, empty if no objects found
@@ -170,6 +177,9 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 			$query->equals('agenda', $appointment->getAgenda()->getUid()),
 			$query->logicalNot(
 					$query->equals('uid', $appointment->getUid())
+			),
+			$query->logicalNot(
+					$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::EXPIRED)
 			),
 			$query->logicalOr( array(
 					$query->logicalAnd( array( //looks for an overlap @ beginTime
@@ -212,14 +222,14 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	}
 
 	/**
-	 * Returns all temporary objects of this repository that are expired according to the argument.
+	 * Returns all unfinished objects of this repository that are expired according to the argument.
 	 *
-	 * A temporary appointment expires, counting from its crdate, NOT its tstamp!
+	 * An unfinished appointment expires counting from its crdate, NOT its tstamp!
 	 *
 	 * @param integer $expireMinutes The number of minutes since creation date
 	 * @return array An array of objects, empty if no objects found
 	 */
-	public function findExpiredTemporary($expireMinutes = 15) {
+	public function findExpiredUnfinished($expireMinutes = 15) {
 		if ($expireMinutes < 1) {
 			$expireMinutes = 15;
 		}
@@ -228,7 +238,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		$result = $query->matching(
 				$query->logicalAnd( array(
 						$query->lessThanOrEqual('crdate', time() - ($expireMinutes * 60)),
-						$query->equals('temporary', 1)
+						$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::UNFINISHED)
 					)
 				)
 		)->execute()->toArray();

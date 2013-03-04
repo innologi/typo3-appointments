@@ -7,7 +7,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="temporary.description">Indicates this appointment is still in the process of being made, with the possibility of disappearing if not finalized</label>
+			<label index="creation_progress.description">Indicates this appointment is still in the process of being made, with the possibility of disappearing if not finalized</label>
 	   		<label index="begin_time.description">Starting time of appointment</label>
 			<label index="end_time.description">Ending time of appointment</label>
 			<label index="begin_reserved.description">Starting time of the reservation block</label>
@@ -21,7 +21,7 @@
 			<label index="agenda.description">Agenda in which this appointment is made</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
-			<label index="temporary.description">Geeft aan dat de afspraak midden in het aanmaak-proces zit, met de mogelijkheid dat deze verdwijnt als hij niet definitief wordt opgeslagen</label>
+			<label index="creation_progress.description">Geeft aan dat de afspraak midden in het aanmaak-proces zit, met de mogelijkheid dat deze verdwijnt als hij niet definitief wordt opgeslagen</label>
 	   		<label index="begin_time.description">Begintijd van afspraak</label>
 			<label index="end_time.description">Eindtijd van afspraak</label>
 			<label index="begin_reserved.description">Starttijd van het gereserveerde tijdsblok</label>

@@ -33,36 +33,31 @@
  */
 class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_AbstractEntity {
 	#@FIXME probeer eens een new/edit form gigantisch te verknallen, en kijk wat je moet beveiligen
+
+	#@TODO doc
+	const FINISHED = 0;
+	const UNFINISHED = 1;
+	const EXPIRED = 2;
+
 	/**
 	 * Creation timestamp
 	 *
 	 * @var integer
-	 * @copy ignore
 	 */
 	protected $crdate;
 
 	/**
-	 * Deleted
+	 * State of creation
 	 *
-	 * @var boolean
-	 * @copy ignore
+	 * @var integer
 	 */
-	protected $deleted;
-
-	/**
-	 * Temporary record / not finalized
-	 *
-	 * @var boolean
-	 * @copy clone
-	 */
-	protected $temporary = TRUE;
+	protected $creationProgress = self::UNFINISHED;
 
 	/**
 	 * Start time
 	 *
 	 * @var DateTime
 	 * @validate DateTime
-	 * @copy clone
 	 */
 	protected $beginTime; #@FIXME wat als iemand deze waarde probeert te manipuleren?
 
@@ -70,7 +65,6 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * End time
 	 *
 	 * @var DateTime
-	 * @copy clone
 	 */
 	protected $endTime;
 
@@ -78,7 +72,6 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * Start reserved
 	 *
 	 * @var DateTime
-	 * @copy clone
 	 */
 	protected $beginReserved;
 
@@ -86,7 +79,6 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * End time
 	 *
 	 * @var DateTime
-	 * @copy clone
 	 */
 	protected $endReserved;
 
@@ -94,7 +86,6 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * Notes
 	 *
 	 * @var string
-	 * @copy clone
 	 */
 	protected $notes;
 
@@ -102,7 +93,6 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * Notes SU
 	 *
 	 * @var string
-	 * @copy clone
 	 */
 	protected $notesSu;
 
@@ -111,45 +101,54 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var Tx_Appointments_Domain_Model_Type
 	 * @validate NotEmpty
-	 * @copy reference
 	 */
 	protected $type;
 
 	/**
 	 * Form field values associated with this appointment
 	 *
+	 * Cannot cascade remove this, because Extbase is anal about deleting these then,
+	 * if changed from the parentObject, which I do. Also, Extbase isn't as extensible
+	 * as I hoped: creating an alternative to ObjectStorage with a slightly different
+	 * implementation of its methods would have circumvented the issue gracefully, but
+	 * Extbase has its behaviour around ObjectStorages determined by hardcoded strings
+	 * that represent classnames, which can of course be changed from within this extension,
+	 * but needs a terrible amount of overrides of Extbase (and Fluid!) Core classes that
+	 * I'm not willing to make, due to the increased chance of breaking at each version
+	 * change.
+	 *
+	 * As an alternative to cascade remove, the records that are connected to deleted
+	 * appointments will be deleted by the GC scheduler task.
+	 *
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
 	 * @validate Tx_Appointments_Domain_Validator_ObjectStorageValidator(containsVariable=1)
-	 * @copy clone
-	 * @cascade remove
 	 */
-	protected $formFieldValues;
+	protected $formFieldValues; #@SHOULD create an extbase feature suggestion and patch to remedy the objectstorage behaviour with instanceof checks
+	#@TODO test and see if making this an array would resolve the fluid issue of directly addressing an object (e.g. formFieldValues.189.value or formFieldValues._189.value)
 
 	/**
 	 * Name and address information
 	 *
 	 * @var Tx_Appointments_Domain_Model_Address
 	 * @validate Tx_Appointments_Domain_Validator_ObjectPropertiesValidator
-	 * @copy clone
 	 * @cascade remove
 	 */
 	protected $address;
-	#@TODO make this one lazy AND work with cloning
+
 	/**
 	 * User who created this appointment
 	 *
 	 * @var Tx_Extbase_Domain_Model_FrontendUser
 	 * @validate NotEmpty
-	 * @copy reference
+	 * @lazy
 	 */
 	protected $feUser;
-	#@TODO why not lazy again?
+	#@TODO why not lazy again? because of repository?
 	/**
 	 * Agenda in which this appointment was made
 	 *
 	 * @var Tx_Appointments_Domain_Model_Agenda
 	 * @validate NotEmpty
-	 * @copy reference
 	 */
 	protected $agenda;
 
@@ -187,52 +186,31 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 		return $this->crdate;
 	}
 
-	/**
-	 * Sets the creation timestamp
-	 *
-	 * @param integer $crdate
-	 * @return void
-	 */
-	public function setCrdate($crdate) {
-		$this->crdate = $crdate;
-	}
-
-	/**
-	 * Returns the deleted flag
-	 *
-	 * @return boolean $deleted
-	 */
-	public function getDeleted() {
-		return $this->deleted;
-	}
 	#@SHOULD make these chainable?
 	/**
-	 * Sets the deleted flag
+	 * Returns the creationProgress flag
 	 *
-	 * @param boolean $deleted
-	 * @return void
+	 * @return integer $creationProgress
 	 */
-	public function setDeleted($deleted) {
-		$this->deleted = $deleted;
+	public function getCreationProgress() {
+		return $this->creationProgress;
 	}
 
 	/**
-	 * Returns the temporary flag
+	 * Sets the creationProgress flag
 	 *
-	 * @return boolean $temporary
-	 */
-	public function getTemporary() {
-		return $this->temporary;
-	}
-
-	/**
-	 * Sets the temporary flag
-	 *
-	 * @param boolean $temporary
+	 * @param integer $creationProgress
 	 * @return void
 	 */
-	public function setTemporary($temporary) {
-		$this->temporary = $temporary;
+	public function setCreationProgress($creationProgress) {
+		$this->creationProgress = $creationProgress;
+		$address = $this->address;
+		if ($address !== NULL) {
+			$address->setCreationProgress($creationProgress);
+		}
+		if ($creationProgress === self::UNFINISHED) {
+			$this->crdate = time();
+		}
 	}
 
 	/**
@@ -460,11 +438,9 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @param Tx_Extbase_Domain_Model_FrontendUser $feUser
 	 * @return Tx_Extbase_Domain_Model_FrontendUser feUser
 	 */
-	public function setFeUser(Tx_Extbase_Domain_Model_FrontendUser $feUser) {
+	public function setFeUser(Tx_Extbase_Domain_Model_FrontendUser $feUser) { #@TODO take note of the ext-autogroup way
 		$this->feUser = $feUser;
 	}
-
-
 
 }
 ?>

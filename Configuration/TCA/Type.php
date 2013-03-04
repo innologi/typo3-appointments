@@ -3,7 +3,7 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-$appointments_type_configStartTime = array( #@FIXME add custom regex eval e.g. /([0-1]{1}[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9{1}/, see manual TCA->input->eval on how
+$appointments_type_configStartTime = array( #@SHOULD add custom regex eval e.g. /([0-1]{1}[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9{1}/, see manual TCA->input->eval on how
 	'type' => 'input',
 	'size' => 4,
 	'max' => 5,

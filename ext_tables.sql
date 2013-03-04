@@ -17,7 +17,7 @@ CREATE TABLE tx_appointments_domain_model_appointment (
 	address int(11) unsigned DEFAULT '0',
 	fe_user int(11) unsigned DEFAULT '0',
 	agenda int(11) unsigned DEFAULT '0',
-	temporary tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	creation_progress tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
@@ -245,7 +245,7 @@ CREATE TABLE tt_address (
 	zip varchar(20) DEFAULT '' NOT NULL,
 	city varchar(80) DEFAULT '' NOT NULL,
 	tx_appointments_social_security_number varchar(255) DEFAULT '' NOT NULL,
-	tx_appointments_temporary tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	tx_appointments_creation_progress tinyint(1) unsigned DEFAULT '0' NOT NULL,
 );
 
 #
@@ -268,7 +268,6 @@ CREATE TABLE tx_appointments_domain_model_formfieldvalue (
 	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	starttime int(11) unsigned DEFAULT '0' NOT NULL,
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
-	temporary tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
 	t3ver_id int(11) DEFAULT '0' NOT NULL,

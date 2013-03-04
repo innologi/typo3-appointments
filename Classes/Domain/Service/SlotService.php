@@ -88,12 +88,12 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 *
 	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type domain model object instance
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
-	 * @param integer $expireMinutes Number of minutes in which temporary timeslots are freed up if not saved as definitive appointment
+	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot>
 	 */
 	public function getDateSlots(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes) {
 		$typeUid = $type->getUid();
-		if ($this->clearTemporaryTimeSlots($type,$agenda,$expireMinutes) || !isset($this->dateSlots[$typeUid])) {
+		if ($this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes) || !isset($this->dateSlots[$typeUid])) {
 			$this->dateSlots[$typeUid] = $this->getStorageObject($type, $agenda);
 		}
 
@@ -140,7 +140,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		#@FIXME resetStorage moet ook single storage doen
 		#@FIXME dit moet net zo werken als getDateSlots()
 		if (
-				!$this->clearTemporaryTimeSlots($type,$agenda,$expireMinutes) &&
+				!$this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes) &&
 				(
 					(
 						isset($this->dateSlots[$typeUid]) &&
@@ -166,7 +166,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	/**
 	 * Gets timeslots for the day of the appointment, from the date slot storage.
 	 * If the dateslot is not available for the appointment, will return FALSE,
-	 * unless the appointment is temporary.
+	 * unless the appointment is unfinished.
 	 *
 	 * @param Tx_Appointments_Persistence_KeyObjectStorage $dateSlotStorage Contains date slots
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment Appointment to get the dateslot for
@@ -178,8 +178,8 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		$dateSlot = $dateSlotStorage->getObjectByKey($key);
 
 		if ($dateSlot === FALSE) {
-			//if the appointment is temporary, at least provide a dummy dateslot for its label
-			if($appointment->getTemporary()) {
+			//if the appointment is anything but finished, at least provide a dummy dateslot for its label
+			if(!$appointment->_isNew() && $appointment->getCreationProgress() !== Tx_Appointments_Domain_Model_Appointment::FINISHED) { #@FIXME this isn't the most secure option, anyone can alter the form's beginTime value and thus get away with it, at least until he tries to save
 				$dateSlot = new Tx_Appointments_Domain_Model_DateSlot();
 				$dateSlot->setTimestamp($date->getTimestamp());
 				$dateSlot->setKey($key);
@@ -197,7 +197,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 	/**
 	 * Checks if the timeslot for the appointment is allowed. If the timeslot is taken,
-	 * will return FALSE, unless the appointment is temporary.
+	 * will return FALSE, unless the appointment was already created but not finished.
 	 *
 	 * @param Tx_Appointments_Persistence_KeyObjectStorage $timeSlots The time slot storage
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to check the timeslot for
@@ -206,7 +206,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	public function isTimeSlotAllowed(Tx_Appointments_Persistence_KeyObjectStorage $timeSlots, Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$timestamp = $appointment->getBeginTime()->getTimestamp();
 
-		if ($appointment->getTemporary()) {
+		if (!$appointment->_isNew() && $appointment->getCreationProgress() !== Tx_Appointments_Domain_Model_Appointment::FINISHED) { #@FIXME this isn't the most secure option, anyone can alter the form's beginTime value and thus get away with it, at least until he tries to save
 			$timeSlots->attach($this->createTimeSlot($timestamp));
 			return TRUE;
 		}
@@ -220,20 +220,20 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	}
 
 	/**
-	 * Clears expired temporary appointments to free up timeslots,
-	 * and returns whether there are any changes.
+	 * Clears expired appointments to free up timeslots, and returns whether there are any changes.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type to which the temporary appointments belong to
+	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type to which the expired appointments belong to
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
-	 * @param integer $expireMinutes Number of minutes in which temporary timeslots are freed up if not saved as definitive appointment
+	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
 	 * @return boolean TRUE on change, FALSE on no change
 	 */
-	protected function clearTemporaryTimeSlots(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes) {
-		$temp = $this->appointmentRepository->findExpiredTemporary($expireMinutes);
+	protected function clearExpiredAppointmentTimeSlots(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes) {
+		$temp = $this->appointmentRepository->findExpiredUnfinished($expireMinutes);
 
 		if (!empty($temp)) {
 			foreach ($temp as $appointment) {
-				$this->appointmentRepository->remove($appointment);
+				$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
+				$this->appointmentRepository->update($appointment);
 			}
 			$this->resetStorageObject($type,$agenda);
 			return TRUE;

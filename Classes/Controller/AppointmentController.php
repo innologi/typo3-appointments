@@ -45,7 +45,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @var Tx_Appointments_Domain_Repository_AgendaRepository
 	 */
-	protected $agendaRepository;
+	protected $agendaRepository; #@SHOULD what's this one used for again?
 
 	/**
 	 * frontendUserRepository
@@ -77,11 +77,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @var Tx_Appointments_Service_EmailService
 	 */
 	protected $emailService;
-
-	/**
-	 * @var Tx_Fed_Service_Clone
-	 */
-	protected $cloningService;
 
 	/**
 	 * injectAppointmentRepository
@@ -154,17 +149,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->emailService = $emailService;
 	}
 
-	/**
-	 * injects Cloning Service
-	 *
-	 * @param Tx_Fed_Service_Clone
-	 * @return void
-	 */
-	public function injectCloningService(Tx_Fed_Service_Clone $cloningService) {
-		$this->cloningService = $cloningService; #@TODO can be removed?
-		#@FIXME replace FED dependency b/c of security issues!
-	}
-
+	#@FIXME replace FED dependency b/c of security issues!
 
 	/**
 	 * action list
@@ -212,7 +197,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$showMore = FALSE;
 		$mutable = FALSE;
 		$superUser = FALSE;
-		#@FIXME you should be able to return to an agenda view if the plugin came from there but a list plugin is n/a .. or is that even possible?
+		#@TODO you should be able to return to an agenda view if the plugin came from there but a list plugin is n/a .. or is that even possible?
 
 		if ($TSFE->fe_user) {
 			$feUser = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
@@ -242,9 +227,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * action new
 	 *
 	 * This is a multi-step action, returning an appointment with new properties that indicate each next step.
-	 * In the final step, the appointment is already added as a temporary appointment. Temporary appointments
-	 * will keep the timeslot occupied until either cleared manually or automatically, or until created
-	 * definitively.
+	 * In the final step, the appointment is already added as unfinished. Unfinished appointments
+	 * will keep the timeslot occupied until either cleared manually or expired automatically, or until finished.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda the appointment belongs to
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
@@ -273,7 +257,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$typeArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1);
 		$types = empty($typeArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($typeArray,$superUser);
 		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
-		$freeSlotInMinutes = 1; #@FIXME _remove!
 
 		if (isset($dateFirst[0])) { //overrides in case an appointment-date is picked through agenda
 			//removes types that can't produce timeslots on the dateFirst date #@FIXME dateFirst selection doesn't seem to update the available types if freeSlotMinutes has passed? But it isn't even cached..
@@ -301,7 +284,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		if ($appointment !== NULL) {
 			//step 1 reached
 
-			$type = $appointment->getType(); #@FIXME er is een probleem met htmlspecialchars in de hiddenviewhelper na mislukte poging aanmaken en als ik kies tijd doe
+			$type = $appointment->getType();
 
 			if (!isset($dateSlots)) { //helps to avoid overwriting an override
 				$dateSlots = $this->slotService->getDateSlots($type, $agenda, $freeSlotInMinutes); #@TODO can we throw error somewhere when this one is empty?
@@ -317,7 +300,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 						if ($this->slotService->isTimeSlotAllowed($timeSlots,$appointment) !== FALSE) {
 							//limit the still available types by the already chosen timeslot
-							$excludeAppointment = $appointment->getUid() ? $appointment->getUid() : 0;
+							$excludeAppointment = $appointment->_isNew() ? 0 : $appointment->getUid();
 							$types = $this->limitTypesByTime($types, $agenda, $beginTime->getTimestamp(), $excludeAppointment); #@TODO cache?
 
 							$appointment->setAgenda($agenda);
@@ -325,7 +308,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 							$formFieldValues = $appointment->getFormFieldValues();
 							$formFieldArray = $type->getFormFields()->toArray();
 							if ($formFieldValues->count() !== count($formFieldArray)) { //a check here, because on validation error, they'll already exist
+								//fields that did not yet exist will get an UID @ a manual persist
 								$formFieldValues = $this->addMissingFormFields($formFieldArray,$formFieldValues);
+								#$appointment->setFormFieldValues($formFieldValues);
 							}
 							//adding the formFieldValues already will get them persisted too soon, empty and unused, so we're assigning them separately from $appointment
 							$this->view->assign('formFieldValues', $formFieldValues);
@@ -336,27 +321,31 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 							$this->calculateTimes($appointment); //set the remaining DateTime properties
 
-							//when a validation error ensues, we don't want the temporary appointment being re-added, hence the check
-							if ($appointment->getUid() === NULL) { #@TODO check all the inline doc around these changes
+							//when a validation error ensues, we don't want the unfinished appointment being re-added, hence the check
+							if ($appointment->_isNew()) { #@TODO check all the inline doc around these changes
 								$this->appointmentRepository->add($appointment);
 								#@TODO message
-								#$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_new_temporary', $this->extensionName);
+								#$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_new_creation', $this->extensionName);
 								#$this->flashMessageContainer->add($flashMessage);
 							} else {
 								#@TODO kan ik net zoals change type niet een change time en change date hierin verwerken?
 								#@SHOULD split up in functions!
 								#@TODO doc
-								if ($appointment->getDeleted()) { //it's possible to get here while $freeSlotInMinutes has expired and the appointment no longer exists, thus throwing an exception
+								if ($appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::EXPIRED) { //it's possible to get here while $freeSlotInMinutes has expired and the appointment no longer exists, thus throwing an exception
 									if ($this->crossAppointments($appointment)) { //make sure the timeslot is still available
+										//an appointment was found that makes the current one's times not possible
 										$flashMessage = str_replace('$1',$freeSlotInMinutes,
 												Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName)
 										);
 										$this->flashMessageContainer->add($flashMessage);
-										#@FIXME __werkt nog niet helemaal zoals ik wil: je moet de tijd eerst vrijgeven voor je verder kunt kiezen, en als je eerst aanmaken hebt gedaan worden de address en formFieldValues niet opgehaald, wat tevens unexpireAppointment doet crashen ;)
-										#@TODO dus misschien de de vrijmaak knop los van een wijzig knop doen, en de wijzig knoppen via ajax o.i.d. doorsturen?
-									} else {
-										$this->unexpireAppointment($appointment);
+
+										$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED); #@TODO cleanup task for expired records?
+										#@TODO werkt nog niet helemaal zoals ik wil: je moet de tijd eerst vrijgeven voor je verder kunt kiezen wat betekent dat je weer de waarden verliest
+										#@TODO dus misschien de vrijmaak knop los van een wijzig knop doen, en de wijzig knoppen via ajax o.i.d. doorsturen?
+										#@TODO test wat er precies gebeurt bij het wijzigen van de type met compleet verschillende formfields
 									}
+									$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED);
+									#@TODO message about refreshed freeSlotInMinutes?
 								}
 								$this->appointmentRepository->update($appointment);
 							}
@@ -387,37 +376,22 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * We need $agenda here in case of a validation error sending us back to newAction.
 	 *
 	 * Notice that the appointment isn't added but updated. This is because the newAction
-	 * will have already added a temporary appointment. We just need to change its temporary flag.
+	 * will have already added an unfinished appointment. We just need to change its creation_progress flag.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda the appointment belongs to
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to create
 	 * @return void
 	 */
 	public function createAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment) {
-		$updateOnCross = FALSE;
 		$this->calculateTimes($appointment);
 
-		#@TODO doc
-		if ($appointment->getDeleted()) {
-			$this->unexpireAppointment($appointment);
-			$updateOnCross = TRUE;
-		}
-
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
-		//this is necessary in case the temporary appointment was already removed due to a timeout
+		//this is necessary in case the unfinished appointment was already expired due to a timeout
 		if ($this->crossAppointments($appointment)) { #@TODO wellicht kunnen we dit in een speciale action stoppen die vervolgens forward of redirect
 			//an appointment was found that makes the current one's times not possible
-			$flashMessage = str_replace('$1',intval($this->settings['freeSlotInMinutes']),
-					Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName)
-			);
-			$this->flashMessageContainer->add($flashMessage);
-
-			if ($updateOnCross) { //appointments is changed, so update before forwarding
-				$this->appointmentRepository->update($appointment);
-			}
 			$this->forward('new'); //seems to work similar to a validation error #@SHOULD mark the time field like a validation error
 		} else {
-			$this->makeAppointmentDefinitive($appointment);
+			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::FINISHED);
 			$this->appointmentRepository->update($appointment);
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_success', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage);
@@ -526,7 +500,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * action free
 	 *
-	 * When a temporary appointment is created, one is allowed to free up the timeslots.
+	 * When an unfinished appointment is started, one is allowed to free up the chosen timeslot.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda the appointment belongs to
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment's time to free up
@@ -544,7 +518,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		if ($appointment !== NULL) {
 			$type = $appointment->getType();
 			#@FIXME instead of removing it, I should look at how I solve editAction and create a new multi-stepped newAction which looks at submitbutton for free/create action while using a single form
-			$this->appointmentRepository->remove($appointment); #@SHOULD consider alternatives, updating saves unnecessary increments of uid .. but then crdate is not renewed. I guess this is a pro-argument for using tstamp instead of crdate?
+			$this->appointmentRepository->remove($appointment); #@SHOULD consider alternatives, updating saves unnecessary increments of uid .. but then crdate is not renewed. I guess this is a pro-argument for using tstamp instead of crdate? OR EXPIRE IT AND MOVE FROM THERE!
 			$this->slotService->resetStorageObject($type,$agenda); //persist changes in timeslots
 			$arguments['type'] = $type;
 			$arguments['beginTime'] = $appointment->getBeginTime()->getTimestamp();
@@ -582,28 +556,33 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	protected function addMissingFormFields($formFieldArray, Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
 		$items = array();
 		$order = array();
-		$newStorage = new Tx_Extbase_Persistence_ObjectStorage();
+		$newStorage = new Tx_Extbase_Persistence_ObjectStorage(); #@SHOULD clone instead?
 		#$newStorage->addAll($formFieldValues);
 		$formFieldValues = $formFieldValues->toArray();
 		foreach ($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
-			$items[$formField->getUid()] = $formFieldValue;
-			$order[$formField->getUid()] = $formField->getSorting();
+			#$items[$formField->getSorting()] = $formFieldValue;
+			$newStorage->attach($formFieldValue);
+			$items[$formField->getUid()] = TRUE;
+			#$order[$formField->getUid()] = $formField->getSorting();
 		}
 
-		foreach ($formFieldArray as $formField) {
+		foreach ($formFieldArray as $formField) { #@SHOULD experiment with this still being an objectstorage, a clone perhaps
 			if (!isset($items[$formField->getUid()])) {
 				$formFieldValue = new Tx_Appointments_Domain_Model_FormFieldValue();
 				$formFieldValue->setFormField($formField);
-				$items[$formField->getUid()] = $formFieldValue;
-				$order[$formField->getUid()] = $formField->getSorting();
+				#$items[$formField->getSorting()] = $formFieldValue;
+				$newStorage->attach($formFieldValue);
+				#$items[$formField->getUid()] = $formFieldValue;
+				#$order[$formField->getUid()] = $formField->getSorting();
 			}
 		}
 		#@TODO doc
-		asort($order);
-		foreach($order as $uid=>$sorting) {
-			$newStorage->attach($items[$uid]);
-		}
+		#asort($order);
+		#foreach($order as $uid=>$sorting) {
+		#	$newStorage->attach($items[$uid]);
+		#}
+		#ksort($newStorage,SORT_NATURAL); #@FIXME sort, damn you
 
 		return $newStorage;
 	}
@@ -685,29 +664,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 		$this->emailService->sendEmailAction($action,$appointment); #@TODO add message on success and fail? (maybe sys_log?)
 		$this->emailService->sendCalendarAction($action,$appointment); #@TODO add message on success and fail?
-	}
-
-	#@TODO doc
-	protected function makeAppointmentDefinitive(Tx_Appointments_Domain_Model_Appointment $appointment) {
-		$appointment->setTemporary(FALSE);
-		$appointment->getAddress()->setTemporary(FALSE);
-		$formFieldValues = $appointment->getFormFieldValues();
-		foreach ($formFieldValues as $formFieldValue) {
-			$formFieldValue->setTemporary(FALSE);
-		}
-	}
-
-	#@TODO doc
-	protected function unexpireAppointment(Tx_Appointments_Domain_Model_Appointment $appointment) {
-		if ($appointment->getTemporary()) { //last minute check to confirm this is actually an _expired_ appointment
-			$appointment->setDeleted(FALSE);
-			$appointment->setCrdate(time());
-			$appointment->getAddress()->setDeleted(FALSE);
-			$formFieldValues = $appointment->getFormFieldValues();
-			foreach ($formFieldValues as $formFieldValue) {
-				$formFieldValue->setDeleted(FALSE);
-			}
-		}
 	}
 
 }

@@ -33,19 +33,11 @@
  */
 class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_AbstractEntity {
 	#@SHOULD make these configurable in TCA
-	/**
-	 * Deleted
-	 *
-	 * @var boolean
-	 * @copy ignore
-	 */
-	protected $deleted;
 
 	/**
 	 * First Name
 	 *
 	 * @var string
-	 * @copy clone
 	 */
 	protected $firstName;
 
@@ -53,7 +45,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Middle Name
 	 *
 	 * @var string
-	 * @copy clone
 	 */
 	protected $middleName;
 
@@ -61,7 +52,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Last Name
 	 *
 	 * @var string
-	 * @copy clone
 	 */
 	protected $lastName;
 
@@ -69,7 +59,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Name
 	 *
 	 * @var string
-	 * @copy clone
 	 */
 	protected $name;
 
@@ -77,16 +66,13 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Gender
 	 *
 	 * @var string
-	 * @validate StringLength(minimum=1, maximum=1)
-	 * @copy clone
 	 */
-	protected $gender;
+	protected $gender; #@TODO validate StringLength(minimum=1, maximum=1) but GEMHMK doesn't want to
 
 	/**
 	 * Birthday
 	 *
 	 * @var DateTime
-	 * @copy clone
 	 */
 	protected $birthday;
 
@@ -94,7 +80,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Email
 	 *
 	 * @var string
-	 * @copy clone
 	 */
 	protected $email;
 
@@ -102,7 +87,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Address
 	 *
 	 * @var string
-	 * @copy clone
 	 */
 	protected $address; #@TODO regex validator? but GEMHMK doesn't want to
 
@@ -110,7 +94,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Zip code
 	 *
 	 * @var string
-	 * @copy clone
 	 */
 	protected $zip; #@SHOULD validate RegularExpression(regularExpression=/[0-9]{4}[A-Z]{2}/) but GEMHMK doesn't want to
 
@@ -118,7 +101,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * City
 	 *
 	 * @var string
-	 * @copy clone
 	 */
 	protected $city;
 
@@ -126,17 +108,15 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * Social Security Number
 	 *
 	 * @var string
-	 * @copy clone
 	 */
 	protected $socialSecurityNumber;
 
 	/**
-	 * Temporary record / not finalized
+	 * State of creation
 	 *
-	 * @var boolean
-	 * @copy clone
+	 * @var integer
 	 */
-	protected $temporary = TRUE;
+	protected $creationProgress = Tx_Appointments_Domain_Model_Appointment::UNFINISHED;
 
 	/**
 	 * Returns the firstName
@@ -350,41 +330,23 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	}
 
 	/**
-	 * Returns the temporary flag
+	 * Returns the creationProgress flag
 	 *
-	 * @return boolean $temporary
+	 * @return integer $creationProgress
 	 */
-	public function getTemporary() {
-		return $this->temporary;
+	public function getCreationProgress() {
+		return $this->creationProgress;
 	}
 
 	/**
-	 * Sets the temporary flag
+	 * Sets the creationProgress flag
 	 *
-	 * @param boolean $temporary
+	 * @param integer $creationProgress
 	 * @return void
 	 */
-	public function setTemporary($temporary) {
-		$this->temporary = $temporary;
+	public function setCreationProgress($creationProgress) {
+		$this->creationProgress = $creationProgress;
 	}
 
-	/**
-	 * Returns the deleted flag
-	 *
-	 * @return boolean $deleted
-	 */
-	public function getDeleted() {
-		return $this->deleted;
-	}
-
-	/**
-	* Sets the deleted flag
-	*
-	* @param boolean $deleted
-	* @return void
-	*/
-	public function setDeleted($deleted) {
-		$this->deleted = $deleted;
-	}
 }
 ?>
