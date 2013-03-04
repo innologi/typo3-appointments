@@ -202,6 +202,8 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		$body = str_replace('###START_TIME###',$appointment->getBeginTime()->format('H:i'),$body);
 		$body = str_replace('###END_TIME###',$appointment->getEndTime()->format('H:i'),$body);
 		$body = str_replace('###NOTES###',$appointment->getNotes(),$body);
+		$body = str_replace('###NOTES_SU###',$appointment->getNotesSu(),$body);
+		$body = str_replace('###SECURITY###',$appointment->getAddress()->getSocialSecurityNumber(),$body);
 			//build address supports a variable separator, so we'll let $isHTML decide
 		if (strpos($body,'###ADDRESS###') !== FALSE) {
 			$body = str_replace('###ADDRESS###',$this->buildAddress($appointment->getAddress(),($isHTML?'<br />':"\n")),$body);

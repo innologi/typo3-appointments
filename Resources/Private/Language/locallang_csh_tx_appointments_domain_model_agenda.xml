@@ -21,7 +21,9 @@
 				###START_TIME### : Appointment start time 
 				###END_TIME### : Appointment end time
 				###NOTES### : Notes
+				###NOTES_SU### : Superuser Notes
 				###ADDRESS### : Name and address information
+				###SECURITY### : Social Security Number
 				###LINK### : Link to appointment
 			</label>
 			<label index="calendar_invite_address.description">Emails a calendar invitation on every scheduled appointment to the selected addresses</label>
@@ -45,7 +47,9 @@
 				###START_TIME### : Afspraak start tijd 
 				###END_TIME### : Afspraak eind tijd
 				###NOTES### : Opmerkingen
+				###NOTES_SU### : Beheerders Opmerkingen
 				###ADDRESS### : NAW gegevens
+				###SECURITY### : Burger Service Nummer 
 				###LINK### : Link naar afspraak
 			</label>
 			<label index="calendar_invite_address.description">E-mailt een kalender uitnodiging bij elk geplande afspraak naar de geselecteerde adressen</label>
