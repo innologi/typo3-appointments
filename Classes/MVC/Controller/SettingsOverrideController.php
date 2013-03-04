@@ -46,22 +46,6 @@
 class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Extbase_MVC_Controller_ActionController {
 
 	/**
-	 * @var Tx_Appointments_MVC_Controller_Arguments Arguments passed to the controller
-	 */
-	protected $arguments;
-
-	/**
-	 * Injects the object manager
-	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-		$this->arguments = $this->objectManager->create('Tx_Appointments_MVC_Controller_Arguments');
-	}
-
-	/**
 	 * Injects the configuration manager and resolves the plugin settings.
 	 *
 	 * Instead of letting the flexform dominate the plugin settings, your TypoScript
@@ -121,8 +105,8 @@ class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Extba
 	 * Try and catch construction makes sure a controller argument which no longer exists
 	 * in the database, doesn't produce a full stop. It catches it, and produces a flashMessage.
 	 *
-	 * This concerns f.e. an object that was deleted in TCA or FE. A temporary appointment which
-	 * has expired, should no longer produce an exception thanks to the changed mapper.
+	 * This concerns f.e. an object that was deleted in TCA or FE or by task. An appointment
+	 * in the making which expired but wasn't deleted yet, will still be retrievable.
 	 *
 	 * @return void
 	 */
@@ -152,8 +136,9 @@ class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Extba
 	 * @return string|boolean The flash message or FALSE if no flash message should be set
 	 */
 	protected function getErrorFlashMessage() {
-		return parent::getErrorFlashMessage();
-		#return FALSE; #@FIXME extConf this! #@TODO can't we make it rely on a TYPO3 general debug var?
+		global $TYPO3_CONF_VARS;
+		$extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][strtolower($this->extensionName)]);
+		return isset($extConf['debug']) && $extConf['debug'] ? parent::getErrorFlashMessage() : FALSE; #@TODO can't we make it rely on a TYPO3 general debug var?
 	}
 
 }

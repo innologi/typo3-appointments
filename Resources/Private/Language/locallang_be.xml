@@ -24,6 +24,7 @@
 			
 			<label index="tx_appointments_extconf_emailFrom">Default sending email address: The default email address used for emails sent by this extension.</label>
 			<label index="tx_appointments_extconf_emailName">Default email name: The name used for the sending email address. (not required)</label>
+			<label index="tx_appointments_extconf_debug">Debug: If enabled, provides some extra frontend debugging messages. Should not be enabled on production.</label>
 						
 			<label index="tx_appointments_flexform_sheet_sDEF">Settings</label>
 			<label index="tx_appointments_flexform_switchableControllerActions">Agenda View</label>
