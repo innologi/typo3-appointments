@@ -34,6 +34,20 @@
 class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase_Persistence_Repository {
 
 	/**
+	 * @var Tx_Appointments_Persistence_Manager
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * @param Tx_Appointments_Persistence_Manager $persistenceManager
+	 * @return void
+	 */
+	public function injectPersistenceManager(Tx_Appointments_Persistence_Manager $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
+	}
+
+	/**
 	 * Returns all objects of this repository belonging to Agenda and FrontendUser, and optionally
 	 * from, between or up to a start and/or end time. Only finished appointments.
 	 *
@@ -286,8 +300,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @return void
 	 */
 	public function persistChanges() {
-		#@FIXME _find out if we can persist a single repository
-		$this->persistenceManager->persistAll();
+		$this->persistenceManager->persistRepository($this);
 	}
 
 }
