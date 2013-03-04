@@ -198,13 +198,15 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 				'foreign_table' => 'tx_appointments_domain_model_formfieldvalue',
 				'foreign_field' => 'appointment',
 				'foreign_unique' => 'form_field',
+					//NOTE: extbase supports propertypaths here for showing but NOT updating (FE only, 4.7.8)
+				'foreign_sortby' => 'sorting',
 				'maxitems' => 9999,
 				'appearance' => array(
 					'collapseAll' => 1,
 					'levelLinksPosition' => 'top',
 					'showSynchronizationLink' => 1,
 					'showPossibleLocalizationRecords' => 1,
-					'showAllLocalizationLink' => 1
+					'showAllLocalizationLink' => 1 #@TODO how to enable drag 'n drop sorting again?
 				),
 			),
 		),
@@ -247,10 +249,5 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 		),
 	),
 );
-
-//extbase supports propertypaths for showing the storage in correct sort order, but this still requires a workaround in updating/creating records
-if (TYPO3_MODE === 'FE') {
-	$TCA['tx_appointments_domain_model_appointment']['columns']['form_field_values']['config']['foreign_sortby'] = 'formField.sorting';
-}
 
 ?>

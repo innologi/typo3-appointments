@@ -17,16 +17,14 @@ config.tx_extbase {
 			}
 		}
 	} 
-	objects {
-		# this can only be done globally, which means another extension can mess this up, so I've opted for a different approach for now
+	
+	# this override method is global and fails once when cache is cleared (4.7.8), so I can not depend on it
+	#objects {
 		# keep this in mind for when I require it for a property that isn't somewhere deep down another property
 		#Tx_Extbase_Validation_ValidatorResolver {
 		#	className = Tx_Appointments_Validation_VariableValidatorResolver
 		#}
-		Tx_Extbase_Persistence_Storage_BackendInterface {
-			className = Tx_Appointments_Persistence_Storage_Typo3DbBackend
-		}
-	}
+	#}
 }
 
 plugin.tx_appointments {

@@ -50,14 +50,6 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	protected $formField;
 
 	/**
-	 * Storage index
-	 *
-	 * @var string
-	 * @transient
-	 */
-	protected $index;
-
-	/**
 	 * Returns the value
 	 *
 	 * @return string $value
@@ -93,7 +85,6 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	 */
 	public function setFormField(Tx_Appointments_Domain_Model_FormField $formField) {
 		$this->formField = $formField;
-		$this->index = '_'.$formField->getSorting();
 	}
 
 	/**

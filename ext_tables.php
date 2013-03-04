@@ -36,7 +36,6 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO kunnen we datumkeuze niet gewoon nog steeds beschikbaar houden zodra je dateFirst doet?
 #@FIXME datumkeuze csh dateFirst!
 #@TODO following a login timeout with clicking links in the list plugin, will result in fatal errors
-#@TODO try to create an alternative to the DI override, like you did with the mapper
 
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Appointment Scheduler');
 
@@ -198,6 +197,7 @@ $TCA['tx_appointments_domain_model_formfieldvalue'] = array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'dividers2tabs' => TRUE,
+		'sortby' => 'sorting',
 		'versioningWS' => 2,
 		'versioning_followPages' => TRUE,
 		'hideTable' => TRUE,

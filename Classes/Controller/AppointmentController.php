@@ -547,7 +547,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * different field. To prevent persisting the first, this method creates and returns a new storage.
 	 *
 	 * Because the new formFieldValue is already added to the original storage during an attempted update/create, a
-	 * validation error would cause the fields to retain the values in the subsequent edit/new action.
+	 * validation error would cause the fields to retain their values in the subsequent edit/new action.
+	 *
+	 * Also, the explicit sorting values of FormFields are used here to re-arrange the FormFieldValues.
 	 *
 	 * @param Array $formFieldArray
 	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue> $formFieldValues
@@ -557,32 +559,29 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$items = array();
 		$order = array();
 		$newStorage = new Tx_Extbase_Persistence_ObjectStorage(); #@SHOULD clone instead?
-		#$newStorage->addAll($formFieldValues);
 		$formFieldValues = $formFieldValues->toArray();
 		foreach ($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
-			#$items[$formField->getSorting()] = $formFieldValue;
-			$newStorage->attach($formFieldValue);
-			$items[$formField->getUid()] = TRUE;
-			#$order[$formField->getUid()] = $formField->getSorting();
+			$items[$formField->getUid()] = $formFieldValue;
+			$order[$formField->getUid()] = $formField->getSorting();
+			//I'd prefer $items[$sorting] = $formFieldValue, but the sorting value can be messed with to cause duplicate keys
 		}
 
 		foreach ($formFieldArray as $formField) { #@SHOULD experiment with this still being an objectstorage, a clone perhaps
 			if (!isset($items[$formField->getUid()])) {
 				$formFieldValue = new Tx_Appointments_Domain_Model_FormFieldValue();
 				$formFieldValue->setFormField($formField);
-				#$items[$formField->getSorting()] = $formFieldValue;
-				$newStorage->attach($formFieldValue);
-				#$items[$formField->getUid()] = $formFieldValue;
-				#$order[$formField->getUid()] = $formField->getSorting();
+				$items[$formField->getUid()] = $formFieldValue;
+				$order[$formField->getUid()] = $formField->getSorting();
 			}
 		}
-		#@TODO doc
-		#asort($order);
-		#foreach($order as $uid=>$sorting) {
-		#	$newStorage->attach($items[$uid]);
-		#}
-		#ksort($newStorage,SORT_NATURAL); #@FIXME sort, damn you
+
+		//NOTE: extbase will set sorting value to the currently arranged order, when persisted
+		natsort($order);
+		foreach($order as $uid=>$sorting) {
+			$newStorage->attach($items[$uid]);
+		}
+
 
 		return $newStorage;
 	}

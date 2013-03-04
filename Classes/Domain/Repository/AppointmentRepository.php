@@ -286,7 +286,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @return void
 	 */
 	public function persistChanges() {
-		#@SHOULD find out if we can persist a single repository
+		#@FIXME _find out if we can persist a single repository
 		$this->persistenceManager->persistAll();
 	}
 
