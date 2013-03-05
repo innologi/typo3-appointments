@@ -111,6 +111,7 @@
 			<label index="tx_appointments_domain_model_appointment.begin_time.date">Appointment date</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_new">The date of the appointment. The available choices consist of all dates that (still) have timeslots available, for this particular appointment type. Different appointment types may result in different available dates.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_free">To change the date, you'll have to free up the currently chosen timeslot first.</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_datefirst">By picking a date from the agenda-view, you can only change the date from that same agenda-view.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time">Time of appointment</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new">The time of the appointment. The available choices consist of all (still) available timeslots on the picked date, for this particular appointment type. Different dates and/or appointment types may result in different available timeslots.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_free">To change the timeslot, you'll have to free up the currently chosen timeslot first.</label>
@@ -250,6 +251,7 @@
 			<label index="tx_appointments_domain_model_appointment.begin_time.date">Datum afspraak</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_new">De datum van de afspraak. De beschikbare keuzes bestaan uit alle dagen met (nog) beschikbare tijden, voor het specifieke afspraak type. Een andere afspraak type kan andere beschikbare dagen tot gevolg hebben.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_free">Als u de datum wilt wijzigen, dient u eerst het gekozen tijdstip vrij te geven.</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_datefirst">Doordat u de datum heeft gekozen via de agenda-weergave, kunt u de datum ook alleen wijzigen via de agenda-weergave.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time">Tijd afspraak</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new">De tijd van de afspraak. De beschikbare keuzes bestaan uit alle (nog) beschikbare tijden op de gekozen datum, voor het specifieke afspraak type. Een andere datum en/of afspraak type kan andere beschikbare tijden tot gevolg hebben.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_free">Als u het tijdstip wilt wijzigen, dient u eerst het gekozen tijdstip vrij te geven.</label>

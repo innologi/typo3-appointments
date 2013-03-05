@@ -46,7 +46,7 @@
 					<f:form enctype="multipart/form-data" method="post" action="free" arguments="{agenda : agenda}" id="freeForm" object="{appointment}" objectName="appointment">
 						<fieldset>
 							<f:form.select property="beginTime" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" disabled="TRUE" />
-							<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_free')}"><f:translate key="tx_appointments_list.csh" /></span>
+							<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_datefirst')}"><f:translate key="tx_appointments_list.csh" /></span>
 						</fieldset>
 					</f:form>
 				</f:then>
