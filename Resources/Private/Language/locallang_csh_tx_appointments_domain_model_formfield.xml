@@ -13,7 +13,7 @@
 			<label index="csh.description">Helptext shown on Frontend next to the field</label>
 			<label index="validation_types.description">Validation types can force the field to be validated as the chosen types of content. If the field content does not match the validation type, the form will inform the user and not save until corrected.</label>
 			<label index="field_type.description">The field type determines its appearance and input method</label>
-			<label index="choices.description">Selection choices, one per line. You may define different values than labels. See details for the different approaches.</label>
+			<label index="choices.description">Selection choices, one per line. You may define values that differ from their labels, if desired. See details for the different approaches.</label>
 			<label index="choices.details">
 				The choices represent value/label combinations for a select box. You may explicitly define values and labels, separated by a pipe character: |
 
@@ -25,7 +25,7 @@
 				choice1|choice1
 				choice2
 
-				If you want to have a decorative or informative label that isn't part of the actual choices, you may provide an empty value:
+				If you want to have a decorative or informative label that doesn't represent an actual value, you may provide an empty value:
 
 				|Make a choice:
 				yes
@@ -44,7 +44,7 @@
 			<label index="csh.description">Toelichting dat op de Frontend naast het veld wordt getoond</label>
 			<label index="validation_types.description">Validatie types forceren een veld om zich te valideren als het gekozen type inhoud. Als een veld niet voldoet aan een validatie type, dan zal het formulier dit aangeven en niet opgeslagen worden voor dit gecorrigeerd is.</label>
 			<label index="field_type.description">Het veld type bepaalt zijn uiterlijk en invoerwijze</label>
-			<label index="choices.description">Selectie keuzes, per regel één. U kunt de waarden en labels van elkaar laten verschillen. Zie details voor de verschillende methoden.</label>
+			<label index="choices.description">Selectie keuzes, per regel één. U kunt de waarden en labels van elkaar laten verschillen, indien gewenst. Zie details voor de verschillende methoden.</label>
 			<label index="choices.details">
 				De keuzes vertegenwoordigen waarde/label combinaties voor een selectie. U kunt expliciet een waarde en een label opgeven per keuze, gescheiden met een pipe: |
 
@@ -56,7 +56,7 @@
 				keuze1|keuze1
 				keuze2
 
-				Als u een decoratieve of informatieve label wilt die niet echt een daadwerkelijke keuze vertegenwoordigd, kunt u een lege waarde gebruiken:
+				Als u een decoratieve of informatieve label wilt die niet echt een daadwerkelijke waarde vertegenwoordigd, kunt u een lege waarde gebruiken:
 
 				|Maak een keuze:
 				ja
