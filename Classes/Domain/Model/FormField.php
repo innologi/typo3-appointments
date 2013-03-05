@@ -98,6 +98,15 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	protected $choices;
 
 	/**
+	 * Selection choices relevant for boolean and selection types
+	 * formatted as array
+	 *
+	 * @var array
+	 * @transient
+	 */
+	protected $choicesForSelect = NULL;
+
+	/**
 	 * Field function: informational, enables other field, add time
 	 *
 	 * @var integer
@@ -227,24 +236,59 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 * @return array $choices
 	 */
 	public function getChoices() {
-		if (isset($this->choices[0])) {
-			$choices = str_replace("\r\n","\n",$this->choices);
-			$choicesArray = t3lib_div::trimExplode("\n", $choices, 1);
-			$choicesArray = array_combine($choicesArray,$choicesArray); //makes keys and values same, which simplifies the view
-			return $choicesArray;
-		}
-
-		return array();
+		return $this->choices;
 	}
 
 	/**
 	 * Sets the choices
+	 *
+	 * Also sets choicesForSelect
 	 *
 	 * @param string $choices
 	 * @return void
 	 */
 	public function setChoices($choices) {
 		$this->choices = $choices;
+
+		//format choices for form select
+		$this->choicesForSelect = $this->setChoicesForSelect($choices);
+	}
+
+	/**
+	 * Returns choices formatted for select
+	 *
+	 * @return array
+	 */
+	public function getChoicesForSelect() {
+		if ($this->choicesForSelect === NULL) {
+			$this->setChoicesForSelect($this->choices);
+		}
+		return $this->choicesForSelect;
+	}
+
+	/**
+	 * Sets choices for form select
+	 *
+	 * Formats the choices in an array usable for our view purposes
+	 *
+	 * @param string $choices
+	 * @return void
+	 */
+	protected function setChoicesForSelect($choices) {
+		$choices = str_replace("\r\n","\n",$choices);
+		$keyArray = array();
+		$valueArray = t3lib_div::trimExplode("\n", $choices, 1);
+		foreach ($valueArray as $key=>&$choice) {
+			if (strpos($choice,'|') === FALSE) {
+				$keyArray[$key] = $choice;
+			} else {
+				$parts = explode('|',$choice,2);
+				$keyArray[$key] = $parts[0];
+				$choice = $parts[1];
+			}
+		}
+		$valueArray = array_combine($keyArray,$valueArray); //makes keys and values same, which simplifies the view
+		$this->choicesForSelect = $valueArray;
 	}
 
 	/**

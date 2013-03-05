@@ -32,9 +32,6 @@
  * feature is more customization to how/when Flexform settings override
  * TypoScript settings and vice versa.
  *
- * It also sets a different Arguments implementation to make a different Mapper available.
- * (alternative to TS DI override)
- *
  * Furthermore, it disables the flasherror messages and provides a (necessary)
  * try and catch construction for resolving controller arguments from the
  * database.

@@ -39,6 +39,22 @@ class Tx_Appointments_ViewHelpers_Form_TextfieldViewHelper extends Tx_Fluid_View
 
 	#@TODO doc
 	/**
+	 * Renders the textfield.
+	 *
+	 * @param boolean $required If the field is required or not
+	 * @param string $type The field type, e.g. "text", "email", "url" etc.
+	 * @param string $placeholder A string used as a placeholder for the value to enter
+	 * @return string
+	 */
+	public function render($required = NULL, $type = 'text', $placeholder = NULL) {
+		if ($required !== TRUE) {
+			$required = NULL;
+		}
+		return parent::render($required,$type,$placeholder);
+	}
+
+	#@TODO doc
+	/**
 	 * Get the value of this form element.
 	 * Either returns arguments['value'], or the correct value for Object Access.
 	 *

@@ -17,21 +17,18 @@
 			<f:form.checkbox property="formFieldValues.{formField.uid}.value" value="1" checked="{formFieldValue.value} == 1" class="checkbox" />
 		</v:case>
 		<v:case case="2" break="TRUE">  <!-- Select -->
+			<f:if condition="{formField.validationTypes}">
+				<span class="required">*</span>
+			</f:if>
 			<br />
-			<a:form.select property="formFieldValues.{formField.uid}.value" options="{formField.choices}" value="{formFieldValue.value}" class="select" />
+			<a:form.select property="formFieldValues.{formField.uid}.value" options="{formField.choicesForSelect}" value="{formFieldValue.value}" class="select" />
 		</v:case>
 		<v:case case="3" break="TRUE"> <!-- Textsmall / Input -->
 			<f:if condition="{formField.validationTypes}">
-				<f:then>
-					<span class="required">*</span>
-					<br />
-					<a:form.textfield property="formFieldValues.{formField.uid}.value" value="{formFieldValue.value}" class="textinput" />
-				</f:then>
-				<f:else>
-					<br />
-					<a:form.textfield property="formFieldValues.{formField.uid}.value" value="{formFieldValue.value}" class="textinput" />
-				</f:else>
+				<span class="required">*</span>
 			</f:if>
+			<br />
+			<a:form.textfield property="formFieldValues.{formField.uid}.value" value="{formFieldValue.value}" class="textinput" required="{f:if(condition:formField.validationTypes,then:1)}" />
 		</v:case>
 		<v:case case="4"> <!-- Textlarge / Textarea -->
 			<f:if condition="{formField.validationTypes}">

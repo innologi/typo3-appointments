@@ -70,6 +70,55 @@ class Tx_Appointments_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHel
 		return parent::getValue($convertObjects);
 	}
 
+	/**
+	 * Get errors for the property and form name of this view helper
+	 *
+	 * Changes to the original function are marked.
+	 *
+	 * @return array An array of Tx_Fluid_Error_Error objects
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+	 */
+	public function getErrorsForProperty() { #@SHOULD put somewhere else and call it from these VHs
+		if (!$this->isObjectAccessorMode()) {
+			return array();
+		}
+		$errors = $this->controllerContext->getRequest()->getErrors();
+		$formObjectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
+		// <!-- CHANGE
+		$propertyName = t3lib_div::trimExplode('.',$this->arguments['property'],1);
+		// CHANGE -->
+		$formErrors = array();
+		foreach ($errors as $error) {
+			if ($error instanceof Tx_Extbase_Validation_PropertyError && $error->getPropertyName() === $formObjectName) {
+				$formErrors = $error->getErrors();
+				foreach ($formErrors as $formError) {
+					if ($formError instanceof Tx_Extbase_Validation_PropertyError && $formError->getPropertyName() === $propertyName[0]) {
+						// <!-- CHANGE
+						$propertyErrors = $formError->getErrors();
+						foreach ($propertyErrors as $propertyError) {
+							//if property of property
+							if ($propertyError instanceof Tx_Extbase_Validation_PropertyError && $propertyError->getPropertyName() === $propertyName[1]) {
+								return $propertyError->getErrors();
+							} elseif ($propertyError instanceof Tx_Appointments_Validation_StorageError) { //if property of storage-property
+								$storageErrors = $propertyError->getErrors();
+								foreach ($storageErrors as $id=>$storageError) {
+									if (is_array($storageError)) {
+										foreach($storageError as $storagePropertyError) {
+											if ($storagePropertyError instanceof Tx_Extbase_Validation_PropertyError && strval($id) === $propertyName[1] && $storagePropertyError->getPropertyName() === $propertyName[2]) {
+												return $storagePropertyError->getErrors();
+											}
+										}
+									}
+								}
+							}
+						}
+						// CHANGE -->
+					}
+				}
+			}
+		}
+		return array();
+	}
 }
 
 ?>

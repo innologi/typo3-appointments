@@ -124,7 +124,7 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 		),
 		'validation_types' => array(
 				'exclude' => 0,
-				'displayCond' => 'FIELD:field_type:IN:'.Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE.','.Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL,
+				'displayCond' => 'FIELD:field_type:!=:'.Tx_Appointments_Domain_Model_FormField::TYPE_BOOLEAN,
 				'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types',
 				'config' => array(
 						'type' => 'select',
