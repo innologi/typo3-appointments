@@ -64,10 +64,45 @@ class Tx_Appointments_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHel
 	 * @return mixed Value
 	 */
 	protected function getValue($convertObjects = TRUE) {
-		if ($this->arguments['value'] === NULL) {
-			$this->arguments['value'] = '';
+		if ($this->arguments instanceof Tx_Fluid_Core_ViewHelper_Arguments) { //TYPO3 4.5 compatibility
+			return $this->getOrChangeValue($convertObjects);
+		} else {
+			if ($this->arguments['value'] === NULL) {
+				$this->arguments['value'] = '';
+			}
+			return parent::getValue($convertObjects);
 		}
-		return parent::getValue($convertObjects);
+	}
+
+	/**
+	 * Get the value of this form element.
+	 * Either returns arguments['value'], or the correct value for Object Access.
+	 *
+	 * @param boolean $convertObjects whether or not to convert objects to identifiers
+	 * @return mixed Value
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function getOrChangeValue($convertObjects = TRUE) { #@TODO doc
+		$value = NULL;
+		if ($this->arguments->hasArgument('value')) {
+			$value = $this->arguments['value'];
+			// <!-- CHANGE
+		} elseif ($this->arguments['value'] === NULL) {
+			$value = '';
+			// CHANGE -->
+		} elseif ($this->isObjectAccessorMode() && $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject')) {
+			$this->addAdditionalIdentityPropertiesIfNeeded();
+			$value = $this->getPropertyValue();
+		}
+		if ($convertObjects === TRUE && is_object($value)) {
+			$identifier = $this->persistenceManager->getBackend()->getIdentifierByObject($value);
+			if ($identifier !== NULL) {
+				$value = $identifier;
+			}
+		}
+		return $value;
 	}
 
 	/**
@@ -119,6 +154,7 @@ class Tx_Appointments_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHel
 		}
 		return array();
 	}
+
 }
 
 ?>

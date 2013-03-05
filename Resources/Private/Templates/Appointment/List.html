@@ -23,7 +23,7 @@
 					{appointment.type.name}
 				</f:link.action>
 			</td>
-			<f:if condition="{now} < {appointment.type.hoursMutable -> v:math.product(b:3600) -> v:math.sum(b:appointment.crdate)}">
+			<f:if condition="{now} < {v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}">
 				<f:then>
 					<td><f:link.action action="edit" arguments="{appointment : appointment, agenda : agenda}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action></td>
 					<td><f:link.action action="delete" arguments="{appointment : appointment, agenda : agenda}" class="button_delete"><f:translate key="tx_appointments_list.appointment_delete" /><span class="delete_confirm_text"><f:translate key="tx_appointments_list.appointment_delete_confirm" /></span></f:link.action></td>
