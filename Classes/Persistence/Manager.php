@@ -48,6 +48,13 @@ class Tx_Appointments_Persistence_Manager extends Tx_Extbase_Persistence_Manager
 		$aggregateRootObjects->addAll($repository->getAddedObjects());
 		$removedObjects->addAll($repository->getRemovedObjects());
 
+		foreach ($this->session->getReconstitutedObjects() as $reconstitutedObject) {
+			$reconstitutedClass = str_replace('_Model_','_Repository_',get_class($reconstitutedObject)) . 'Repository';
+			if ($reconstitutedClass === get_class($repository)) {
+				$aggregateRootObjects->attach($reconstitutedObject);
+			}
+		}
+
 			// hand in only aggregate roots, leaving handling of subobjects to
 			// the underlying storage layer
 		$this->backend->setAggregateRootObjects($aggregateRootObjects);
