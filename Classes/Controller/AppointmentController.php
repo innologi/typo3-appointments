@@ -187,6 +187,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * action show
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to show
+	 * @dontvalidate $appointment
 	 * @return void
 	 */
 	public function showAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
@@ -257,9 +258,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
 
 		if (isset($dateFirst[0])) { //overrides in case an appointment-date is picked through agenda
-			//removes types that can't produce timeslots on the dateFirst date #@FIXME dateFirst selection doesn't seem to update the available types if freeSlotMinutes has passed? But it isn't even cached..
+			//removes types that can't produce timeslots on the dateFirst date
 			$types = $this->limitTypesByTime($types, $agenda, $dateFirst); #@TODO cache?
-			#@FIXME doesn't seem to work when an exclusive availability type is the only type allowed.. might also be the cause of the above FIXME
 			if (!empty($types)) {
 				$type = $appointment === NULL ? current($types) : $appointment->getType();
 				$beginTime = $dateFirst; //this is only useful for the next block if appointment === NULL, so it never overwrites an already picked beginTime
@@ -308,7 +308,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 							if ($formFieldValues->count() !== count($formFieldArray)) { //a check here, because on validation error, they'll already exist
 								//fields that did not yet exist will get an UID @ a manual persist
 								$formFieldValues = $this->addMissingFormFields($formFieldArray,$formFieldValues);
-								#$appointment->setFormFieldValues($formFieldValues);
+								#$appointment->setFormFieldValues($formFieldValues); #@TODO do this or dont? does it have advantages?
 							}
 							//adding the formFieldValues already will get them persisted too soon, empty and unused, so we're assigning them separately from $appointment
 							$this->view->assign('formFieldValues', $formFieldValues);
