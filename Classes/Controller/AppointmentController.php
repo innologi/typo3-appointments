@@ -426,10 +426,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		}
 
 		$formFieldValues = $appointment->getFormFieldValues();
-		$formFieldArray = $appointment->getType()->getFormFields()->toArray();
+		$formFieldArray = $appointment->getType()->getFormFields()->toArray(); #@TODO perhaps using an objectstorage here will help us fix the bug below, in combination with a foreach explicitly checking if the utilized formfields exist in this storage
 		//it's possible to delete relevant formfieldvalues in TCA, so we'll re-add them here if that's the case
-		if ($formFieldValues->count() !== count($formFieldArray)) {
-			$formFieldValues = $this->addMissingFormFields($formFieldArray,$formFieldValues);
+		if ($formFieldValues->count() !== count($formFieldArray)) { #@FIXME bug: if we replace the 5 existing formfields with 5 new ones, addMissingFormFields isn't being called to fix things
+			$formFieldValues = $this->addMissingFormFields($formFieldArray,$formFieldValues); #@SHOULD using conditions in template now to fix the above issue, but if solved here, we probably don't need them
+			#@TODO create the possibility to differentiate between shown and allowed-to-create types, so that we can encourage big changes to appointment types to happen through a copy instead, which will allow as to preserve old appointments in full glory
 		}
 
 		//if the date was changed, reflect it on the form but don't persist it yet
@@ -562,8 +563,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		//formfieldvalues already available
 		foreach ($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
-			$uid = $formField->getUid();
-			$items[$uid] = $formFieldValue;
+			if ($formField !== NULL) { //it's possible a formfield was deleted at some point
+				$uid = $formField->getUid();
+				$items[$uid] = $formFieldValue;
+			}
 		}
 
 		//formfieldvalues to add

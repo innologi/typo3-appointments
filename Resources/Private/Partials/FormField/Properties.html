@@ -1,30 +1,32 @@
 {namespace v=Tx_Vhs_ViewHelpers}
-<tr>
-	<td scope="row">
-		{formField.label}
-	</td>
-	<td>
-		<v:switch value="{formField.fieldType}">
-			<v:case case="1" break="TRUE"> <!-- Boolean / Checkbox -->
-				<f:if condition="{formFieldValue.value} == 1">
-					<f:then>
-						<f:translate key="tx_appointments_list.yes" />
-					</f:then>
-					<f:else>
-						<f:translate key="tx_appointments_list.no" />
-					</f:else>
-				</f:if>
-			</v:case>
-			<v:case case="2" break="TRUE">  <!-- Select -->
-				<v:iterator.contains haystack="{formField.choices}" needle="{formFieldValue.value}" >
+<f:if condition="{formField}">
+	<tr>
+		<td scope="row">
+			{formField.label}
+		</td>
+		<td>
+			<v:switch value="{formField.fieldType}">
+				<v:case case="1" break="TRUE"> <!-- Boolean / Checkbox -->
+					<f:if condition="{formFieldValue.value} == 1">
+						<f:then>
+							<f:translate key="tx_appointments_list.yes" />
+						</f:then>
+						<f:else>
+							<f:translate key="tx_appointments_list.no" />
+						</f:else>
+					</f:if>
+				</v:case>
+				<v:case case="2" break="TRUE">  <!-- Select -->
+					<v:iterator.contains haystack="{formField.choices}" needle="{formFieldValue.value}" >
+						{formFieldValue.value}
+					</v:iterator.contains>
+				</v:case>
+				<v:case case="3"> <!-- Textsmall / Input -->
+				</v:case>
+				<v:case case="4"> <!-- Textlarge / Textarea -->
 					{formFieldValue.value}
-				</v:iterator.contains>
-			</v:case>
-			<v:case case="3"> <!-- Textsmall / Input -->
-			</v:case>
-			<v:case case="4"> <!-- Textlarge / Textarea -->
-				{formFieldValue.value}
-			</v:case>
-		</v:switch>
-	</td>
-</tr>
+				</v:case>
+			</v:switch>
+		</td>
+	</tr>
+</f:if>

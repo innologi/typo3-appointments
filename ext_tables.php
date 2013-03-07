@@ -34,7 +34,6 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@FIXME F5 op new appointment pagina = NOOOOOOO weg timeslot + time choice
 #@TODO wat gebeurt er als je bij edit de datum wijzigt?
 #@TODO kunnen we datumkeuze niet gewoon nog steeds beschikbaar houden zodra je dateFirst doet?
-#@FIXME datumkeuze csh dateFirst!
 #@TODO following a login timeout with clicking links in the list plugin, will result in fatal errors
 #@SHOULD replace the following in the appointment list template once required TYPO3 version is upped to 4.7 or higher:
 //{v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}
