@@ -482,6 +482,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * action delete
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to delete
+	 * @dontvalidate $appointment
 	 * @return void
 	 */
 	public function deleteAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
@@ -490,7 +491,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->flashMessageContainer->add($flashMessage);
 
 		$this->slotService->resetStorageObject($appointment->getType(),$appointment->getAgenda()); //persist changes in timeslots
-
+		#@FIXME bug: causes problems when address was deleted before!
 		$this->performMailingActions('delete',$appointment);
 
 		$this->redirect('list');
