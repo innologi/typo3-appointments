@@ -198,7 +198,7 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 				'foreign_table' => 'tx_appointments_domain_model_formfieldvalue',
 				'foreign_field' => 'appointment',
 				'foreign_unique' => 'form_field',
-					//NOTE: extbase supports propertypaths here for showing but NOT updating (FE only, 4.7.8)
+					//NOTE: extbase supports propertypaths here for showing but NOT updating (FE only, 4.7.8), create an extbase patch?
 				'foreign_sortby' => 'sorting',
 				'maxitems' => 9999,
 				'appearance' => array(
