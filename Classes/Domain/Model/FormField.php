@@ -351,7 +351,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	/**
 	 * Returns the sorting
 	 *
-	 * @return string $sorting
+	 * @return integer $sorting
 	 */
 	public function getSorting() {
 		return $this->sorting;
@@ -360,7 +360,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	/**
 	 * Sets the sorting
 	 *
-	 * @param string $sorting
+	 * @param integer $sorting
 	 * @return void
 	 */
 	public function setSorting($sorting) {
