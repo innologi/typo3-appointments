@@ -125,7 +125,8 @@
 </f:if>
 
 <f:if condition="{buildCreate}">
-	<f:form enctype="multipart/form-data" method="post" action="create" arguments="{agenda : agenda, buildCreate : buildCreate}" id="appointment" object="{appointment}" objectName="appointment">
+	<f:form enctype="multipart/form-data" method="post" action="create" arguments="{agenda : agenda, buildCreate : buildCreate}" id="appointment" object="{appointment}" objectName="appointment" class="allowUnload">
+		<span class="warnUnload"><f:translate key="tx_appointments_list.warn_unload" /></span>
 		<f:form.hidden property="agenda" />
 		<f:form.hidden property="type" />
 		<f:form.hidden property="beginTime" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />

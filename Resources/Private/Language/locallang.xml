@@ -7,6 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tx_appointments.no_access">You need a valid user account.</label>
+			<label index="tx_appointments_list.warn_unload">You have not yet finished creating an appointment. Your action could result in losing all form-data as the appointment will not have been saved. If you don't want to lose the data, please choose to stay on the page and then --when ready-- save the appointment with the button beneath the form.</label>
 			<label index="tx_appointments_list.appointment_new">New appointment</label>
 			<label index="tx_appointments_list.appointment_list">Back to list</label>
 			<label index="tx_appointments_list.appointment_edit">Edit</label>
@@ -150,6 +151,7 @@
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="tx_appointments.no_access">U dient ingelogd te zijn met een geldig gebruikersaccount.</label>
+			<label index="tx_appointments_list.warn_unload">U zit midden in het aanmaakproces van een afspraak. Uw actie zou tot gevolg hebben dat de invulling van de formuliervelden verloren gaat en de afspraak niet opgeslagen wordt. Als dat niet de bedoeling is, kies er dan voor op de pagina te blijven en sla de afspraak op --indien gereed-- met de knop onder het formulier.</label>
 			<label index="tx_appointments_list.appointment_new">Nieuwe afspraak</label>
 			<label index="tx_appointments_list.appointment_list">Terug naar lijst</label>
 			<label index="tx_appointments_list.appointment_edit">Wijzig</label>

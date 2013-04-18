@@ -23,6 +23,31 @@ jQuery(document).ready(function() {
 	});
 	
 	
+	//****************
+	// unload warning
+	//****************
+	
+	var warnUnload = null;
+	var obj = jQuery('.tx-appointments form#appointment span.warnUnload');
+	
+	//set onbeforeunload if a warnUnload message exists
+	if (obj[0]) {
+		warnUnload = obj.text();
+		if (warnUnload != null && warnUnload.length) {
+			window.onbeforeunload = function() {
+				if (warnUnload.length) {
+					return warnUnload;
+				}
+			};
+		}
+	}
+	
+	//exceptions
+	jQuery('.tx-appointments .allowUnload').on('submit', function() {
+			warnUnload = '';
+	});
+	
+	
 	//**********
 	// tooltips
 	//**********
