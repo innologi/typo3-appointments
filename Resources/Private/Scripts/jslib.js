@@ -44,7 +44,7 @@ jQuery(document).ready(function() {
 					var currentTime = new Date().getTime() / 1000;
 					var seconds = Math.round(currentTime - sessionStart);
 					if (seconds >= header) {
-						warnUnload = '';
+						warnUnload = ''; //unset the message
 					}
 				}
 				
@@ -55,7 +55,7 @@ jQuery(document).ready(function() {
 			
 			//prepare 'respect REFRESH header!'
 			var req = new XMLHttpRequest();
-			req.open('GET', document.location, false);
+			req.open('GET', document.location, false); //note that this produces a second GET request, so it's rather inefficient.. can we make it optional?
 			req.send(null);
 			header = req.getResponseHeader('REFRESH');
 			header = (header != null && header.length) ? parseInt(header.substring(0, header.indexOf(';',0))) : null;
@@ -65,7 +65,7 @@ jQuery(document).ready(function() {
 	
 	//exceptions
 	jQuery('.tx-appointments .allowUnload').on('submit', function() {
-			warnUnload = '';
+			warnUnload = ''; //unset the message
 	});
 	
 	
