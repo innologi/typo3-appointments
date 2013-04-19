@@ -521,7 +521,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$this->appointmentRepository->remove($appointment); #@SHOULD consider alternatives, updating saves unnecessary increments of uid .. but then crdate is not renewed. I guess this is a pro-argument for using tstamp instead of crdate? OR EXPIRE IT AND MOVE FROM THERE!
 			$this->slotService->resetStorageObject($type,$agenda); //persist changes in timeslots
 			$arguments['type'] = $type;
-			$arguments['beginTime'] = $appointment->getBeginTime()->getTimestamp();
+			$arguments['beginTime'] = $appointment->getBeginTime()->getTimestamp(); #@FIXME this can produce a fatal error when begintime doesn't exist.. FIX IT
 		}
 
 		if (isset($dateFirst[0])) {
