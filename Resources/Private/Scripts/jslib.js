@@ -29,18 +29,39 @@ jQuery(document).ready(function() {
 	
 	var warnUnload = null;
 	var obj = jQuery('.tx-appointments form#appointment span.warnUnload');
+	//'respect REFRESH header!' variables
+	var sessionStart = new Date().getTime() / 1000;
+	var header = null;
 	
 	//set onbeforeunload if a warnUnload message exists
 	if (obj[0]) {
 		warnUnload = obj.text();
 		if (warnUnload != null && warnUnload.length) {
+			//set function
 			window.onbeforeunload = function() {
+				//perform a 'respect REFRESH header!' check
+				if (header != null) {
+					var currentTime = new Date().getTime() / 1000;
+					var seconds = Math.round(currentTime - sessionStart);
+					if (seconds >= header) {
+						warnUnload = '';
+					}
+				}
+				
 				if (warnUnload.length) {
 					return warnUnload;
 				}
 			};
+			
+			//prepare 'respect REFRESH header!'
+			var req = new XMLHttpRequest();
+			req.open('GET', document.location, false);
+			req.send(null);
+			header = req.getResponseHeader('REFRESH');
+			header = (header != null && header.length) ? parseInt(header.substring(0, header.indexOf(';',0))) : null;
 		}
 	}
+	
 	
 	//exceptions
 	jQuery('.tx-appointments .allowUnload').on('submit', function() {
