@@ -50,6 +50,9 @@ class Tx_Appointments_ViewHelpers_Form_TextfieldViewHelper extends Tx_Fluid_View
 		if ($required !== TRUE) {
 			$required = NULL;
 		}
+		if (!isset($placeholder[0])) {
+			$placeholder = NULL;
+		}
 		return parent::render($required,$type,$placeholder);
 	}
 

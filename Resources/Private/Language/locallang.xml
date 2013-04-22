@@ -57,13 +57,13 @@
 			<label index="error.formFieldValue.value.1221560288">Should be a number or divisional.</label>
 			<label index="error.formFieldValue.value.1221563685">Should be a number.</label>
 			
-			<label index="tx_appointments_list.day_s1">mo</label>
-			<label index="tx_appointments_list.day_s2">tu</label>
-			<label index="tx_appointments_list.day_s3">we</label>
-			<label index="tx_appointments_list.day_s4">th</label>
-			<label index="tx_appointments_list.day_s5">fr</label>
-			<label index="tx_appointments_list.day_s6">sa</label>
-			<label index="tx_appointments_list.day_s7">su</label>
+			<label index="tx_appointments_list.day_s1">Mo</label>
+			<label index="tx_appointments_list.day_s2">Tu</label>
+			<label index="tx_appointments_list.day_s3">We</label>
+			<label index="tx_appointments_list.day_s4">Th</label>
+			<label index="tx_appointments_list.day_s5">Fr</label>
+			<label index="tx_appointments_list.day_s6">Sa</label>
+			<label index="tx_appointments_list.day_s7">Su</label>
 			<label index="tx_appointments_agenda.day_1">Monday</label>
 			<label index="tx_appointments_agenda.day_2">Tuesday</label>
 			<label index="tx_appointments_agenda.day_3">Wednesday</label>
@@ -203,13 +203,13 @@
 			<label index="error.formFieldValue.value.1221560288">Dient een getal of breuk te zijn.</label>
 			<label index="error.formFieldValue.value.1221563685">Dient een nummer te zijn.</label>
 			
-			<label index="tx_appointments_list.day_s1">ma</label>
-			<label index="tx_appointments_list.day_s2">di</label>
-			<label index="tx_appointments_list.day_s3">wo</label>
-			<label index="tx_appointments_list.day_s4">do</label>
-			<label index="tx_appointments_list.day_s5">vr</label>
-			<label index="tx_appointments_list.day_s6">za</label>
-			<label index="tx_appointments_list.day_s7">zo</label>
+			<label index="tx_appointments_list.day_s1">Ma</label>
+			<label index="tx_appointments_list.day_s2">Di</label>
+			<label index="tx_appointments_list.day_s3">Wo</label>
+			<label index="tx_appointments_list.day_s4">Do</label>
+			<label index="tx_appointments_list.day_s5">Vr</label>
+			<label index="tx_appointments_list.day_s6">Za</label>
+			<label index="tx_appointments_list.day_s7">Zo</label>
 			<label index="tx_appointments_agenda.day_1">Maandag</label>
 			<label index="tx_appointments_agenda.day_2">Dinsdag</label>
 			<label index="tx_appointments_agenda.day_3">Woensdag</label>

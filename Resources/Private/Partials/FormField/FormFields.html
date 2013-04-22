@@ -29,7 +29,11 @@
 					<span class="required">*</span>
 				</f:if>
 				<br />
-				<a:form.textfield property="formFieldValues.{formField.uid}.value" value="{formFieldValue.value}" class="textinput" required="{f:if(condition:formField.validationTypes,then:1)}" />
+				<a:form.textfield property="formFieldValues.{formField.uid}.value" value="{formFieldValue.value}"
+					class="textinput{f:if(condition:formField.isDate,then:' datepicker')}"
+					required="{f:if(condition:formField.validationTypes,then:1)}"
+					placeholder="{f:if(condition:formField.isDate,then:'dd-mm-jjjj')}"
+				/>
 			</v:case>
 			<v:case case="4"> <!-- Textlarge / Textarea -->
 				<f:if condition="{formField.validationTypes}">

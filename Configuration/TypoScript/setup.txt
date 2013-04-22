@@ -50,8 +50,77 @@ plugin.tx_appointments {
 		#TYPO3 4.6.0, http://forge.typo3.org/issues/29695 resolved? Clearly not, so for now:
 		jQuery.disableCompression = 1
 		
-		inlineJS = FILE
-		inlineJS.file = {$plugin.tx_appointments.js.libFile}
+		#jQueryUI = FILE
+		#jQueryUI.file = {$plugin.tx_appointments.js.uiLibFile}
+		jQueryUI.external = 0
+		jQueryUI = {$plugin.tx_appointments.js.uiLibFile}
+		jQueryUI.disableCompression = 1
+		jQueryUIcss.external = 0
+		jQueryUIcss = {$plugin.tx_appointments.js.uiCssFile}
+		jQueryUIcss.disableCompression = 1
+		
+		inlineJS = TEMPLATE
+		inlineJS.template = FILE
+		inlineJS.template.file = {$plugin.tx_appointments.js.libFile}
+		inlineJS.marks {
+			DAY1 = TEXT
+			DAY1.insertData = 1
+			DAY1.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s1}
+			DAY2 = TEXT
+			DAY2.insertData = 1
+			DAY2.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s2}
+			DAY3 = TEXT
+			DAY3.insertData = 1
+			DAY3.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s3}
+			DAY4 = TEXT
+			DAY4.insertData = 1
+			DAY4.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s4}
+			DAY5 = TEXT
+			DAY5.insertData = 1
+			DAY5.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s5}
+			DAY6 = TEXT
+			DAY6.insertData = 1
+			DAY6.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s6}
+			DAY7 = TEXT
+			DAY7.insertData = 1
+			DAY7.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s7}
+			MON1 = TEXT
+			MON1.insertData = 1
+			MON1.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s1}
+			MON2 = TEXT
+			MON2.insertData = 1
+			MON2.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s2}
+			MON3 = TEXT
+			MON3.insertData = 1
+			MON3.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s3}
+			MON4 = TEXT
+			MON4.insertData = 1
+			MON4.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s4}
+			MON5 = TEXT
+			MON5.insertData = 1
+			MON5.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s5}
+			MON6 = TEXT
+			MON6.insertData = 1
+			MON6.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s6}
+			MON7 = TEXT
+			MON7.insertData = 1
+			MON7.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s7}
+			MON8 = TEXT
+			MON8.insertData = 1
+			MON8.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s8}
+			MON9 = TEXT
+			MON9.insertData = 1
+			MON9.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s9}
+			MON10 = TEXT
+			MON10.insertData = 1
+			MON10.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s10}
+			MON11 = TEXT
+			MON11.insertData = 1
+			MON11.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s11}
+			MON12 = TEXT
+			MON12.insertData = 1
+			MON12.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s12}
+		}
 	}
 	settings {
 		agendaUid = {$plugin.tx_appointments.settings.agendaUid}
@@ -79,11 +148,19 @@ page.includeJSFooterlibs.appointments_jQuery < plugin.tx_appointments.jslib.jQue
 [globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJquery}] && [globalVar = LIT:1 > {$plugin.tx_appointments.js.toFooter}] 
 page.includeJSlibs.appointments_jQuery < plugin.tx_appointments.jslib.jQuery
 
+[globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJqueryUI}] && [globalVar = LIT:0 < {$plugin.tx_appointments.js.toFooter}] 
+page.includeJSFooterlibs.appointments_jQueryUI < plugin.tx_appointments.jslib.jQueryUI
+page.includeCSS.appointments_jQueryUI < plugin.tx_appointments.jslib.jQueryUIcss
+
+[globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJqueryUI}] && [globalVar = LIT:1 > {$plugin.tx_appointments.js.toFooter}] 
+page.includeJSlibs.appointments_jQueryUI < plugin.tx_appointments.jslib.jQueryUI
+page.includeCSS.appointments_jQueryUI < plugin.tx_appointments.jslib.jQueryUIcss
+
 [globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJS}] && [globalVar = LIT:0 < {$plugin.tx_appointments.js.toFooter}]
-page.jsFooterInline.19832 < plugin.tx_appointments.jslib.inlineJS
+page.jsFooterInline.198311210 < plugin.tx_appointments.jslib.inlineJS
 
 [globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJS}] && [globalVar = LIT:1 > {$plugin.tx_appointments.js.toFooter}]
-page.jsInline.19832 < plugin.tx_appointments.jslib.inlineJS
+page.jsInline.198311210 < plugin.tx_appointments.jslib.inlineJS
 [global]
 
 plugin.tx_appointments._CSS_DEFAULT_STYLE (
@@ -107,7 +184,7 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 
 	.tx-appointments table th {
 		font-weight:bold;
-		text-algin:center;
+		text-align:center;
 	}
 
 	.tx-appointments table td {
@@ -316,6 +393,9 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments .checkbox { 
 		border:1px solid #c2c2c1;
 		background-color:#fafaf5;
+	}
+	.tx-appointments .textinput.datepicker {
+		width:90px;
 	}
 	.tx-appointments fieldset {
 		border:0;

@@ -35,7 +35,7 @@
 
 <label>
 	<f:translate key="tx_appointments_domain_model_address.birthday" /><br />
-	<f:form.textfield property="address.birthday" value="{address.birthday -> f:format.date(format:'d-m-Y')}" id="birthday" class="textinput" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.birthday.placeholder')}" />
+	<f:form.textfield property="address.birthday" value="{address.birthday -> f:format.date(format:'d-m-Y')}" id="birthday" class="textinput datepicker max-today" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.birthday.placeholder')}" />
 </label>
 <br />
 <br />

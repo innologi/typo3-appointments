@@ -83,6 +83,14 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	protected $validationTypes;
 
 	/**
+	 * Is date field?
+	 *
+	 * @var boolean
+	 * @transient
+	 */
+	protected $isDate;
+
+	/**
 	 * Field fieldType: boolean, selection, textsmall or textlarge
 	 *
 	 * @var integer
@@ -212,6 +220,29 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	}
 
 	/**
+	 * Returns whether the field is a date.
+	 *
+	 * @return boolean
+	 */
+	public function getIsDate() {
+		if ($this->isDate === NULL) {
+			$this->setIsDate($this->validationTypes);
+		}
+		return $this->isDate;
+	}
+
+	/**
+	 * Sets whether the field is a date.
+	 *
+	 * @param string $validationTypes
+	 * @return void
+	 */
+	protected function setIsDate($validationTypes) {
+		$array = explode(',',$validationTypes);
+		$this->isDate = in_array(strval(self::VALIDATE_DATE_TIME),$array,1);
+	}
+
+	/**
 	 * Returns the fieldType
 	 *
 	 * @return integer $fieldType
@@ -249,9 +280,6 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 */
 	public function setChoices($choices) {
 		$this->choices = $choices;
-
-		//format choices for form select
-		$this->choicesForSelect = $this->setChoicesForSelect($choices);
 	}
 
 	/**
