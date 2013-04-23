@@ -50,8 +50,6 @@ plugin.tx_appointments {
 		#TYPO3 4.6.0, http://forge.typo3.org/issues/29695 resolved? Clearly not, so for now:
 		jQuery.disableCompression = 1
 		
-		#jQueryUI = FILE
-		#jQueryUI.file = {$plugin.tx_appointments.js.uiLibFile}
 		jQueryUI.external = 0
 		jQueryUI = {$plugin.tx_appointments.js.uiLibFile}
 		jQueryUI.disableCompression = 1
@@ -309,7 +307,10 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments .button_back {
 		font-size:1.1em;
 		display:inline-block;
-		margin-right:15px;
+	}
+	.tx-appointments .button_edit,
+	.tx-appointments .button_delete {
+		margin-left:15px;
 	}
 	
 	.tx-appointments .csh {
