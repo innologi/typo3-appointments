@@ -26,13 +26,15 @@ t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Co
 t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.list', 'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_list.xml');
 #@TODO maak de New.html if condition voor timeslots in dateslots netter! (inline)
 #@TODO make jslib get @ warnunload optional
+#@FIXME expand warnunload to expire the appointment on leave page
+#@FIXME sessions?
 #@FIXME do Manual
 #@SHOULD look at / replace Resources/Public/Icons
 #@SHOULD unittesting?
 #@TODO currently, month and day names are taken from locallang. I should see if the php locale can be changed to the typo3 locale in order to rely on strftime and/or f:format.date
 #@TODO in hoeverre zijn mijn models entity of valueObject?
 #@TODO fluid kan {settings} benaderen? :O
-#@FIXME F5 op new appointment pagina = NOOOOOOO weg timeslot + time choice
+#@FIXME F5 op new appointment pagina = NOOOOOOO weg timeslot + time choice ALS ZE AL BEZET WAREN.. dus niet als verlopen. hmm
 #@TODO wat gebeurt er als je bij edit de datum wijzigt?
 #@TODO kunnen we datumkeuze niet gewoon nog steeds beschikbaar houden zodra je dateFirst doet?
 #@TODO following a login timeout with clicking links in the list plugin, will result in fatal errors
