@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -246,6 +246,15 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$superUser = FALSE;
 		if ($TSFE->fe_user) {
 			$feUser = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
+			#@FIXME __cleanup debug code here!
+			if (!is_object($feUser)) {
+				var_dump($TSFE->fe_user->user['uid']);
+				echo '<br/>';
+				var_dump($TSFE->fe_user->user);
+				echo '<br/>';
+				var_dump($TSFE->fe_user);
+				die('<br/><br/>THIS IS THE getUsergroup ERROR!');
+			}
 			$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
 			if ($feUser->getUsergroup()->contains($suGroup)) {
 				$superUser = TRUE;
@@ -318,36 +327,58 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 							}
 
 							$this->calculateTimes($appointment); //set the remaining DateTime properties
+							$remainingSeconds = $freeSlotInMinutes * 60; //number of seconds remaining before timeslot is freed
 
 							//when a validation error ensues, we don't want the unfinished appointment being re-added, hence the check
 							if ($appointment->_isNew()) { #@TODO check all the inline doc around these changes
 								$this->appointmentRepository->add($appointment);
-								#@TODO message
-								#$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_new_creation', $this->extensionName);
-								#$this->flashMessageContainer->add($flashMessage);
+								//message indicating reservation time
+								$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timerstart', $this->extensionName);
+								$this->flashMessageContainer->add($flashMessage);
 							} else {
+								//recalculate remainingSeconds
+								$secondsBusy = time() - $appointment->getCrdate();
+								$remainingSeconds = $remainingSeconds - $secondsBusy; #@SHOULD we make this a (transient?) property of class appointment?
+								//when the appointment was flagged 'expired' in the current pagehit,
+								//this $appointment reference might not yet be up to date,
+								//so we have to check $remainingSeconds < 0 for those specific cases
+								if ($remainingSeconds < 0 && $appointment->getCreationProgress() !== Tx_Appointments_Domain_Model_Appointment::EXPIRED) {
+									$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
+									$appointment->_memorizePropertyCleanState('creationProgress'); //if we don't register EXPIRED as clean state, setting it to unfinished later won't be recognized by persistence!
+								}
 								#@TODO kan ik net zoals change type niet een change time en change date hierin verwerken?
 								#@SHOULD split up in functions!
 								#@TODO doc
-								if ($appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::EXPIRED) { //it's possible to get here while $freeSlotInMinutes has expired and the appointment no longer exists, thus throwing an exception
+								if ($appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::EXPIRED) { //it's possible to get here when expired and the appointment no longer exists, thus throwing an exception #@TODO caught by.. ?
 									if ($this->crossAppointments($appointment)) { //make sure the timeslot is still available
 										//an appointment was found that makes the current one's times not possible
 										$flashMessage = str_replace('$1',$freeSlotInMinutes,
 												Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName)
 										);
 										$this->flashMessageContainer->add($flashMessage);
-
+										#@FIXME ???? why here AND after if?
 										$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED); #@TODO cleanup task for expired records?
 										#@TODO werkt nog niet helemaal zoals ik wil: je moet de tijd eerst vrijgeven voor je verder kunt kiezen wat betekent dat je weer de waarden verliest
 										#@TODO dus misschien de vrijmaak knop los van een wijzig knop doen, en de wijzig knoppen via ajax o.i.d. doorsturen?
 										#@TODO test wat er precies gebeurt bij het wijzigen van de type met compleet verschillende formfields
+									} else {
+										//timer refreshed message
+										$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timerrefresh', $this->extensionName);
+										$this->flashMessageContainer->add($flashMessage);
 									}
+									#@TODO should this be here? what happens @ crossAppointments?
 									$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED);
-									#@TODO message about refreshed freeSlotInMinutes?
+									$remainingSeconds = $freeSlotInMinutes * 60;
 								}
 								$this->appointmentRepository->update($appointment);
 							}
 							$this->slotService->resetStorageObject($type,$agenda); //necessary to persist changes to the available timeslots
+
+							//remaining time message @TODO enhance with javascript?
+							$flashMessage = str_replace('$1', strftime('%M:%S', $remainingSeconds),
+									Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timer', $this->extensionName)
+							);
+							$this->flashMessageContainer->add($flashMessage);
 						} else {
 							#@TODO error: not allowed
 						}
