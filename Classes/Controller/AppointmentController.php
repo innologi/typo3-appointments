@@ -164,7 +164,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('agenda', $agenda);
 
 		$feUser = NULL;
-		if ($TSFE->fe_user) {
+		if (isset($TSFE->fe_user->user['uid'])) {
 			//turns out getting the id is not enough: not all fe_users are of the correct record_type
 			$feUserUid = $TSFE->fe_user->user['uid'];
 			$feUser = $this->frontendUserRepository->findByUid($feUserUid);
@@ -198,21 +198,23 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$superUser = FALSE;
 		#@TODO you should be able to return to an agenda view if the plugin came from there but a list plugin is n/a .. or is that even possible?
 
-		if ($TSFE->fe_user) {
+		if (isset($TSFE->fe_user->user['uid'])) {
 			$feUser = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
 
 			//check if current user is member of the superuser group
 			$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
-			if ($feUser->getUsergroup()->contains($suGroup)) {
-				//we're not using vhs viewhelpers for this, because we need to set $showMore anyway and a viewhelper-alternative is overkill
-				$superUser = TRUE;
-				$showMore = TRUE;
-				$endTime = $appointment->getBeginReserved()->getTimestamp();
-				$mutable = time() < $endTime; //su can edit any appointment that hasn't started yet
-			} elseif ($feUser->getUid() == $appointment->getFeUser()->getUid()) { //check if current user is the owner of the appointment, so that we may do a 'mutable' check
-				$showMore = TRUE;
-				$endTime = $appointment->getType()->getHoursMutable() * 60 * 60 + $appointment->getCrdate();
-				$mutable = time() < $endTime;
+			if ($feUser) {
+				if ($feUser->getUsergroup()->contains($suGroup)) {
+					//we're not using vhs viewhelpers for this, because we need to set $showMore anyway and a viewhelper-alternative is overkill
+					$superUser = TRUE;
+					$showMore = TRUE;
+					$endTime = $appointment->getBeginReserved()->getTimestamp();
+					$mutable = time() < $endTime; //su can edit any appointment that hasn't started yet
+				} elseif ($feUser->getUid() == $appointment->getFeUser()->getUid()) { //check if current user is the owner of the appointment, so that we may do a 'mutable' check
+					$showMore = TRUE;
+					$endTime = $appointment->getType()->getHoursMutable() * 60 * 60 + $appointment->getCrdate();
+					$mutable = time() < $endTime;
+				}
 			}
 
 			//certain conditions get to show more data (i.e. being superuser and/or owner)
@@ -244,21 +246,18 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		#@TODO look at the template.. are all those hidden properties really necessary?
 		global $TSFE; #@TODO move to a service/helper class?
 		$superUser = FALSE;
-		if ($TSFE->fe_user) {
+		$feUser = NULL;
+		if (isset($TSFE->fe_user->user['uid'])) {
 			$feUser = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
-			#@FIXME __cleanup debug code here!
-			if (!is_object($feUser)) {
-				var_dump($TSFE->fe_user->user['uid']);
-				echo '<br/>';
-				var_dump($TSFE->fe_user->user);
-				echo '<br/>';
-				var_dump($TSFE->fe_user);
-				die('<br/><br/>THIS IS THE getUsergroup ERROR!');
-			}
 			$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
-			if ($feUser->getUsergroup()->contains($suGroup)) {
+			if ($feUser && $feUser->getUsergroup()->contains($suGroup)) {
 				$superUser = TRUE;
 			}
+		}
+		#@TODO doc
+		if ($feUser === NULL) {
+			#@TODO flash message
+			$this->redirect('list');
 		}
 
 		//find types
@@ -375,7 +374,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 							$this->slotService->resetStorageObject($type,$agenda); //necessary to persist changes to the available timeslots
 
 							//remaining time message @TODO enhance with javascript?
-							$flashMessage = str_replace('$1', strftime('%M:%S', $remainingSeconds),
+							$flashMessage = str_replace(
+									'$1',
+									strftime('%M:%S', $remainingSeconds),
 									Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timer', $this->extensionName)
 							);
 							$this->flashMessageContainer->add($flashMessage);
@@ -448,12 +449,18 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		//is user superuser?
 		global $TSFE;
 		$superUser = FALSE;
-		if ($TSFE->fe_user) {
+		$feUser = NULL;
+		if (isset($TSFE->fe_user->user['uid'])) {
 			$feUser = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
 			$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
-			if ($feUser->getUsergroup()->contains($suGroup)) {
+			if ($feUser && $feUser->getUsergroup()->contains($suGroup)) {
 				$superUser = TRUE;
 			}
+		}
+		#@TODO doc
+		if ($feUser === NULL) {
+			#@TODO flash message
+			$this->redirect('list');
 		}
 
 		$formFieldValues = $appointment->getFormFieldValues();
