@@ -30,7 +30,7 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@FIXME sessions?
 #@TODO make messages dismissable
 #@TODO add icons to messages
-#@TODO enhance validation error messages, comparable to other messages
+#@SHOULD make * = required only visible when there are required fields
 #@FIXME do Manual
 #@SHOULD look at / replace Resources/Public/Icons
 #@SHOULD unittesting?
