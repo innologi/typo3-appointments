@@ -374,10 +374,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 							$this->slotService->resetStorageObject($type,$agenda); //necessary to persist changes to the available timeslots
 
 							//remaining time message
-							#@TODO test with >60 minutes
 							$flashMessage = str_replace(
 									'$1',
-									'<span class="reservation-timer">' . intval(date('i',$remainingSeconds)) . ':' . date('s',$remainingSeconds) . '</span>', //intval minutes to remove leading zero
+									'<span class="reservation-timer">' . floor($remainingSeconds/60) . ':' . date('s',$remainingSeconds) . '</span>', //intval minutes to remove leading zero
 									Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timer', $this->extensionName)
 							);
 							$this->flashMessageContainer->add($flashMessage);
