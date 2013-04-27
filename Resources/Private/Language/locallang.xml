@@ -26,6 +26,7 @@
 			<label index="tx_appointments_list.submit_new">Create appointment</label>
 			<label index="tx_appointments_list.submit_update">Save appointment</label>
 			<label index="tx_appointments_list.submit_free">Free timeslot</label>
+			<label index="tx_appointments_list.validation_errors">Some fields were not filled in correctly:</label>
 			<label index="tx_appointments_list.yes">Yes</label>
 			<label index="tx_appointments_list.no">No</label>
 			<label index="tx_appointments_list.appointment_create_success">Your new appointment was created.</label>
@@ -39,7 +40,7 @@
 			<label index="tx_appointments_list.appointment_update_success">Your appointment was updated.</label>
 			<label index="tx_appointments_list.appointment_update_crosstime">The appointment could not be updated, because your time-changes would result in an overlap of appointments due to changes in schedule since you've started to edit the appointment. Please pick another time or try again later.</label>
 			<label index="tx_appointments_list.appointment_delete_success">Your appointment was cancelled.</label>
-			<label index="tx_appointments_list.required">required</label>
+			<label index="tx_appointments_list.required">required field</label>
 			<label index="tx_appointments_list.email_create_subject">Appointment confirmation</label>
 			<label index="tx_appointments_list.email_update_subject">Appointment change</label>
 			<label index="tx_appointments_list.email_delete_subject">Appointment cancellation</label>
@@ -175,6 +176,7 @@
 			<label index="tx_appointments_list.submit_new">Afspraak aanmaken</label>
 			<label index="tx_appointments_list.submit_update">Afspraak opslaan</label>
 			<label index="tx_appointments_list.submit_free">Geef tijdstip vrij</label>
+			<label index="tx_appointments_list.validation_errors">Sommige velden zijn niet correct ingevuld:</label>
 			<label index="tx_appointments_list.yes">Ja</label>
 			<label index="tx_appointments_list.no">Nee</label>
 			<label index="tx_appointments_list.appointment_create_success">Uw nieuwe afspraak is aangemaakt.</label>
@@ -188,7 +190,7 @@
 			<label index="tx_appointments_list.appointment_update_success">Uw afspraak is opgeslagen.</label>
 			<label index="tx_appointments_list.appointment_update_crosstime">De afspraak kon niet opgeslagen worden, omdat de door u gewenste tijdswijzigingen in conflict zijn met tijden van andere afspraken die ingepland zijn sinds u de afspraak in bewerking heeft genomen. Probeer een ander tijdstip of probeer het later opnieuw.</label>
 			<label index="tx_appointments_list.appointment_delete_success">Uw afspraak is geannuleerd.</label>
-			<label index="tx_appointments_list.required">vereist</label>
+			<label index="tx_appointments_list.required">vereist veld</label>
 			<label index="tx_appointments_list.email_create_subject">Bevestiging afspraak</label>
 			<label index="tx_appointments_list.email_update_subject">Wijziging afspraak</label>
 			<label index="tx_appointments_list.email_delete_subject">Annulering afspraak</label>

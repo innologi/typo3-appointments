@@ -162,11 +162,6 @@ page.jsInline.198311210 < plugin.tx_appointments.jslib.inlineJS
 [global]
 
 plugin.tx_appointments._CSS_DEFAULT_STYLE (
-	.tx-appointments .f3-form-error {
-		background-color:#ff9f9f !important;
-		border:1px #f00 solid !important;
-	}
-	
 	.tx-appointments {
 		font-family:helvetica,arial,sans-serif;
 	}
@@ -291,7 +286,7 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	}
 	
 	.tx-appointments .agendaDay .dayBar a {
-		color: #555;
+		color:#555;
 	}
 	
 	.tx-appointments .agendaShow .link_appointment {
@@ -374,6 +369,11 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	
 	/* Forms */
 	
+	.tx-appointments .f3-form-error {
+		background-color:#ff9f9f !important;
+		border:1px solid #f00 !important;
+	}
+	
 	.tx-appointments span.warnUnload {
 		display:none;
 	}
@@ -411,21 +411,31 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments .typo3-messages {
 		overflow:hidden;
 	}
-	
-	.tx-appointments .typo3-message {
+	.tx-appointments .typo3-message,
+	.tx-appointments .validation-errors {
 		margin:8px 0;
 		padding:10px;
 		min-width:100px;
 		font-size:0.9em;
+	}
+	.tx-appointments .typo3-message {
 		float:left;
 		clear:both;
 	}
-	
-	.tx-appointments .typo3-message .message-header {
+	.tx-appointments .validation-errors {
+		display:inline-block;
+	}
+	.tx-appointments ul.validation-error-messages {
+		list-style-type:square;
+	}
+		
+	.tx-appointments .typo3-message .message-header,
+	.tx-appointments .validation-errors .validation-fieldname {
 		font-weight:bold;
 	}
 	
-	.tx-appointments .typo3-message.message-error {
+	.tx-appointments .typo3-message.message-error,
+	.tx-appointments .validation-errors {
 		background-color:#fba;
 		border:1px solid #d98;
 	}

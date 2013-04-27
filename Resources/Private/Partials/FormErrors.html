@@ -1,5 +1,10 @@
-<ul class="error">
-	<f:form.errors for="{for}">
-		<f:render partial="FormErrorsDetail" arguments="{entity: for, error: error, formFields: formFields}" />
-	</f:form.errors>
-</ul>
+<f:form.errors for="{for}">
+<div class="validation">
+	<div class="validation-errors">
+		<div class="validation-header"><f:translate key="tx_appointments_list.validation_errors" /></div>
+		<ul class="validation-error-messages">
+			<f:render partial="FormErrorsDetail" arguments="{entity: for, error: error, formFields: formFields}" />
+		</ul>
+	</div>
+</div>
+</f:form.errors>

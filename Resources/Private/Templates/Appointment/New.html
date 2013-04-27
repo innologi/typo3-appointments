@@ -5,9 +5,13 @@
 
 <f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[buildCreate]',2:'tx_appointments_list[type]',3:'tx_appointments_list[beginTime]',4:'tx_appointments_list[dateFirst]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
 
-<f:render partial="FormErrors" arguments="{for: 'appointment', formFields : appointment.type.formFields}" />
-
+<br />
+<br />
 <span class="required">*</span> = <f:translate key="tx_appointments_list.required" />
+<br />
+<br />
+
+<f:render partial="FormErrors" arguments="{for: 'appointment', formFields : appointment.type.formFields}" />
 
 <f:if condition="{types}">
 	<f:form enctype="multipart/form-data" method="post" action="new" arguments="{agenda : agenda}" id="typeForm" object="{appointment}" objectName="appointment">
