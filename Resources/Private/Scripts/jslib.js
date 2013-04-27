@@ -28,14 +28,14 @@ jQuery(document).ready(function() {
 	//****************
 	
 	var warnUnload = null;
-	var obj = jQuery('.tx-appointments form#appointment span.warnUnload');
+	var warnUnloadElem = jQuery('.tx-appointments form#appointment span.warnUnload');
 	//'respect REFRESH header!' variables
 	var sessionStart = new Date().getTime() / 1000;
 	var header = null;
 	
 	//set onbeforeunload if a warnUnload message exists
-	if (obj[0]) {
-		warnUnload = obj.text();
+	if (warnUnloadElem[0]) {
+		warnUnload = warnUnloadElem.text();
 		if (warnUnload != null && warnUnload.length) {
 			//set function
 			window.onbeforeunload = function() {
@@ -58,7 +58,7 @@ jQuery(document).ready(function() {
 			req.open('GET', document.location, false); //note that this produces a second GET request, so it's rather inefficient.. can we make it optional?
 			req.send(null);
 			header = req.getResponseHeader('REFRESH');
-			header = (header != null && header.length) ? parseInt(header.substring(0, header.indexOf(';',0))) : null;
+			header = (header != null && header.length) ? parseInt(header.substring(0, header.indexOf(';',0)),10) : null;
 		}
 	}
 	
@@ -133,4 +133,48 @@ jQuery(document).ready(function() {
 	//sets max of datepicker to today if the field has class 'max-today'
 	$('.tx-appointments .datepicker.max-today').datepicker('option','maxDate','0');
 	
+	
+	//*****************************
+	// Reservation Timer Countdown
+	//*****************************
+	
+	var timerElem = jQuery('.tx-appointments span.reservation-timer');
+	var minutes = 0;
+	var seconds = 0;
+	var flashStart = 0;
+	var counter = null;
+	
+	//start timer countdown if a timer exists
+	if (timerElem[0]) {
+		//calculate timer variables
+		minutes = parseInt('###TIMER_MINUTES###',10); //as string to prevent javascript errors in dev-env
+		seconds = minutes * 60;
+		flashStart = seconds / 10;
+		if (flashStart < 59) {
+			flashStart = 59;
+		}
+		//run every second (in milliseconds)
+		counter = setInterval(reservationTimer, 1000);
+	}
+	
+	
+	function reservationTimer() {
+		seconds--;
+		
+		var displayMin = Math.floor(seconds / 60);
+		var displaySec = '0' + (seconds % 60); //remainder of seconds by modulus
+		//set new inner html
+		timerElem.html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
+		
+		//starts flashing (or marking) the timer according to class css
+		if (seconds == flashStart) {
+			timerElem.addClass('flash');
+		}
+		
+		if (seconds <= 0) {
+			clearInterval(counter); //stop counter
+			return;
+		}
+	};
+
 });

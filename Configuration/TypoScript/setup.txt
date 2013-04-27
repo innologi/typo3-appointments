@@ -118,6 +118,9 @@ plugin.tx_appointments {
 			MON12 = TEXT
 			MON12.insertData = 1
 			MON12.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s12}
+			TIMER_MINUTES = TEXT
+			TIMER_MINUTES.insertData = 1
+			TIMER_MINUTES.value = {$plugin.tx_appointments.settings.freeSlotInMinutes}
 		}
 	}
 	settings {
@@ -403,5 +406,17 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	}
 	.tx-appointments .required {
 		color:#f00;
+	}
+	
+	
+	/* Reservation timer */
+	
+	@keyframes flashTimer {
+		0% { color:#000; }
+		50% { color:#f00; }
+	}
+	
+	.tx-appointments span.reservation-timer.flash {
+		animation:flashTimer linear 1s infinite;
 	}
 )
