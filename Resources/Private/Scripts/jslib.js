@@ -140,7 +140,7 @@ jQuery(document).ready(function() {
 	
 	var timerElem = jQuery('.tx-appointments span.reservation-timer');
 	var seconds = 0;
-	var flashStart = 59;
+	var flashStart = 60;
 	var counter = null;
 	
 	//start timer countdown if a timer exists
@@ -160,19 +160,19 @@ jQuery(document).ready(function() {
 	
 	//countdown timer-html-setter function
 	function reservationTimer() {
-		seconds--;
-		
-		var displayMin = Math.floor(seconds / 60);
-		var displaySec = '0' + (seconds % 60); //remainder of seconds by modulus
-		//set new inner html
-		timerElem.html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
-		
 		if (seconds == flashStart) {
 			timerElem.addClass('flash'); //starts flashing (or marking) the timer according to class css
 		} else if (seconds <= 0) {
 			clearInterval(counter); //stop counter
 			return;
 		}
+		
+		seconds--;
+		
+		var displayMin = Math.floor(seconds / 60);
+		var displaySec = '0' + (seconds % 60); //remainder of seconds by modulus
+		//set new inner html
+		timerElem.html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
 	};
 
 });
