@@ -139,25 +139,26 @@ jQuery(document).ready(function() {
 	//*****************************
 	
 	var timerElem = jQuery('.tx-appointments span.reservation-timer');
-	var minutes = 0;
 	var seconds = 0;
-	var flashStart = 0;
+	var flashStart = 59;
 	var counter = null;
 	
 	//start timer countdown if a timer exists
 	if (timerElem[0]) {
 		//calculate timer variables
-		minutes = parseInt('###TIMER_MINUTES###',10); //as string to prevent javascript errors in dev-env
-		seconds = minutes * 60;
-		flashStart = seconds / 10;
-		if (flashStart < 59) {
-			flashStart = 59;
+		var timerVal = timerElem.html();
+		var splitAt = timerVal.indexOf(':',0);
+		var minutes = parseInt(timerVal.substring(0, splitAt),10);
+		seconds = (minutes * 60) + parseInt(timerVal.substring(splitAt+1),10);
+		if (seconds < flashStart) {
+			flashStart = seconds - 1;
 		}
 		//run every second (in milliseconds)
 		counter = setInterval(reservationTimer, 1000);
+		//because this starts after load, there is a few seconds delay, but it doesn't seem to be an issue.
 	}
 	
-	
+	//countdown timer-html-setter function
 	function reservationTimer() {
 		seconds--;
 		
@@ -166,12 +167,9 @@ jQuery(document).ready(function() {
 		//set new inner html
 		timerElem.html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
 		
-		//starts flashing (or marking) the timer according to class css
 		if (seconds == flashStart) {
-			timerElem.addClass('flash');
-		}
-		
-		if (seconds <= 0) {
+			timerElem.addClass('flash'); //starts flashing (or marking) the timer according to class css
+		} else if (seconds <= 0) {
 			clearInterval(counter); //stop counter
 			return;
 		}

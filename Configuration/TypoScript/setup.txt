@@ -118,9 +118,6 @@ plugin.tx_appointments {
 			MON12 = TEXT
 			MON12.insertData = 1
 			MON12.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s12}
-			TIMER_MINUTES = TEXT
-			TIMER_MINUTES.insertData = 1
-			TIMER_MINUTES.value = {$plugin.tx_appointments.settings.freeSlotInMinutes}
 		}
 	}
 	settings {
