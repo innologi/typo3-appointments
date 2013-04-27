@@ -406,14 +406,56 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	}
 	
 	
-	/* Reservation timer */
+	/* Messages */
+	
+	.tx-appointments .typo3-messages {
+		overflow:hidden;
+	}
+	
+	.tx-appointments .typo3-message {
+		margin:8px 0;
+		padding:10px;
+		min-width:100px;
+		font-size:0.9em;
+		float:left;
+		clear:both;
+	}
+	
+	.tx-appointments .typo3-message .message-header {
+		font-weight:bold;
+	}
+	
+	.tx-appointments .typo3-message.message-error {
+		background-color:#fba;
+		border:1px solid #d98;
+	}
+	
+	.tx-appointments .typo3-message.message-warning {
+		background-color:#ff9;
+		border:1px solid #dd7;
+	}
+	
+	.tx-appointments .typo3-message.message-notice {
+		background-color:#d5d5d5;
+		border:1px solid #b5b5b5;
+	}
+	
+	.tx-appointments .typo3-message.message-information {
+		background-color:#def;
+		border:1px solid #bcd;
+	}
+	
+	.tx-appointments .typo3-message.message-ok {
+		background-color:#d9ffcc;
+		border:1px solid #b9ddaa;
+	}
 	
 	@keyframes flashTimer {
 		0% { color:#000; }
-		50% { color:#f00; }
+		30% { color:#f00; }
+		70% { color:#f00; }
 	}
-	
 	.tx-appointments span.reservation-timer.flash {
-		animation:flashTimer linear 1s infinite;
+		animation:flashTimer linear 1.5s infinite;
 	}
 )

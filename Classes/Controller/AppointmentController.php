@@ -275,7 +275,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			} else {
 				//no types available on chosen time, so no appointments either
 				$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_no_types', $this->extensionName);
-				$this->flashMessageContainer->add($flashMessage);
+				$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 			}
 		}
 
@@ -333,7 +333,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 								$this->appointmentRepository->add($appointment);
 								//message indicating reservation time
 								$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timerstart', $this->extensionName);
-								$this->flashMessageContainer->add($flashMessage);
+								$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 							} else {
 								//recalculate remainingSeconds
 								$secondsBusy = time() - $appointment->getCrdate();
@@ -354,7 +354,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 										$flashMessage = str_replace('$1',$freeSlotInMinutes,
 												Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName)
 										);
-										$this->flashMessageContainer->add($flashMessage);
+										$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 										#@FIXME ???? why here AND after if?
 										$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED); #@TODO cleanup task for expired records?
 										#@TODO werkt nog niet helemaal zoals ik wil: je moet de tijd eerst vrijgeven voor je verder kunt kiezen wat betekent dat je weer de waarden verliest
@@ -363,7 +363,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 									} else {
 										//timer refreshed message
 										$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timerrefresh', $this->extensionName);
-										$this->flashMessageContainer->add($flashMessage);
+										$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 									}
 									#@TODO should this be here? what happens @ crossAppointments?
 									$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED);
@@ -376,10 +376,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 							//remaining time message
 							$flashMessage = str_replace(
 									'$1',
-									'<span class="reservation-timer">' . floor($remainingSeconds/60) . ':' . date('s',$remainingSeconds) . '</span>', //intval minutes to remove leading zero
+									'<span class="reservation-timer">' . floor($remainingSeconds/60) . ':' . date('s',$remainingSeconds) . '</span>',
 									Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timer', $this->extensionName)
 							);
-							$this->flashMessageContainer->add($flashMessage);
+							$flashHeader = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timer_header', $this->extensionName);
+							$this->flashMessageContainer->add($flashMessage,$flashHeader,t3lib_FlashMessage::INFO);
 						} else {
 							#@TODO error: not allowed
 						}
@@ -424,7 +425,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::FINISHED);
 			$this->appointmentRepository->update($appointment);
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_success', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage);
+			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
 
 			$this->slotService->resetStorageObject($appointment->getType(),$agenda); //persist changes in timeslots, in case they were freed up for some reason
 
@@ -501,12 +502,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		if ($this->crossAppointments($appointment)) {
 			//an appointment was found that makes the current one's times not possible
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_crosstime', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage);
+			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 			$this->forward('edit'); //hopefully acts like a validation error #@TODO compare with changes @ create
 		} else {
 			$this->appointmentRepository->update($appointment);
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage);
+			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
 
 			$this->slotService->resetStorageObject($appointment->getType(),$appointment->getAgenda()); //persist changes in timeslots, in case they were freed up for some reason
 
@@ -526,7 +527,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	public function deleteAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->appointmentRepository->remove($appointment);
 		$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_delete_success', $this->extensionName);
-		$this->flashMessageContainer->add($flashMessage);
+		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
 
 		$this->slotService->resetStorageObject($appointment->getType(),$appointment->getAgenda()); //persist changes in timeslots
 		#@FIXME bug: causes problems when address was deleted before!

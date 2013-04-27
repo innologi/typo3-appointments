@@ -1,7 +1,7 @@
 {namespace v=Tx_Vhs_ViewHelpers}
 <div class="tx-appointments">
 	
-	<f:flashMessages />
+	<f:flashMessages renderMode="div" />
 	
 	<v:security.allow anyFrontendUser="TRUE" then="{f:render(section:'FeUser')}" else="{f:translate(key: 'tx_appointments.no_access')}" />
 	

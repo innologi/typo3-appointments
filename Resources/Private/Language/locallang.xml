@@ -31,9 +31,10 @@
 			<label index="tx_appointments_list.appointment_create_success">Your new appointment was created.</label>
 			<label index="tx_appointments_list.appointment_create_no_types">It is not possible to schedule an appointment on the chosen day (anymore), please pick another day.</label>
 			<label index="tx_appointments_list.appointment_create_crosstime">The timeslot you picked is no longer available. Keep in mind the timelimit of $1 minutes the system keeps the timeslot reserved for you while filling out the form. Please pick another time or try again later.</label>
-			<label index="tx_appointments_list.appointment_create_timerstart">Your chosen timeslot is now reserved for you, until the timer runs out and the timeslot has been made available again. Please try to fill in the form and finish creating the appointment BEFORE the timer runs out, or you will risk it being no longer available because of another appointment and are forced to pick a different timeslot.</label>
-			<label index="tx_appointments_list.appointment_create_timer">Reservation timer: $1</label>
-			<label index="tx_appointments_list.appointment_create_timerrefresh">Your chosen timeslot was made available again, but had not yet been taken. It has been reserved for you again.</label>
+			<label index="tx_appointments_list.appointment_create_timerstart">Your chosen timeslot is now reserved by you until the timer runs out, so that you can fill out the form and schedule the appointment for the chosen time. Please try to finish BEFORE the timer runs out, or you might risk the timeslot being taken by someone else.</label>
+			<label index="tx_appointments_list.appointment_create_timer_header">Timeslot reserved temporarily by you.</label>
+			<label index="tx_appointments_list.appointment_create_timer">Will automatically be available again after: $1</label>
+			<label index="tx_appointments_list.appointment_create_timerrefresh">Your chosen timeslot was made available again, but had not yet been taken. It has been reserved by you again.</label>
 			<label index="tx_appointments_list.appointment_no_longer_available">The appointment is no longer available. It may have been cancelled or deleted by someone after you visited the page.</label>
 			<label index="tx_appointments_list.appointment_update_success">Your appointment was updated.</label>
 			<label index="tx_appointments_list.appointment_update_crosstime">The appointment could not be updated, because your time-changes would result in an overlap of appointments due to changes in schedule since you've started to edit the appointment. Please pick another time or try again later.</label>
@@ -179,9 +180,10 @@
 			<label index="tx_appointments_list.appointment_create_success">Uw nieuwe afspraak is aangemaakt.</label>
 			<label index="tx_appointments_list.appointment_create_no_types">Er zijn geen (nieuwe) afspraken mogelijk op de door u gekozen datum, kies s.v.p. een andere dag.</label>
 			<label index="tx_appointments_list.appointment_create_crosstime">Het door u gekozen tijdstip is niet meer beschikbaar. Denk aan de tijdslimiet van $1 minuten waarin het systeem het tijdstip voor u reserveert terwijl u het formulier invult. Probeer een ander tijdstip of probeer het later opnieuw.</label>
-			<label index="tx_appointments_list.appointment_create_timerstart">Het door u gekozen tijdstip is voor u gereserveerd tot de timer afloopt en hij weer vrijgegeven wordt. Probeer het formulier in te vullen en de afspraak definitief aan te maken voordat de timer afgelopen is, omdat u anders het risico loopt dat het tijdstip daarna niet meer beschikbaar is door een andere afspraak en u noodgedwongen een ander tijdstip moet kiezen.</label>
-			<label index="tx_appointments_list.appointment_create_timer">Reserveringstimer: $1</label>
-			<label index="tx_appointments_list.appointment_create_timerrefresh">Het door u gekozen tijdstip was vrijgegeven, maar nog steeds beschikbaar voor u. Het tijdstip is opnieuw voor u gereserveerd.</label>
+			<label index="tx_appointments_list.appointment_create_timerstart">Het door u gekozen tijdstip is door u gereserveerd tot de timer afloopt, zodat u binnen die tijd het formulier kunt invullen en de afspraak definitief kunt inplannen op het betreffende tijdstip. Probeer af te ronden voordat de timer afgelopen is, omdat het tijdstip anders door iemand anders in gebruik genomen kan worden.</label>
+			<label index="tx_appointments_list.appointment_create_timer_header">Tijdstip tijdelijk door u gereserveerd.</label>
+			<label index="tx_appointments_list.appointment_create_timer">Wordt automatisch vrijgegeven na: $1</label>
+			<label index="tx_appointments_list.appointment_create_timerrefresh">Het door u gekozen tijdstip was vrijgegeven, maar nog steeds beschikbaar voor u. Het tijdstip is opnieuw door u gereserveerd.</label>
 			<label index="tx_appointments_list.appointment_no_longer_available">De afspraak is niet meer beschikbaar. Het is mogelijk geannuleerd of verwijderd door iemand nadat u de pagina bezocht.</label>
 			<label index="tx_appointments_list.appointment_update_success">Uw afspraak is opgeslagen.</label>
 			<label index="tx_appointments_list.appointment_update_crosstime">De afspraak kon niet opgeslagen worden, omdat de door u gewenste tijdswijzigingen in conflict zijn met tijden van andere afspraken die ingepland zijn sinds u de afspraak in bewerking heeft genomen. Probeer een ander tijdstip of probeer het later opnieuw.</label>
