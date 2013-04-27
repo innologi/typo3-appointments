@@ -28,6 +28,9 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO make jslib get @ warnunload optional
 #@FIXME expand warnunload to expire the appointment on leave page
 #@FIXME sessions?
+#@TODO make messages dismissable
+#@TODO add icons to messages
+#@TODO enhance validation error messages, comparable to other messages
 #@FIXME do Manual
 #@SHOULD look at / replace Resources/Public/Icons
 #@SHOULD unittesting?
