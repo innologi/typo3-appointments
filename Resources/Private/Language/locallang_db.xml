@@ -96,7 +96,7 @@
 			<label index="tx_appointments_domain_model_formfield.required">Required</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types">Validation Types</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.alphanum">Alphanumeric</label>
-			<label index="tx_appointments_domain_model_formfield.validation_types.datetime">Date/Time</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.datetime">Date</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.email">Email Address</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.float">Float</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.integer">Integer</label>
@@ -224,7 +224,7 @@
 			<label index="tx_appointments_domain_model_formfield.csh">Toelichtingstekst</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types">Validatie Types</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.alphanum">Alphanumeriek</label>
-			<label index="tx_appointments_domain_model_formfield.validation_types.datetime">Datum/Tijd</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.datetime">Datum</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.email">Email Adres</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.float">Breuk</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.integer">Heel Getal</label>
