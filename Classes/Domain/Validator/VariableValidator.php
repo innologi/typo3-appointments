@@ -75,7 +75,9 @@ class Tx_Appointments_Domain_Validator_VariableValidator extends Tx_Extbase_Vali
 						//$value is of type string, while this validator tests it for objecttype DateTime
 						if (!empty($value)) {
 							try {
-								$value = new DateTime($value);
+								$newValue = new DateTime($value);
+								//results in NULL if a valid DateTime string but not in the specified format, so that you can't get away with a timestamp or some other format
+								$value = ($value === $newValue->format('d-m-Y')) ? $newValue : NULL;
 							} catch (Exception $e) { //if $value is no valid DateTime string
 								$value = NULL;
 							}
