@@ -28,8 +28,8 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO make jslib get @ warnunload optional
 #@FIXME expand warnunload to expire the appointment on leave page
 #@FIXME sessions?
-#@TODO make messages dismissable
-#@TODO add icons to messages
+#@SHOULD make messages dismissable
+#@SHOULD add icons to messages
 #@SHOULD make * = required only visible when there are required fields
 #@FIXME do Manual
 #@SHOULD look at / replace Resources/Public/Icons
@@ -40,7 +40,6 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@FIXME F5 op new appointment pagina = NOOOOOOO weg timeslot + time choice ALS ZE AL BEZET WAREN.. dus niet als verlopen. hmm
 #@TODO wat gebeurt er als je bij edit de datum wijzigt?
 #@TODO kunnen we datumkeuze niet gewoon nog steeds beschikbaar houden zodra je dateFirst doet?
-#@TODO following a login timeout with clicking links in the list plugin, will result in fatal errors
 #@SHOULD replace the following in the appointment list template once required TYPO3 version is upped to 4.7 or higher:
 //{v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}
 //with:
