@@ -175,4 +175,20 @@ jQuery(document).ready(function() {
 		timerElem.html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
 	};
 
+	
+	//***********************
+	// Change submit buttons
+	//***********************
+	
+	jQuery('.tx-appointments #appointments-select-type').change(function() {
+		jQuery('.tx-appointments #appointments-submit-type').addClass('attention');
+	});
+	
+	jQuery('.tx-appointments #appointments-select-date').change(function() {
+		jQuery('.tx-appointments #appointments-submit-date').addClass('attention');
+	});
+	
+	jQuery('.tx-appointments #appointments-select-time').change(function() {
+		jQuery('.tx-appointments #appointments-submit-time').addClass('attention');
+	});
 });

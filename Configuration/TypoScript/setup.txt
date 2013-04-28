@@ -388,6 +388,9 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments .textinput { 
 		width:500px;
 	}
+	.tx-appointments .textinput.small {
+		width:auto;
+	}
 	.tx-appointments textarea,
 	.tx-appointments .textinput,
 	.tx-appointments .select,
@@ -400,9 +403,16 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	}
 	.tx-appointments fieldset {
 		border:0;
+		padding-left:0;
+		margin-left:0;
 	}
 	.tx-appointments .required {
 		color:#f00;
+	}
+	
+	.tx-appointments .submit.attention {
+		font-weight:bold;
+		color:#d00;
 	}
 	
 	
