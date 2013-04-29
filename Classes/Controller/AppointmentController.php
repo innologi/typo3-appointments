@@ -234,7 +234,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda the appointment belongs to
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @param string $buildCreate Indicates that the actual/final appointment creation form should be build
-	 * @param string $refreshAppointment Indicates that the appointment should be refreshed as a unfinished appointment
 	 * @param string $dateFirst
 	 * @param Tx_Appointments_Domain_Model_Type $type appointment.type substitute
 	 * @param integer $beginTime appointment.beginTime substitute
@@ -242,7 +241,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @dontvalidate $type
 	 * @return void
 	 */
-	public function newAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = NULL, $refreshAppointment = NULL, $dateFirst = NULL, Tx_Appointments_Domain_Model_Type $type = NULL, $beginTime = NULL) {
+	public function newAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = NULL, $dateFirst = NULL, Tx_Appointments_Domain_Model_Type $type = NULL, $beginTime = NULL) {
 		//is user superuser?
 		#@TODO look at the template.. are all those hidden properties really necessary?
 		global $TSFE; #@TODO move to a service/helper class?
@@ -293,8 +292,22 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 			$type = $appointment->getType();
 
+			#@TODO doc after other TODOs
 			if (!isset($dateSlots)) { //helps to avoid overwriting an override
-				$dateSlots = $this->slotService->getDateSlots($type, $agenda, $freeSlotInMinutes); #@TODO can we throw error somewhere when this one is empty?
+				if ($buildCreate !== NULL && $appointment->getBeginTime() !== NULL) {
+					$dateSlots = $this->slotService->getSingleDateSlot($type,$agenda,$freeSlotInMinutes,$appointment->getBeginTime()->getTimestamp()); #@TODO this circumvents the problem where there are no timeslots available when F5-ing, but is it efficient?
+					if ($dateSlots->count() === 0) { #@FIXME THIS IS A TERRIBLE TEMPORARY WORKAROUND, FIX IT (also, timer refresh automatically is NOT ALLOWED)
+						$temp = new Tx_Appointments_Domain_Model_DateSlot();
+						$temp->setTimestamp($appointment->getBeginTime()->getTimestamp());
+						$temp->setKey($appointment->getBeginTime()->format(Tx_Appointments_Domain_Service_SlotService::DATESLOT_KEY_FORMAT));
+						$temp->setDayName($appointment->getBeginTime()->format('l'));
+						$dayShort = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.day_s'.$appointment->getBeginTime()->format('N'), $this->extensionName);
+						$temp->setLabel($dayShort . ' ' . $appointment->getBeginTime()->format('d-m-Y'));
+						$dateSlots->attach($temp);
+					}
+				} else {
+					$dateSlots = $this->slotService->getDateSlots($type, $agenda, $freeSlotInMinutes); #@TODO can we throw error somewhere when this one is empty?
+				}
 			}
 
 			$beginTime = $appointment->getBeginTime();
@@ -305,16 +318,17 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 					if ($buildCreate !== NULL) { #@TODO all the earlier buttons will not save fields that are set in the final form, what can be done about it?
 						//step 3 reached
 
-						//indicates if the appointment should be treated as new for the user, regardless if it really is
-						if ($refreshAppointment !== NULL) {
+						//indicates if the appointment should be treated as new for the user
+						if ($appointment->_isNew() || $appointment->getRefresh()) {
 							$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED);
+							$appointment->setRefresh(FALSE);
 
 							//message indicating reservation time start
 							$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timerstart', $this->extensionName);
 							$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 						}
 
-						if ($this->slotService->isTimeSlotAllowed($timeSlots,$appointment) !== FALSE) {
+						if ($this->slotService->isTimeSlotAllowed($timeSlots,$appointment) !== FALSE) { #@TODO I don't think this is useful anymore :P
 							//limit the still available types by the already chosen timeslot
 							$excludeAppointment = $appointment->_isNew() ? 0 : $appointment->getUid();
 							$types = $this->limitTypesByTime($types, $agenda, $beginTime->getTimestamp(), $excludeAppointment); #@TODO cache?
@@ -560,6 +574,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$type = $appointment->getType();
 			//set it to expired to free up the timeslot, but still pass along the appointment so that it may be reconstituted in the same session
 			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
+			$appointment->setRefresh(TRUE);
 			$this->appointmentRepository->update($appointment);
 			$this->slotService->resetStorageObject($type,$agenda); //persist changes in timeslots
 			$arguments['appointment'] = $appointment;

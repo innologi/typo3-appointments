@@ -203,20 +203,23 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to check the timeslot for
 	 * @return boolean
 	 */
-	public function isTimeSlotAllowed(Tx_Appointments_Persistence_KeyObjectStorage $timeSlots, Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function isTimeSlotAllowed(Tx_Appointments_Persistence_KeyObjectStorage $timeSlots, Tx_Appointments_Domain_Model_Appointment $appointment) { #@TODO seriously reconsider this function, because it seems utterly useless other than adding a missing timeslot to timeslots
 		$timestamp = $appointment->getBeginTime()->getTimestamp();
-
-		if (!$appointment->_isNew() && $appointment->getCreationProgress() !== Tx_Appointments_Domain_Model_Appointment::FINISHED) { #@FIXME this isn't the most secure option, anyone can alter the form's beginTime value and thus get away with it, at least until he tries to save
-			$timeSlots->attach($this->createTimeSlot($timestamp));
-			return TRUE;
-		}
-
 		$timeSlot = $timeSlots->getObjectByKey(strftime('%Y-%m-%d %H:%M:%S',$timestamp));
-		if ($timeSlot !== FALSE) {
-			return TRUE;
-		}
 
-		return FALSE;
+		#if ($appointment->getCreationProgress() !== Tx_Appointments_Domain_Model_Appointment::FINISHED) { #@FIXME this isn't the most secure option, anyone can alter the form's beginTime value and thus get away with it, at least until he tries to save
+			if ($timeSlot === FALSE) {
+				$timeSlots->attach($this->createTimeSlot($timestamp));
+			}
+			return TRUE;
+		#}
+
+
+		#if ($timeSlot !== FALSE) {
+		#	return TRUE;
+		#}
+
+		#return FALSE;
 	}
 
 	/**

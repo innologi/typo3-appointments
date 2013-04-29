@@ -6,7 +6,7 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_appointments_domain_model_appointment'] = array(
 	'ctrl' => $TCA['tx_appointments_domain_model_appointment']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, creation_progress, begin_time, end_time, begin_reserved, end_reserved, notes, notes_su, type, form_field_values, address, fe_user, agenda',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, creation_progress, refresh, begin_time, end_time, begin_reserved, end_reserved, notes, notes_su, type, form_field_values, address, fe_user, agenda',
 	),
 	'types' => array( #@TODO kunnen we creation_progress field laten bepalen wat we zien?
 		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, agenda, type,
@@ -109,6 +109,13 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 		'creation_progress' => array( #@TODO perhaps we can base a text or a flash message on this value? :)
 			'exclude' => 1,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.creation_progress',
+			'config' => array(
+				'type' => 'none',
+			),
+		),
+		'refresh' => array(
+			'exclude' => 1,
+			'label' => 'Refresh', #@TODO llang
 			'config' => array(
 				'type' => 'none',
 			),

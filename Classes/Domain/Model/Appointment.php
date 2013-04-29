@@ -54,6 +54,13 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	protected $creationProgress = self::UNFINISHED;
 
 	/**
+	 * Refresh the appointment?
+	 *
+	 * @var boolean
+	 */
+	protected $refresh = FALSE;
+
+	/**
 	 * Start time
 	 *
 	 * @var DateTime
@@ -211,6 +218,25 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 		if ($creationProgress === self::UNFINISHED) {
 			$this->crdate = time();
 		}
+	}
+
+	/**
+	 * Returns refresh
+	 *
+	 * @return boolean $refresh
+	 */
+	public function getRefresh() {
+		return $this->refresh;
+	}
+
+	/**
+	 * Sets refresh
+	 *
+	 * @param boolean $refresh
+	 * @return void
+	 */
+	public function setRefresh($refresh) {
+		$this->refresh = $refresh;
 	}
 
 	/**
