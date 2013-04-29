@@ -15,22 +15,22 @@
 	
 		<v:switch value="{formField.fieldType}">
 			<v:case case="1" break="TRUE"> <!-- Boolean / Checkbox -->
-				<f:form.checkbox property="formFieldValues.{formField.uid}.value" value="1" checked="{formFieldValue.value} == 1" class="checkbox" />
+				<f:form.checkbox id="appointments-formField-{formField.uid}" property="formFieldValues.{formField.uid}.value" value="1" checked="{formFieldValue.value} == 1" class="checkbox session" />
 			</v:case>
 			<v:case case="2" break="TRUE">  <!-- Select -->
 				<f:if condition="{formField.validationTypes}">
 					<span class="required">*</span>
 				</f:if>
 				<br />
-				<a:form.select property="formFieldValues.{formField.uid}.value" options="{formField.choicesForSelect}" value="{formFieldValue.value}" class="select" />
+				<a:form.select id="appointments-formField-{formField.uid}" property="formFieldValues.{formField.uid}.value" options="{formField.choicesForSelect}" value="{formFieldValue.value}" class="select session" />
 			</v:case>
 			<v:case case="3" break="TRUE"> <!-- Textsmall / Input -->
 				<f:if condition="{formField.validationTypes}">
 					<span class="required">*</span>
 				</f:if>
 				<br />
-				<a:form.textfield property="formFieldValues.{formField.uid}.value" value="{formFieldValue.value}"
-					class="textinput{f:if(condition:formField.isDate,then:' datepicker')}"
+				<a:form.textfield id="appointments-formField-{formField.uid}" property="formFieldValues.{formField.uid}.value" value="{formFieldValue.value}"
+					class="textinput{f:if(condition:formField.isDate,then:' datepicker')} session"
 					required="{f:if(condition:formField.validationTypes,then:1)}"
 					placeholder="{f:if(condition:formField.isDate,then:'dd-mm-jjjj')}"
 				/>
@@ -40,7 +40,7 @@
 					<span class="required">*</span>
 				</f:if>
 				<br />
-				<a:form.textarea property="formFieldValues.{formField.uid}.value" value="{formFieldValue.value}" cols="40" rows="15" />
+				<a:form.textarea id="appointments-formField-{formField.uid}" property="formFieldValues.{formField.uid}.value" value="{formFieldValue.value}" cols="40" rows="15" class="session" />
 			</v:case>
 		</v:switch>
 	</label>

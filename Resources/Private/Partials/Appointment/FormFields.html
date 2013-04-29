@@ -17,7 +17,7 @@
 <label>
 	<f:translate key="tx_appointments_domain_model_appointment.notes" />
 	<br />
-	<f:form.textarea property="notes" cols="40" rows="15" />
+	<f:form.textarea id="appointments-notes" property="notes" cols="40" rows="15" class="session" />
 </label>
 <span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.notes.csh')}"><f:translate key="tx_appointments_list.csh" /></span>
 
@@ -27,7 +27,7 @@
 <label>
 	<f:translate key="tx_appointments_domain_model_appointment.notes_su" />
 	<br />
-	<f:form.textarea property="notesSu" cols="40" rows="15" />
+	<f:form.textarea id="appointments-notesSu" property="notesSu" cols="40" rows="15" class="session" />
 </label>
 <span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.notes_su.csh')}"><f:translate key="tx_appointments_list.csh" /></span>
 </f:if>

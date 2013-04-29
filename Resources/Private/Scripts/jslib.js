@@ -143,21 +143,6 @@ jQuery(document).ready(function() {
 	var flashStart = 60;
 	var counter = null;
 	
-	//start timer countdown if a timer exists
-	if (timerElem[0]) {
-		//calculate timer variables
-		var timerVal = timerElem.html();
-		var splitAt = timerVal.indexOf(':',0);
-		var minutes = parseInt(timerVal.substring(0, splitAt),10);
-		seconds = (minutes * 60) + parseInt(timerVal.substring(splitAt+1),10);
-		if (seconds < flashStart) {
-			flashStart = seconds - 1;
-		}
-		//run every second (in milliseconds)
-		counter = setInterval(reservationTimer, 1000);
-		//because this starts after load, there is a few seconds delay, but it doesn't seem to be an issue.
-	}
-	
 	//countdown timer-html-setter function
 	function reservationTimer() {
 		if (seconds == flashStart) {
@@ -174,21 +159,115 @@ jQuery(document).ready(function() {
 		//set new inner html
 		timerElem.html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
 	};
+	
+	//start timer countdown if a timer exists
+	if (timerElem[0]) {
+		//calculate timer variables
+		var timerVal = timerElem.html();
+		var splitAt = timerVal.indexOf(':',0);
+		var minutes = parseInt(timerVal.substring(0, splitAt),10);
+		seconds = (minutes * 60) + parseInt(timerVal.substring(splitAt+1),10);
+		if (seconds < flashStart) {
+			flashStart = seconds - 1;
+		}
+		//run every second (in milliseconds)
+		counter = setInterval(reservationTimer, 1000);
+		//because this starts after load, there is a few seconds delay, but it doesn't seem to be an issue.
+	}
 
 	
 	//***********************
 	// Change submit buttons
 	//***********************
 	
-	jQuery('.tx-appointments #appointments-select-type').change(function() {
-		jQuery('.tx-appointments #appointments-submit-type').addClass('attention');
+	jQuery('.tx-appointments form #appointments-select-type').change(function() {
+		jQuery('.tx-appointments form #appointments-submit-type').addClass('attention');
 	});
 	
-	jQuery('.tx-appointments #appointments-select-date').change(function() {
-		jQuery('.tx-appointments #appointments-submit-date').addClass('attention');
+	jQuery('.tx-appointments form #appointments-select-date').change(function() {
+		jQuery('.tx-appointments form #appointments-submit-date').addClass('attention');
 	});
 	
-	jQuery('.tx-appointments #appointments-select-time').change(function() {
-		jQuery('.tx-appointments #appointments-submit-time').addClass('attention');
+	jQuery('.tx-appointments form #appointments-select-time').change(function() {
+		jQuery('.tx-appointments form #appointments-submit-time').addClass('attention');
 	});
+	
+	
+	//******************************
+	// Form session storage (html5)
+	//******************************
+	
+	//check support for session storage in user-agent
+	function isStorageSupported() {
+		try {
+			return 'sessionStorage' in window && window['sessionStorage'] !== null;
+		} catch(e){
+			return false;
+		}
+	}
+	
+	//default storage function
+	function storeValueInSession(e) {
+		sessionStorage.setItem(
+			e.id,
+			e.value
+		);
+	}
+	
+	//populates the form fields from session values
+	function getFormStorage() {
+		var storage = window['sessionStorage'];
+		//retrieve all ids of session-marked form elements
+		var fields = jQuery('.tx-appointments form .session').map(function(index) {
+		    return this.id;
+		}).get();
+		
+		for (var i in fields) {
+			var id = fields[i];
+			if (storage.getItem(id)) { //checks if there is a session value for the id
+				var elemObj = jQuery('.tx-appointments form #' + id);
+				var val = storage.getItem(id);
+				//checkboxes work differently from all other fields
+				if (elemObj.hasClass('checkbox')) {
+					//note that val retrieved from sessionStorage is of type string, NOT boolean!
+					if (val == 'true') {
+						elemObj.prop('checked', true);
+					} else {
+						elemObj.prop('checked', false);
+					}
+				} else {
+					elemObj.val(val);
+				}
+			}
+		}
+	}
+
+	//run appropriate functions if supported
+	if (isStorageSupported()) {
+		getFormStorage();
+
+		//add storage events
+		jQuery('.tx-appointments form textarea.session').keyup(function() {
+			storeValueInSession(this);
+		});
+		jQuery('.tx-appointments form .textinput.session').keyup(function() {
+			storeValueInSession(this);
+		});
+		jQuery('.tx-appointments form .select.session').change(function() {
+			storeValueInSession(this);
+		});
+		jQuery('.tx-appointments form .checkbox.session').change(function() {
+			//we look at checked instead of value @ checkboxes
+			sessionStorage.setItem(
+				this.id,
+				this.checked
+			);
+		});
+		
+		//submitting the form should clear the session values, so that a second new appointment contains empty fields 
+		jQuery('.tx-appointments form#appointment').submit(function() {
+			sessionStorage.clear();
+		});
+	}
+
 });

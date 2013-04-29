@@ -27,6 +27,7 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO maak de New.html if condition voor timeslots in dateslots netter! (inline)
 #@TODO make jslib get @ warnunload optional
 #@FIXME expand warnunload to expire the appointment on leave page
+#@TODO javascript workers voor asynchroon? ivm timer en session en get request, etc.
 #@FIXME sessions?
 #@SHOULD make messages dismissable
 #@SHOULD add icons to messages
