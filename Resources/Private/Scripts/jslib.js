@@ -131,7 +131,7 @@ jQuery(document).ready(function() {
 	});
 	
 	//sets max of datepicker to today if the field has class 'max-today'
-	$('.tx-appointments .datepicker.max-today').datepicker('option','maxDate','0');
+	jQuery('.tx-appointments .datepicker.max-today').datepicker('option','maxDate','0');
 	
 	
 	//*****************************
