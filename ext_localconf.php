@@ -25,7 +25,6 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	// non-cacheable actions
 	array(
 		'Appointment' => 'create, update, delete, edit, new, free',
-			#@TODO onzeker: edit
 	)
 );
 

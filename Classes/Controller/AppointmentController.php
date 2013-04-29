@@ -234,6 +234,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda the appointment belongs to
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @param string $buildCreate Indicates that the actual/final appointment creation form should be build
+	 * @param string $refreshAppointment Indicates that the appointment should be refreshed as a unfinished appointment
 	 * @param string $dateFirst
 	 * @param Tx_Appointments_Domain_Model_Type $type appointment.type substitute
 	 * @param integer $beginTime appointment.beginTime substitute
@@ -241,7 +242,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @dontvalidate $type
 	 * @return void
 	 */
-	public function newAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = NULL, $dateFirst = NULL, Tx_Appointments_Domain_Model_Type $type = NULL, $beginTime = NULL) {
+	public function newAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = NULL, $refreshAppointment = NULL, $dateFirst = NULL, Tx_Appointments_Domain_Model_Type $type = NULL, $beginTime = NULL) {
 		//is user superuser?
 		#@TODO look at the template.. are all those hidden properties really necessary?
 		global $TSFE; #@TODO move to a service/helper class?
@@ -280,7 +281,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		}
 
 		//if an appointment isn't set yet, but substitute values are, we can skip the first steps anyway
-		if ($appointment === NULL && $beginTime !== NULL && $type !== NULL) {
+		if ($appointment === NULL && $beginTime !== NULL && $type !== NULL) { #@TODO can I get rid of this and the two function arguments? or is it used elsewhere?
 			$appointment = new Tx_Appointments_Domain_Model_Appointment();
 			$appointment->setBeginTime(new DateTime(strftime("%Y-%m-%d %H:%M:%S",$beginTime)));
 			$appointment->setType($type);
@@ -303,6 +304,15 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				if (($timeSlots = $this->slotService->getTimeSlots($dateSlots,$appointment)) !== FALSE) {
 					if ($buildCreate !== NULL) { #@TODO all the earlier buttons will not save fields that are set in the final form, what can be done about it?
 						//step 3 reached
+
+						//indicates if the appointment should be treated as new for the user, regardless if it really is
+						if ($refreshAppointment !== NULL) {
+							$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED);
+
+							//message indicating reservation time start
+							$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timerstart', $this->extensionName);
+							$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
+						}
 
 						if ($this->slotService->isTimeSlotAllowed($timeSlots,$appointment) !== FALSE) {
 							//limit the still available types by the already chosen timeslot
@@ -331,9 +341,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 							//when a validation error ensues, we don't want the unfinished appointment being re-added, hence the check
 							if ($appointment->_isNew()) { #@TODO check all the inline doc around these changes
 								$this->appointmentRepository->add($appointment);
-								//message indicating reservation time
-								$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timerstart', $this->extensionName);
-								$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 							} else {
 								//recalculate remainingSeconds
 								$secondsBusy = time() - $appointment->getCrdate();
@@ -355,10 +362,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 												Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName)
 										);
 										$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-										#@FIXME ???? why here AND after if?
-										$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED); #@TODO cleanup task for expired records?
-										#@TODO werkt nog niet helemaal zoals ik wil: je moet de tijd eerst vrijgeven voor je verder kunt kiezen wat betekent dat je weer de waarden verliest
-										#@TODO dus misschien de vrijmaak knop los van een wijzig knop doen, en de wijzig knoppen via ajax o.i.d. doorsturen?
+										#@TODO misschien de vrijmaak knop los van een wijzig knop doen, en de wijzig knoppen via ajax o.i.d. doorsturen?
 										#@TODO test wat er precies gebeurt bij het wijzigen van de type met compleet verschillende formfields
 									} else {
 										//timer refreshed message
@@ -366,7 +370,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 										$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 									}
 									#@TODO should this be here? what happens @ crossAppointments?
-									$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED);
+									$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED); #@TODO cleanup task for expired records?
 									$remainingSeconds = $freeSlotInMinutes * 60;
 								}
 								$this->appointmentRepository->update($appointment);
@@ -552,15 +556,13 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				'agenda' => $agenda
 		);
 
-		#@FIXME misschien moet ik beginTime property bij deze maar onnodig maken: geen select?
-
 		if ($appointment !== NULL) {
 			$type = $appointment->getType();
-			#@FIXME instead of removing it, I should look at how I solve editAction and create a new multi-stepped newAction which looks at submitbutton for free/create action while using a single form
-			$this->appointmentRepository->remove($appointment); #@SHOULD consider alternatives, updating saves unnecessary increments of uid .. but then crdate is not renewed. I guess this is a pro-argument for using tstamp instead of crdate? OR EXPIRE IT AND MOVE FROM THERE!
+			//set it to expired to free up the timeslot, but still pass along the appointment so that it may be reconstituted in the same session
+			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
+			$this->appointmentRepository->update($appointment);
 			$this->slotService->resetStorageObject($type,$agenda); //persist changes in timeslots
-			$arguments['type'] = $type;
-			$arguments['beginTime'] = $appointment->getBeginTime()->getTimestamp(); #@FIXME this can produce a fatal error when begintime doesn't exist.. FIX IT
+			$arguments['appointment'] = $appointment;
 		}
 
 		if (isset($dateFirst[0])) {
@@ -568,7 +570,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$arguments['dateFirst'] = $dateFirst;
 		}
 
-		$this->redirect('new',NULL,NULL,$arguments);
+		$this->redirect('new',NULL,NULL,$arguments); #@TODO test if $arguments is necessary
 	}
 
 
@@ -677,7 +679,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	protected function crossAppointments(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$crossAppointments = $this->appointmentRepository->findCrossAppointments($appointment);
-		return !empty($crossAppointments);
+		return !empty($crossAppointments); #@TODO re-check if a cross appointment is caught and presented on FE the way I really really want it
 	}
 
 	/**

@@ -37,7 +37,7 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO currently, month and day names are taken from locallang. I should see if the php locale can be changed to the typo3 locale in order to rely on strftime and/or f:format.date
 #@TODO in hoeverre zijn mijn models entity of valueObject?
 #@TODO fluid kan {settings} benaderen? :O
-#@FIXME F5 op new appointment pagina = NOOOOOOO weg timeslot + time choice ALS ZE AL BEZET WAREN.. dus niet als verlopen. hmm
+#@FIXME F5 op new appointment pagina = NOOOOOOO weg timeslot + time choice ALS ZE AL BEZET WAREN.. dus niet als verlopen. EN NIET ALS JE EEN VALIDATION ERROR HEBT GEHAD? hmm
 #@TODO wat gebeurt er als je bij edit de datum wijzigt?
 #@TODO kunnen we datumkeuze niet gewoon nog steeds beschikbaar houden zodra je dateFirst doet?
 #@SHOULD replace the following in the appointment list template once required TYPO3 version is upped to 4.7 or higher:
