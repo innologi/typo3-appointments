@@ -61,6 +61,9 @@ plugin.tx_appointments {
 		inlineJS.template = FILE
 		inlineJS.template.file = {$plugin.tx_appointments.js.libFile}
 		inlineJS.marks {
+			DELETE_CONFIRM = TEXT
+			DELETE_CONFIRM.insertData = 1
+			DELETE_CONFIRM.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_delete_confirm}
 			DAY1 = TEXT
 			DAY1.insertData = 1
 			DAY1.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s1}
@@ -360,10 +363,6 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	}
 	.tx-appointments .csh:before {
 		background-position:-306px -54px;
-	}
-	
-	.tx-appointments .button_delete .delete_confirm_text {
-		display:none;
 	}
 	
 	

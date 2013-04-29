@@ -15,7 +15,7 @@ jQuery(document).ready(function() {
 	//********************
 	
 	//:first is necessary because there could be multiple delete buttons, yet it's all the same
-	var confirmDeleteMessage = jQuery('.tx-appointments .delete_confirm_text:first').text();
+	var confirmDeleteMessage = '###DELETE_CONFIRM###';
 	
 	//click function performs a confirm, if TRUE/OK continues button functionality
 	jQuery('.tx-appointments .button_delete').click(function() {
