@@ -694,7 +694,9 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		$func = 'getMinuteInterval'.$day;
 		$intervalMinutes = $type->$func();
 
-		$timestamp = $dateTime->modify($startTime)->getTimestamp();
+		#$timestamp = $dateTime->modify($startTime)->getTimestamp(); //absolute times only supported on PHP >= 5.3.6
+		$parts = explode(':',$startTime);
+		$timestamp = $dateTime->setTime(intval($parts[0]),intval($parts[1]))->getTimestamp();
 		$intervalSeconds = $intervalMinutes * 60;
 
 		//makes the hours actually count when appointing time slots
