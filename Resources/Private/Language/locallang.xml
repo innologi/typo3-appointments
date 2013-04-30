@@ -7,7 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tx_appointments.no_access">You need a valid user account.</label>
-			<label index="tx_appointments_list.warn_unload">You have not yet finished creating an appointment. Your action could result in losing all form-data as the appointment will not have been saved. If you don't want to lose the data, please choose to stay on the page and then --when ready-- save the appointment with the button beneath the form.</label>
+			<label index="tx_appointments_list.warn_unload">You have not yet finished creating an appointment. Your action could result in losing all unsaved data, unless you stay on the page and --when ready-- finish creating the appointment first, using the button below the form.</label>
 			<label index="tx_appointments_list.appointment_new">New appointment</label>
 			<label index="tx_appointments_list.appointment_list">Back to list</label>
 			<label index="tx_appointments_list.appointment_edit">Edit</label>
@@ -126,6 +126,7 @@
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new">The time of the appointment. The available choices consist of all (still) available timeslots on the picked date, for this particular appointment type. Different dates and/or appointment types may result in different available timeslots.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_free">To change the timeslot, you'll have to free up the currently chosen timeslot first.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_reserved">Agenda reserved</label>
+			<label index="tx_appointments_domain_model_appointment.special_fields">Administration &amp; Notes</label>
 			<label index="tx_appointments_domain_model_appointment.notes">Notes</label>
 			<label index="tx_appointments_domain_model_appointment.notes.csh">You may set (private) notes here, relevant to the appointment.</label>
 			<label index="tx_appointments_domain_model_appointment.notes_su">Administrator notes</label>
@@ -156,7 +157,7 @@
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="tx_appointments.no_access">U dient ingelogd te zijn met een geldig gebruikersaccount.</label>
-			<label index="tx_appointments_list.warn_unload">U zit midden in het aanmaakproces van een afspraak. Uw actie zou tot gevolg hebben dat de invulling van de formuliervelden verloren gaat en de afspraak niet opgeslagen wordt. Als dat niet de bedoeling is, kies er dan voor op de pagina te blijven en sla de afspraak op --indien gereed-- met de knop onder het formulier.</label>
+			<label index="tx_appointments_list.warn_unload">U zit midden in het aanmaakproces van een afspraak. Uw actie zou mogelijk tot gevolg kunnen hebben dat alle nog niet opgeslagen gegevens komen te vervallen, tenzij u op de pagina blijft en u de afspraak --indien gereed-- eerst definitief aanmaakt met de knop onder het invul-formulier.</label>
 			<label index="tx_appointments_list.appointment_new">Nieuwe afspraak</label>
 			<label index="tx_appointments_list.appointment_list">Terug naar lijst</label>
 			<label index="tx_appointments_list.appointment_edit">Wijzig</label>
@@ -277,6 +278,7 @@
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new">De tijd van de afspraak. De beschikbare keuzes bestaan uit alle (nog) beschikbare tijden op de gekozen datum, voor het specifieke afspraak type. Een andere datum en/of afspraak type kan andere beschikbare tijden tot gevolg hebben.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_free">Als u het tijdstip wilt wijzigen, dient u eerst het gekozen tijdstip vrij te geven.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_reserved">Gereserveerd</label>
+			<label index="tx_appointments_domain_model_appointment.special_fields">Beheer &amp; Notities</label>
 			<label index="tx_appointments_domain_model_appointment.notes">Opmerkingen</label>
 			<label index="tx_appointments_domain_model_appointment.notes.csh">U kunt hier (privé) opmerkingen kwijt die relevant zijn voor de afspraak.</label>
 			<label index="tx_appointments_domain_model_appointment.notes_su">Opmerkingen van beheerder</label>

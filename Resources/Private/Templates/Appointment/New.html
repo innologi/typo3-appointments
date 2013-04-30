@@ -12,7 +12,6 @@
 <f:render partial="FormErrors" arguments="{for: 'appointment', formFields : appointment.type.formFields}" />
 
 <br />
-<br />
 <f:if condition="{types}">
 	<f:form enctype="multipart/form-data" method="post" action="new" arguments="{agenda : agenda}" id="typeForm" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
