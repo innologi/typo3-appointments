@@ -58,7 +58,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var boolean
 	 */
-	protected $refresh = FALSE;
+	protected $refresh = FALSE; #@TODO this property more part of a process than of the domain model.. so look for another way
 
 	/**
 	 * Start time
@@ -66,7 +66,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @var DateTime
 	 * @validate DateTime
 	 */
-	protected $beginTime; #@FIXME wat als iemand deze waarde probeert te manipuleren?
+	protected $beginTime; #@FIXME wat als iemand deze waarde probeert te manipuleren? DAAR IS timeslotAllowed for!
 
 	/**
 	 * End time
