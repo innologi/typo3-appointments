@@ -187,6 +187,10 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 		vertical-align:top;
 	}
 	
+	.tx-appointments h4 {
+		margin:15px 0 10px;
+	}
+	
 	.tx-appointments a {
 		color:#66f;
 		text-decoration:none;
@@ -402,8 +406,8 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	}
 	.tx-appointments fieldset {
 		border:0;
-		padding-left:0;
-		margin-left:0;
+		padding:0;
+		margin:10px 0 0;
 	}
 	.tx-appointments .required {
 		color:#f00;
