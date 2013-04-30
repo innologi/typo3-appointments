@@ -121,11 +121,11 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @param DateTime $end The ending time
 	 * @param boolean $includeUnfinished On true, includes unfinished appointments
 	 * @param integer $rearrangePerHours On true, rebuilds the array through rearrangeAppointmentArray()
-	 * @param integer $excludeAppointment UID of an appointment that is ignored in retrieving appointments
+	 * @param Tx_Appointments_Domain_Model_Appointment $excludeAppointment Appointment that is ignored in retrieving appointments
 	 * @param array $types Types to limit appointments by, if not NULL
 	 * @return array An array of objects, empty if no objects found
 	 */
-	public function findBetween(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $start, DateTime $end, $includeUnfinished = FALSE, $rearrangePerHours = 0, $excludeAppointment = 0, array $types = NULL) {
+	public function findBetween(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $start, DateTime $end, $includeUnfinished = FALSE, $rearrangePerHours = 0, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL, array $types = NULL) {
 		$query = $this->createQuery();
 
 		$constraint = array(
@@ -146,9 +146,12 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 			$constraint[] = $query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::FINISHED);
 		}
 
-		if ($excludeAppointment > 0) {
+		if ($excludeAppointment !== NULL) {
 			$constraint[] = $query->logicalNot(
-					$query->equals('uid', $excludeAppointment)
+					#$query->logicalAnd( #@TODO cleanup
+							$query->equals('uid', $excludeAppointment->getUid())#,
+					#		$query->equals('type', $excludeAppointment->getType())
+					#)
 			);
 		}
 

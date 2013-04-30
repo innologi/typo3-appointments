@@ -183,7 +183,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 			$blockedHours = $this->typeRepository->findBySmallestBlockedHours($allowTypes)->getBlockedHours();
 			$blockedSeconds = $blockedHours * 60 * 60;
 			$startCreateTime = strtotime($currentDate) + $blockedSeconds;
-			$this->view->assign('startCreateTime', $startCreateTime); #@TODO replace this mechanism with one that is actually aware of available timeslots
+			$this->view->assign('startCreateTime', $startCreateTime); #@TODO replace this mechanism with one that is actually aware of available timeslots, and in the very least a last day
 		} else {
 			#@TODO error?
 		}
@@ -283,7 +283,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		//creates date objects in week storages for the container, because each day and week contain different properties
 		$endTime = $end->getTimestamp();
 		$holidays = $agenda->getHolidays();
-		$appointments = $this->appointmentRepository->findBetween($agenda, $start, $end, 0, 24, 0, $types);
+		$appointments = $this->appointmentRepository->findBetween($agenda, $start, $end, 0, 24, NULL, $types);
 		while ($start->getTimestamp() < $endTime) {
 			$week = new Tx_Extbase_Persistence_ObjectStorage();
 			for ($i = intval($start->format('N')); $i <= 7 && $start->getTimestamp() < $endTime; $i++) {

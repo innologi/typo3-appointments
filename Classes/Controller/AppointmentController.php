@@ -240,19 +240,28 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 
 		#@TODO see if we can get rid of $buildCreate  when newAction is split
+		$this->view->assign('buildCreate', $buildCreate);
 		$buildCreate = ($buildCreate === '1') ? TRUE : FALSE;
 
 		//find types
 		$typeArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1);
 		$types = empty($typeArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($typeArray,$superUser);
 		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
-
+		#@FIXME __first order of business: make dateFirst selectbox selectable again (look at csh differences first), then continue with tasks in newAction, then split newAction partly to remove the threat of F5-ing
 		if (isset($dateFirst[0])) { //overrides in case an appointment-date is picked through agenda
 			//removes types that can't produce timeslots on the dateFirst date
 			$types = $this->limitTypesByTime($types, $agenda, $dateFirst); #@TODO cache?
 			if (!empty($types)) {
-				$type = $appointment === NULL ? current($types) : $appointment->getType();
-				$beginTime = $dateFirst; //this is only useful for the next block if appointment === NULL, so it never overwrites an already picked beginTime
+				if ($appointment === NULL) {
+					$appointment = new Tx_Appointments_Domain_Model_Appointment();
+					$type = current($types);
+					$appointment->setType($type);
+					$beginTime = new DateTime();
+					$beginTime->setTimestamp($dateFirst);
+					$appointment->setBeginTime($beginTime);
+				} else {
+					$type = $appointment->getType();
+				}
 				$dateSlots = $this->slotService->getSingleDateSlot($type, $agenda, $freeSlotInMinutes, $dateFirst); //takes it from the storage set by limitTypes
 			} else {
 				//no types available on chosen time, so no appointments either
@@ -270,14 +279,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			if (!isset($dateSlots)) { //helps to avoid overwriting an override
 				if ($buildCreate && $appointment->getBeginTime() !== NULL) {
 					$dateSlots = $this->slotService->getSingleDateSlot($type,$agenda,$freeSlotInMinutes,$appointment->getBeginTime()->getTimestamp()); #@TODO this circumvents the problem where there are no timeslots available when F5-ing, but is it efficient?
-					if ($dateSlots->count() === 0) { #@FIXME THIS IS A TERRIBLE TEMPORARY WORKAROUND, FIX IT (also, timer refresh automatically is NOT ALLOWED)
-						$temp = new Tx_Appointments_Domain_Model_DateSlot();
-						$temp->setTimestamp($appointment->getBeginTime()->getTimestamp());
-						$temp->setKey($appointment->getBeginTime()->format(Tx_Appointments_Domain_Service_SlotService::DATESLOT_KEY_FORMAT));
-						$temp->setDayName($appointment->getBeginTime()->format('l'));
-						$dayShort = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.day_s'.$appointment->getBeginTime()->format('N'), $this->extensionName);
-						$temp->setLabel($dayShort . ' ' . $appointment->getBeginTime()->format('d-m-Y'));
-						$dateSlots->attach($temp);
+					if ($dateSlots->count() === 0) { #@FIXME THIS IS A TERRIBLE TEMPORARY WORKAROUND, FIX IT (also, timer refresh automatically on F5 is NOT ALLOWED)
+						$dateSlots->attach($this->slotService->createDateSlot($appointment->getBeginTime()));
 					}
 				} else {
 					$dateSlots = $this->slotService->getDateSlots($type, $agenda, $freeSlotInMinutes); #@TODO can we throw error somewhere when this one is empty?
@@ -302,13 +305,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 							$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 						}
 
-						if ($this->slotService->isTimeSlotAllowed($timeSlots,$appointment) !== FALSE) { #@TODO I don't think this is useful anymore :P
-							//limit the still available types by the already chosen timeslot
-							$excludeAppointment = $appointment->_isNew() ? 0 : $appointment->getUid();
-							#@FIXME why does it show Test when the date is out of range for Test?
-							$types = $this->limitTypesByTime($types, $agenda, $beginTime->getTimestamp(), $excludeAppointment); #@TODO cache?
-
+						if ($this->slotService->isTimeSlotAllowed($timeSlots,$appointment) !== FALSE) { #@TODO I don't think this is useful anymore :P BZZZZZZZZ, WRONG
 							$appointment->setAgenda($agenda);
+
+							//limit the still available types by the already chosen timeslot
+							$excludeAppointment = $appointment->_isNew() ? NULL : $appointment;
+							$types = $this->limitTypesByTime($types, $agenda, $beginTime->getTimestamp(), $excludeAppointment); #@TODO cache?
 
 							$formFieldValues = $appointment->getFormFieldValues();
 							$formFieldArray = $type->getFormFields()->toArray();
@@ -391,7 +393,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('types', $types);
 		$this->view->assign('appointment', $appointment);
 		$this->view->assign('agenda', $agenda);
-		$this->view->assign('buildCreate', $buildCreate);
 		$this->view->assign('dateFirst', $dateFirst);
 		$this->view->assign('superUser', $superUser);
 	}
@@ -665,10 +666,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Iterator|Array $types Previous types result
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda to check
 	 * @param string $timestamp Timestamp to get dateslot for
-	 * @param integer $excludeAppointment UID of appointment to exclude in available timeslot calculation
+	 * @param Tx_Appointments_Domain_Model_Appointment $excludeAppointment Appointment to exclude in available timeslot calculation
 	 * @return array Contains types that have an available timeslot
 	 */
-	protected function limitTypesByTime($types, Tx_Appointments_Domain_Model_Agenda $agenda, $timestamp, $excludeAppointment = 0) {
+	protected function limitTypesByTime($types, Tx_Appointments_Domain_Model_Agenda $agenda, $timestamp, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL) {
 		$newTypes = array();
 		foreach ($types as $type) {
 			$slotStorage = $this->slotService->getSingleDateSlot($type, $agenda, intval($this->settings['freeSlotInMinutes']), $timestamp, $excludeAppointment);
