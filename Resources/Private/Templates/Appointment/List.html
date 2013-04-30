@@ -1,7 +1,7 @@
 {namespace v=Tx_Vhs_ViewHelpers}
-<f:layout name="FeUserOnly" />
+<f:layout name="AppointmentsDefault" />
 
-<f:section name="FeUser">
+<f:section name="main">
 
 <f:if condition="{agenda}">
 	<f:link.action action="new" arguments="{agenda : agenda}" addQueryString="TRUE" class="button_new"><f:translate key="tx_appointments_list.appointment_new" /></f:link.action>

@@ -48,20 +48,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	protected $agendaRepository; #@SHOULD what's this one used for again?
 
 	/**
-	 * frontendUserRepository
-	 *
-	 * @var Tx_Extbase_Domain_Repository_FrontendUserRepository
-	 */
-	protected $frontendUserRepository;
-
-	/**
-	 * frontendUserGroupRepository
-	 *
-	 * @var Tx_Extbase_Domain_Repository_FrontendUserGroupRepository
-	 */
-	protected $frontendUserGroupRepository;
-
-	/**
 	 * typeRepository
 	 *
 	 * @var Tx_Appointments_Domain_Repository_TypeRepository
@@ -77,6 +63,18 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @var Tx_Appointments_Service_EmailService
 	 */
 	protected $emailService;
+
+	/**
+	 * @var Tx_Appointments_Service_UserService
+	 */
+	protected $userService;
+
+	/**
+	 * Logged in frontend user
+	 *
+	 * @var Tx_Extbase_Domain_Model_FrontendUser
+	 */
+	protected $feUser = NULL;
 
 	/**
 	 * injectAppointmentRepository
@@ -96,26 +94,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function injectAgendaRepository(Tx_Appointments_Domain_Repository_AgendaRepository $agendaRepository) {
 		$this->agendaRepository = $agendaRepository;
-	}
-
-	/**
-	 * injectFrontendUserRepository
-	 *
-	 * @param Tx_Extbase_Domain_Repository_FrontendUserRepository $frontendUserRepository
-	 * @return void
-	 */
-	public function injectFrontendUserRepository(Tx_Extbase_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
-		$this->frontendUserRepository = $frontendUserRepository;
-	}
-
-	/**
-	 * injectFrontendUserGroupRepository
-	 *
-	 * @param Tx_Extbase_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository
-	 * @return void
-	 */
-	public function injectFrontendUserGroupRepository(Tx_Extbase_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
-		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
 	}
 
 	/**
@@ -150,6 +128,44 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	}
 
 	/**
+	 * Injects the User Service
+	 *
+	 * @param Tx_Appointments_Service_UserService $userService
+	 * @return void
+	 */
+	public function injectUserService(Tx_Appointments_Service_UserService $userService) {
+		$this->userService = $userService;
+	}
+
+	/**
+	 * Initializes the controller before invoking an action method.
+	 *
+	 * Sets the logged in user and if none, sends the user to LoginError
+	 *
+	 * @return void
+	 */
+	protected function initializeAction() {
+		$this->feUser = $this->userService->getCurrentUser();
+		if (!$this->feUser && $this->actionMethodName !== 'loginErrorAction') {
+			//message to logged out users is taken care of by listAction
+			$this->redirect('loginError');
+		}
+	}
+
+	/**
+	 * action login-error
+	 *
+	 * The plugin requires a logged in frontend user. This action presents
+	 * the code to be executed when there is no logged in frontend user.
+	 *
+	 * @return void
+	 */
+	public function loginErrorAction() {
+		$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.login_error', $this->extensionName);
+		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+	}
+
+	/**
 	 * action list
 	 *
 	 * Shows the list of future appointments of the logged-in user
@@ -157,27 +173,18 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function listAction() {
-		global $TSFE;
-
 		$agendaUid = $this->settings['agendaUid'];
 		$agenda = $this->agendaRepository->findByUid($agendaUid);
 		$this->view->assign('agenda', $agenda);
 
-		$feUser = NULL;
-		if (isset($TSFE->fe_user->user['uid'])) {
-			//turns out getting the id is not enough: not all fe_users are of the correct record_type
-			$feUserUid = $TSFE->fe_user->user['uid'];
-			$feUser = $this->frontendUserRepository->findByUid($feUserUid);
-			//get superuser group
-			$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
-		}
-
-		if ($agenda !== NULL && $feUser !== NULL) {
-			$appointments = $this->appointmentRepository->findByAgendaAndFeUser($agenda,$feUser,new DateTime());
+		if ($agenda !== NULL && $this->feUser) { #@TODO remove the feUser check when a noLoginAction is here
+			//turns out getting the user id is not enough: not all fe_users are of the correct record_type
+			$appointments = $this->appointmentRepository->findByAgendaAndFeUser($agenda,$this->feUser,new DateTime());
 			$this->view->assign('appointments', $appointments);
 			//users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet
 			//a superuser can ALWAYS mutate, so now = 0 fixes that
-			$this->view->assign('now', $feUser->getUsergroup()->contains($suGroup) ? 0 : time());
+			$superUser = $this->userService->isInGroup($this->settings['suGroup']);
+			$this->view->assign('now', $superUser ? 0 : time());
 		} else {
 			#@TODO error flash on no agenda
 		}
@@ -186,42 +193,33 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * action show
 	 *
+	 * Certain conditions get to show more data (i.e. being superuser and/or owner)
+	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to show
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
 	public function showAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
-		global $TSFE;
-		$this->view->assign('appointment', $appointment);
-		$showMore = FALSE;
-		$mutable = FALSE;
-		$superUser = FALSE;
 		#@TODO you should be able to return to an agenda view if the plugin came from there but a list plugin is n/a .. or is that even possible?
-
-		if (isset($TSFE->fe_user->user['uid'])) {
-			$feUser = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
-
-			//check if current user is member of the superuser group
-			$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
-			if ($feUser) {
-				if ($feUser->getUsergroup()->contains($suGroup)) {
-					//we're not using vhs viewhelpers for this, because we need to set $showMore anyway and a viewhelper-alternative is overkill
-					$superUser = TRUE;
-					$showMore = TRUE;
-					$endTime = $appointment->getBeginReserved()->getTimestamp();
-					$mutable = time() < $endTime; //su can edit any appointment that hasn't started yet
-				} elseif ($feUser->getUid() == $appointment->getFeUser()->getUid()) { //check if current user is the owner of the appointment, so that we may do a 'mutable' check
-					$showMore = TRUE;
-					$endTime = $appointment->getType()->getHoursMutable() * 60 * 60 + $appointment->getCrdate();
-					$mutable = time() < $endTime;
-				}
-			}
-
-			//certain conditions get to show more data (i.e. being superuser and/or owner)
-			$this->view->assign('showMore', $showMore);
-			$this->view->assign('mutable', $mutable); //edit / delete
-			$this->view->assign('superUser', $superUser);
+		//check if current user is member of the superuser group
+		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
+		$showMore = TRUE;
+		if ($superUser) { //we're not using vhs viewhelpers for this, because we need to set $showMore anyway and a viewhelper-alternative is overkill
+			//su can edit any appointment that hasn't started yet
+			$endTime = $appointment->getBeginReserved()->getTimestamp();
+		} elseif ($this->feUser->getUid() == $appointment->getFeUser()->getUid()) { //check if current user is the owner of the appointment
+			//non-su can edit his own appointment if hoursMutable hasn't passed yet
+			$endTime = $appointment->getType()->getHoursMutable() * 3600 + $appointment->getCrdate();
+		} else { //if not su nor owner, limit rights
+			$showMore = FALSE;
+			$endTime = 0;
 		}
+		$mutable = time() < $endTime;
+
+		$this->view->assign('showMore', $showMore);
+		$this->view->assign('mutable', $mutable); //edit / delete
+		$this->view->assign('superUser', $superUser);
+		$this->view->assign('appointment', $appointment);
 	}
 
 	/**
@@ -242,21 +240,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function newAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = '', $dateFirst = NULL, Tx_Appointments_Domain_Model_Type $type = NULL, $beginTime = NULL) {
-		//is user superuser?
-		global $TSFE; #@TODO move to a service/helper class?
-		$superUser = FALSE;
-		$feUser = NULL;
-		if (isset($TSFE->fe_user->user['uid'])) {
-			$feUser = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
-			$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
-			if ($feUser && $feUser->getUsergroup()->contains($suGroup)) {
-				$superUser = TRUE;
-			}
-		}
-		//user logged out
-		if ($feUser === NULL) {
-			$this->redirect('list'); //message to logged out users is taken care of by listAction
-		}
+		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 
 		#@TODO see if we can get rid of $buildCreate  when newAction is split
 		$buildCreate = ($buildCreate === '1') ? TRUE : FALSE;
@@ -348,7 +332,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 							$this->view->assign('formFieldValues', $formFieldValues);
 
 							if ($appointment->getFeUser() === NULL) { //a check because on validation error, it'll already exist
-								$appointment->setFeUser($feUser);
+								$appointment->setFeUser($this->feUser);
 							}
 
 							$this->calculateTimes($appointment); //set the remaining DateTime properties
@@ -469,22 +453,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function editAction(Tx_Appointments_Domain_Model_Appointment $appointment, $changedDate = NULL) {
-		//is user superuser?
-		global $TSFE;
-		$superUser = FALSE;
-		$feUser = NULL;
-		if (isset($TSFE->fe_user->user['uid'])) {
-			$feUser = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
-			$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
-			if ($feUser && $feUser->getUsergroup()->contains($suGroup)) {
-				$superUser = TRUE;
-			}
-		}
-		#@SHOULD there are quite some similaraties with newAction here.. can we share these somehow?
-		//user logged out
-		if ($feUser === NULL) {
-			$this->redirect('list'); //message to logged out users is taken care of by listAction
-		}
+		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 
 		$formFieldValues = $appointment->getFormFieldValues();
 		$formFieldArray = $appointment->getType()->getFormFields()->toArray(); #@TODO perhaps using an objectstorage here will help us fix the bug below, in combination with a foreach explicitly checking if the utilized formfields exist in this storage
