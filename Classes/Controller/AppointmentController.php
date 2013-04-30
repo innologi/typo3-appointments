@@ -233,13 +233,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @param string $buildCreate Indicates that the actual/final appointment creation form should be build
 	 * @param string $dateFirst
-	 * @param Tx_Appointments_Domain_Model_Type $type appointment.type substitute
-	 * @param integer $beginTime appointment.beginTime substitute
 	 * @dontvalidate $appointment
-	 * @dontvalidate $type
 	 * @return void
 	 */
-	public function newAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = '', $dateFirst = NULL, Tx_Appointments_Domain_Model_Type $type = NULL, $beginTime = NULL) {
+	public function newAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = '', $dateFirst = NULL) {
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 
 		#@TODO see if we can get rid of $buildCreate  when newAction is split
@@ -262,14 +259,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_no_types', $this->extensionName);
 				$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 			}
-		}
-
-		//if an appointment isn't set yet, but substitute values are, we can skip the first steps anyway
-		if ($appointment === NULL && $beginTime !== NULL && $type !== NULL) { #@TODO can I get rid of this and the two function arguments? or is it used elsewhere?
-			$appointment = new Tx_Appointments_Domain_Model_Appointment();
-			$appointment->setBeginTime(new DateTime(strftime("%Y-%m-%d %H:%M:%S",$beginTime)));
-			$appointment->setType($type);
-			//we're now at the same result as after the first two steps
 		}
 
 		if ($appointment !== NULL) {
