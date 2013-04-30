@@ -44,6 +44,8 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 //{v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}
 //with:
 //{appointment.type.hoursMutable -> v:math.product(b:3600) -> v:math.sum(b:appointment.crdate)}
+//and perhaps a different way to do:
+//{f:translate(key: '{f:if(condition: buildCreate, then: \'tx_appointments_domain_model_appointment.type.csh_free\', else: \'tx_appointments_domain_model_appointment.type.csh_new\')}')}
 
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Appointment Scheduler');
 

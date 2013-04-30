@@ -1,5 +1,4 @@
 <f:layout name="FeUserOnly" />
-
 <f:section name="FeUser">
 <h3><f:translate key="tx_appointments_list.appointment_new" /></h3>
 
@@ -15,26 +14,28 @@
 <f:if condition="{types}">
 	<f:form enctype="multipart/form-data" method="post" action="new" arguments="{agenda : agenda}" id="typeForm" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
+			<!-- The hidden properties in each form are for unpersisted appointments, to maintain values that are chosen in other forms if available -->
+			<f:form.hidden property="beginTime"  value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
+			<f:form.hidden name="dateFirst" value="{dateFirst}" />
+			<f:form.hidden name="buildCreate" value="{buildCreate}" />
+			
 			<label>
 				<f:translate key="tx_appointments_list.label_type" />
 				<br />
 				<f:form.select id="appointments-select-type" property="type" options="{types}" optionValueField="uid" optionLabelField="name" class="select" />
 			</label>
-			<f:form.hidden property="beginTime" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
-			<f:form.hidden name="dateFirst" value="{dateFirst}" />
-			<f:form.hidden name="buildCreate" value="{buildCreate}" />
+			&rarr;
+			
 			<f:if condition="{dateSlots}">
 				<f:then>
-					&rarr;
 					<f:form.submit id="appointments-submit-type" value="{f:translate(key: 'tx_appointments_list.submit_type_free')}" class="submit" />
-					<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.type.csh_free')}"><f:translate key="tx_appointments_list.csh" /></span>
 				</f:then>
 				<f:else>
-					&rarr;
 					<f:form.submit id="appointments-submit-type" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
-					<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.type.csh_new')}"><f:translate key="tx_appointments_list.csh" /></span>
 				</f:else>
 			</f:if>
+			
+			<span class="csh" title="{f:translate(key: '{f:if(condition: buildCreate, then: \'tx_appointments_domain_model_appointment.type.csh_free\', else: \'tx_appointments_domain_model_appointment.type.csh_new\')}')}"><f:translate key="tx_appointments_list.csh" /></span>
 		</fieldset>
 	</f:form>
 </f:if>
@@ -42,13 +43,14 @@
 <f:if condition="{dateSlots}">
 	<f:if condition="{buildCreate}">
 		<f:then>
-			<f:form enctype="multipart/form-data" method="post" action="free" arguments="{agenda : agenda}" id="freeDateForm" object="{appointment}" objectName="appointment">
+			<f:form enctype="multipart/form-data" method="post" action="free" arguments="{agenda : agenda}" id="dateForm" object="{appointment}" objectName="appointment">
 				<fieldset>
 					<label>
 						<f:translate key="tx_appointments_list.label_date_slot" />
 						<br />
 						<f:form.select id="appointments-select-date" property="beginTime" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" disabled="disabled" />
 					</label>
+					
 					<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_free')}"><f:translate key="tx_appointments_list.csh" /></span>
 				</fieldset>
 			</f:form>
@@ -56,13 +58,14 @@
 		<f:else>
 			<f:if condition="{dateFirst}">
 				<f:then>
-					<f:form enctype="multipart/form-data" method="post" action="free" arguments="{agenda : agenda}" id="freeDateForm" object="{appointment}" objectName="appointment">
+					<f:form enctype="multipart/form-data" method="post" action="free" arguments="{agenda : agenda}" id="dateForm" object="{appointment}" objectName="appointment">
 						<fieldset>
 							<label>
 								<f:translate key="tx_appointments_list.label_date_slot" />
 								<br />
 								<f:form.select id="appointments-select-date" property="beginTime" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" disabled="disabled" />
 							</label>
+							
 							<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_datefirst')}"><f:translate key="tx_appointments_list.csh" /></span>
 						</fieldset>
 					</f:form>
@@ -70,22 +73,24 @@
 				<f:else>
 					<f:form enctype="multipart/form-data" method="post" action="new" arguments="{agenda : agenda}" id="dateForm" object="{appointment}" objectName="appointment">
 						<fieldset>
+							<f:form.hidden property="type" />
+							
 							<label>
 								<f:translate key="tx_appointments_list.label_date_slot" />
 								<br />
 								<f:form.select id="appointments-select-date" property="beginTime" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" />
 							</label>
-							<f:form.hidden property="type" />
+							&rarr;
+							
 							<f:if condition="{timeSlots}">
 								<f:then>
-									&rarr;
 									<f:form.submit id="appointments-submit-date" value="{f:translate(key: 'tx_appointments_list.submit_date_slot_change')}" class="submit" />
 								</f:then>
 								<f:else>
-									&rarr;
 									<f:form.submit id="appointments-submit-date" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
 								</f:else>
 							</f:if>
+							
 							<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_new')}"><f:translate key="tx_appointments_list.csh" /></span>
 						</fieldset>
 					</f:form>
@@ -98,17 +103,20 @@
 <f:if condition="{timeSlots}">
 	<f:if condition="{buildCreate}">
 		<f:then>
-			<f:form enctype="multipart/form-data" method="post" action="free" arguments="{agenda : agenda}" id="freeTimeForm" object="{appointment}" objectName="appointment" class="allowUnload">
+			<f:form enctype="multipart/form-data" method="post" action="free" arguments="{agenda : agenda}" id="timeForm" object="{appointment}" objectName="appointment" class="allowUnload">
 				<fieldset>
+					<f:form.hidden property="type" />
+					<f:form.hidden name="dateFirst" value="{dateFirst}" />
+					
 					<label>
 						<f:translate key="tx_appointments_list.label_time_slot" />
 						<br />
 						<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select" disabled="disabled" />
 					</label>
-					<f:form.hidden property="type" />
-					<f:form.hidden name="dateFirst" value="{dateFirst}" />
 					&larr;
+					
 					<f:form.submit id="appointments-submit-time" value="{f:translate(key: 'tx_appointments_list.submit_free')}" class="submit" />
+					
 					<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.time.csh_free')}"><f:translate key="tx_appointments_list.csh" /></span>
 				</fieldset>
 			</f:form>
@@ -116,16 +124,19 @@
 		<f:else>
 			<f:form enctype="multipart/form-data" method="post" action="new" arguments="{agenda : agenda}" id="timeForm" object="{appointment}" objectName="appointment">
 				<fieldset>
+					<f:form.hidden property="type" />
+					<f:form.hidden name="buildCreate" value="1" />
+					<f:form.hidden name="dateFirst" value="{dateFirst}" />
+					
 					<label>
 						<f:translate key="tx_appointments_list.label_time_slot" />
 						<br />
 						<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select" />
-					</label>
-					<f:form.hidden property="type" />
-					<f:form.hidden name="buildCreate" value="1" />
-					<f:form.hidden name="dateFirst" value="{dateFirst}" />
+					</label>					
 					&rarr;
+					
 					<f:form.submit id="appointments-submit-time" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
+					
 					<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.time.csh_new')}"><f:translate key="tx_appointments_list.csh" /></span>
 				</fieldset>
 			</f:form>
@@ -134,16 +145,14 @@
 </f:if>
 
 <f:if condition="{buildCreate}">
-	<f:form enctype="multipart/form-data" method="post" action="create" arguments="{agenda : agenda, buildCreate : buildCreate}" id="appointment" object="{appointment}" objectName="appointment" class="allowUnload">
+	<f:form enctype="multipart/form-data" method="post" action="create" arguments="{agenda : agenda, buildCreate : '1'}" id="appointmentForm" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
 			<span class="warnUnload"><f:translate key="tx_appointments_list.warn_unload" /></span>
-			<f:form.hidden property="agenda" />
-			<f:form.hidden property="type" />
-			<f:form.hidden property="beginTime" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
-			<f:form.hidden property="feUser" />
 			<f:form.hidden name="dateFirst" value="{dateFirst}" />
 		</fieldset>
+		
 		<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, superUser : superUser}" />
+		
 		<fieldset>
 			<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_new')}" class="submit next" />
 		</fieldset>

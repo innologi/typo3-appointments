@@ -241,9 +241,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @dontvalidate $type
 	 * @return void
 	 */
-	public function newAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = NULL, $dateFirst = NULL, Tx_Appointments_Domain_Model_Type $type = NULL, $beginTime = NULL) {
+	public function newAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = '', $dateFirst = NULL, Tx_Appointments_Domain_Model_Type $type = NULL, $beginTime = NULL) {
 		//is user superuser?
-		#@TODO look at the template.. are all those hidden properties really necessary?
 		global $TSFE; #@TODO move to a service/helper class?
 		$superUser = FALSE;
 		$feUser = NULL;
@@ -255,9 +254,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			}
 		}
 		//user logged out
-		if ($feUser === NULL) { #@FIXME why does this happen consistently on eclipse debug since only recently????
+		if ($feUser === NULL) {
 			$this->redirect('list'); //message to logged out users is taken care of by listAction
 		}
+
+		#@TODO see if we can get rid of $buildCreate  when newAction is split
+		$buildCreate = ($buildCreate === '1') ? TRUE : FALSE;
 
 		//find types
 		$typeArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1);
@@ -293,7 +295,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 			#@TODO doc after other TODOs
 			if (!isset($dateSlots)) { //helps to avoid overwriting an override
-				if ($buildCreate !== NULL && $appointment->getBeginTime() !== NULL) {
+				if ($buildCreate && $appointment->getBeginTime() !== NULL) {
 					$dateSlots = $this->slotService->getSingleDateSlot($type,$agenda,$freeSlotInMinutes,$appointment->getBeginTime()->getTimestamp()); #@TODO this circumvents the problem where there are no timeslots available when F5-ing, but is it efficient?
 					if ($dateSlots->count() === 0) { #@FIXME THIS IS A TERRIBLE TEMPORARY WORKAROUND, FIX IT (also, timer refresh automatically is NOT ALLOWED)
 						$temp = new Tx_Appointments_Domain_Model_DateSlot();
@@ -314,7 +316,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				//step 2 reached
 
 				if (($timeSlots = $this->slotService->getTimeSlots($dateSlots,$appointment)) !== FALSE) {
-					if ($buildCreate !== NULL) { #@TODO all the earlier buttons will not save fields that are set in the final form, what can be done about it?
+					if ($buildCreate) {
 						//step 3 reached
 
 						//indicates if the appointment should be treated as new for the user
@@ -330,6 +332,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 						if ($this->slotService->isTimeSlotAllowed($timeSlots,$appointment) !== FALSE) { #@TODO I don't think this is useful anymore :P
 							//limit the still available types by the already chosen timeslot
 							$excludeAppointment = $appointment->_isNew() ? 0 : $appointment->getUid();
+							#@FIXME why does it show Test when the date is out of range for Test?
 							$types = $this->limitTypesByTime($types, $agenda, $beginTime->getTimestamp(), $excludeAppointment); #@TODO cache?
 
 							$appointment->setAgenda($agenda);

@@ -28,7 +28,7 @@ jQuery(document).ready(function() {
 	//****************
 	
 	var warnUnload = null;
-	var warnUnloadElem = jQuery('.tx-appointments form#appointment span.warnUnload');
+	var warnUnloadElem = jQuery('.tx-appointments form#appointmentForm span.warnUnload');
 	//'respect REFRESH header!' variables
 	var sessionStart = new Date().getTime() / 1000;
 	var header = null;
@@ -265,7 +265,7 @@ jQuery(document).ready(function() {
 		});
 		
 		//submitting the form should clear the session values, so that a second new appointment contains empty fields 
-		jQuery('.tx-appointments form#appointment').submit(function() {
+		jQuery('.tx-appointments form#appointmentForm').submit(function() {
 			sessionStorage.clear();
 		});
 	}
