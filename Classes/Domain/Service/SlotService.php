@@ -129,8 +129,16 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		return $dateSlotStorage;
 	}
 
-	#@FIXME blabla
-	#@TODO doc
+	/**
+	 * Returns a dateSlotStorage with a single dateSlot based on timestamp.
+	 *
+	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type domain model object instance
+	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
+	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
+	 * @param string $timestamp Timestamp to get dateslot for
+	 * @param integer $excludeAppointment UID of an appointment that is ignored when building the storage
+	 * @return Tx_Appointments_Persistence_KeyObjectStorage
+	 */
 	public function getSingleDateSlot(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes, $timestamp, $excludeAppointment = 0) {
 		$typeUid = $type->getUid();
 		$dateTime = new DateTime();

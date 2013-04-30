@@ -28,7 +28,7 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO make jslib get @ warnunload optional
 #@FIXME expand warnunload to expire the appointment on leave page
 #@TODO javascript workers voor asynchroon? ivm timer en session en get request, etc.
-#@SHOULD make messages dismissable
+#@SHOULD make messages dismissable #@SHOULD why are these on normal priority? Eclipse bug?
 #@SHOULD add icons to messages
 #@SHOULD make * = required only visible when there are required fields
 #@FIXME do Manual

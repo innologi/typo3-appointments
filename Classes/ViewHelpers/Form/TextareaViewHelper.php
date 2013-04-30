@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -41,10 +41,11 @@ class Tx_Appointments_ViewHelpers_Form_TextareaViewHelper extends Tx_Fluid_ViewH
 	/**
 	 * Get errors for the property and form name of this view helper
 	 *
-	 * Changes to the original function are marked.
+	 * CHANGES to the original function are marked.
 	 *
 	 * @return array An array of Tx_Fluid_Error_Error objects
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+	 * @see Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper::getErrorsForProperty()
 	 */
 	public function getErrorsForProperty() {
 		if (!$this->isObjectAccessorMode()) {

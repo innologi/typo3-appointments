@@ -58,9 +58,11 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * @var mixed
 	 */
 	protected $sender;
-	#@TODO doc
+
 	/**
-	 * Initialization
+	 * Set extensionname (REQUIRED)
+	 *
+	 * Used to access locallang files.
 	 *
 	 * @param string $extensionName
 	 * @return void
@@ -68,8 +70,15 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	public function setExtensionName($extensionName) {
 		$this->extensionName = strtolower($extensionName);
 	}
-	#@TODO doc
-	public function setControllerContext($controllerContext) {
+
+	/**
+	 * Set controllerContext (REQUIRED)
+	 *
+	 * Used to access UriBuilder.
+	 *
+	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 */
+	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
 		$this->controllerContext = $controllerContext;
 	}
 
@@ -458,9 +467,14 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		return $recipientArray;
 	}
 
-	#@TODO doc
+	/**
+	 * Builds a link to the appointment (showAction) for use in email.
+	 *
+	 * @param Tx_Appointments_Domain_Model_Appointment $appointment
+	 * @param boolean $isHTML Returns a HTML link on TRUE, only the URL on FALSE
+	 * @return string The link
+	 */
 	protected function buildLink(Tx_Appointments_Domain_Model_Appointment $appointment, $isHTML = FALSE) {
-		//since the file isn't accessible from docroot, we need to feed the file through a specialized download action
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 
 		$arguments = array(

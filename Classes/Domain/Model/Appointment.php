@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -34,10 +34,10 @@
 class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_AbstractEntity {
 	#@FIXME probeer eens een new/edit form gigantisch te verknallen, en kijk wat je moet beveiligen
 
-	#@TODO doc
-	const FINISHED = 0;
-	const UNFINISHED = 1;
-	const EXPIRED = 2;
+	//creation progress constants
+	const FINISHED = 0; //appointment finalized
+	const UNFINISHED = 1; //appointment not yet finalized AND occupying a timeslot
+	const EXPIRED = 2; //appointment not yet finalized but NOT occupying a timeslot
 
 	/**
 	 * Creation timestamp

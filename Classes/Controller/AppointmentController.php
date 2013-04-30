@@ -254,10 +254,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				$superUser = TRUE;
 			}
 		}
-		#@TODO doc
-		if ($feUser === NULL) {
-			#@TODO flash message
-			$this->redirect('list');
+		//user logged out
+		if ($feUser === NULL) { #@FIXME why does this happen consistently on eclipse debug since only recently????
+			$this->redirect('list'); //message to logged out users is taken care of by listAction
 		}
 
 		//find types
@@ -359,19 +358,21 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 								//recalculate remainingSeconds
 								$secondsBusy = time() - $appointment->getCrdate();
 								$remainingSeconds = $remainingSeconds - $secondsBusy; #@SHOULD we make this a (transient?) property of class appointment?
+
 								//when the appointment was flagged 'expired' in the current pagehit,
 								//this $appointment reference might not yet be up to date,
-								//so we have to check $remainingSeconds < 0 for those specific cases
+								//so we have to check $remainingSeconds < 0 for those specific cases #@TODO check if this is still the case when we have a split newAction
 								if ($remainingSeconds < 0 && $appointment->getCreationProgress() !== Tx_Appointments_Domain_Model_Appointment::EXPIRED) {
 									$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
 									$appointment->_memorizePropertyCleanState('creationProgress'); //if we don't register EXPIRED as clean state, setting it to unfinished later won't be recognized by persistence!
 								}
+
 								#@TODO kan ik net zoals change type niet een change time en change date hierin verwerken?
 								#@SHOULD split up in functions!
-								#@TODO doc
+								//expired appointments should be either refreshed and/or notified of timneslot-related problems
 								if ($appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::EXPIRED) { //it's possible to get here when expired and the appointment no longer exists, thus throwing an exception #@TODO caught by.. ?
 									if ($this->crossAppointments($appointment)) { //make sure the timeslot is still available
-										//an appointment was found that makes the current one's times not possible
+										//an appointment was found that makes the current one's time not possible to retain
 										$flashMessage = str_replace('$1',$freeSlotInMinutes,
 												Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName)
 										);
@@ -383,7 +384,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 										$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timerrefresh', $this->extensionName);
 										$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 									}
-									#@TODO should this be here? what happens @ crossAppointments?
+									#@TODO should this be here? what happens @ crossAppointments? I don't think the timer should be refreshed, but it probably is..
 									$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED); #@TODO cleanup task for expired records?
 									$remainingSeconds = $freeSlotInMinutes * 60;
 								}
@@ -436,7 +437,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
 		//this is necessary in case the unfinished appointment was already expired due to a timeout
-		if ($this->crossAppointments($appointment)) { #@TODO wellicht kunnen we dit in een speciale action stoppen die vervolgens forward of redirect
+		if ($this->crossAppointments($appointment)) { #@TODO wellicht kunnen we dit in een speciale action stoppen die vervolgens forward of redirect, zo hoeft het niet dubbel gechecked worden als deze true is
 			//an appointment was found that makes the current one's times not possible
 			$this->forward('new'); //seems to work similar to a validation error #@SHOULD mark the time field like a validation error
 		} else {
@@ -476,10 +477,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				$superUser = TRUE;
 			}
 		}
-		#@TODO doc
+		#@SHOULD there are quite some similaraties with newAction here.. can we share these somehow?
+		//user logged out
 		if ($feUser === NULL) {
-			#@TODO flash message
-			$this->redirect('list');
+			$this->redirect('list'); //message to logged out users is taken care of by listAction
 		}
 
 		$formFieldValues = $appointment->getFormFieldValues();
@@ -718,9 +719,14 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		return $newTypes;
 	}
 
-	#@TODO doc
-	protected function performMailingActions($action,$appointment) {
-		$this->emailService->setControllerContext($this->controllerContext);
+	/**
+	 * Performs all mailing actions appropriate to $action.
+	 *
+	 * @param string $action The email action [create / update / delete]
+	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to inform about
+	 */
+	protected function performMailingActions($action,Tx_Appointments_Domain_Model_Appointment $appointment) {
+		$emailService->setControllerContext($this->controllerContext); //can't be done @ injection because controllerContext won't be initialized yet
 
 		$this->emailService->sendEmailAction($action,$appointment); #@TODO add message on success and fail? (maybe sys_log?)
 		$this->emailService->sendCalendarAction($action,$appointment); #@TODO add message on success and fail?
