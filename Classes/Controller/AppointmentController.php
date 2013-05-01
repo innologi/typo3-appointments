@@ -247,22 +247,18 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$typeArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1);
 		$types = empty($typeArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($typeArray,$superUser);
 		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
-		#@FIXME __first order of business: make dateFirst selectbox selectable again (look at csh differences first), then continue with tasks in newAction, then split newAction partly to remove the threat of F5-ing
+		#@FIXME __continue with tasks in newAction, then split newAction partly to remove the threat of F5-ing
 		if (isset($dateFirst[0])) { //overrides in case an appointment-date is picked through agenda
 			//removes types that can't produce timeslots on the dateFirst date
 			$types = $this->limitTypesByTime($types, $agenda, $dateFirst); #@TODO cache?
 			if (!empty($types)) {
 				if ($appointment === NULL) {
 					$appointment = new Tx_Appointments_Domain_Model_Appointment();
-					$type = current($types);
-					$appointment->setType($type);
+					$appointment->setType(current($types));
 					$beginTime = new DateTime();
 					$beginTime->setTimestamp($dateFirst);
 					$appointment->setBeginTime($beginTime);
-				} else {
-					$type = $appointment->getType();
 				}
-				$dateSlots = $this->slotService->getSingleDateSlot($type, $agenda, $freeSlotInMinutes, $dateFirst); //takes it from the storage set by limitTypes
 			} else {
 				//no types available on chosen time, so no appointments either
 				$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_no_types', $this->extensionName);
@@ -393,7 +389,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('types', $types);
 		$this->view->assign('appointment', $appointment);
 		$this->view->assign('agenda', $agenda);
-		$this->view->assign('dateFirst', $dateFirst);
 		$this->view->assign('superUser', $superUser);
 	}
 
@@ -524,11 +519,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda the appointment belongs to
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment's time to free up
-	 * @param string $dateFirst
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
-	public function freeAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL) {
+	public function freeAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL) {
 		$arguments = array( //arguments will provide newAction with previously chosen parameters
 				'agenda' => $agenda
 		);
@@ -541,11 +535,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$this->appointmentRepository->update($appointment);
 			$this->slotService->resetStorageObject($type,$agenda); //persist changes in timeslots
 			$arguments['appointment'] = $appointment;
-		}
-
-		if (isset($dateFirst[0])) {
-			#@TODO the whole dateFirst bit is an ugly hack, should really do it more properly after the new newAction is created
-			$arguments['dateFirst'] = $dateFirst;
 		}
 
 		$this->redirect('new',NULL,NULL,$arguments); #@TODO test if $arguments is necessary

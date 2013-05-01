@@ -121,7 +121,6 @@
 			<label index="tx_appointments_domain_model_appointment.begin_time.date">Appointment date</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_new">The date of the appointment. The available choices consist of all dates that (still) have timeslots available, for this particular appointment type. Different appointment types may result in different available dates.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_free">To change the date, you'll have to free up the currently chosen timeslot first.</label>
-			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_datefirst">By picking a date from the agenda-view, you can only change the date from that same agenda-view.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time">Time of appointment</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new">The time of the appointment. The available choices consist of all (still) available timeslots on the picked date, for this particular appointment type. Different dates and/or appointment types may result in different available timeslots.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_free">To change the timeslot, you'll have to free up the currently chosen timeslot first.</label>

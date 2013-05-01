@@ -3,7 +3,7 @@
 		<div class="dayBar">
 			<f:if condition="{date.timestamp} >= {startCreateTime}">
 				<f:then>
-					<f:link.action controller="Appointment" arguments="{agenda : agenda, dateFirst : date.timestamp}" action="new" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[buildCreate]',2:'tx_appointments_list[dateFirst]'}">
+					<f:link.action controller="Appointment" arguments="{agenda : agenda, dateFirst : date.timestamp}" action="new" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[buildCreate]'}">
 						{date.dayNumber} {date.monthShort}
 					</f:link.action>
 				</f:then>
