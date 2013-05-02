@@ -3,9 +3,7 @@
 
 <f:section name="main">
 
-<f:if condition="{agenda}">
-	<f:link.action action="new" arguments="{agenda : agenda}" addQueryString="TRUE" class="button_new"><f:translate key="tx_appointments_list.appointment_new" /></f:link.action>
-</f:if>
+<f:link.action action="new" addQueryString="TRUE" class="button_new"><f:translate key="tx_appointments_list.appointment_new" /></f:link.action>
 
 <table class="appointmentList" summary="{f:translate(key:'tx_appointments_list.summary_list')}">
 	<caption><f:translate key="tx_appointments_list.caption_list" /></caption>
@@ -25,8 +23,8 @@
 			</td>
 			<f:if condition="{now} < {v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}">
 				<f:then>
-					<td><f:link.action action="edit" arguments="{appointment : appointment, agenda : agenda}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action></td>
-					<td><f:link.action action="delete" arguments="{appointment : appointment, agenda : agenda}" class="button_delete"><f:translate key="tx_appointments_list.appointment_delete" /></f:link.action></td>
+					<td><f:link.action action="edit" arguments="{appointment : appointment}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action></td>
+					<td><f:link.action action="delete" arguments="{appointment : appointment}" class="button_delete"><f:translate key="tx_appointments_list.appointment_delete" /></f:link.action></td>
 				</f:then>
 				<f:else>
 					<td colspan="2">&nbsp;</td>

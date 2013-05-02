@@ -25,7 +25,7 @@
 		</v:iterator.loop>
 	
 	<f:for each="{month.weeks}" as="week" iteration="iterationInfo">
-		<f:render partial="Agenda/Week" arguments="{agenda : agenda, week : week, currentDate : currentDate, startCreateTime : startCreateTime}" />
+		<f:render partial="Agenda/Week" arguments="{week : week, currentDate : currentDate, startCreateTime : startCreateTime}" />
 		
 		<f:if condition="{iterationInfo.isLast}">
 			<f:then></f:then>

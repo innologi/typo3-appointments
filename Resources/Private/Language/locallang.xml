@@ -7,6 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tx_appointments_list.login_error">You need to be logged-in with a valid user account.</label>
+			<label index="tx_appointments_list.no_agenda">No agenda set or found, please review plugin settings.</label>
 			<label index="tx_appointments_list.warn_unload">You have not yet finished creating an appointment. Your action could result in losing all unsaved data, unless you stay on the page and --when ready-- finish creating the appointment first, using the button below the form.</label>
 			<label index="tx_appointments_list.appointment_new">New appointment</label>
 			<label index="tx_appointments_list.appointment_list">Back to list</label>
@@ -156,6 +157,7 @@
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="tx_appointments_list.login_error">U dient ingelogd te zijn met een geldig gebruikersaccount.</label>
+			<label index="tx_appointments_list.no_agenda">Geen agenda ingesteld of gevonden, ga de plugin instellingen na s.v.p.</label>
 			<label index="tx_appointments_list.warn_unload">U zit midden in het aanmaakproces van een afspraak. Uw actie zou mogelijk tot gevolg kunnen hebben dat alle nog niet opgeslagen gegevens komen te vervallen, tenzij u op de pagina blijft en u de afspraak --indien gereed-- eerst definitief aanmaakt met de knop onder het invul-formulier.</label>
 			<label index="tx_appointments_list.appointment_new">Nieuwe afspraak</label>
 			<label index="tx_appointments_list.appointment_list">Terug naar lijst</label>

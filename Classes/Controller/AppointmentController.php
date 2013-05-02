@@ -45,7 +45,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @var Tx_Appointments_Domain_Repository_AgendaRepository
 	 */
-	protected $agendaRepository; #@SHOULD what's this one used for again?
+	protected $agendaRepository;
 
 	/**
 	 * typeRepository
@@ -74,7 +74,14 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @var Tx_Extbase_Domain_Model_FrontendUser
 	 */
-	protected $feUser = NULL;
+	protected $feUser;
+
+	/**
+	 * Agenda
+	 *
+	 * @var Tx_Appointments_Domain_Model_Agenda
+	 */
+	protected $agenda;
 
 	/**
 	 * injectAppointmentRepository
@@ -140,29 +147,51 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * Initializes the controller before invoking an action method.
 	 *
-	 * Sets the logged in user and if none, sends the user to LoginError
+	 * Sets some prerequisite variables. If it fails because of any error related to these,
+	 * it will set appropriate error messages and redirect to the appropriate action.
 	 *
 	 * @return void
 	 */
 	protected function initializeAction() {
-		$this->feUser = $this->userService->getCurrentUser();
-		if (!$this->feUser && $this->actionMethodName !== 'loginErrorAction') {
-			//message to logged out users is taken care of by listAction
-			$this->redirect('loginError');
+		if ($this->actionMethodName !== 'noneAction') {
+			$errors = array();
+
+			//is user logged in as required?
+			$this->feUser = $this->userService->getCurrentUser();
+			if (!$this->feUser) {
+				$errors[] = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.login_error', $this->extensionName);
+			}
+
+			//is an agenda record set?
+			$this->agenda = $this->agendaRepository->findByUid($this->settings['agendaUid']);
+			if ($this->agenda === NULL) {
+				$errors[] = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.no_agenda', $this->extensionName);
+			}
+
+			//errors!
+			if (!empty($errors)) {
+				foreach ($errors as $flashMessage) {
+					$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+				}
+				$this->redirect('none');
+			}
+
 		}
 	}
 
 	/**
-	 * action login-error
+	 * action none
 	 *
-	 * The plugin requires a logged in frontend user. This action presents
-	 * the code to be executed when there is no logged in frontend user.
+	 * If the plugin is supposed to do nothing but present flash messages.
+	 * If no flash messages, redirects to starting action
 	 *
 	 * @return void
 	 */
-	public function loginErrorAction() {
-		$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.login_error', $this->extensionName);
-		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+	public function noneAction() {
+		$flashMessages = $this->flashMessageContainer->getAllMessages();
+		if (empty($flashMessages)) {
+			$this->redirect();
+		}
 	}
 
 	/**
@@ -173,21 +202,14 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function listAction() {
-		$agendaUid = $this->settings['agendaUid'];
-		$agenda = $this->agendaRepository->findByUid($agendaUid);
-		$this->view->assign('agenda', $agenda);
+		//turns out getting the user id is not enough: not all fe_users are of the correct record_type
+		$appointments = $this->appointmentRepository->findByAgendaAndFeUser($this->agenda,$this->feUser,new DateTime());
+		$this->view->assign('appointments', $appointments);
 
-		if ($agenda !== NULL && $this->feUser) { #@TODO remove the feUser check when a noLoginAction is here
-			//turns out getting the user id is not enough: not all fe_users are of the correct record_type
-			$appointments = $this->appointmentRepository->findByAgendaAndFeUser($agenda,$this->feUser,new DateTime());
-			$this->view->assign('appointments', $appointments);
-			//users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet
-			//a superuser can ALWAYS mutate, so now = 0 fixes that
-			$superUser = $this->userService->isInGroup($this->settings['suGroup']);
-			$this->view->assign('now', $superUser ? 0 : time());
-		} else {
-			#@TODO error flash on no agenda
-		}
+		//users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet
+		//a superuser can ALWAYS mutate, so 'now = 0' fixes that
+		$now = $this->userService->isInGroup($this->settings['suGroup']) ? 0 : time();
+		$this->view->assign('now', $now);
 	}
 
 	/**
@@ -229,14 +251,13 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * In the final step, the appointment is already added as unfinished. Unfinished appointments
 	 * will keep the timeslot occupied until either cleared manually or expired automatically, or until finished.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda the appointment belongs to
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @param string $buildCreate Indicates that the actual/final appointment creation form should be build
 	 * @param string $dateFirst
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
-	public function newAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = '', $dateFirst = NULL) {
+	public function newAction(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $buildCreate = '', $dateFirst = NULL) {
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 
 		#@TODO see if we can get rid of $buildCreate  when newAction is split
@@ -250,7 +271,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		#@FIXME __continue with tasks in newAction, then split newAction partly to remove the threat of F5-ing
 		if (isset($dateFirst[0])) { //overrides in case an appointment-date is picked through agenda
 			//removes types that can't produce timeslots on the dateFirst date
-			$types = $this->limitTypesByTime($types, $agenda, $dateFirst); #@TODO cache?
+			$types = $this->limitTypesByTime($types, $this->agenda, $dateFirst); #@TODO cache?
 			if (!empty($types)) {
 				if ($appointment === NULL) {
 					$appointment = new Tx_Appointments_Domain_Model_Appointment();
@@ -271,15 +292,14 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 			$type = $appointment->getType();
 
-			#@TODO doc after other TODOs
 			if (!isset($dateSlots)) { //helps to avoid overwriting an override
 				if ($buildCreate && $appointment->getBeginTime() !== NULL) {
-					$dateSlots = $this->slotService->getSingleDateSlot($type,$agenda,$freeSlotInMinutes,$appointment->getBeginTime()->getTimestamp()); #@TODO this circumvents the problem where there are no timeslots available when F5-ing, but is it efficient?
+					$dateSlots = $this->slotService->getSingleDateSlot($type,$this->agenda,$freeSlotInMinutes,$appointment->getBeginTime()->getTimestamp());
 					if ($dateSlots->count() === 0) { #@FIXME THIS IS A TERRIBLE TEMPORARY WORKAROUND, FIX IT (also, timer refresh automatically on F5 is NOT ALLOWED)
 						$dateSlots->attach($this->slotService->createDateSlot($appointment->getBeginTime()));
 					}
 				} else {
-					$dateSlots = $this->slotService->getDateSlots($type, $agenda, $freeSlotInMinutes); #@TODO can we throw error somewhere when this one is empty?
+					$dateSlots = $this->slotService->getDateSlots($type, $this->agenda, $freeSlotInMinutes); #@TODO can we throw error somewhere when this one is empty?
 				}
 			}
 
@@ -302,18 +322,17 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 						}
 
 						if ($this->slotService->isTimeSlotAllowed($timeSlots,$appointment) !== FALSE) { #@TODO I don't think this is useful anymore :P BZZZZZZZZ, WRONG
-							$appointment->setAgenda($agenda);
+							$appointment->setAgenda($this->agenda);
 
 							//limit the still available types by the already chosen timeslot
 							$excludeAppointment = $appointment->_isNew() ? NULL : $appointment;
-							$types = $this->limitTypesByTime($types, $agenda, $beginTime->getTimestamp(), $excludeAppointment); #@TODO cache?
+							$types = $this->limitTypesByTime($types, $this->agenda, $beginTime->getTimestamp(), $excludeAppointment); #@TODO cache?
 
 							$formFieldValues = $appointment->getFormFieldValues();
 							$formFieldArray = $type->getFormFields()->toArray();
 							if ($formFieldValues->count() !== count($formFieldArray)) { //a check here, because on validation error, they'll already exist
 								//fields that did not yet exist will get an UID @ a manual persist
 								$formFieldValues = $this->addMissingFormFields($formFieldArray,$formFieldValues);
-								#$appointment->setFormFieldValues($formFieldValues); #@TODO do this or dont? does it have advantages?
 							}
 							//adding the formFieldValues already will get them persisted too soon, empty and unused, so we're assigning them separately from $appointment
 							$this->view->assign('formFieldValues', $formFieldValues);
@@ -322,7 +341,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 								$appointment->setFeUser($this->feUser);
 							}
 
-							$this->calculateTimes($appointment); //set the remaining DateTime properties
+							$this->calculateTimes($appointment); //set the remaining DateTime properties of appointment
 							$remainingSeconds = $freeSlotInMinutes * 60; //number of seconds remaining before timeslot is freed
 
 							//when a validation error ensues, we don't want the unfinished appointment being re-added, hence the check
@@ -352,7 +371,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 										);
 										$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 										#@TODO misschien de vrijmaak knop los van een wijzig knop doen, en de wijzig knoppen via ajax o.i.d. doorsturen?
-										#@TODO test wat er precies gebeurt bij het wijzigen van de type met compleet verschillende formfields
 									} else {
 										//timer refreshed message
 										$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_timerrefresh', $this->extensionName);
@@ -364,7 +382,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 								}
 								$this->appointmentRepository->update($appointment);
 							}
-							$this->slotService->resetStorageObject($type,$agenda); //necessary to persist changes to the available timeslots
+							$this->slotService->resetStorageObject($type,$this->agenda); //necessary to persist changes to the available timeslots
 
 							//remaining time message
 							$flashMessage = str_replace(
@@ -388,23 +406,19 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 		$this->view->assign('types', $types);
 		$this->view->assign('appointment', $appointment);
-		$this->view->assign('agenda', $agenda);
 		$this->view->assign('superUser', $superUser);
 	}
 
 	/**
 	 * action create
 	 *
-	 * We need $agenda here in case of a validation error sending us back to newAction.
-	 *
 	 * Notice that the appointment isn't added but updated. This is because the newAction
 	 * will have already added an unfinished appointment. We just need to change its creation_progress flag.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda the appointment belongs to
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to create
 	 * @return void
 	 */
-	public function createAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function createAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->calculateTimes($appointment);
 
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
@@ -418,7 +432,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_success', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
 
-			$this->slotService->resetStorageObject($appointment->getType(),$agenda); //persist changes in timeslots, in case they were freed up for some reason
+			$this->slotService->resetStorageObject($appointment->getType(),$this->agenda); //persist changes in timeslots, in case they were freed up for some reason
 
 			$this->performMailingActions('create',$appointment);
 
@@ -517,23 +531,19 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * When an unfinished appointment is started, one is allowed to free up the chosen timeslot.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda the appointment belongs to
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment's time to free up
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
-	public function freeAction(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_Appointment $appointment = NULL) {
-		$arguments = array( //arguments will provide newAction with previously chosen parameters
-				'agenda' => $agenda
-		);
-
+	public function freeAction(Tx_Appointments_Domain_Model_Appointment $appointment = NULL) {
+		$arguments = array();
 		if ($appointment !== NULL) {
 			$type = $appointment->getType();
 			//set it to expired to free up the timeslot, but still pass along the appointment so that it may be reconstituted in the same session
 			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
 			$appointment->setRefresh(TRUE);
 			$this->appointmentRepository->update($appointment);
-			$this->slotService->resetStorageObject($type,$agenda); //persist changes in timeslots
+			$this->slotService->resetStorageObject($type,$this->agenda); //persist changes in timeslots
 			$arguments['appointment'] = $appointment;
 		}
 

@@ -19,7 +19,7 @@
 	
 	<f:for each="{weeks.weeks}" as="week">
 		<tr>
-			<f:render partial="Agenda/Week" arguments="{agenda : agenda, week : week, currentDate : currentDate, startCreateTime : startCreateTime}" />
+			<f:render partial="Agenda/Week" arguments="{week : week, currentDate : currentDate, startCreateTime : startCreateTime}" />
 		</tr>
 	</f:for>
 		
