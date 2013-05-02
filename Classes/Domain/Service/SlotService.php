@@ -31,30 +31,33 @@
  *
  */
 class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
+	#@TODO review everything here to make sure it's all still efficient, run through the entire process from the related controller
 
 	//constants
 	const DATESLOT_KEY_FORMAT = 'Ymd';
+	const TIMESLOT_KEY_FORMAT = 'YmdHis';
+	const TIMESLOT_KEY_FORMAT_ALT = '%Y%m%d%H%M%S';
 
 	/**
 	 * Extension name
 	 *
 	 * @var string
 	 */
-	protected $extensionName;
+	protected $extensionName = 'appointments'; #@SHOULD be taken from controller
 
 	/**
 	 * DateSlot storage array
 	 *
 	 * @var array
 	 */
-	protected $dateSlots;
+	protected $dateSlots = array();
 
 	/**
 	 * Single DateSlot storage array
 	 *
 	 * @var array
 	 */
-	protected $singleDateSlots;
+	protected $singleDateSlots = array();
 
 	/**
 	 * appointmentRepository
@@ -62,16 +65,6 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * @var Tx_Appointments_Domain_Repository_AppointmentRepository
 	 */
 	protected $appointmentRepository;
-
-	/**
-	 * __construct
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		$this->extensionName = 'appointments';
-		$this->dateSlots = array();
-	}
 
 	/**
 	 * injectAppointmentRepository
@@ -89,7 +82,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type domain model object instance
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
 	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
-	 * @return Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot>
+	 * @return Tx_Appointments_Persistence_KeyObjectStorage
 	 */
 	public function getDateSlots(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes) {
 		$typeUid = $type->getUid();
@@ -104,70 +97,104 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * Get dateslots and include the timeslots in use due to the current appointment
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment Current appointment
-	 * @return Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot>
+	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
+	 * @param boolean $disregardConditions If TRUE, disregards the type's firstAvailableTime and maxDaysForward conditions for current appointment
+	 * @return Tx_Appointments_Persistence_KeyObjectStorage
 	 */
-	public function getDateSlotsIncludingCurrent(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function getDateSlotsIncludingCurrent(Tx_Appointments_Domain_Model_Appointment $appointment, $expireMinutes, $disregardConditions = FALSE) {
 		$type = $appointment->getType();
 		$agenda = $appointment->getAgenda();
 
-		$dateSlotStorage = $this->buildStorageObject($type, $agenda, $appointment);
+		$dateSlotStorage = $this->getDateSlots($type,$agenda,$expireMinutes);
 
-		$dateTime = new DateTime();
-		$dateTime->setTimestamp($appointment->getBeginTime()->getTimestamp());
-		$key = $dateTime->format(self::DATESLOT_KEY_FORMAT);
-		$dateSlot = $dateSlotStorage->getObjectByKey($key);
-
-		//in case the current appointment is out of range for the dateSlotStorage, this will include its date and timeslot regardless #@SHOULD clean this up considering the dateFirst changes..
-		if ($dateSlot === FALSE) {
-			$extraDateSlot = $this->buildSingleStorageObject($type,$agenda,$dateTime,$appointment,1);
-			$dateSlot = $extraDateSlot->getObjectByKey($key);
-			if ($dateSlot !== FALSE) {
-				$dateSlotStorage->attach($dateSlot);
-			}
+		if (!$appointment->_isNew() && $appointment->getCreationProgress() !== Tx_Appointments_Domain_Model_Appointment::EXPIRED) {
+			$singleDateSlotStorage = $this->getSingleDateSlotIncludingCurrent($appointment,$expireMinutes,$type,$disregardConditions);
+			$dateSlotStorage->addAll($singleDateSlotStorage); #@FIXME sorting?
 		}
+
 		return $dateSlotStorage;
 	}
-
+	#@TODO doc
 	/**
 	 * Returns a dateSlotStorage with a single dateSlot based on timestamp.
+	 *
+	 * NOTE THAT getSingleStorageObject() ADJUSTS $dateTime!
 	 *
 	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type domain model object instance
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
 	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
-	 * @param string $timestamp Timestamp to get dateslot for
-	 * @param Tx_Appointments_Domain_Model_Appointment $excludeAppointment Appointment that is ignored when building the storage
+	 * @param DateTime $dateTime DateTime object to get Dateslot for
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage
 	 */
-	public function getSingleDateSlot(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes, $timestamp, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL) {
+	public function getSingleDateSlot(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes, DateTime $dateTime) {
 		$typeUid = $type->getUid();
-		$dateTime = new DateTime();
-		$dateTime->setTimestamp($timestamp);
 		$dateSlotKey = $dateTime->format(self::DATESLOT_KEY_FORMAT);
-		#@FIXME dit is enorm slecht performance-wise, aangezien hij dit voor elke type aanroept terwijl het maar 1x hoeft natuurlijk
-		#@FIXME resetStorage moet ook single storage doen
-		#@FIXME dit moet net zo werken als getDateSlots()
 		if (
-				!$this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes) &&
-				(
-					(
-						isset($this->dateSlots[$typeUid]) &&
-						$dateSlotStorage = $this->dateSlots[$typeUid]
-					) ||
-					($dateSlotStorage = $this->getStorageObjectFromCache($type, $agenda)) !== FALSE
+				$this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes)
+				||	(
+						!isset($this->singleDateSlots[$typeUid][$dateSlotKey])
+						&&	!(
+								(
+									(
+										isset($this->dateSlots[$typeUid][$dateSlotKey])
+										&&	$dateSlotStorage = $this->dateSlots[$typeUid]
+									) || (
+										($dateSlotStorage = $this->getStorageObjectFromCache('dateSlotStorage',$type, $agenda)) !== FALSE
+										&& isset($dateSlotStorage[$dateSlotKey])
+									)
+								)
+								&& $this->singleDateSlots[$typeUid][$dateSlotKey] = $dateSlotStorage[$dateSlotKey]
+						)
 				)
 		) {
-
-			$dateSlot = $dateSlotStorage->getObjectByKey($dateSlotKey);
-			if ($dateSlot !== FALSE) {
-				$dateSlotStorage = new Tx_Appointments_Persistence_KeyObjectStorage();
-				$dateSlotStorage->attach($dateSlot);
-				#@FIXME assign to singleDateSlots
-				return $dateSlotStorage;
-			}
+ 			$this->singleDateSlots[$typeUid][$dateSlotKey] = $this->getSingleStorageObject($type,$agenda,$dateTime);
 		}
 
-		$this->singleDateSlots[$typeUid][$dateSlotKey] = $this->buildSingleStorageObject($type,$agenda,$dateTime,$excludeAppointment);
 		return $this->singleDateSlots[$typeUid][$dateSlotKey];
+	}
+
+	/**
+	 * Returns a dateSlotStorage with a single dateSlot, including the times that would be allowed without current appointment.
+	 *
+	 * @param Tx_Appointments_Domain_Model_Appointment $appointment Appointment that is ignored when building the storage
+	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
+	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type domain model object instance
+	 * @param boolean $disregardConditions If TRUE, disregards the type's firstAvailableTime and maxDaysForward conditions
+	 * @return Tx_Appointments_Persistence_KeyObjectStorage
+	 */
+	public function getSingleDateSlotIncludingCurrent(Tx_Appointments_Domain_Model_Appointment $appointment, $expireMinutes, Tx_Appointments_Domain_Model_Type $type = NULL, $disregardConditions = FALSE) {
+		if ($type === NULL) {
+			$type = $appointment->getType();
+		}
+		$agenda = $appointment->getAgenda();
+
+		$this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes); #@SHOULD probably not be called @ every type with limitTypes :/
+		$dateSlotStorage = $this->buildSingleStorageObject($type,$agenda,clone $appointment->getBeginTime(),$appointment,$disregardConditions);
+
+		#@TODO finish this alternative that could alter a cached dateSlotStorage instead
+		//clone, because we don't want to influence the storage mapped in the service
+		#$dateSlotStorage = clone $this->getSingleDateSlot($type, $agenda, $expireMinutes, clone $appointment->getBeginTime());
+		#$dateSlotKey = $appointment->getBeginTime()->format(self::DATESLOT_KEY_FORMAT);
+		#if (isset($dateSlotStorage[$dateSlotKey])) {
+		#	$dateSlot = $dateSlotStorage[$dateSlotKey];
+		#	$this->alterDateSlot($dateSlot,$appointment);
+		#}
+
+		return $dateSlotStorage;
+	}
+
+	/**
+	 * Gets a dummy dateslotstorage. For cosmetic purposes, e.g. a permanently disabled selectbox.
+	 *
+	 * @param DateTime $dateTime DateTime to get dateslot for
+	 * @return Tx_Appointments_Persistence_KeyObjectStorage
+	 */
+	public function getDummyDateSlot(DateTime $dateTime) {
+		$dateSlotStorage = new Tx_Appointments_Persistence_KeyObjectStorage();
+		$dateSlot = $this->createDateSlot($dateTime);
+		$dateSlot->addTimeSlot($this->createTimeSlot($dateTime->getTimestamp()));
+		$dateSlotStorage->attach($dateSlot);
+		return $dateSlotStorage;
 	}
 
 	/**
@@ -182,51 +209,33 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	public function getTimeSlots(Tx_Appointments_Persistence_KeyObjectStorage $dateSlotStorage, Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$date = $appointment->getBeginTime();
 		$key = $date->format(self::DATESLOT_KEY_FORMAT);
-		$dateSlot = $dateSlotStorage->getObjectByKey($key);
 
-		if ($dateSlot === FALSE) {
-			//if the appointment is anything but finished, at least provide a dummy dateslot for its label
-			if(!$appointment->_isNew() && $appointment->getCreationProgress() !== Tx_Appointments_Domain_Model_Appointment::FINISHED) { #@FIXME this isn't the most secure option, anyone can alter the form's beginTime value and thus get away with it, at least until he tries to save
-				$dateSlot = new Tx_Appointments_Domain_Model_DateSlot();
-				$dateSlot->setTimestamp($date->getTimestamp());
-				$dateSlot->setKey($key);
-				$dateSlot->setDayName($date->format('l'));
-				$dayShort = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.day_s'.$date->format('N'), $this->extensionName);
-				$dateSlot->setLabel($dayShort . ' ' . $date->format('d-m-Y'));
-				$dateSlotStorage->attach($dateSlot);
-			} else {
-				return FALSE;
-			}
+		if (!isset($dateSlotStorage[$key])) {
+			return FALSE;
 		}
 
+		$dateSlot = $dateSlotStorage[$key];
 		return $dateSlot->getTimeSlots();
 	}
-
+	#@TODO doc
 	/**
-	 * Checks if the timeslot for the appointment is allowed. If the timeslot is taken,
-	 * will return FALSE, unless the appointment was already created but not finished.
+	 * Checks if the timeslot for the appointment is allowed. If the timeslot wasn't possible to begin with,
+	 * will return FALSE..
 	 *
-	 * @param Tx_Appointments_Persistence_KeyObjectStorage $timeSlots The time slot storage
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to check the timeslot for
 	 * @return boolean
 	 */
-	public function isTimeSlotAllowed(Tx_Appointments_Persistence_KeyObjectStorage $timeSlots, Tx_Appointments_Domain_Model_Appointment $appointment) { #@TODO seriously reconsider this function, because it seems utterly useless other than adding a missing timeslot to timeslots
-		$timestamp = $appointment->getBeginTime()->getTimestamp();
-		$timeSlot = $timeSlots->getObjectByKey(strftime('%Y-%m-%d %H:%M:%S',$timestamp));
-
-		#if ($appointment->getCreationProgress() !== Tx_Appointments_Domain_Model_Appointment::FINISHED) { #@FIXME this isn't the most secure option, anyone can alter the form's beginTime value and thus get away with it, at least until he tries to save
-			if ($timeSlot === FALSE) {
-				$timeSlots->attach($this->createTimeSlot($timestamp));
+	public function isTimeSlotAllowed(Tx_Appointments_Domain_Model_Appointment $appointment, $expireMinutes) {
+		$dateSlotStorage = $this->getSingleDateSlotIncludingCurrent($appointment, $expireMinutes);
+		$timeSlots = $this->getTimeSlots($dateSlotStorage, $appointment);
+		if ($timeSlots) {
+			$key = $appointment->getBeginTime()->format(self::TIMESLOT_KEY_FORMAT);
+			if (isset($timeSlots[$key])) {
+				return $timeSlots[$key];
 			}
-			return TRUE;
-		#}
-
-
-		#if ($timeSlot !== FALSE) {
-		#	return TRUE;
-		#}
-
-		#return FALSE;
+		}
+		return FALSE;
+		#@TODO PROBLEM: what if I want to do this check just before createAction, and the firstTimeAvailable has passed? I COULD ADD THE TIME AS CONTROL PROPERTY/SESSION VAR (sessions are vunerable..
 	}
 
 	/**
@@ -264,7 +273,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 		$dateTime = $this->getFirstAvailableTime($type, $agenda);
 
-		$maxDaysAhead = $type->getMaxDaysForward();
+		$maxDaysAhead = $type->getMaxDaysForward(); #@TODO add an override maxdaysforward in agenda, that, if set, works on all types in the plugin?
 		$this->createDateSlots($dateSlotStorage, $dateTime, $type, $agenda, $maxDaysAhead, $excludeAppointment);
 
 		return $dateSlotStorage;
@@ -273,15 +282,19 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	/**
 	 * Initializes the Tx_Appointments_Persistence_KeyObjectStorage properties and builds its content for a SINGLE date slot.
 	 *
+	 * NOTE THAT $dateTime IS ADJUSTED, so be sure whether you need a reference or clone
+	 *
 	 * @param Tx_Appointments_Domain_Model_Type $type Type domain model object instance
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
 	 * @param DateTime $dateTime Represents the date for which to retrieve the dateslot and time from which to retrieve the timeslots
 	 * @param Tx_Appointments_Domain_Model_Appointment $excludeAppointment Appointment that is ignored when building the storage
 	 * @param boolean $disregardConditions If TRUE, disregards the type's firstAvailableTime and maxDaysForward conditions
-	 * @return Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot>
+	 * @return Tx_Appointments_Persistence_KeyObjectStorage
 	 */
 	protected function buildSingleStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $dateTime, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL, $disregardConditions = FALSE) {
 		$dateSlotStorage = new Tx_Appointments_Persistence_KeyObjectStorage();
+
+		$dateTime->setTime(0,0); //we want to get the entire dateslot, so just in case
 
 		if (!$disregardConditions) {
 			//prepare condition checks
@@ -289,13 +302,18 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 			$firstAvailableTime = $typeDateTime->getTimestamp();
 			$maxDaysForward = $type->getMaxDaysForward() - 1; //-1 because the first available day is included
 			$lastAvailableTime = $typeDateTime->modify('+'.$maxDaysForward.' days')->getTimestamp();
+			$beginTime = $dateTime->getTimestamp();
 			$endDateTime = clone $dateTime;
-			$endTime = $endDateTime->modify('+1 day')->setTime(0,0)->getTimestamp();
+			$endTime = $endDateTime->modify('+1 day')->getTimestamp();
 		}
 		if (
 				$disregardConditions || (
-					$firstAvailableTime < $endTime
-					&& $lastAvailableTime > $dateTime->getTimestamp()
+					$lastAvailableTime >= $beginTime
+					&& $firstAvailableTime < $endTime
+					&& (	//if firstAvailableTime isn't AFTER beginTime, we have to set beginTime to firstAvailableTime
+							$firstAvailableTime <= $beginTime
+							|| $dateTime->setTimestamp($firstAvailableTime)
+					)
 				) //checks if the dateTime takes place between the first and last available timestamps
 		) {
 			$this->createDateSlots($dateSlotStorage, $dateTime, $type, $agenda, 1, $excludeAppointment);
@@ -513,7 +531,111 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 						$timestamp = $dateTime->getTimestamp();
 						$func = 'getStopTime'.$day;
 						$stopTime = $type->$func();
-						if (!isset($stopTime[0])) { #@TODO remove these checks as soon as TCA regexp eval is added
+						if (!isset($stopTime[0])) { #@SHOULD remove these checks as soon as TCA regexp eval is added
+							$stopTime = '23:59';
+						}
+						$stopTimestamp = strtotime($stopTime,$timestamp);
+						if ($overrideStopTime < $stopTimestamp) {
+							$stopTimestamp = $overrideStopTime;
+						}
+
+						if ($timestamp <= $stopTimestamp) {
+							$dateSlot = $this->createDateSlot($dateTime);
+							$this->createTimeSlots($dateSlot, $type, $stopTimestamp, $appointmentsCurrent);
+							//it's possible that an amount of appointments lower than max can leave space for 0 timeSlots
+							//so we have to make sure that isn't the case before adding the dateSlot
+							if ($dateSlot->getTimeSlots()->count() > 0) {
+								$dateSlotStorage->attach($dateSlot);
+							}
+						}
+					}
+				}
+			}
+
+			//sets time to 00:00 because we're already moving to the next day and the original
+			//time was only relevant to be between start and stop time on the first candidate-day
+			$dateTime->modify('+1 day')->setTime(0,0);
+		}
+	}
+
+	/**
+	 * Creates dateslots and adds them to the $dateSlotStorage.
+	 *
+	 * @param Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot> $dateSlotStorage The dateslot storage in which to create the dateslots
+	 * @param DateTime $dateTime The DateTime representing the offset for the first available time
+	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type domain model object instance
+	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
+	 * @param integer $maxDaysAhead The amount of days ahead of $dateTime to get dateslots for
+	 * @param Tx_Appointments_Domain_Model_Appointment $excludeAppointment Appointment that is ignored
+	 * @return void
+	 */
+	protected function alterDateSlot(Tx_Appointments_ $dateSlotStorage, DateTime $dateTime, Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $maxDaysAhead = 365, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL) {
+		$excludeHolidays = $type->getExcludeHolidays();
+		$holidayArray = $agenda->getHolidays();
+
+		for ($counter = 0; $counter < $maxDaysAhead; $counter++) {
+
+			$currentDate = $dateTime->format('d-m-Y'); //note that 'current' from here on is equivalent to 'current in loop'
+			if (!$excludeHolidays || !in_array($currentDate,$holidayArray)) {
+				$currentDate .= ' 00:00:00'; //from here on, it's used to identify results from findBetween()
+
+				$day = $dateTime->format('l'); //full day name (english)
+				$func = 'getMaxAmount'.$day;
+				$maxAmount = $type->$func();
+				if ($maxAmount > 0) {
+					//we don't want $dateTime adjusted, so we make several instances from here on
+					$startDateTime = new DateTime($currentDate); #@TODO waarom niet gewoon clone gebruiken voor al die nieuwe instances?
+					$endDateTime = new DateTime($currentDate);
+					$endDateTime->modify('+1 day');
+					//used for interval-logic later on, but convenient to create here due to endDateTime's current state
+					$dateTimeEnd = new DateTime($endDateTime->format('d-m-Y H:i:s'));
+					$overrideStopTime = $dateTimeEnd->modify('-1 minute')->getTimestamp();
+
+					//if the 'per var' settings have values, override the datetime-reach for appointments to find
+					$perVarDays = $type->getPerVarDays();
+					if ($perVarDays > 0) {
+						$startDateTime->modify('-'.($perVarDays-1).' days');
+						$endDateTime->modify('+'.($perVarDays-1).' days');
+					}
+
+
+					//if exclusive availability enabled, only include appointments of this type in the search
+					$types = $type->getExclusiveAvailability() ? array($type) : NULL;
+
+					$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, 24, $excludeAppointment, $types);
+					$appointmentsCurrent = isset($appointments[$currentDate]) ? $appointments[$currentDate] : array();
+					$appointmentAmount = count($appointmentsCurrent);
+					if ($appointmentAmount < $maxAmount) {
+
+						$maxAmountPerVarDays = $type->getMaxAmountPerVarDays();
+						if ($maxAmountPerVarDays > 0 && $perVarDays > 0) {
+							$notAllowed = FALSE;
+							if (!$this->processPerVarDays($appointments, $appointmentAmount, $currentDate, new DateTime($startDateTime->format('d-m-Y H:i:s')), new DateTime($endDateTime->format('d-m-Y H:i:s')), $maxAmountPerVarDays)) {
+								$notAllowed = TRUE;
+							}
+
+							$interval = $type->getPerVarDaysInterval();
+							if ($interval > 0) {
+								$startDateTime->modify("-$interval hours");
+								$endDateTime->modify("+$interval hours");
+								$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, $interval, $excludeAppointment, $types);
+								if (!$this->processPerVarDaysInterval($appointments, $startDateTime, $endDateTime, $dateTime, $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval)) {
+									$notAllowed = TRUE;
+								}
+								$overrideStopTime = $dateTimeEnd->getTimestamp(); //might have been altered in interval method
+							}
+
+							if ($notAllowed) {
+								$dateTime->modify('+1 day')->setTime(0,0);
+								continue;
+							}
+						}
+
+
+						$timestamp = $dateTime->getTimestamp();
+						$func = 'getStopTime'.$day;
+						$stopTime = $type->$func();
+						if (!isset($stopTime[0])) { #@SHOULD remove these checks as soon as TCA regexp eval is added
 							$stopTime = '23:59';
 						}
 						$stopTimestamp = strtotime($stopTime,$timestamp);
@@ -546,7 +668,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * @param DateTime $dateTime The DateTime object representing the date
 	 * @return Tx_Appointments_Domain_Model_DateSlot
 	 */
-	public function createDateSlot(DateTime $dateTime) {
+	protected function createDateSlot(DateTime $dateTime) {
 		$dateSlot = new Tx_Appointments_Domain_Model_DateSlot();
 		$dateSlot->setTimestamp($dateTime->getTimestamp());
 		$dateSlot->setKey($dateTime->format(self::DATESLOT_KEY_FORMAT));
@@ -772,7 +894,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 */
 	protected function createTimeSlot($timestamp) {
 		$timeSlot = new Tx_Appointments_Domain_Model_TimeSlot();
-		$timeSlot->setKey(strftime('%Y-%m-%d %H:%M:%S',$timestamp));
+		$timeSlot->setKey(strftime(self::TIMESLOT_KEY_FORMAT_ALT,$timestamp));
 		$timeSlot->setTimestamp($timestamp);
 		$timeSlot->setLabel(strftime('%H:%M',$timestamp));
 		return $timeSlot;
@@ -818,14 +940,35 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 *
 	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type to which the dateslot storage belongs to
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to which the dateslot storage belongs to
-	 * @return Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot>
+	 * @return Tx_Appointments_Persistence_KeyObjectStorage
 	 */
 	protected function getStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
-		$data = $this->getStorageObjectFromCache($type, $agenda);
+		$id = 'dateSlotStorage';
+		$data = $this->getStorageObjectFromCache($id, $type, $agenda);
 		if ($data === FALSE) {
 			//not cached so begin building
-			$id = 'dateSlotStorage';
 			$data = $this->buildStorageObject($type, $agenda);
+			$this->setCache($key,$id,$data);
+		}
+		return $data;
+	}
+
+	/**
+	 * Gets a single dateslot storage object from cache, or build it from scratch.
+	 *
+	 * NOTE THAT buildSingleStorageObject() ADJUSTS $dateTime!
+	 *
+	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type to which the dateslot storage belongs to
+	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to which the dateslot storage belongs to
+	 * @param DateTime $dateTime The DateTime of the storage object
+	 * @return Tx_Appointments_Persistence_KeyObjectStorage
+	 */
+	protected function getSingleStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $dateTime) {
+		$id = 'singleDateSlotStorage' . $dateTime->format(self::DATESLOT_KEY_FORMAT);
+		$data = $this->getStorageObjectFromCache($id, $type, $agenda);
+		if ($data === FALSE) {
+			//not cached so begin building
+			$data = $this->buildSingleStorageObject($type, $agenda, $dateTime);
 			$this->setCache($key,$id,$data);
 		}
 		return $data;
@@ -834,12 +977,12 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	/**
 	 * Gets a dateslot storage object from cache.
 	 *
+	 * @param string $id cache identifier
 	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type to which the dateslot storage belongs to
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to which the dateslot storage belongs to
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot>
 	 */
-	protected function getStorageObjectFromCache(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
-		$id = 'dateSlotStorage';
+	protected function getStorageObjectFromCache($id, Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		$minutes = 60; //the number of minutes before a cache entry expires #@TODO make it configurable?
 		$timestampPerMinutesVar = ceil( time() / ($minutes * 60) );
 		$key = md5($agenda->getUid() . '-' . $type->getUid() . '-' . $timestampPerMinutesVar);
@@ -867,16 +1010,21 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	public function resetStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		$typeUid = $type->getUid();
 
-		$id = 'dateSlotStorage';
 		$minutes = 60; //the number of minutes before a cache entry expires #@TODO make it configurable?
 		$timestampPerMinutesVar = ceil( time() / ($minutes * 60) );
+		#@TODO it doesn't reset other types, although they are affected unless they have exclusiveAvailability on.. maybe the alterStorageObject wasn't such a bad idea, using it to clean a number of days AROUND beginTime, of every Type except exclusive availability types? That would seriously cut back the overhead if maxDaysForward is huge and/or there are tons of types
 		$key = md5($agenda->getUid() . '-' . $typeUid . '-' . $timestampPerMinutesVar);
 
+		$id = 'dateSlotStorage';
 		$cacheContent = $this->getCache($key,$id);
-
 		if (isset($cacheContent)) {
 			$this->setCache($key,$id,NULL);
 		}
+		#$id = 'singleDateSlotStorage'; #@FIXME resetStorage moet ook single storage
+		#$cacheContent = $this->getCache($key,$id);
+		#if (isset($cacheContent)) {
+		#	$this->setCache($key,$id,NULL);
+		#}
 
 		$this->appointmentRepository->persistChanges();
 		unset($this->dateSlots[$typeUid]);

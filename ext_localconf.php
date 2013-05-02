@@ -19,12 +19,12 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'List',
 	array(
-		'Appointment' => 'list, show, new, create, edit, update, delete, free, none',
+		'Appointment' => 'list, show, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free, none',
 
 	),
 	// non-cacheable actions
 	array(
-		'Appointment' => 'create, update, delete, edit, new, free',
+		'Appointment' => 'create, update, delete, edit, new1, new2, processNew, simpleProcessNew, free',
 	)
 );
 

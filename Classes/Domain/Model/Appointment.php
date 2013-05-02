@@ -54,11 +54,12 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	protected $creationProgress = self::UNFINISHED;
 
 	/**
-	 * Refresh the appointment?
+	 * Indicated if the original beginTime was changed
 	 *
 	 * @var boolean
+	 * @transient
 	 */
-	protected $refresh = FALSE; #@TODO this property more part of a process than of the domain model.. so look for another way
+	protected $changedTime = FALSE;
 
 	/**
 	 * Start time
@@ -66,7 +67,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @var DateTime
 	 * @validate DateTime
 	 */
-	protected $beginTime; #@FIXME wat als iemand deze waarde probeert te manipuleren? DAAR IS timeslotAllowed for!
+	protected $beginTime;
 
 	/**
 	 * End time
@@ -221,22 +222,22 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	}
 
 	/**
-	 * Returns refresh
+	 * Returns changedTime
 	 *
-	 * @return boolean $refresh
+	 * @return boolean $changedTime
 	 */
-	public function getRefresh() {
-		return $this->refresh;
+	public function getChangedTime() {
+		return $this->changedTime;
 	}
 
 	/**
-	 * Sets refresh
+	 * Sets changedTime
 	 *
-	 * @param boolean $refresh
+	 * @param boolean $changedTime
 	 * @return void
 	 */
-	public function setRefresh($refresh) {
-		$this->refresh = $refresh;
+	public function setChangedTime($changedTime) {
+		$this->changedTime = $changedTime;
 	}
 
 	/**

@@ -146,7 +146,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 			$constraint[] = $query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::FINISHED);
 		}
 
-		if ($excludeAppointment !== NULL) {
+		if ($excludeAppointment !== NULL && !$excludeAppointment->_isNew()) {
 			$constraint[] = $query->logicalNot(
 					#$query->logicalAnd( #@TODO cleanup
 							$query->equals('uid', $excludeAppointment->getUid())#,

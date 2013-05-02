@@ -53,11 +53,12 @@ class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistenc
 	/**
 	 * Checks whether an object exists in the storage.
 	 *
-	 * @param object $object The object to look for.
+	 * @param string $objectKey The object to look for.
 	 * @return boolean
 	 */
-	public function offsetExists($object) {
-		return isset($this->storage[$object->getKey()]);
+	public function offsetExists($objectKey) {
+		#return isset($this->storage[$object->getKey()]);
+		return isset($this->storage[$objectKey]); #@FIXME test this, also in 4.5!
 	}
 
 	/**
@@ -74,11 +75,11 @@ class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistenc
 	/**
 	 * Returns the data associated with an object.
 	 *
-	 * @param object $object The object to look for.
-	 * @return mixed The data associated with an object in the storage.
+	 * @param string $objectKey The object to look for.
+	 * @return object The object in the storage.
 	 */
-	public function offsetGet($object) {
-		return $this->storage[$object->getKey()]['inf'];
+	public function offsetGet($objectKey) {
+		return $this->storage[$objectKey]['obj'];
 	}
 
 	/**
@@ -126,6 +127,18 @@ class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistenc
 	public function getLast() {
 		end($this->storage);
 		return $this->current();
+	}
+
+	/**
+	 * Adds all objects-data pairs from a different storage in the current storage.
+	 *
+	 * @param Tx_Extbase_Persistence_ObjectStorage $objectStorage
+	 * @return void
+	 */
+	public function addAll(Tx_Extbase_Persistence_ObjectStorage $objectStorage) {
+		parent::addAll($objectStorage);
+
+		ksort($this->storage);
 	}
 
 }

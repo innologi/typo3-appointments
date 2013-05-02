@@ -1,0 +1,57 @@
+<f:layout name="AppointmentsDefault" />
+<f:section name="main">
+<h3><f:translate key="tx_appointments_list.appointment_new" /></h3>
+
+<f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[dateFirst]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
+
+<br />
+<f:if condition="{types}">
+	<f:render partial="Appointment/Types" arguments="{step : step, appointment : appointment, types : types, dateSlots : dateSlots}" />
+</f:if>
+
+<f:if condition="{dateSlots}">
+	<f:form enctype="multipart/form-data" method="post" action="new1" id="dateForm" object="{appointment}" objectName="appointment">
+		<fieldset>
+			<f:form.hidden property="type" />
+			
+			<label>
+				<f:translate key="tx_appointments_list.label_date_slot" />
+				<br />
+				<f:form.select id="appointments-select-date" property="beginTime" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" />
+			</label>
+			&rarr;
+			
+			<f:if condition="{timeSlots}">
+				<f:then>
+					<f:form.submit id="appointments-submit-date" value="{f:translate(key: 'tx_appointments_list.submit_date_slot')}" class="submit" />
+				</f:then>
+				<f:else>
+					<f:form.submit id="appointments-submit-date" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
+				</f:else>
+			</f:if>
+			
+			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_new1')}"><f:translate key="tx_appointments_list.csh" /></span>
+		</fieldset>
+	</f:form>
+</f:if>
+	
+<f:if condition="{timeSlots}">
+	<f:form enctype="multipart/form-data" method="post" action="processNew" id="timeForm" object="{appointment}" objectName="appointment">
+		<fieldset>
+			<f:form.hidden property="type" />
+			
+			<label>
+				<f:translate key="tx_appointments_list.label_time_slot" />
+				<br />
+				<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select" />
+			</label>					
+			&rarr;
+			
+			<f:form.submit id="appointments-submit-time" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
+			
+			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.time.csh_new1')}"><f:translate key="tx_appointments_list.csh" /></span>
+		</fieldset>
+	</f:form>
+</f:if>
+
+</f:section>

@@ -5,10 +5,6 @@
 
 <f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
 
-<br />
-<br />
-<span class="required">*</span> = <f:translate key="tx_appointments_list.required" />
-
 <f:render partial="FormErrors" arguments="{for: 'appointment', formFields : appointment.type.formFields}" />
 
 <br />
@@ -31,13 +27,13 @@
 				<f:form.select id="appointments-select-date" name="changedDate" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" />
 			</label>
 			&rarr;
-			<f:form.submit id="appointments-submit-date" value="{f:translate(key: 'tx_appointments_list.submit_date_slot_change')}" class="submit" />
-			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_new')}"><f:translate key="tx_appointments_list.csh" /></span>
+			<f:form.submit id="appointments-submit-date" value="{f:translate(key: 'tx_appointments_list.submit_date_slot')}" class="submit" />
+			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_new1')}"><f:translate key="tx_appointments_list.csh" /></span>
 		</fieldset>
 	</f:form>
 </f:if>
 	
-<f:form action="update" id="appointment" name="appointment" object="{appointment}">
+<f:form action="update" id="appointmentForm" name="appointment" object="{appointment}">
 	<f:if condition="{timeSlots}">
 		<fieldset>
 			<label>
@@ -45,7 +41,10 @@
 				<br />
 				<f:form.select property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select" />
 			</label>
-			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.time.csh_new')}"><f:translate key="tx_appointments_list.csh" /></span>
+			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.time.csh_new1')}"><f:translate key="tx_appointments_list.csh" /></span>
+			<br />
+			<br />
+			<span class="required">*</span> = <f:translate key="tx_appointments_list.required" />
 		</fieldset>
 	</f:if>
 	<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, timeSlots : timeSlots, superUser : superUser}" />

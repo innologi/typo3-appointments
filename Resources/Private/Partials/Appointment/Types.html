@@ -1,0 +1,24 @@
+<f:form enctype="multipart/form-data" method="post" action="new1" id="typeForm" object="{appointment}" objectName="appointment" class="allowUnload">
+	<fieldset>
+		<!-- The hidden properties in each form are for unpersisted appointments, to maintain values that are chosen in other forms if available -->
+		<f:form.hidden property="beginTime"  value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
+		
+		<label>
+			<f:translate key="tx_appointments_list.label_type" />
+			<br />
+			<f:form.select id="appointments-select-type" property="type" options="{types}" optionValueField="uid" optionLabelField="name" class="select" />
+		</label>
+		&rarr;
+		
+		<f:if condition="{dateSlots}">
+			<f:then>
+				<f:form.submit id="appointments-submit-type" value="{f:translate(key: 'tx_appointments_list.submit_type')}" class="submit" />
+			</f:then>
+			<f:else>
+				<f:form.submit id="appointments-submit-type" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
+			</f:else>
+		</f:if>
+		
+		<span class="csh" title="{f:translate(key: 'tx_appointments_domain_model_appointment.type.csh_new1')}"><f:translate key="tx_appointments_list.csh" /></span>
+	</fieldset>
+</f:form>
