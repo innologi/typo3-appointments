@@ -183,14 +183,14 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * action none
 	 *
 	 * If the plugin is supposed to do nothing but present flash messages.
-	 * If no flash messages, redirects to starting action
+	 * If no flash messages, redirects to main action
 	 *
 	 * @return void
 	 */
 	public function noneAction() {
 		$flashMessages = $this->flashMessageContainer->getAllMessages();
 		if (empty($flashMessages)) {
-			$this->redirect();
+			$this->redirect(); //redirects to main action
 		}
 	}
 
@@ -268,7 +268,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$typeArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1);
 		$types = empty($typeArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($typeArray,$superUser);
 		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
-		#@FIXME __continue with tasks in newAction, then split newAction partly to remove the threat of F5-ing
 		if (isset($dateFirst[0])) { //overrides in case an appointment-date is picked through agenda
 			//removes types that can't produce timeslots on the dateFirst date
 			$types = $this->limitTypesByTime($types, $this->agenda, $dateFirst); #@TODO cache?
@@ -408,6 +407,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('appointment', $appointment);
 		$this->view->assign('superUser', $superUser);
 	}
+
+
 
 	/**
 	 * action create
