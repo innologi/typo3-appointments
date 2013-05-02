@@ -687,7 +687,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to inform about
 	 */
 	protected function performMailingActions($action,Tx_Appointments_Domain_Model_Appointment $appointment) {
-		$emailService->setControllerContext($this->controllerContext); //can't be done @ injection because controllerContext won't be initialized yet
+		$this->emailService->setControllerContext($this->controllerContext); //can't be done @ injection because controllerContext won't be initialized yet
 
 		$this->emailService->sendEmailAction($action,$appointment); #@TODO add message on success and fail? (maybe sys_log?)
 		$this->emailService->sendCalendarAction($action,$appointment); #@TODO add message on success and fail?
