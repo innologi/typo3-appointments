@@ -109,18 +109,17 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	public function getDateSlotsIncludingCurrent(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$type = $appointment->getType();
 		$agenda = $appointment->getAgenda();
-		$uid = $appointment->getUid();
 
-		$dateSlotStorage = $this->buildStorageObject($type, $agenda, $uid);
+		$dateSlotStorage = $this->buildStorageObject($type, $agenda, $appointment);
 
 		$dateTime = new DateTime();
 		$dateTime->setTimestamp($appointment->getBeginTime()->getTimestamp());
 		$key = $dateTime->format(self::DATESLOT_KEY_FORMAT);
 		$dateSlot = $dateSlotStorage->getObjectByKey($key);
 
-		//in case the current appointment is out of range for the dateSlotStorage, this will include its date and timeslot regardless
+		//in case the current appointment is out of range for the dateSlotStorage, this will include its date and timeslot regardless #@SHOULD clean this up considering the dateFirst changes..
 		if ($dateSlot === FALSE) {
-			$extraDateSlot = $this->buildSingleStorageObject($type,$agenda,$dateTime,$uid,1);
+			$extraDateSlot = $this->buildSingleStorageObject($type,$agenda,$dateTime,$appointment,1);
 			$dateSlot = $extraDateSlot->getObjectByKey($key);
 			if ($dateSlot !== FALSE) {
 				$dateSlotStorage->attach($dateSlot);
