@@ -268,6 +268,10 @@ jQuery(document).ready(function() {
 		jQuery('.tx-appointments form#appointmentForm').submit(function() {
 			sessionStorage.clear();
 		});
+		//clicking on the edit links should also clear the session, so none of their actual values get overwritten
+		jQuery('.tx-appointments .button_edit').click(function() {
+			sessionStorage.clear();
+		});
 	}
 
 });
