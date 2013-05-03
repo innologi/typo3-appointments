@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -129,25 +129,21 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	public function getSingleDateSlot(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes, DateTime $dateTime) {
 		$typeUid = $type->getUid();
 		$dateSlotKey = $dateTime->format(self::DATESLOT_KEY_FORMAT);
-		if (
-				$this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes)
-				||	(
-						!isset($this->singleDateSlots[$typeUid][$dateSlotKey])
-						&&	!(
-								(
-									(
-										isset($this->dateSlots[$typeUid][$dateSlotKey])
-										&&	$dateSlotStorage = $this->dateSlots[$typeUid]
-									) || (
-										($dateSlotStorage = $this->getStorageObjectFromCache('dateSlotStorage',$type, $agenda)) !== FALSE
-										&& isset($dateSlotStorage[$dateSlotKey])
-									)
-								)
-								&& $this->singleDateSlots[$typeUid][$dateSlotKey] = $dateSlotStorage[$dateSlotKey]
-						)
-				)
-		) {
- 			$this->singleDateSlots[$typeUid][$dateSlotKey] = $this->getSingleStorageObject($type,$agenda,$dateTime);
+
+		if (($cleared = $this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes)) || !isset($this->singleDateSlots[$typeUid][$dateSlotKey])) {
+			if (
+					!$cleared && (
+							(isset($this->dateSlots[$typeUid][$dateSlotKey]) && $dateSlotStorage = $this->dateSlots[$typeUid])
+							|| (
+									($dateSlotStorage = $this->getStorageObjectFromCache($this->getCacheKey($type, $agenda),'dateSlotStorage',$type, $agenda)) !== FALSE
+									&& isset($dateSlotStorage[$dateSlotKey])
+							)
+			)) {
+				$this->singleDateSlots[$typeUid][$dateSlotKey] = new Tx_Appointments_Persistence_KeyObjectStorage();
+				$this->singleDateSlots[$typeUid][$dateSlotKey]->attach($dateSlotStorage[$dateSlotKey]);
+			} else {
+				$this->singleDateSlots[$typeUid][$dateSlotKey] = $this->getSingleStorageObject($type,$agenda,$dateTime);
+			}
 		}
 
 		return $this->singleDateSlots[$typeUid][$dateSlotKey];
@@ -936,6 +932,19 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	}
 
 	/**
+	 * Gets the cache key of the type and agenda
+	 *
+	 * @param Tx_Appointments_Domain_Model_Type $type
+	 * @param Tx_Appointments_Domain_Model_Agenda $agenda
+	 * @param integer $minutes Block of minutes this cache-key is valid for
+	 * @return string
+	 */
+	protected function getCacheKey(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $minutes = 60) {
+		$timestampPerMinutesVar = ceil( time() / ($minutes * 60) );
+		return md5($agenda->getUid() . '-' . $type->getUid() . '-' . $timestampPerMinutesVar);
+	}
+
+	/**
 	 * Gets a dateslot storage object from cache, or builds it from scratch.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type to which the dateslot storage belongs to
@@ -944,7 +953,8 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 */
 	protected function getStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		$id = 'dateSlotStorage';
-		$data = $this->getStorageObjectFromCache($id, $type, $agenda);
+		$key = $this->getCacheKey($type, $agenda); #@TODO utilize configurable cache-key minutes??
+		$data = $this->getStorageObjectFromCache($key, $id, $type, $agenda);
 		if ($data === FALSE) {
 			//not cached so begin building
 			$data = $this->buildStorageObject($type, $agenda);
@@ -965,7 +975,8 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 */
 	protected function getSingleStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $dateTime) {
 		$id = 'singleDateSlotStorage' . $dateTime->format(self::DATESLOT_KEY_FORMAT);
-		$data = $this->getStorageObjectFromCache($id, $type, $agenda);
+		$key = $this->getCacheKey($type, $agenda);
+		$data = $this->getStorageObjectFromCache($key, $id, $type, $agenda);
 		if ($data === FALSE) {
 			//not cached so begin building
 			$data = $this->buildSingleStorageObject($type, $agenda, $dateTime);
@@ -977,18 +988,14 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	/**
 	 * Gets a dateslot storage object from cache.
 	 *
+	 * @param string $key cache key
 	 * @param string $id cache identifier
 	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type to which the dateslot storage belongs to
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to which the dateslot storage belongs to
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot>
 	 */
-	protected function getStorageObjectFromCache($id, Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
-		$minutes = 60; //the number of minutes before a cache entry expires #@TODO make it configurable?
-		$timestampPerMinutesVar = ceil( time() / ($minutes * 60) );
-		$key = md5($agenda->getUid() . '-' . $type->getUid() . '-' . $timestampPerMinutesVar);
-
+	protected function getStorageObjectFromCache($key, $id, Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		$cacheContent = $this->getCache($key,$id);
-
 		if (isset($cacheContent)) {
 			$data = unserialize($cacheContent);
 			//makes sure unserialization delivered a valid object, considering there are (inconsistent) issues with serialized object storages
