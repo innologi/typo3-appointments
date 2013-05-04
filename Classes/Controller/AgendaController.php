@@ -153,7 +153,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 			$feUser = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
 			if ($feUser !== NULL) { #@TODO agenda uses this, list uses vhs, let's unify all this crap AND make it possible for non-users to see things without error messages
 				$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
-				if ($feUser->getUsergroup()->contains($suGroup)) {
+				if ($suGroup && $feUser->getUsergroup()->contains($suGroup)) {
 					$superUser = TRUE;
 				}
 			}
