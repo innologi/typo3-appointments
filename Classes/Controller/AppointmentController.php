@@ -311,6 +311,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function new2Action(Tx_Appointments_Domain_Model_Appointment $appointment) {
+		$this->appointmentRepository->update($appointment); //necessary to retain fieldvalues of validation-error-returned appointments
+
 		//limit the available types by the already chosen timeslot
 		$types = $this->limitTypesByAppointment($this->getTypes(),$appointment);
 
@@ -721,7 +723,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		} else { //warn of expiration
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_expired', $this->extensionName);
 			$flashHeader = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_expired_header', $this->extensionName);
-			$flashState = t3lib_FlashMessage::WARNING;
+			$flashState = t3lib_FlashMessage::WARNING; #@TODO transform automatically with javascript
 		}
 		$this->flashMessageContainer->add($flashMessage,$flashHeader,$flashState);
 	}
