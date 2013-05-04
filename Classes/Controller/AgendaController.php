@@ -289,7 +289,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 			for ($i = intval($start->format('N')); $i <= 7 && $start->getTimestamp() < $endTime; $i++) {
 				$date = new Tx_Appointments_Domain_Model_Agenda_Date();
 				$date->setDayNumber($start->format('j'));
-				$monthShort = Tx_Extbase_Utility_Localization::translate('tx_appointments_agenda.month_s'.$start->format('n'), $this->extensionName); #@FIXME this can be stored in an array or smth .. or not necessary if we use locales
+				$monthShort = Tx_Extbase_Utility_Localization::translate('tx_appointments_agenda.month_s'.$start->format('n'), $this->extensionName); #@TODO this can be stored in an array or smth .. or not necessary if we use locales
 				$date->setMonthShort($monthShort);
 				$fulldate = $start->format('d-m-Y');
 				$date->setDateString($fulldate);
