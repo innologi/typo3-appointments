@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -36,7 +36,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistence_ObjectStorage { #@SHOULD make this usable for more general usecases, if array-test doesn't work out
+class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistence_ObjectStorage {
 
 	/**
 	 * Associates data to an object in the storage. offsetSet() is an alias of attach().
@@ -57,8 +57,8 @@ class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistenc
 	 * @return boolean
 	 */
 	public function offsetExists($objectKey) {
-		#return isset($this->storage[$object->getKey()]);
-		return isset($this->storage[$objectKey]); #@FIXME test this, also in 4.5!
+		//this way, an isset can be performed on the objectStorage while only the key is known
+		return isset($this->storage[$objectKey]);
 	}
 
 	/**
@@ -97,19 +97,6 @@ class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistenc
 	}
 
 	/**
-	 * Returns an object by its key.
-	 *
-	 * @param string $key Object key
-	 * @return mixed The object or boolean false
-	 */
-	public function getObjectByKey($key) { #@SHOULD maakt het feit dat de class ArrayAccess is dit niet onnodig? gewoon $objectStorage[$key]?
-		if (isset($this->storage[$key])) {
-			return $this->storage[$key]['obj'];
-		}
-		return FALSE;
-	}
-
-	/**
 	 * Gets first object in storage.
 	 *
 	 * @return object The first object
@@ -130,7 +117,8 @@ class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistenc
 	}
 
 	/**
-	 * Adds all objects-data pairs from a different storage in the current storage.
+	 * Adds all objects-data pairs from a different storage in the current storage,
+	 * and then sorts all objects by key.
 	 *
 	 * @param Tx_Extbase_Persistence_ObjectStorage $objectStorage
 	 * @return void

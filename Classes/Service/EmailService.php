@@ -333,7 +333,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		$start = $appointment->getBeginTime()->getTimestamp();
 		$end = $appointment->getEndTime()->getTimestamp();
 		$sender = $this->getSender();
-		$sequence = 0; #@FIXME gmail still isn't connecting updates to original calendar events.. what about outlook? thunderbird is ok
+		$sequence = 0; #@TODO last time I checked, gmail isn't connecting updates to original calendar events, unsure about Outlook, Thunderbird OK
 
 		//id unique to this appointment and domain
 		$id = 'typo3-'.$this->extensionName.'-a'.$appointment->getAgenda()->getUid().'-t'.$appointment->getType()->getUid().'-a'.$appointment->getUid() . '@' . t3lib_div::getIndpEnv('TYPO3_SITE_URL');
@@ -349,7 +349,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 								)
 						)
 				)
-		); #@FIXME test this @ Outlook
+		); #@TODO do more Outlook testing
 
 		$markerArray = array(
 				'###START###' => strftime('%Y%m%dT%H%M%S', $start),

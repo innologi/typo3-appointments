@@ -109,7 +109,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 		if (!$appointment->_isNew() && $appointment->getCreationProgress() !== Tx_Appointments_Domain_Model_Appointment::EXPIRED) {
 			$singleDateSlotStorage = $this->getSingleDateSlotIncludingCurrent($appointment,$expireMinutes,$type,$disregardConditions);
-			$dateSlotStorage->addAll($singleDateSlotStorage); #@FIXME sorting?
+			$dateSlotStorage->addAll($singleDateSlotStorage);
 		}
 
 		return $dateSlotStorage;

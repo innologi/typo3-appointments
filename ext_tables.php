@@ -26,7 +26,7 @@ t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Co
 t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.list', 'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_list.xml');
 #@TODO maak de New.html if condition voor timeslots in dateslots netter! (inline)
 #@TODO make jslib get @ warnunload optional
-#@FIXME expand warnunload to expire the appointment on leave page
+#@TODO expand warnunload to expire the appointment on leave page
 #@TODO javascript workers voor asynchroon? ivm timer en session en get request, etc.
 #@SHOULD make messages dismissable #@SHOULD why are these on normal priority? Eclipse bug?
 #@SHOULD add icons to messages
@@ -43,8 +43,6 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 //{v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}
 //with:
 //{appointment.type.hoursMutable -> v:math.product(b:3600) -> v:math.sum(b:appointment.crdate)}
-//and perhaps a different way to do:
-//{f:translate(key: '{f:if(condition: buildCreate, then: \'tx_appointments_domain_model_appointment.type.csh_free\', else: \'tx_appointments_domain_model_appointment.type.csh_new\')}')}
 
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Appointment Scheduler');
 

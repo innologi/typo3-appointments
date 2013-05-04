@@ -32,7 +32,6 @@
  *
  */
 class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_AbstractEntity {
-	#@FIXME probeer eens een new/edit form gigantisch te verknallen, en kijk wat je moet beveiligen
 
 	//creation progress constants
 	const FINISHED = 0; //appointment finalized
