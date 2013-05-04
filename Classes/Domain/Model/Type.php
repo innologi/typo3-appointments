@@ -347,11 +347,15 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Form Fields for this Type
 	 *
+	 * Lazy although a clone is modified in new/edit cases, after which count() will prove useless.
+	 * To remedy that, we convert the modified clone toArray() once we need to count, so we can keep it lazy.
+	 *
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormField>
 	 * @lazy
 	 * @cascade remove
 	 */
-	protected $formFields;
+	protected $formFields; #@TODO find out if other property elsewhere can be lazy or not!
+	#@TODO find out if we can put edit to cache, paired with a typoscript clearcache command!
 
 	/**
 	 * __construct

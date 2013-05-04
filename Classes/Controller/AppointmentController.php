@@ -189,7 +189,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function noneAction() {
 		$flashMessages = $this->flashMessageContainer->getAllMessages();
-		if (empty($flashMessages)) {
+		if (empty($flashMessages)) { #@FIXME cache problem!
 			$this->redirect(); //redirects to main action
 		}
 	}
@@ -324,11 +324,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->addTimerMessage($appointment);
 
 		$formFieldValues = $appointment->getFormFieldValues();
-		$formFieldArray = $appointment->getType()->getFormFields()->toArray();
-		if ($formFieldValues->count() !== count($formFieldArray)) { //a check here, because on validation error, they'll already exist
-			//fields that did not yet exist will get an UID @ a manual persist
-			$formFieldValues = $this->addMissingFormFields($formFieldArray,$formFieldValues);
-		}
+		$formFields = clone $appointment->getType()->getFormFields(); //formFields is modified for this process but not to persist, hence clone
+		$formFieldValues = $this->addMissingFormFields($formFields,$formFieldValues);
+
 		//adding the formFieldValues already will get them persisted too soon, empty and unused, so we're assigning them separately from $appointment
 		$this->view->assign('formFieldValues', $formFieldValues);
 		$this->view->assign('timeSlots', $timeSlots);
@@ -499,19 +497,17 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 
 		$formFieldValues = $appointment->getFormFieldValues();
-		$formFieldArray = $appointment->getType()->getFormFields()->toArray(); #@TODO perhaps using an objectstorage here will help us fix the bug below, in combination with a foreach explicitly checking if the utilized formfields exist in this storage
+		$formFields = clone $appointment->getType()->getFormFields(); //formFields is modified for this process but not to persist, hence clone
 		//it's possible to delete relevant formfieldvalues in TCA, so we'll re-add them here if that's the case
-		if ($formFieldValues->count() !== count($formFieldArray)) { #@FIXME bug: if we replace the 5 existing formfields with 5 new ones, addMissingFormFields isn't being called to fix things
-			$formFieldValues = $this->addMissingFormFields($formFieldArray,$formFieldValues); #@SHOULD using conditions in template now to fix the above issue, but if solved here, we probably don't need them
-			#@TODO create the possibility to differentiate between shown and allowed-to-create types, so that we can encourage big changes to appointment types to happen through a copy instead, which will allow as to preserve old appointments in full glory
-		}
+		$formFieldValues = $this->addMissingFormFields($formFields,$formFieldValues);
+		#@TODO create the possibility to differentiate between shown and allowed-to-create types, so that we can encourage big changes to appointment types to happen through a copy instead, which will allow as to preserve old appointments in full glory
 
 		//if the date was changed, reflect it on the form but don't persist it yet
 		if ($changedDate !== NULL) {
 			$appointment->setBeginTime(new DateTime($changedDate)); #@TODO couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
 			$appointment->_memorizeCleanState('beginTime'); //makes sure it isn't persisted automatically
 		}
-		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']); #@TODO is 0 supported everywhere? it should be, but I think I left a <1 check somewhere.
+		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']); #@SHOULD is 0 supported everywhere? it should be, but I think I left a <1 check somewhere.
 		$dateSlots = $this->slotService->getDateSlotsIncludingCurrent($appointment,$freeSlotInMinutes,TRUE);
 		$timeSlots = $this->slotService->getTimeSlots($dateSlots,$appointment);
 
@@ -611,44 +607,54 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * Also, the explicit sorting values of FormFields are used here to re-arrange the FormFieldValues.
 	 *
-	 * @param Array $formFieldArray
+	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormField> $formFields
 	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue> $formFieldValues
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
 	 */
-	protected function addMissingFormFields($formFieldArray, Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
+	protected function addMissingFormFields(Tx_Extbase_Persistence_ObjectStorage $formFields, Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
 		$items = array();
 		$order = array();
-		$newStorage = new Tx_Extbase_Persistence_ObjectStorage(); #@SHOULD clone instead?
-		$formFieldValues = $formFieldValues->toArray();
 
 		//formfieldvalues already available
 		foreach ($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
-			if ($formField !== NULL) { //it's possible a formfield was deleted at some point
+			if ($formField !== NULL) {
 				$uid = $formField->getUid();
-				$items[$uid] = $formFieldValue;
+				$items[$uid] = $formFieldValue; //I'd prefer $items[$sorting] = $formFieldValue, but the sorting value can be messed with to cause duplicate keys
+				$order[$uid] = $formField->getSorting();
+				if (isset($formFields[$formField])) {
+					$formFields->detach($formField);
+				}
+			} else {
+				//the formfield was removed at some point, so should its value be
+				$formFieldValues->detach($formFieldValue); //this is the original storage, so this is persisted
 			}
 		}
 
-		//formfieldvalues to add
-		foreach ($formFieldArray as $formField) { #@SHOULD experiment with this still being an objectstorage, a clone perhaps
-			$uid = $formField->getUid();
-			if (!isset($items[$uid])) {
+		$formFields = $formFields->toArray(); //formFields is lazy, a count on a lazy objectstorage will give the wrong number if a detach took place
+		if (count($formFields)) {
+			$newStorage = new Tx_Extbase_Persistence_ObjectStorage();
+
+			//formfieldvalues to add
+			foreach ($formFields as $formField) {
+				$uid = $formField->getUid();
 				$formFieldValue = new Tx_Appointments_Domain_Model_FormFieldValue();
 				$formFieldValue->setFormField($formField);
 				$items[$uid] = $formFieldValue;
+				$order[$uid] = $formField->getSorting();
 			}
-			$order[$uid] = $formField->getSorting(); //I'd prefer $items[$sorting] = $formFieldValue, but the sorting value can be messed with to cause duplicate keys
+
+			//NOTE: extbase will set sorting value to the currently arranged order, when persisted
+			natsort($order);
+			foreach($order as $uid=>$sorting) {
+				$newStorage->attach($items[$uid]);
+			}
+
+			//newStorage will not contain formfieldvalues which belonged to formfield that have been removed
+			return $newStorage;
 		}
 
-		//NOTE: extbase will set sorting value to the currently arranged order, when persisted
-		natsort($order);
-		foreach($order as $uid=>$sorting) {
-			$newStorage->attach($items[$uid]);
-		}
-
-		//newStorage will not contain formfieldvalues which belonged to formfield that have been removed
-		return $newStorage;
+		return $formFieldValues;
 	}
 
 	/**
