@@ -60,18 +60,21 @@ class Tx_Appointments_Domain_Validator_ObjectPropertiesValidator extends Tx_Extb
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
 	public function isValid($value) {
-		if (is_object($value)) {
-			$validatorResolver = $this->objectManager->get('Tx_Appointments_Validation_VariableValidatorResolver');
-			//these help us to resolve variable option values
-			$validatorResolver->setClassInstance($value);
-			$noStorage = isset($this->options['containsVariable']);
-
-			$validator = $validatorResolver->getBaseValidatorConjunction(get_class($value),$noStorage);
-			if ($validator->isValid($value)) {
-				return TRUE;
-			}
-			$this->errors = array_merge($this->errors,$validator->getErrors());
+		if (!is_object($value)) { //also works on objectStorage objects
+			throw new Tx_Appointments_MVC_Exception_PropertyDeleted('One or more object-properties are not available.', 407501337);
 		}
+
+		$validatorResolver = $this->objectManager->get('Tx_Appointments_Validation_VariableValidatorResolver');
+		//these help us to resolve variable option values
+		$validatorResolver->setClassInstance($value);
+		$noStorage = isset($this->options['containsVariable']);
+
+		$validator = $validatorResolver->getBaseValidatorConjunction(get_class($value),$noStorage);
+		if ($validator->isValid($value)) {
+			return TRUE;
+		}
+
+		$this->errors = array_merge($this->errors,$validator->getErrors());
 		return FALSE;
 	}
 

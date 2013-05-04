@@ -50,7 +50,7 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Extbase
 
 	/**
 	 * Checks if an object is a valid objectstorage by passing all its objects
-	 * through the objectsPropertiesValidator. Options are passes to the
+	 * through the objectsPropertiesValidator. Options are passed to the
 	 * objectsPropertiesValidator.
 	 *
 	 * Utilizes a StorageError to help us differentiate @ form.error viewhelper.
@@ -70,7 +70,7 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Extbase
 			$validator = $this->objectManager->get('Tx_Appointments_Validation_VariableValidatorResolver')->createValidator('Tx_Appointments_Domain_Validator_ObjectPropertiesValidator',$this->options);
 			$valid = TRUE;
 			foreach ($value as $obj) {
-				if (!$validator->isValid($obj)) { #@FIXME if false because not an object, (e.g. when it was deleted internally) the following interactions with $obj are going to produce a fatal error
+				if (!$validator->isValid($obj)) {
 					$valid = FALSE;
 
 					if (!isset($storageError)) {
@@ -78,12 +78,12 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Extbase
 						$propertyName[0] = strtolower($propertyName[0]);
 						$storageError = new Tx_Appointments_Validation_StorageError($propertyName);
 					}
+
 					$storageError->addErrors($obj->getFormField()->getUid(), $validator->getErrors()); #@SHOULD "getFormField" should be variable
 				}
 			}
 			$this->errors[] = $storageError;
 		}
-		#@SHOULD throw exception?
 		return $valid;
 	}
 
