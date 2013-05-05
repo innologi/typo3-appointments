@@ -173,7 +173,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				foreach ($errors as $flashMessage) {
 					$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 				}
-				$this->redirect('none'); #@SHOULD isn't this better with forward? Might not even need the redirect and flash check in none then, correct?
+				$this->forward('none');
 			}
 
 		}
@@ -183,16 +183,13 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * action none
 	 *
 	 * If the plugin is supposed to do nothing but present flash messages.
-	 * If no flash messages, redirects to main action
+	 *
+	 * Note that you should FORWARD, not REDIRECT, to this action,
+	 * or we would need conditions and a redirect here as well.
 	 *
 	 * @return void
 	 */
-	public function noneAction() {
-		$flashMessages = $this->flashMessageContainer->getAllMessages();
-		if (empty($flashMessages)) { #@FIXME cache problem!
-			$this->redirect(); //redirects to main action
-		}
-	}
+	public function noneAction() { }
 
 	/**
 	 * action list
