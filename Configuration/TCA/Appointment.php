@@ -211,9 +211,10 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 				'appearance' => array(
 					'collapseAll' => 1,
 					'levelLinksPosition' => 'top',
+					'useSortable' => 1,
 					'showSynchronizationLink' => 1,
 					'showPossibleLocalizationRecords' => 1,
-					'showAllLocalizationLink' => 1 #@TODO __how to enable drag 'n drop sorting again?
+					'showAllLocalizationLink' => 1
 				),
 			),
 		),
