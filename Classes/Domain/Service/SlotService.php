@@ -114,7 +114,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 		return $dateSlotStorage;
 	}
-	#@TODO __doc
+
 	/**
 	 * Returns a dateSlotStorage with a single dateSlot based on timestamp.
 	 *
@@ -132,7 +132,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 		if (($cleared = $this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes)) || !isset($this->singleDateSlots[$typeUid][$dateSlotKey])) {
 			if (
-					!$cleared && (
+					!$cleared && ( //try to retrieve it from a normal dateSlotStorage if available
 							(isset($this->dateSlots[$typeUid][$dateSlotKey]) && $dateSlotStorage = $this->dateSlots[$typeUid])
 							|| (
 									($dateSlotStorage = $this->getStorageObjectFromCache($this->getCacheKey($type, $agenda),'dateSlotStorage',$type, $agenda)) !== FALSE
@@ -200,7 +200,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 *
 	 * @param Tx_Appointments_Persistence_KeyObjectStorage $dateSlotStorage Contains date slots
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment Appointment to get the dateslot for
-	 * @return boolean|Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_TimeSlot>
+	 * @return boolean|Tx_Appointments_Persistence_KeyObjectStorage
 	 */
 	public function getTimeSlots(Tx_Appointments_Persistence_KeyObjectStorage $dateSlotStorage, Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$date = $appointment->getBeginTime();
@@ -213,12 +213,13 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		$dateSlot = $dateSlotStorage[$key];
 		return $dateSlot->getTimeSlots();
 	}
-	#@TODO __doc
+
 	/**
 	 * Checks if the timeslot for the appointment is allowed. If the timeslot wasn't possible to begin with,
-	 * will return FALSE..
+	 * will return FALSE.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to check the timeslot for
+	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
 	 * @return boolean
 	 */
 	public function isTimeSlotAllowed(Tx_Appointments_Domain_Model_Appointment $appointment, $expireMinutes) {
