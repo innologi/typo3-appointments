@@ -733,7 +733,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		} else { //warn of expiration
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_expired', $this->extensionName);
 			$flashHeader = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_expired_header', $this->extensionName);
-			$flashState = t3lib_FlashMessage::WARNING; #@TODO __transform automatically with javascript
+			$flashState = t3lib_FlashMessage::WARNING;
+			$this->view->assign('expired', 1); //for free-time button
 		}
 		$this->flashMessageContainer->add($flashMessage,$flashHeader,$flashState);
 	}

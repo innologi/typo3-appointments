@@ -150,16 +150,43 @@ jQuery(document).ready(function() {
 			timerElem.addClass('flash'); //starts flashing (or marking) the timer according to class css
 		} else if (seconds <= 0) {
 			clearInterval(counter); //stop counter
+			replaceTimerMessage();
+			replaceTimeSlotButton();
 			return;
 		}
 		
 		seconds--;
-		
 		var displayMin = Math.floor(seconds / 60);
 		var displaySec = '0' + (seconds % 60); //remainder of seconds by modulus
 		//set new inner html
 		timerElem.html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
 	};
+	
+	//replace timer message
+	function replaceTimerMessage() {
+		var body = timerElem.parent('.tx-appointments .typo3-message .message-body');
+		if (body[0]) {
+			var head = body.prev('.tx-appointments .typo3-message .message-header');
+			var container = body.parent('.tx-appointments .typo3-message');
+			if (head[0] && container[0]) {
+				//replace texts
+				body.html('###TIMER_ZERO###');
+				head.html('###TIMER_ZERO_HEAD###');
+				//replace box class
+				container.addClass('message-warning');
+				container.removeClass('message-information');
+			}
+		}
+	}
+	
+	//replace timeslot button
+	function replaceTimeSlotButton() {
+		var freeTimeButton = jQuery('.tx-appointments form #appointments-submit-time');
+		if (freeTimeButton[0]) {
+			freeTimeButton.val('###RENEW_TIME###');
+			freeTimeButton.addClass('attention');
+		}
+	}
 	
 	//start timer countdown if a timer exists
 	if (timerElem[0]) {

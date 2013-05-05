@@ -32,7 +32,6 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO __add icons to messages
 #@TODO __make * = required only visible when there are required fields
 #@FIXME do Manual
-#@TODO __the countdown timer should say something about being available again when reaching 0:00, instead of it still saying it's reserved by you
 #@SHOULD look at / replace Resources/Public/Icons
 #@SHOULD unittesting?
 #@TODO currently, month and day names are taken from locallang. I should see if the php locale can be changed to the typo3 locale in order to rely on strftime and/or f:format.date

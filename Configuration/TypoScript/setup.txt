@@ -64,6 +64,15 @@ plugin.tx_appointments {
 			DELETE_CONFIRM = TEXT
 			DELETE_CONFIRM.insertData = 1
 			DELETE_CONFIRM.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_delete_confirm}
+			TIMER_ZERO = TEXT
+			TIMER_ZERO.insertData = 1
+			TIMER_ZERO.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_expired}
+			TIMER_ZERO_HEAD = TEXT
+			TIMER_ZERO_HEAD.insertData = 1
+			TIMER_ZERO_HEAD.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_expired_header}
+			RENEW_TIME = TEXT
+			RENEW_TIME.insertData = 1
+			RENEW_TIME.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_time_expired}
 			DAY1 = TEXT
 			DAY1.insertData = 1
 			DAY1.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s1}

@@ -50,7 +50,7 @@
 			</label>
 			&larr;
 					
-			<f:form.submit id="appointments-submit-time" value="{f:translate(key: 'tx_appointments_list.submit_free')}" class="submit" />
+			<f:form.submit id="appointments-submit-time" value="{f:translate(key: '{f:if(condition: expired, then: \'tx_appointments_list.submit_time_expired\', else: \'tx_appointments_list.submit_free\' )}')}" class="submit" />
 			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.time.csh_new2')}"><f:translate key="tx_appointments_list.csh" /></span>
 		</fieldset>
 	</f:form>

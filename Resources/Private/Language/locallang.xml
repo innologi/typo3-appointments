@@ -23,6 +23,7 @@
 			<label index="tx_appointments_list.submit_next_step">Next step</label>
 			<label index="tx_appointments_list.submit_type">Confirm type</label>
 			<label index="tx_appointments_list.submit_date_slot">Confirm date</label>
+			<label index="tx_appointments_list.submit_time_expired">Renew time</label>
 			<label index="tx_appointments_list.submit_new">Create appointment</label>
 			<label index="tx_appointments_list.submit_update">Save appointment</label>
 			<label index="tx_appointments_list.submit_free">Free timeslot</label>
@@ -37,7 +38,7 @@
 			<label index="tx_appointments_list.appointment_timer">Will automatically be available again after: $1</label>
 			<label index="tx_appointments_list.appointment_timerrefresh">Your last chosen timeslot was still available for you. It has been reserved by you again.</label>
 			<label index="tx_appointments_list.appointment_expired_header">Timeslot no longer reserved.</label>
-			<label index="tx_appointments_list.appointment_expired">Please refresh your timeslot before someone else reserves it.</label>
+			<label index="tx_appointments_list.appointment_expired">Please renew your timeslot-choice before someone else reserves it.</label>
 			<label index="tx_appointments_list.appointment_no_longer_available">The appointment is no longer available. It may have been cancelled or deleted by someone after you visited the page.</label>
 			<label index="tx_appointments_list.appointment_property_deleted">The appointment is missing some property values. Someone might have deleted these manually after you visited the page.</label>
 			<label index="tx_appointments_list.appointment_update_success">Your appointment was updated.</label>
@@ -177,9 +178,10 @@
 			<label index="tx_appointments_list.submit_next_step">Volgende stap</label>
 			<label index="tx_appointments_list.submit_type">Bevestig type</label>
 			<label index="tx_appointments_list.submit_date_slot">Bevestig datum</label>
+			<label index="tx_appointments_list.submit_time_expired">Vernieuw tijd</label>
 			<label index="tx_appointments_list.submit_new">Afspraak aanmaken</label>
 			<label index="tx_appointments_list.submit_update">Afspraak opslaan</label>
-			<label index="tx_appointments_list.submit_free">Geef tijdstip vrij</label>
+			<label index="tx_appointments_list.submit_free">Vrijgeven</label>
 			<label index="tx_appointments_list.validation_errors">Sommige velden zijn niet correct ingevuld:</label>
 			<label index="tx_appointments_list.yes">Ja</label>
 			<label index="tx_appointments_list.no">Nee</label>
