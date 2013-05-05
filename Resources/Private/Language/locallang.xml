@@ -21,8 +21,8 @@
 			<label index="tx_appointments_list.label_date_slot">Pick date:</label>
 			<label index="tx_appointments_list.label_time_slot">Pick time:</label>
 			<label index="tx_appointments_list.submit_next_step">Next step</label>
-			<label index="tx_appointments_list.submit_type">Change type</label>
-			<label index="tx_appointments_list.submit_date_slot">Change date</label>
+			<label index="tx_appointments_list.submit_type">Confirm type</label>
+			<label index="tx_appointments_list.submit_date_slot">Confirm date</label>
 			<label index="tx_appointments_list.submit_new">Create appointment</label>
 			<label index="tx_appointments_list.submit_update">Save appointment</label>
 			<label index="tx_appointments_list.submit_free">Free timeslot</label>
@@ -175,8 +175,8 @@
 			<label index="tx_appointments_list.label_date_slot">Kies datum:</label>
 			<label index="tx_appointments_list.label_time_slot">Kies tijd:</label>
 			<label index="tx_appointments_list.submit_next_step">Volgende stap</label>
-			<label index="tx_appointments_list.submit_type">Wijzig type</label>
-			<label index="tx_appointments_list.submit_date_slot">Wijzig datum</label>
+			<label index="tx_appointments_list.submit_type">Bevestig type</label>
+			<label index="tx_appointments_list.submit_date_slot">Bevestig datum</label>
 			<label index="tx_appointments_list.submit_new">Afspraak aanmaken</label>
 			<label index="tx_appointments_list.submit_update">Afspraak opslaan</label>
 			<label index="tx_appointments_list.submit_free">Geef tijdstip vrij</label>
