@@ -123,6 +123,7 @@ jQuery(document).ready(function() {
 		firstDay: 1, //start with monday
 		hideIfNoPrevNext: true, //hide arrows if not available
 		minDate: '-120y',
+		yearRange: '1890:+10',
 		showOtherMonths: true, //shows days of adjacent months to fill out the table
 		selectOtherMonths: true, //makes above days selectable
 		showWeek: true,
