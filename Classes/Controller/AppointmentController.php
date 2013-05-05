@@ -330,6 +330,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('dateSlots', $dateSlots);
 		$this->view->assign('types', $types);
 		$this->view->assign('appointment', $appointment);
+		$warnUnloadText = str_replace('$1',
+				Tx_Extbase_Utility_Localization::translate('tx_appointments_list.submit_new', $this->extensionName),
+				Tx_Extbase_Utility_Localization::translate('tx_appointments_list.warn_unload', $this->extensionName)
+		);
+		$this->view->assign('warnUnloadText', $warnUnloadText);
 		$this->view->assign('step', 2); #@TODO check of het template niet wat meer van dit variabel af kan hangen zonder dat ik meerdere forms hoef te definiëren
 	}
 
@@ -416,7 +421,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 			if ($timerStart) {
 				//message for a new timeslot
-				$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timerstart', $this->extensionName);
+				$flashMessage = str_replace('$1', $freeSlotInMinutes,
+						Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timerstart', $this->extensionName)
+				);
 				$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 			}
 
@@ -504,7 +511,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$appointment->setBeginTime(new DateTime($changedDate)); #@SHOULD couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
 			$appointment->_memorizeCleanState('beginTime'); //makes sure it isn't persisted automatically
 		}
-		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']); #@SHOULD is 0 supported everywhere? it should be, but I think I left a <1 check somewhere.
+		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']); #@SHOULD is 0 supported everywhere? it should be, but I think I left a <1 check somewhere. Also timer messages should react to 0
 		$dateSlots = $this->slotService->getDateSlotsIncludingCurrent($appointment,$freeSlotInMinutes,TRUE);
 		$timeSlots = $this->slotService->getTimeSlots($dateSlots,$appointment);
 
