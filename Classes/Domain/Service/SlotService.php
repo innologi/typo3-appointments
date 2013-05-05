@@ -974,15 +974,18 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage
 	 */
 	protected function getSingleStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $dateTime) {
-		$id = 'singleDateSlotStorage' . $dateTime->format(self::DATESLOT_KEY_FORMAT);
+		$dateSlotKey = $dateTime->format(self::DATESLOT_KEY_FORMAT);
+
+		$id = 'singleDateSlotStorage';
 		$key = $this->getCacheKey($type, $agenda);
 		$data = $this->getStorageObjectFromCache($key, $id, $type, $agenda);
-		if ($data === FALSE) {
+		//note that the singleStorageObject is stored per type/agenda in its entirety in a single cache record
+		if (($data === FALSE && $data = array()) || !isset($data[$dateSlotKey])) {
 			//not cached so begin building
-			$data = $this->buildSingleStorageObject($type, $agenda, $dateTime);
+			$data[$dateSlotKey] = $this->buildSingleStorageObject($type, $agenda, $dateTime);
 			$this->setCache($key,$id,$data);
 		}
-		return $data;
+		return $data[$dateSlotKey];
 	}
 
 	/**
@@ -999,7 +1002,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		if (isset($cacheContent)) {
 			$data = unserialize($cacheContent);
 			//makes sure unserialization delivered a valid object, considering there are (inconsistent) issues with serialized object storages
-			if ($data instanceof Tx_Appointments_Persistence_KeyObjectStorage) {
+			if ($data instanceof Tx_Appointments_Persistence_KeyObjectStorage || gettype($data) === 'array') {
 				return $data;
 			}
 		}
@@ -1017,24 +1020,24 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	public function resetStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		$typeUid = $type->getUid();
 
-		$minutes = 60; //the number of minutes before a cache entry expires #@SHOULD make it configurable?
-		$timestampPerMinutesVar = ceil( time() / ($minutes * 60) );
 		#@TODO it doesn't reset other types, although they are affected unless they have exclusiveAvailability on.. maybe the alterStorageObject wasn't such a bad idea, using it to clean a number of days AROUND beginTime, of every Type except exclusive availability types? That would seriously cut back the overhead if maxDaysForward is huge and/or there are tons of types
-		$key = md5($agenda->getUid() . '-' . $typeUid . '-' . $timestampPerMinutesVar);
+		$key = $this->getCacheKey($type, $agenda);
 
 		$id = 'dateSlotStorage';
 		$cacheContent = $this->getCache($key,$id);
 		if (isset($cacheContent)) {
 			$this->setCache($key,$id,NULL);
 		}
-		#$id = 'singleDateSlotStorage'; #@FIXME resetStorage moet ook single storage
-		#$cacheContent = $this->getCache($key,$id);
-		#if (isset($cacheContent)) {
-		#	$this->setCache($key,$id,NULL);
-		#}
+		$id = 'singleDateSlotStorage';
+		$cacheContent = $this->getCache($key,$id);
+		if (isset($cacheContent)) {
+			$this->setCache($key,$id,NULL);
+		}
 
 		$this->appointmentRepository->persistChanges();
+
 		unset($this->dateSlots[$typeUid]);
+		unset($this->singleDateSlots[$typeUid]);
 	}
 
 }
