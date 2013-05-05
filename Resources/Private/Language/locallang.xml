@@ -50,6 +50,7 @@
 			<label index="tx_appointments_list.calendar_create_subject">Appointment confirmation</label>
 			<label index="tx_appointments_list.calendar_update_subject">Appointment change</label>
 			<label index="tx_appointments_list.calendar_delete_subject">Appointment cancellation</label>
+			<label index="tx_appointments_list.email_error">The agenda owner could not be notified by email, because of an error. You might want to ask them to look into it.</label>
 			<label index="tx_appointments_list.email_link_label">View appointment</label>
 			
 			<label index="error.address.firstName.1221560718">Should not be empty.</label>
@@ -204,6 +205,7 @@
 			<label index="tx_appointments_list.calendar_update_subject">Wijziging afspraak</label>
 			<label index="tx_appointments_list.calendar_delete_subject">Annulering afspraak</label>
 			<label index="tx_appointments_list.email_link_label">Bekijk afspraak</label>
+			<label index="tx_appointments_list.email_error">De agenda-beheerder kon niet per email op de hoogte gesteld worden, vanwege een fout. Zou u de agenda-beheerder hiervan op de hoogte willen stellen?</label>
 			<label index="tx_appointments_list.csh">Toelichting</label>
 			
 			<label index="error.address.firstName.1221560718">Mag niet leeg zijn.</label>

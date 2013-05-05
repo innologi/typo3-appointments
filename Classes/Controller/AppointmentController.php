@@ -559,7 +559,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
 
 		$this->slotService->resetStorageObject($appointment->getType(),$appointment->getAgenda()); //persist changes in timeslots
-		#@FIXME bug: causes problems when address was deleted before!
+
 		$this->performMailingActions('delete',$appointment);
 
 		$this->redirect('list');
@@ -817,9 +817,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	protected function performMailingActions($action,Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->emailService->setControllerContext($this->controllerContext); //can't be done @ injection because controllerContext won't be initialized yet
 
-		#@TODO decent error messaging (try/catch?), and perhaps success? maybe sys_log?
-		$this->emailService->sendEmailAction($action,$appointment);
-		$this->emailService->sendCalendarAction($action,$appointment);
+		if (!$this->emailService->sendAction($action,$appointment)) {
+			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.email_error', $this->extensionName);
+			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+		}
 	}
 
 }

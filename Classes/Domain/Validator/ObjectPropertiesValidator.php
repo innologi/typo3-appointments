@@ -58,6 +58,7 @@ class Tx_Appointments_Domain_Validator_ObjectPropertiesValidator extends Tx_Extb
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @throws Tx_Appointments_MVC_Exception_PropertyDeleted
 	 */
 	public function isValid($value) {
 		if (!is_object($value)) { //also works on objectStorage objects

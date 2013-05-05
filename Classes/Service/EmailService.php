@@ -60,6 +60,13 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	protected $sender;
 
 	/**
+	 * Text that is the same for both HTML and plain emails.
+	 *
+	 * @var string
+	 */
+	protected $text;
+
+	/**
 	 * Set extensionname (REQUIRED)
 	 *
 	 * Used to access locallang files.
@@ -74,7 +81,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	/**
 	 * Set controllerContext (REQUIRED)
 	 *
-	 * Used to access UriBuilder.
+	 * Used to access UriBuilder and retrieve the flashMessageContainer.
 	 *
 	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
 	 */
@@ -98,7 +105,29 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * @return t3lib_mail_Message
 	 */
 	protected function initializeMail() {
+		$this->text = NULL;
 		return new t3lib_mail_Message(NULL, NULL, NULL, 'utf-8');
+	}
+
+	/**
+	 * Performs the appropriate send-actions. This is a container function to provide
+	 * a single try/catch construction on all the email-processes.
+	 *
+	 * @param string $action The email action [create / update / delete]
+	 * @param Tx_Appointments_Domain_Model_Appointment $appointment
+	 * @return boolean
+	 */
+	public function sendAction($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
+		try {
+			$this->sendEmailAction($action,$appointment);
+			$this->sendCalendarAction($action,$appointment);
+			return TRUE;
+		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) {
+			#@TODO sys_log?
+			return FALSE;
+		} catch (Exception $e) {
+			return FALSE; #@TODO separate more exceptions
+		}
 	}
 
 	/**
@@ -108,36 +137,31 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to confirm
 	 * @return boolean TRUE on success, FALSE on failure
 	 */
-	public function sendEmailAction($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
-		try {
-			$recipientArray = $this->collectAllowedRecipients($action,$appointment);
-			if (!empty($recipientArray)) {
-				$mail = $this->initializeMail();
+	protected function sendEmailAction($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
+		$recipientArray = $this->collectAllowedRecipients($action,$appointment);
+		if (!empty($recipientArray)) {
+			$mail = $this->initializeMail();
 
-				$mail->setSubject(
-						$this->getActionSubject($action,'email')
-				)->setFrom(
-						$this->getSender()
-				)->setBody(
-						$this->getText($appointment,$action,'email',1),
-						'text/html'
-				);
-				$mail->addPart(
-						$this->getText($appointment,$action,'email'),
-						'text/plain'
-				);
+			$mail->setSubject(
+					$this->getActionSubject($action,'email')
+			)->setFrom(
+					$this->getSender()
+			)->setBody(
+					$this->getText($appointment,$action,'email',1),
+					'text/html'
+			);
+			$mail->addPart(
+					$this->getText($appointment,$action,'email'),
+					'text/plain'
+			);
 
-				//both recipient-classes have a getEmail() method
-				$toArray = $this->getRecipientEmailArray($recipientArray);
+			//both recipient-classes have a getEmail() method
+			$toArray = $this->getRecipientEmailArray($recipientArray);
 
-				//send to each recipient separately
-				foreach ($toArray as $to) {
-					$mail->setTo($to)->send();
-				}
+			//send to each recipient separately
+			foreach ($toArray as $to) {
+				$mail->setTo($to)->send();
 			}
-			return TRUE;
-		} catch (Exception $e) {
-			return FALSE; #@TODO separate exceptions
 		}
 	}
 
@@ -192,6 +216,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * @param string $bodyType Sets what text property to get (email|calendar)
 	 * @param boolean $isHTML On TRUE, returns a HTML body. On FALSE, returns plain text
 	 * @return string Processed email/calendar text
+	 * @throws Tx_Appointments_MVC_Exception_PropertyDeleted
 	 */
 	protected function getText(Tx_Appointments_Domain_Model_Appointment $appointment, $action, $bodyType = 'email', $isHTML = FALSE) {
 		$agenda = $appointment->getAgenda();
@@ -203,16 +228,25 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 				$body = $agenda->getEmailText();
 		}
 
-		//replaces variables
-		$body = str_replace('###USER###',$appointment->getFeUser()->getName(),$body);
-		$body = str_replace('###AGENDA###',$appointment->getAgenda()->getName(),$body);
-		$body = str_replace('###TYPE###',$appointment->getType()->getName(),$body);
-		$body = str_replace('###DATE###',$appointment->getBeginTime()->format('d-m-Y'),$body);
-		$body = str_replace('###START_TIME###',$appointment->getBeginTime()->format('H:i'),$body);
-		$body = str_replace('###END_TIME###',$appointment->getEndTime()->format('H:i'),$body);
-		$body = str_replace('###NOTES###',$appointment->getNotes(),$body);
-		$body = str_replace('###NOTES_SU###',$appointment->getNotesSu(),$body);
-		$body = str_replace('###SECURITY###',$appointment->getAddress()->getSocialSecurityNumber(),$body);
+		if (!isset($this->text)) { //put everything not-$isHTML-related in text var
+			$feUser = $appointment->getFeUser();
+			$address = $appointment->getAddress();
+			if (!is_object($feUser) || !is_object($address)) {
+				throw new Tx_Appointments_MVC_Exception_PropertyDeleted('One or more object-properties are not available.', 407501337);
+			}
+
+			//replaces variables
+			$body = str_replace('###USER###',$feUser->getName(),$body);
+			$body = str_replace('###AGENDA###',$appointment->getAgenda()->getName(),$body);
+			$body = str_replace('###TYPE###',$appointment->getType()->getName(),$body);
+			$body = str_replace('###DATE###',$appointment->getBeginTime()->format('d-m-Y'),$body);
+			$body = str_replace('###START_TIME###',$appointment->getBeginTime()->format('H:i'),$body);
+			$body = str_replace('###END_TIME###',$appointment->getEndTime()->format('H:i'),$body);
+			$body = str_replace('###NOTES###',$appointment->getNotes(),$body);
+			$body = str_replace('###NOTES_SU###',$appointment->getNotesSu(),$body);
+			$body = str_replace('###SECURITY###',$address->getSocialSecurityNumber(),$body);
+			$this->text = $body;
+		}
 			//build address supports a variable separator, so we'll let $isHTML decide
 		if (strpos($body,'###ADDRESS###') !== FALSE) {
 			$body = str_replace('###ADDRESS###',$this->buildAddress($appointment->getAddress(),($isHTML?'<br />':"\n")),$body);
@@ -283,32 +317,27 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that is the subject of the calendar action
 	 * @return boolean TRUE on success, FALSE on failure
 	 */
-	public function sendCalendarAction($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
-		try {
-			$agenda = $appointment->getAgenda();
-			if ($this->isActionAllowed($action, $agenda->getCalendarInviteTypes())) {
-				$mail = $this->initializeMail();
+	protected function sendCalendarAction($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
+		$agenda = $appointment->getAgenda();
+		if ($this->isActionAllowed($action, $agenda->getCalendarInviteTypes())) {
+			$mail = $this->initializeMail();
 
-				$mail->setSubject(
-						$this->getActionSubject($action,'calendar')
-				)->setFrom(
-						$this->getSender()
-				)->setBody(
-						$this->getCalendarActionBody($action,$appointment),
-						'text/calendar'
-				);
+			$mail->setSubject(
+					$this->getActionSubject($action,'calendar')
+			)->setFrom(
+					$this->getSender()
+			)->setBody(
+					$this->getCalendarActionBody($action,$appointment),
+					'text/calendar'
+			);
 
-				$toArray = $this->getRecipientEmailArray(
-						$agenda->getCalendarInviteAddress()->toArray()
-				);
+			$toArray = $this->getRecipientEmailArray(
+					$agenda->getCalendarInviteAddress()->toArray()
+			);
 
-				foreach ($toArray as $to) {
-					$mail->setTo($to)->send();
-				}
+			foreach ($toArray as $to) {
+				$mail->setTo($to)->send();
 			}
-			return TRUE;
-		} catch (Exception $e) {
-			return FALSE; #@TODO separate exceptions
 		}
 	}
 
