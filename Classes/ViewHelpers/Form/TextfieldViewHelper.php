@@ -121,7 +121,6 @@ class Tx_Appointments_ViewHelpers_Form_TextfieldViewHelper extends Tx_Fluid_View
 		return $value;
 	}
 
-	#@SHOULD make a version that copes well with both normal properties and properties of properties
 	/**
 	 * Get errors for the property and form name of this view helper
 	 *

@@ -46,7 +46,7 @@ class Tx_Appointments_Hooks_Iconworks {
 		if ($table === 'tx_appointments_domain_model_appointment' && isset($row['creation_progress'])) { #@TODO address too!
 			switch (intval($row['creation_progress'])) {
 				case 1:
-					$status['tx_appointments_unfinished'] = TRUE; #@SHOULD can we add a pencil overlay?
+					$status['tx_appointments_unfinished'] = TRUE; #@TODO __can we add a pencil overlay?
 					break;
 				case 2:
 					$status['tx_appointments_expired'] = TRUE;

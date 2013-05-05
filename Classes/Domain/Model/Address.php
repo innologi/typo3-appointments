@@ -32,7 +32,7 @@
  *
  */
 class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_AbstractEntity {
-	#@SHOULD make these configurable in TCA
+	#@TODO __make these configurable in TCA
 
 	/**
 	 * First Name
@@ -67,7 +67,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 *
 	 * @var string
 	 */
-	protected $gender; #@TODO validate StringLength(minimum=1, maximum=1) but GEMHMK doesn't want to
+	protected $gender; #@SHOULD validate StringLength(minimum=1, maximum=1) but GEMHMK doesn't want to
 
 	/**
 	 * Birthday
@@ -88,7 +88,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 *
 	 * @var string
 	 */
-	protected $address; #@TODO regex validator? but GEMHMK doesn't want to
+	protected $address; #@SHOULD regex validator? but GEMHMK doesn't want to
 
 	/**
 	 * Zip code

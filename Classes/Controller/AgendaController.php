@@ -147,11 +147,11 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 * @return void
 	 */
 	protected function showGeneral($creationFunction, $containerName, $modifier = 0) {
-		global $TSFE; #@TODO move to a service/helper class?
+		global $TSFE; #@TODO use userService?
 		$superUser = FALSE;
 		if ($TSFE->fe_user) {
 			$feUser = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
-			if ($feUser !== NULL) { #@TODO agenda uses this, list uses vhs, let's unify all this crap AND make it possible for non-users to see things without error messages
+			if ($feUser !== NULL) {
 				$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
 				if ($suGroup && $feUser->getUsergroup()->contains($suGroup)) {
 					$superUser = TRUE;

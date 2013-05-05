@@ -143,7 +143,7 @@ class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Extba
 		}
 
 		if ($objectDeleted) {
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_no_longer_available', $this->extensionName); #@TODO the message doesn't cover cases where the appointment was not finished
+			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 			$this->redirect('list');
 		}

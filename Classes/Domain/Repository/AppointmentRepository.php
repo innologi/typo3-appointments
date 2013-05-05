@@ -85,7 +85,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		return $result;
 	}
 
-	#@SHOULD no longer used, clean up?
+	#@SHOULD no longer used, clean up? maybe check EVERYTHING again, because there have been a lot of efficiency-changes
 	/**
 	 * Returns all objects of this repository belonging to the specified day. No expired appointments.
 	 *
@@ -148,7 +148,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 
 		if ($excludeAppointment !== NULL && !$excludeAppointment->_isNew()) {
 			$constraint[] = $query->logicalNot(
-					#$query->logicalAnd( #@TODO cleanup
+					#$query->logicalAnd( #@TODO __cleanup
 							$query->equals('uid', $excludeAppointment->getUid())#,
 					#		$query->equals('type', $excludeAppointment->getType())
 					#)

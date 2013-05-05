@@ -114,7 +114,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 		return $dateSlotStorage;
 	}
-	#@TODO doc
+	#@TODO __doc
 	/**
 	 * Returns a dateSlotStorage with a single dateSlot based on timestamp.
 	 *
@@ -164,7 +164,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		}
 		$agenda = $appointment->getAgenda();
 
-		$this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes); #@SHOULD probably not be called @ every type with limitTypes :/
+		$this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes); #@SHOULD probably inefficient @ every type with limitTypes :/
 		$dateSlotStorage = $this->buildSingleStorageObject($type,$agenda,clone $appointment->getBeginTime(),$appointment,$disregardConditions);
 
 		#@TODO finish this alternative that could alter a cached dateSlotStorage instead
@@ -213,7 +213,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		$dateSlot = $dateSlotStorage[$key];
 		return $dateSlot->getTimeSlots();
 	}
-	#@TODO doc
+	#@TODO __doc
 	/**
 	 * Checks if the timeslot for the appointment is allowed. If the timeslot wasn't possible to begin with,
 	 * will return FALSE..
@@ -269,7 +269,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 		$dateTime = $this->getFirstAvailableTime($type, $agenda);
 
-		$maxDaysAhead = $type->getMaxDaysForward(); #@TODO add an override maxdaysforward in agenda, that, if set, works on all types in the plugin?
+		$maxDaysAhead = $type->getMaxDaysForward(); #@TODO __add an override maxdaysforward in agenda, that, if set, works on all types in the plugin?
 		$this->createDateSlots($dateSlotStorage, $dateTime, $type, $agenda, $maxDaysAhead, $excludeAppointment);
 
 		return $dateSlotStorage;
@@ -953,7 +953,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 */
 	protected function getStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		$id = 'dateSlotStorage';
-		$key = $this->getCacheKey($type, $agenda); #@TODO utilize configurable cache-key minutes??
+		$key = $this->getCacheKey($type, $agenda); #@SHOULD utilize configurable cache-key minutes??
 		$data = $this->getStorageObjectFromCache($key, $id, $type, $agenda);
 		if ($data === FALSE) {
 			//not cached so begin building
@@ -1017,7 +1017,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	public function resetStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		$typeUid = $type->getUid();
 
-		$minutes = 60; //the number of minutes before a cache entry expires #@TODO make it configurable?
+		$minutes = 60; //the number of minutes before a cache entry expires #@SHOULD make it configurable?
 		$timestampPerMinutesVar = ceil( time() / ($minutes * 60) );
 		#@TODO it doesn't reset other types, although they are affected unless they have exclusiveAvailability on.. maybe the alterStorageObject wasn't such a bad idea, using it to clean a number of days AROUND beginTime, of every Type except exclusive availability types? That would seriously cut back the overhead if maxDaysForward is huge and/or there are tons of types
 		$key = md5($agenda->getUid() . '-' . $typeUid . '-' . $timestampPerMinutesVar);

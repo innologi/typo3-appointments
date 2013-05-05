@@ -368,7 +368,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
-	public function processNewAction(Tx_Appointments_Domain_Model_Appointment $appointment, $crossAppointment = '') { #@TODO test if on validation error, everything still works ok, like filled fields without session etc. because nothing is saved by new2 now..
+	public function processNewAction(Tx_Appointments_Domain_Model_Appointment $appointment, $crossAppointment = '') {
 		$appointment->setAgenda($this->agenda);
 		$appointment->setFeUser($this->feUser);
 
@@ -390,10 +390,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				if ($appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::EXPIRED) { //it's possible to get here when expired and the appointment no longer exists, thus throwing an exception #@TODO caught by.. ? SettingsOverride? I don't remember!
 					//.. unless a crossAppointment check returned true
 					if ($crossAppointment) { //indicates there is an overlap caused by this appointment's own add-time formfield
-						#@TODO can we indicate how much time overlaps?
+						#@TODO __can we indicate how much time overlaps?
 						$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName);
 						$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-						#@TODO mark the time(-related) field(s) like a validation error
+						#@TODO __mark the time(-related) field(s) like a validation error
 					} else {
 						//checks whether the timeslot was changed or not
 						$cleanBeginTime = $appointment->_getCleanProperty('beginTime');
@@ -404,7 +404,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 							$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timerrefresh', $this->extensionName);
 							$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 						}
-						$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED); #@TODO cleanup task for expired records?
+						$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED); #@TODO __cleanup task for expired records?
 					}
 				}
 
@@ -428,7 +428,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 
 			$action = 'new1';
-			#@TODO mark the time field like a validation error
+			#@TODO __mark the time field like a validation error
 		}
 
 
@@ -451,7 +451,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	public function createAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->calculateTimes($appointment); //times can be influenced by formfields
 
-		#@TODO think hard about what should and shouldn't happen when someone submits an expired appointment, because we have to carefully consider the consequences of having NO isTimeSlotAllowed in cases the firstAvailableTime > timeslot LONG since choosing the timeslot
+		#@TODO __think hard about what should and shouldn't happen when someone submits an expired appointment, because we have to carefully consider the consequences of having NO isTimeSlotAllowed in cases the firstAvailableTime > timeslot LONG since choosing the timeslot
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
 		//this is necessary in case another appointment is created or edited before this one is saved.
 		//isTimeSlotAllowed() does not suffice by itself, because of formfields that add time and can cause overlap
@@ -501,7 +501,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 		//if the date was changed, reflect it on the form but don't persist it yet
 		if ($changedDate !== NULL) {
-			$appointment->setBeginTime(new DateTime($changedDate)); #@TODO couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
+			$appointment->setBeginTime(new DateTime($changedDate)); #@SHOULD couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
 			$appointment->_memorizeCleanState('beginTime'); //makes sure it isn't persisted automatically
 		}
 		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']); #@SHOULD is 0 supported everywhere? it should be, but I think I left a <1 check somewhere.
@@ -525,14 +525,14 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	public function updateAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->calculateTimes($appointment); //times can be influenced by formfields
 
-		#@TODO is er een manier om alleen te updaten als $appointment veranderd is ten opzichte van voorheen?
+		#@TODO betekent calculateTimes nu niet dat hij altijd als modified wordt geregistreerd?
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
 		//this is necessary in case another appointment is created or edited before this one is saved
 		if ($this->crossAppointments($appointment)) {
 			//an appointment was found that makes the current one's times not possible
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_crosstime', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-			$this->forward('edit'); #@TODO mark add-time fields?
+			$this->forward('edit'); #@TODO __mark add-time fields?
 		} else {
 			$this->appointmentRepository->update($appointment);
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
@@ -576,7 +576,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function freeAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		//set it to expired to free up the timeslot, but still pass along the appointment so that it may be reconstituted in the same session
-		$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED); #@TODO try to include the appointment formfields with this form somehow, so that we can save it, and then display them in a disabled form
+		$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED); #@TODO __try to include the appointment formfields with this form somehow, so that we can save it, and then display them in a disabled form
 		$this->appointmentRepository->update($appointment);
 		$this->slotService->resetStorageObject($appointment->getType(),$this->agenda); //persist changes in timeslots
 
@@ -726,7 +726,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		} else { //warn of expiration
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_expired', $this->extensionName);
 			$flashHeader = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_expired_header', $this->extensionName);
-			$flashState = t3lib_FlashMessage::WARNING; #@TODO transform automatically with javascript
+			$flashState = t3lib_FlashMessage::WARNING; #@TODO __transform automatically with javascript
 		}
 		$this->flashMessageContainer->add($flashMessage,$flashHeader,$flashState);
 	}
@@ -739,7 +739,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	protected function crossAppointments(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$crossAppointments = $this->appointmentRepository->findCrossAppointments($appointment);
-		return !empty($crossAppointments); #@TODO re-check if a cross appointment is caught and presented on FE the way I really really want it
+		return !empty($crossAppointments);
 	}
 
 	/**
@@ -760,7 +760,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			//no types found
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.no_types', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-			$this->redirect('none'); #@SHOULD isn't this better with forward? Might not even need the redirect and flash check in none then, correct?
+			$this->forward('none');
 		}
 	}
 

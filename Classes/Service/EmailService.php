@@ -123,7 +123,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			$this->sendCalendarAction($action,$appointment);
 			return TRUE;
 		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) {
-			#@TODO sys_log?
+			#@TODO __syslog it
 			return FALSE;
 		} catch (Exception $e) {
 			return FALSE; #@TODO separate more exceptions
@@ -357,7 +357,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			$template = $extbaseFrameworkConfiguration['view']['templateRootPath'] . 'Calendar.html';
 		}
 
-		$body = $this->fileResource($template); #@TODO run through the template and see if anything is in need of a change (the most obvious being timezone)
+		$body = $this->fileResource($template); #@TODO __run through the template and see if anything is in need of a change (the most obvious being timezone)
 
 		$start = $appointment->getBeginTime()->getTimestamp();
 		$end = $appointment->getEndTime()->getTimestamp();
@@ -378,7 +378,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 								)
 						)
 				)
-		); #@TODO do more Outlook testing
+		); #@TODO do more Outlook testing on description here
 
 		$markerArray = array(
 				'###START###' => strftime('%Y%m%dT%H%M%S', $start),

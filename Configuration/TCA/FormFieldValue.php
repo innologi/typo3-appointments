@@ -97,10 +97,10 @@ $TCA['tx_appointments_domain_model_formfieldvalue'] = array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfieldvalue.value',
 			'config' => array(
-				'type' => 'text', #@SHOULD make this depend on formfield field type!
+				'type' => 'text', #@TODO make this depend on formfield field type!
 				'cols' => 40,
 				'rows' => 15,
-				'eval' => 'trim' #@SHOULD make this depend on formfield validation types!
+				'eval' => 'trim' #@TODO make this depend on formfield validation types!
 			),
 		),
 		'form_field' => array( #@TODO afhankelijk maken van appointment->type? (filter? [6.0])

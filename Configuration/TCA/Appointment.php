@@ -106,7 +106,7 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 				),
 			),
 		),
-		'creation_progress' => array( #@TODO perhaps we can base a text or a flash message on this value? :)
+		'creation_progress' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.creation_progress',
 			'config' => array(
@@ -213,7 +213,7 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 					'levelLinksPosition' => 'top',
 					'showSynchronizationLink' => 1,
 					'showPossibleLocalizationRecords' => 1,
-					'showAllLocalizationLink' => 1 #@TODO how to enable drag 'n drop sorting again?
+					'showAllLocalizationLink' => 1 #@TODO __how to enable drag 'n drop sorting again?
 				),
 			),
 		),
@@ -222,7 +222,7 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.address',
 			'config' => array(
 				'type' => 'inline',
-				'foreign_table' => 'tt_address', #@TODO foreign_types! [4.7]
+				'foreign_table' => 'tt_address', #@TODO foreign_types? [4.7]
 				'minitems' => 1,
 				'maxitems' => 1,
 				'appearance' => array(

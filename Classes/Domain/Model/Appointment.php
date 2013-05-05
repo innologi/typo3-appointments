@@ -131,7 +131,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @validate Tx_Appointments_Domain_Validator_ObjectStorageValidator(containsVariable=1)
 	 */
 	protected $formFieldValues; #@SHOULD create an extbase feature suggestion and patch to remedy the objectstorage behaviour with instanceof checks
-	#@TODO test and see if making this an array would resolve the fluid issue of directly addressing an object (e.g. formFieldValues.189.value or formFieldValues._189.value)
+	#@SHOULD test and see if making this an array would resolve the fluid issue of directly addressing an object (e.g. formFieldValues.189.value or formFieldValues._189.value)
 
 	/**
 	 * Name and address information
@@ -464,7 +464,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @param Tx_Extbase_Domain_Model_FrontendUser $feUser
 	 * @return Tx_Extbase_Domain_Model_FrontendUser feUser
 	 */
-	public function setFeUser(Tx_Extbase_Domain_Model_FrontendUser $feUser) { #@TODO take note of the ext-autogroup way
+	public function setFeUser(Tx_Extbase_Domain_Model_FrontendUser $feUser) { #@TODO __take note of the ext-autogroup way
 		$this->feUser = $feUser;
 	}
 
