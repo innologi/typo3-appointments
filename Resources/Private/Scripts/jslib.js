@@ -56,7 +56,7 @@ jQuery(document).ready(function() {
 			
 			//prepare 'respect REFRESH header!'
 			var req = new XMLHttpRequest();
-			req.open('HEAD', document.location, true); //note that this produces a second GET request, so it's rather inefficient.. can we make it optional?
+			req.open('HEAD', document.location, true); //note that this produces a second GET request
 			req.send();
 			header = req.getResponseHeader('REFRESH');
 			header = (header != null && header.length) ? parseInt(header.substring(0, header.indexOf(';',0)),10) : null;
@@ -124,7 +124,7 @@ jQuery(document).ready(function() {
 		firstDay: 1, //start with monday
 		hideIfNoPrevNext: true, //hide arrows if not available
 		minDate: '-120y',
-		yearRange: '1890:+10',
+		yearRange: '-120y:+10',
 		showOtherMonths: true, //shows days of adjacent months to fill out the table
 		selectOtherMonths: true, //makes above days selectable
 		showWeek: true,
