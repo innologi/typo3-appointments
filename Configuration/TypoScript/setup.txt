@@ -75,6 +75,12 @@ plugin.tx_appointments {
 			RENEW_TIME = TEXT
 			RENEW_TIME.insertData = 1
 			RENEW_TIME.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_time_expired}
+			WARN_UNLOAD = TEXT
+			WARN_UNLOAD.insertData = 1
+			WARN_UNLOAD.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.warn_unload}
+			WARN_UNLOAD_S1 = TEXT
+			WARN_UNLOAD_S1.insertData = 1
+			WARN_UNLOAD_S1.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_new}
 			DAY1 = TEXT
 			DAY1.insertData = 1
 			DAY1.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s1}

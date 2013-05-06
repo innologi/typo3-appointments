@@ -296,7 +296,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 						$formFieldValues = $this->addMissingFormFields($formFields,$formFieldValues);
 						//adding the formFieldValues already will get them persisted too soon, empty and unused, so we're assigning them separately from $appointment
 						$this->view->assign('formFieldValues', $formFieldValues);
-						$this->view->assign('showDisabledAppointment', $showDisabledAppointment);
+						$this->view->assign('showDisabledAppointment', $showDisabledAppointment); #@TODO __can't we do better? at least rename it
 					}
 				}
 				$this->view->assign('timeSlots', $timeSlots);
@@ -344,11 +344,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('dateSlots', $dateSlots);
 		$this->view->assign('types', $types);
 		$this->view->assign('appointment', $appointment);
-		$warnUnloadText = str_replace('$1',
-				Tx_Extbase_Utility_Localization::translate('tx_appointments_list.submit_new', $this->extensionName),
-				Tx_Extbase_Utility_Localization::translate('tx_appointments_list.warn_unload', $this->extensionName)
-		);
-		$this->view->assign('warnUnloadText', $warnUnloadText);
 		$this->view->assign('timeError', $timeError);
 		$this->view->assign('step', 2); #@TODO check of het template niet wat meer van dit variabel af kan hangen zonder dat ik meerdere forms hoef te definiëren
 	}

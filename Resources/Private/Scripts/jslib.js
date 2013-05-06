@@ -15,7 +15,7 @@ jQuery(document).ready(function() {
 	//********************
 	
 	//:first is necessary because there could be multiple delete buttons, yet it's all the same
-	var confirmDeleteMessage = '###DELETE_CONFIRM###';
+	var confirmDeleteMessage = "###DELETE_CONFIRM###";
 	
 	//click function performs a confirm, if TRUE/OK continues button functionality
 	jQuery('.tx-appointments .button_delete').click(function() {
@@ -28,14 +28,15 @@ jQuery(document).ready(function() {
 	//****************
 	
 	var warnUnload = null;
-	var warnUnloadElem = jQuery('.tx-appointments form#appointmentForm span.warnUnload');
+	var warnUnloadEnabled = jQuery('.tx-appointments form.warnUnload');
 	//'respect REFRESH header!' variables
 	var sessionStart = new Date().getTime() / 1000;
 	var header = null;
 	
 	//set onbeforeunload if a warnUnload message exists
-	if (warnUnloadElem[0]) {
-		warnUnload = warnUnloadElem.text();
+	if (warnUnloadEnabled[0]) {
+		warnUnload = "###WARN_UNLOAD###";
+		warnUnload = warnUnload.replace('$1',"###WARN_UNLOAD_S1###");
 		if (warnUnload != null && warnUnload.length) {
 			//set function
 			window.onbeforeunload = function() {
@@ -127,8 +128,8 @@ jQuery(document).ready(function() {
 		showOtherMonths: true, //shows days of adjacent months to fill out the table
 		selectOtherMonths: true, //makes above days selectable
 		showWeek: true,
-		dayNamesMin: ['###DAY7###','###DAY1###','###DAY2###','###DAY3###','###DAY4###','###DAY5###','###DAY6###'],
-		monthNamesShort: ['###MON1###','###MON2###','###MON3###','###MON4###','###MON5###','###MON6###','###MON7###','###MON8###','###MON9###','###MON10###','###MON11###','###MON12###']
+		dayNamesMin: ["###DAY7###","###DAY1###","###DAY2###","###DAY3###","###DAY4###","###DAY5###","###DAY6###"],
+		monthNamesShort: ["###MON1###","###MON2###","###MON3###","###MON4###","###MON5###","###MON6###","###MON7###","###MON8###","###MON9###","###MON10###","###MON11###","###MON12###"]
 	});
 	
 	//sets max of datepicker to today if the field has class 'max-today'
@@ -170,8 +171,8 @@ jQuery(document).ready(function() {
 			var container = body.parent('.tx-appointments .typo3-message');
 			if (head[0] && container[0]) {
 				//replace texts
-				body.html('###TIMER_ZERO###');
-				head.html('###TIMER_ZERO_HEAD###');
+				body.html("###TIMER_ZERO###");
+				head.html("###TIMER_ZERO_HEAD###");
 				//replace box class
 				container.addClass('message-warning');
 				container.removeClass('message-information');
@@ -183,7 +184,7 @@ jQuery(document).ready(function() {
 	function replaceTimeSlotButton() {
 		var freeTimeButton = jQuery('.tx-appointments form #appointments-submit-time');
 		if (freeTimeButton[0]) {
-			freeTimeButton.val('###RENEW_TIME###');
+			freeTimeButton.val("###RENEW_TIME###");
 			freeTimeButton.addClass('attention');
 		}
 	}
@@ -200,7 +201,6 @@ jQuery(document).ready(function() {
 		}
 		//run every second (in milliseconds)
 		counter = setInterval(reservationTimer, 1000);
-		//because this starts after load, there is a few seconds delay, but it doesn't seem to be an issue.
 	}
 
 	

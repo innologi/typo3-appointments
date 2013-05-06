@@ -59,12 +59,11 @@
 <br />
 <br />
 <span class="required">*</span> = <f:translate key="tx_appointments_list.required" />
-<f:form enctype="multipart/form-data" method="post" action="create" id="appointmentForm" object="{appointment}" objectName="appointment" class="allowUnload">
+<f:form enctype="multipart/form-data" method="post" action="create" id="appointmentForm" object="{appointment}" objectName="appointment" class="warnUnload allowUnload">
 	<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, superUser : superUser}" />
 		
 	<fieldset>
 		<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_new')}" class="submit next" />
-		<span class="warnUnload">{warnUnloadText}</span>
 	</fieldset>
 </f:form>
 
