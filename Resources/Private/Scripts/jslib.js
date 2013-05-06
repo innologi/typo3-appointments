@@ -289,6 +289,10 @@ jQuery(document).ready(function() {
 		jQuery('.tx-appointments form .textinput.session').keyup(function() {
 			storeValueInSession(this);
 		});
+		//usage of datepicker can happen without keyup events
+		jQuery('.tx-appointments form .datepicker.session').change(function() {
+			storeValueInSession(this);
+		});
 		jQuery('.tx-appointments form .select.session').change(function() {
 			storeValueInSession(this);
 		});
