@@ -43,8 +43,8 @@ jQuery(document).ready(function() {
 				//perform a 'respect REFRESH header!' check
 				if (header != null) {
 					var currentTime = new Date().getTime() / 1000;
-					var seconds = Math.round(currentTime - sessionStart);
-					if (seconds >= header) {
+					var secondsBeforeRefresh = Math.round(currentTime - sessionStart);
+					if (secondsBeforeRefresh >= header) {
 						warnUnload = ''; //unset the message
 					}
 				}
@@ -141,24 +141,28 @@ jQuery(document).ready(function() {
 	//*****************************
 	
 	var timerElem = jQuery('.tx-appointments span.reservation-timer');
-	var seconds = 0;
+	var timerSeconds = 0;
+	var timerRemaining = 0;
+	var compareTime = null;
 	var flashStart = 60;
 	var counter = null;
 	
 	//countdown timer-html-setter function
 	function reservationTimer() {
-		if (seconds == flashStart) {
+		//timerSeconds--; //this isn't representative if an alert or warnunload box comes along
+		timerRemaining = timerSeconds - Math.round((new Date().getTime() - compareTime)/1000);
+		
+		if (timerRemaining == flashStart) {
 			timerElem.addClass('flash'); //starts flashing (or marking) the timer according to class css
-		} else if (seconds <= 0) {
+		} else if (timerRemaining < 1) {
 			clearInterval(counter); //stop counter
 			replaceTimerMessage();
 			replaceTimeSlotButton();
 			return;
 		}
 		
-		seconds--;
-		var displayMin = Math.floor(seconds / 60);
-		var displaySec = '0' + (seconds % 60); //remainder of seconds by modulus
+		var displayMin = Math.floor(timerRemaining / 60);
+		var displaySec = '0' + (timerRemaining % 60); //remainder of seconds by modulus
 		//set new inner html
 		timerElem.html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
 	};
@@ -195,9 +199,10 @@ jQuery(document).ready(function() {
 		var timerVal = timerElem.html();
 		var splitAt = timerVal.indexOf(':',0);
 		var minutes = parseInt(timerVal.substring(0, splitAt),10);
-		seconds = (minutes * 60) + parseInt(timerVal.substring(splitAt+1),10);
-		if (seconds < flashStart) {
-			flashStart = seconds - 1;
+		timerSeconds = (minutes * 60) + parseInt(timerVal.substring(splitAt+1),10);
+		compareTime = new Date().getTime();
+		if (timerSeconds < flashStart) {
+			timerElem.addClass('flash');
 		}
 		//run every second (in milliseconds)
 		counter = setInterval(reservationTimer, 1000);
