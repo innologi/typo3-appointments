@@ -427,6 +427,14 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 		color:#d00;
 	}
 	
+	.tx-appointments #disabledForm {
+		display:none;
+	}
+	.tx-appointments #disabledForm.visible {
+		display:block;
+		opacity:0.5;
+	}
+	
 	
 	/* Messages */
 	

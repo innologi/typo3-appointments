@@ -1,10 +1,12 @@
 <f:layout name="AppointmentsDefault" />
+
 <f:section name="main">
 <h3><f:translate key="tx_appointments_list.appointment_new" /></h3>
 
 <f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[dateFirst]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
 
 <br />
+
 <f:if condition="{types}">
 	<f:render partial="Appointment/Types" arguments="{step : step, appointment : appointment, types : types, dateSlots : dateSlots}" />
 </f:if>
@@ -13,6 +15,7 @@
 	<f:form enctype="multipart/form-data" method="post" action="new1" id="dateForm" object="{appointment}" objectName="appointment">
 		<fieldset>
 			<f:form.hidden property="type" />
+			<f:form.hidden name="showDisabledAppointment" value="{showDisabledAppointment}"/>
 			
 			<label>
 				<f:translate key="tx_appointments_list.label_date_slot" />
@@ -51,6 +54,12 @@
 			
 			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.time.csh_new1')}"><f:translate key="tx_appointments_list.csh" /></span>
 		</fieldset>
+	</f:form>
+</f:if>
+
+<f:if condition="{showDisabledAppointment}">
+	<f:form enctype="multipart/form-data" method="post" action="new1" id="disabledForm" object="{appointment}" objectName="appointment">
+		<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : appointment.formFieldValues, superUser : superUser}" />
 	</f:form>
 </f:if>
 

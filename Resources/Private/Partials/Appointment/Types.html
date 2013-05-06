@@ -2,6 +2,7 @@
 	<fieldset>
 		<!-- The hidden properties in each form are for unpersisted appointments, to maintain values that are chosen in other forms if available -->
 		<f:form.hidden property="beginTime"  value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
+		<f:form.hidden name="showDisabledAppointment" value="{showDisabledAppointment}"/>
 		
 		<label>
 			<f:translate key="tx_appointments_list.label_type" />

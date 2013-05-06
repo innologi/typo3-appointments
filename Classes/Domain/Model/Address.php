@@ -74,7 +74,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 *
 	 * @var DateTime
 	 */
-	protected $birthday;
+	protected $birthday; #@SHOULD is property-value in formField template still necessary?
 
 	/**
 	 * Email

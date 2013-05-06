@@ -221,6 +221,14 @@ jQuery(document).ready(function() {
 	});
 	
 	
+	//*********************
+	// The "Disabled" Form
+	//*********************
+
+	jQuery('.tx-appointments #disabledForm :input').prop('disabled', true);
+	jQuery('.tx-appointments #disabledForm').addClass('visible');
+
+
 	//******************************
 	// Form session storage (html5)
 	//******************************

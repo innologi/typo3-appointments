@@ -249,10 +249,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @param string $dateFirst The timestamp that should be set before a type was already chosen
+	 * @param string $showDisabledAppointment Enables showing
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
-	public function new1Action(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL) {
+	public function new1Action(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL, $showDisabledAppointment = NULL) {
 		//find types
 		$types = $this->getTypes();
 		#@SHOULD in a seperate action that forwards/redirects or not.. consider the extra overhead, it's probably not worth it
@@ -287,6 +288,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 				//an impossible type/date combo will result in $timeSlots == FALSE, so the user can't continue without re-picking
 				$timeSlots = $this->slotService->getTimeSlots($dateSlots,$appointment);
+				if ($timeSlots) {
+					$this->view->assign('showDisabledAppointment', $showDisabledAppointment);
+				}
 				$this->view->assign('timeSlots', $timeSlots);
 			}
 		}
@@ -583,12 +587,16 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function freeAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		//set it to expired to free up the timeslot, but still pass along the appointment so that it may be reconstituted in the same session
-		$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED); #@TODO __try to include the appointment formfields with this form somehow, so that we can save it, and then display them in a disabled form
+		$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
 		$this->appointmentRepository->update($appointment);
 		$this->slotService->resetStorageObject($appointment->getType(),$this->agenda); //persist changes in timeslots
 
+		$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_free_success', $this->extensionName);
+		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
+
 		$arguments = array(
-				'appointment' => $appointment
+				'appointment' => $appointment,
+				'showDisabledAppointment' => 1
 		);
 		$this->redirect('new1',NULL,NULL,$arguments);
 	}
