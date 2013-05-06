@@ -55,8 +55,8 @@ jQuery(document).ready(function() {
 			
 			//prepare 'respect REFRESH header!'
 			var req = new XMLHttpRequest();
-			req.open('GET', document.location, false); //note that this produces a second GET request, so it's rather inefficient.. can we make it optional?
-			req.send(null);
+			req.open('HEAD', document.location, true); //note that this produces a second GET request, so it's rather inefficient.. can we make it optional?
+			req.send();
 			header = req.getResponseHeader('REFRESH');
 			header = (header != null && header.length) ? parseInt(header.substring(0, header.indexOf(';',0)),10) : null;
 		}
