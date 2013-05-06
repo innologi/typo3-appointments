@@ -35,7 +35,7 @@ class Tx_Appointments_Service_UserService implements t3lib_Singleton {
 	/**
 	 * Logged in frontend user
 	 *
-	 * @var Tx_Extbase_Domain_Model_FrontendUser
+	 * @var Tx_Appointments_Domain_Model_FrontendUser
 	 */
 	protected $feUser = NULL;
 
@@ -49,41 +49,41 @@ class Tx_Appointments_Service_UserService implements t3lib_Singleton {
 	/**
 	 * frontendUserRepository
 	 *
-	 * @var Tx_Extbase_Domain_Repository_FrontendUserRepository
+	 * @var Tx_Appointments_Domain_Repository_FrontendUserRepository
 	 */
 	protected $frontendUserRepository;
 
 	/**
 	 * frontendUserGroupRepository
 	 *
-	 * @var Tx_Extbase_Domain_Repository_FrontendUserGroupRepository
+	 * @var Tx_Appointments_Domain_Repository_FrontendUserGroupRepository
 	 */
 	protected $frontendUserGroupRepository;
 
 	/**
 	 * injectFrontendUserRepository
 	 *
-	 * @param Tx_Extbase_Domain_Repository_FrontendUserRepository $frontendUserRepository
+	 * @param Tx_Appointments_Domain_Repository_FrontendUserRepository $frontendUserRepository
 	 * @return void
 	 */
-	public function injectFrontendUserRepository(Tx_Extbase_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
+	public function injectFrontendUserRepository(Tx_Appointments_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
 		$this->frontendUserRepository = $frontendUserRepository;
 	}
 
 	/**
 	 * injectFrontendUserGroupRepository
 	 *
-	 * @param Tx_Extbase_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository
+	 * @param Tx_Appointments_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository
 	 * @return void
 	 */
-	public function injectFrontendUserGroupRepository(Tx_Extbase_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
+	public function injectFrontendUserGroupRepository(Tx_Appointments_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
 		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
 	}
 
 	/**
 	 * Returns current frontend user.
 	 *
-	 * @return Tx_Extbase_Domain_Model_FrontendUser
+	 * @return Tx_Appointments_Domain_Model_FrontendUser
 	 */
 	public function getCurrentUser() {
 		if ($this->feUser === NULL) {

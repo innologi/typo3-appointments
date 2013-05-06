@@ -145,7 +145,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * User who created this appointment
 	 *
-	 * @var Tx_Extbase_Domain_Model_FrontendUser
+	 * @var Tx_Appointments_Domain_Model_FrontendUser
 	 * @validate NotEmpty
 	 * @lazy
 	 */
@@ -452,7 +452,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Returns the feUser
 	 *
-	 * @return Tx_Extbase_Domain_Model_FrontendUser feUser
+	 * @return Tx_Appointments_Domain_Model_FrontendUser feUser
 	 */
 	public function getFeUser() {
 		return $this->feUser;
@@ -461,10 +461,10 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the feUser
 	 *
-	 * @param Tx_Extbase_Domain_Model_FrontendUser $feUser
-	 * @return Tx_Extbase_Domain_Model_FrontendUser feUser
+	 * @param Tx_Appointments_Domain_Model_FrontendUser $feUser
+	 * @return Tx_Appointments_Domain_Model_FrontendUser feUser
 	 */
-	public function setFeUser(Tx_Extbase_Domain_Model_FrontendUser $feUser) { #@TODO __take note of the ext-autogroup way
+	public function setFeUser(Tx_Appointments_Domain_Model_FrontendUser $feUser) {
 		$this->feUser = $feUser;
 	}
 

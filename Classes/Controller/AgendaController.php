@@ -57,14 +57,14 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	/**
 	 * frontendUserRepository
 	 *
-	 * @var Tx_Extbase_Domain_Repository_FrontendUserRepository
+	 * @var Tx_Appointments_Domain_Repository_FrontendUserRepository
 	 */
 	protected $frontendUserRepository;
 
 	/**
 	 * frontendUserGroupRepository
 	 *
-	 * @var Tx_Extbase_Domain_Repository_FrontendUserGroupRepository
+	 * @var Tx_Appointments_Domain_Repository_FrontendUserGroupRepository
 	 */
 	protected $frontendUserGroupRepository;
 
@@ -101,20 +101,20 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	/**
 	 * injectFrontendUserRepository
 	 *
-	 * @param Tx_Extbase_Domain_Repository_FrontendUserRepository $frontendUserRepository
+	 * @param Tx_Appointments_Domain_Repository_FrontendUserRepository $frontendUserRepository
 	 * @return void
 	 */
-	public function injectFrontendUserRepository(Tx_Extbase_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
+	public function injectFrontendUserRepository(Tx_Appointments_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
 		$this->frontendUserRepository = $frontendUserRepository;
 	}
 
 	/**
 	 * injectFrontendUserGroupRepository
 	 *
-	 * @param Tx_Extbase_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository
+	 * @param Tx_Appointments_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository
 	 * @return void
 	 */
-	public function injectFrontendUserGroupRepository(Tx_Extbase_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
+	public function injectFrontendUserGroupRepository(Tx_Appointments_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
 		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
 	}
 

@@ -72,7 +72,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * Logged in frontend user
 	 *
-	 * @var Tx_Extbase_Domain_Model_FrontendUser
+	 * @var Tx_Appointments_Domain_Model_FrontendUser
 	 */
 	protected $feUser;
 

@@ -177,12 +177,12 @@ class Tx_Appointments_Domain_Model_AppointmentTest extends Tx_Extbase_Tests_Unit
 	/**
 	 * @test
 	 */
-	public function getFeUserReturnsInitialValueForTx_Extbase_Domain_Model_FrontendUser() { }
+	public function getFeUserReturnsInitialValueForTx_Appointments_Domain_Model_FrontendUser() { }
 
 	/**
 	 * @test
 	 */
-	public function setFeUserForTx_Extbase_Domain_Model_FrontendUserSetsFeUser() { }
+	public function setFeUserForTx_Appointments_Domain_Model_FrontendUserSetsFeUser() { }
 	
 	/**
 	 * @test

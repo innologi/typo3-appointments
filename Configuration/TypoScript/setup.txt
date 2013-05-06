@@ -16,6 +16,8 @@ config.tx_extbase {
 				sorting.mapOnProperty = sorting
 			}
 		}
+		Tx_Appointments_Domain_Model_FrontendUser.mapping.tableName = fe_users
+		Tx_Appointments_Domain_Model_FrontendUserGroup.mapping.tableName = fe_groups
 	} 
 	
 	# this override method is global and fails once when cache is cleared (4.7.8), so I can not depend on it
