@@ -727,6 +727,8 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * Note that a return value of TRUE does not guarantee availability, as it does not
 	 * check if $dateTimeEnd < $dateTime. (for now)
 	 *
+	 * Note that his function suffered from a PHP bug. See the 2 [BUG] inline comments below.
+	 *
 	 * @param array $appointments Appointments within 'per var days' range, including the additional buffer
 	 * @param DateTime $startDateTime Represents starting point of the 'before' buffer
 	 * @param DateTime $endDateTime Represents the end point of the 'after' buffer
@@ -769,24 +771,25 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 				)
 		);
 
-		foreach ($stats as &$stat) {
+		foreach ($stats as $k=>$stat) {
 			//count appoints until the first free block is reached
 			foreach ($stat['blocks'] as $block) {
 				if (($c = count($block)) === 0) {
 					break;
 				}
-				$stat['appointmentCount'] += $c;
+				//[BUG]: there is a PHP bug that sets $stats[after][appointmentCount] = $stats[before][appointmentCount] later on, if using reference &$stat instead here
+				$stats[$k]['appointmentCount'] += $c;
 			}
 
 			//find the first free block in 'current' and splice off anything up to that point from the beginning
 			while (($b = each($blocksCurrent)) !== FALSE) {
-				$stat['bufferMultiplier']++;
+				$stats[$k]['bufferMultiplier']++;
 				$block = $b['value'];
 				if (($c = count($block)) === 0) {
 					array_splice($blocksCurrent,0,($stat['bufferMultiplier']-1));
 					break;
 				}
-				$stat['appointmentCount'] += $c;
+				$stats[$k]['appointmentCount'] += $c;
 			}
 
 			//reverse (and rewind) 'current' because the second $stat needs to splice off the end of 'current' instead of the beginning
@@ -796,16 +799,16 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		//if 'current' has 2 or more interval block that present a disconnection between consecutive 'taken' interval blocks..
 		if (count($blocksCurrent) > 1) {
 			//find out if the appointments up until the first free interval block reached the max amount
-			foreach ($stats as &$stat) {
+			foreach ($stats as $k=>$stat) {
 				if ($stat['appointmentCount'] >= $maxAmountPerVarDays) {
 					//adds/subtracts available interval block time from the beginning or end of the current day for use by timeslots
-					$stat['dateTime']->modify($stat['modifier'] . ($interval*$stat['bufferMultiplier']) . ' hours');
+					$stats[$k]['dateTime']->modify($stat['modifier'] . ($interval*$stat['bufferMultiplier']) . ' hours');
 				}
 			}
 		} else { //if 'current' has 1 or 0 free interval blocks..
 			$totalAppointmentCount = 0;
 			//check if placing any more appointments within 'current' would still respect the configured buffer (interval)
-			foreach ($stats as $stat) {
+			foreach ($stats as $stat) { //[BUG]: PHP [5.3.8] bug triggered here, if earlier &$stat instead of $stats[$k]
 				$totalAppointmentCount += $stat['appointmentCount'];
 			}
 			if ($totalAppointmentCount >= $maxAmountPerVarDays) {

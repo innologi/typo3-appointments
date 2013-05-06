@@ -342,7 +342,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				Tx_Extbase_Utility_Localization::translate('tx_appointments_list.warn_unload', $this->extensionName)
 		);
 		$this->view->assign('warnUnloadText', $warnUnloadText);
-		$this->view->assign('timeError', $timeError); #@FIXME Nieuw graf: donderdag 14:45 1x, Vrijdag 10:00-10:30 1x.. kan dan geen 2e meer doen op vrijdag. Maar wel als ik eerst vrijdagmiddag had ingepland??????? INCONSISTENT, WELKE VAN DE 2 KLOPT NIET?
+		$this->view->assign('timeError', $timeError);
 		$this->view->assign('step', 2); #@TODO check of het template niet wat meer van dit variabel af kan hangen zonder dat ik meerdere forms hoef te definiëren
 	}
 
