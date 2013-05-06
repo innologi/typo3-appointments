@@ -290,7 +290,14 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				//an impossible type/date combo will result in $timeSlots == FALSE, so the user can't continue without re-picking
 				$timeSlots = $this->slotService->getTimeSlots($dateSlots,$appointment);
 				if ($timeSlots) {
-					$this->view->assign('showDisabledAppointment', $showDisabledAppointment);
+					if ($showDisabledAppointment) {
+						$formFieldValues = $appointment->getFormFieldValues();
+						$formFields = clone $appointment->getType()->getFormFields(); //formFields is modified for this process but not to persist, hence clone
+						$formFieldValues = $this->addMissingFormFields($formFields,$formFieldValues);
+						//adding the formFieldValues already will get them persisted too soon, empty and unused, so we're assigning them separately from $appointment
+						$this->view->assign('formFieldValues', $formFieldValues);
+						$this->view->assign('showDisabledAppointment', $showDisabledAppointment);
+					}
 				}
 				$this->view->assign('timeSlots', $timeSlots);
 			}
@@ -315,7 +322,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function new2Action(Tx_Appointments_Domain_Model_Appointment $appointment, $timeError = NULL) {
-		$this->appointmentRepository->update($appointment); //necessary to retain fieldvalues of validation-error-returned appointments
+		$this->appointmentRepository->update($appointment); //SH- .. necessary to retain fieldvalues of validation-error-returned appointments
 
 		//limit the available types by the already chosen timeslot
 		$types = $this->limitTypesByAppointment($this->getTypes(),$appointment);
@@ -599,8 +606,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 		$arguments = array(
 				'appointment' => $appointment,
-				'showDisabledAppointment' => 1 #@FIXME als de form niet door een validation error teruggegeven was, dan bestaan de formfieldvalues nog niet en worden dus ook niet getoond
-		); #@FIXME als ik hierna van type switch, verdwijnt de form. waarom?
+				'showDisabledAppointment' => 1
+		);
 		$this->redirect('new1',NULL,NULL,$arguments);
 	}
 
@@ -627,21 +634,25 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
 	 */
 	protected function addMissingFormFields(Tx_Extbase_Persistence_ObjectStorage $formFields, Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
-		$items = array(); #@FIXME BUG! Invullen, Vrijgeven, Type switch, Tijd kiezen: formfields van BEIDE types!
+		$items = array();
 		$order = array();
 
 		//formfieldvalues already available
 		foreach ($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
 			if ($formField !== NULL) {
-				$uid = $formField->getUid();
-				$items[$uid] = $formFieldValue; //I'd prefer $items[$sorting] = $formFieldValue, but the sorting value can be messed with to cause duplicate keys
-				$order[$uid] = $formField->getSorting();
+				//note that this way, a formfield that isn't part of the current type will simply not be shown, NOR REMOVED!
+				//if we allow type-changes in edit, this will prove useful, but what is the consequence in TCA? #@TODO got to check this out and see if we need some damagecontrol
 				if (isset($formFields[$formField])) {
-					$formFields->detach($formField);
+					$uid = $formField->getUid();
+					$items[$uid] = $formFieldValue; //I'd prefer $items[$sorting] = $formFieldValue, but the sorting value can be messed with to cause duplicate keys
+					$order[$uid] = $formField->getSorting();
+					if (isset($formFields[$formField])) {
+						$formFields->detach($formField);
+					}
 				}
 			} else {
-				//the formfield was removed at some point, so should its value be
+				//the formfield was removed at some point, so should its value
 				$formFieldValues->detach($formFieldValue); //this is the original storage, so this is persisted
 			}
 		}
