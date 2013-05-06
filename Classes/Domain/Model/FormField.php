@@ -91,6 +91,14 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	protected $isDate;
 
 	/**
+	 * Is time related?
+	 *
+	 * @var boolean
+	 * @transient
+	 */
+	protected $isTimeRelated;
+
+	/**
 	 * Field fieldType: boolean, selection, textsmall or textlarge
 	 *
 	 * @var integer
@@ -226,7 +234,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 */
 	public function getIsDate() {
 		if ($this->isDate === NULL) {
-			$this->setIsDate($this->validationTypes);
+			$this->setIsDate();
 		}
 		return $this->isDate;
 	}
@@ -234,12 +242,20 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	/**
 	 * Sets whether the field is a date.
 	 *
-	 * @param string $validationTypes
 	 * @return void
 	 */
-	protected function setIsDate($validationTypes) {
-		$array = explode(',',$validationTypes);
+	protected function setIsDate() {
+		$array = explode(',',$this->validationTypes);
 		$this->isDate = in_array(strval(self::VALIDATE_DATE_TIME),$array,1);
+	}
+
+	/**
+	 * Returns whether the field adds time.
+	 *
+	 * @return boolean
+	 */
+	public function getIsTimeRelated() {
+		return $this->function === self::FUNCTION_ADDTIME;
 	}
 
 	/**

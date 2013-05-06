@@ -46,7 +46,7 @@
 			<label>
 				<f:translate key="tx_appointments_list.label_time_slot" />
 				<br />
-				<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select" disabled="disabled" />
+				<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select{f:if(condition: timeError, then: ' f3-form-error')}" disabled="disabled" />
 			</label>
 			&larr;
 					

@@ -249,11 +249,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @param string $dateFirst The timestamp that should be set before a type was already chosen
+	 * @param string $timeError Indicates there is a timeerror that needs to be assigned to view
 	 * @param string $showDisabledAppointment Enables showing
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
-	public function new1Action(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL, $showDisabledAppointment = NULL) {
+	public function new1Action(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL, $timeError = NULL, $showDisabledAppointment = NULL) {
 		//find types
 		$types = $this->getTypes();
 		#@SHOULD in a seperate action that forwards/redirects or not.. consider the extra overhead, it's probably not worth it
@@ -297,6 +298,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 		$this->view->assign('types', $types);
 		$this->view->assign('appointment', $appointment);
+		$this->view->assign('timeError', $timeError);
 		$this->view->assign('step', 1);
 	}
 
@@ -308,10 +310,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * and displays a timer for the timeslot reservation.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
+	 * @param string $timeError Indicates there is a timeerror that needs to be assigned to view
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
-	public function new2Action(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function new2Action(Tx_Appointments_Domain_Model_Appointment $appointment, $timeError = NULL) {
 		$this->appointmentRepository->update($appointment); //necessary to retain fieldvalues of validation-error-returned appointments
 
 		//limit the available types by the already chosen timeslot
@@ -339,6 +342,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				Tx_Extbase_Utility_Localization::translate('tx_appointments_list.warn_unload', $this->extensionName)
 		);
 		$this->view->assign('warnUnloadText', $warnUnloadText);
+		$this->view->assign('timeError', $timeError); #@FIXME Nieuw graf: donderdag 14:45 1x, Vrijdag 10:00-10:30 1x.. kan dan geen 2e meer doen op vrijdag. Maar wel als ik eerst vrijdagmiddag had ingepland??????? INCONSISTENT, WELKE VAN DE 2 KLOPT NIET?
 		$this->view->assign('step', 2); #@TODO check of het template niet wat meer van dit variabel af kan hangen zonder dat ik meerdere forms hoef te definiëren
 	}
 
@@ -378,6 +382,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function processNewAction(Tx_Appointments_Domain_Model_Appointment $appointment, $crossAppointment = '') {
+		$arguments = array();
 		$appointment->setAgenda($this->agenda);
 		$appointment->setFeUser($this->feUser);
 
@@ -402,7 +407,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 						#@TODO __can we indicate how much time overlaps?
 						$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName);
 						$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-						#@TODO __mark the time(-related) field(s) like a validation error
+						$arguments['timeError'] = 1;
 					} else {
 						//checks whether the timeslot was changed or not
 						$cleanBeginTime = $appointment->_getCleanProperty('beginTime');
@@ -439,14 +444,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 
 			$action = 'new1';
-			#@TODO __mark the time field like a validation error
+			$arguments['timeError'] = 1;
 		}
 
 
 		//send to appropriate action, with changed $appointment
-		$arguments = array(
-				'appointment' => $appointment
-		);
+		$arguments['appointment'] = $appointment;
 		$this->redirect($action,NULL,NULL,$arguments);
 	}
 
@@ -543,7 +546,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			//an appointment was found that makes the current one's times not possible
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_crosstime', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-			$this->forward('edit'); #@TODO __mark add-time fields?
+			$this->forward('edit'); #@TODO __mark time & add-time fields?
 		} else {
 			$this->appointmentRepository->update($appointment);
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
@@ -596,8 +599,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 		$arguments = array(
 				'appointment' => $appointment,
-				'showDisabledAppointment' => 1
-		);
+				'showDisabledAppointment' => 1 #@FIXME als de form niet door een validation error teruggegeven was, dan bestaan de formfieldvalues nog niet en worden dus ook niet getoond
+		); #@FIXME als ik hierna van type switch, verdwijnt de form. waarom?
 		$this->redirect('new1',NULL,NULL,$arguments);
 	}
 
@@ -624,7 +627,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
 	 */
 	protected function addMissingFormFields(Tx_Extbase_Persistence_ObjectStorage $formFields, Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
-		$items = array();
+		$items = array(); #@FIXME BUG! Invullen, Vrijgeven, Type switch, Tijd kiezen: formfields van BEIDE types!
 		$order = array();
 
 		//formfieldvalues already available
@@ -695,7 +698,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				switch ($fieldType) {
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE:
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL:
-						$timestamp += intval($value) * 60;
+						$timestamp += intval($value) * 60; #@TODO __tag these fields with f3-form-error class if {timeError} once T3 requirement is >4.5, so that I can do inline chaining (see example in ext_tables.php) OR I should assign an array to view that corresponds to formfields
 						break;
 					case Tx_Appointments_Domain_Model_FormField::TYPE_SELECT:
 						#@TODO moet mogelijk zijn met de timeAdd optie
