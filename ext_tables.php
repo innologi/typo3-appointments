@@ -26,11 +26,11 @@ t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Co
 t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.list', 'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_list.xml');
 #@TODO maak de New.html if condition voor timeslots in dateslots netter! (inline)
 #@TODO make jslib get @ warnunload optional
-#@TODO __expand warnunload to expire the appointment on leave page
-#@TODO __javascript workers voor warnunload? ivm timer?
-#@TODO __ make messages dismissable
+#@TODO __expand warnunload to expire the appointment on leave page NOT REALLY AN OPTION? Should create a link to last unfinished appointment instead
+#@TODO __make messages dismissable
 #@TODO __add icons to messages
 #@TODO __make * = required only visible when there are required fields
+#@FIXME are flash messages stored in cache? [4.5] OUCH Extbase/Fluid!
 #@FIXME do Manual
 #@SHOULD look at / replace Resources/Public/Icons
 #@SHOULD unittesting?
