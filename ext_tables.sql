@@ -18,7 +18,6 @@ CREATE TABLE tx_appointments_domain_model_appointment (
 	fe_user int(11) unsigned DEFAULT '0',
 	agenda int(11) unsigned DEFAULT '0',
 	creation_progress tinyint(1) unsigned DEFAULT '0' NOT NULL,
-	refresh tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
