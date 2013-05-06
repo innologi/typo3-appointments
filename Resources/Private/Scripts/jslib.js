@@ -309,19 +309,18 @@ jQuery(document).ready(function() {
 			);
 		});
 		
-		//clicking the new, edit and back links should all clear the session (also works on tab/enter).
+		//clicking the new and edit back links should all clear the session (also works on tab/enter).
 		jQuery('.tx-appointments .button_new').click(function() {
 			sessionStorage.clear();
 		});
 		jQuery('.tx-appointments .button_edit').click(function() {
 			sessionStorage.clear();
 		});
-		jQuery('.tx-appointments .button_back').click(function() {
-			sessionStorage.clear();
-		});
 		//doing it on form submit can cause us to lose values if a validation error won't save anything,
 		//or even worse, a user can stop halfway, and start a new appointment, without checking if everything
 		//is in order because the form was filled with previous values.
+		//doing it on the back button can cause us to lose the session even when someone decides to stay
+		//on the page.
 	}
 
 });
