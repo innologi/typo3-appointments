@@ -2,7 +2,7 @@
 <T3locallang>
 	<meta type="array">
 		<type>database</type>
-		<description>Language labels for database tables/fields belonging to extension 'appointments'</description>
+		<description>Language labels for database tables/fields belonging to extension &apos;appointments&apos;</description>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -60,7 +60,7 @@
 			<label index="tx_appointments_domain_model_type.stop_time_friday">Stop Time Friday</label>
 			<label index="tx_appointments_domain_model_type.stop_time_saturday">Stop Time Saturday</label>
 			<label index="tx_appointments_domain_model_type.stop_time_sunday">Stop Time Sunday</label>
-			<label index="tx_appointments_domain_model_type.exclude_holidays">Don't Allow Holidays</label>
+			<label index="tx_appointments_domain_model_type.exclude_holidays">Don&apos;t Allow Holidays</label>
 			<label index="tx_appointments_domain_model_type.max_amount">Allowed Appointments</label>
 			<label index="tx_appointments_domain_model_type.max_amount_monday">Allowed Appointments Monday</label>
 			<label index="tx_appointments_domain_model_type.max_amount_tuesday">Allowed Appointments Tuesday</label>

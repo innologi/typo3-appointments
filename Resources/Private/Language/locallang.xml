@@ -9,8 +9,8 @@
 			<label index="tx_appointments_list.login_error">You need to be logged-in with a valid user account.</label>
 			<label index="tx_appointments_list.no_agenda">No agenda set or found, please review plugin settings.</label>
 			<label index="tx_appointments_list.no_types">No appointment-types found, please review the type-records.</label>
-			<label index="tx_appointments_list.timeslot_not_allowed">The timeslot you picked is no longer available, possibly because you've waited too long. Please choose a different timeslot.</label>
-			<label index="tx_appointments_list.warn_unload">You have not yet finished creating an appointment. Your action could result in losing all unsaved data, unless you stay on the page and - when ready - finish creating the appointment first, using the button '$1' below the form.</label>
+			<label index="tx_appointments_list.timeslot_not_allowed">The timeslot you picked is no longer available, possibly because you&apos;ve waited too long. Please choose a different timeslot.</label>
+			<label index="tx_appointments_list.warn_unload">You have not yet finished creating an appointment. Your action could result in losing all unsaved data, unless you stay on the page and - when ready - finish creating the appointment first, using the button &apos;$1&apos; below the form.</label>
 			<label index="tx_appointments_list.appointment_new">New appointment</label>
 			<label index="tx_appointments_list.appointment_list">Back to list</label>
 			<label index="tx_appointments_list.appointment_edit">Edit</label>
@@ -44,7 +44,7 @@
 			<label index="tx_appointments_list.appointment_update_success">Your appointment was updated.</label>
 			<label index="tx_appointments_list.appointment_update_crosstime">The appointment could not be saved, because your desired time-changes would result in an overlap of appointments. Please pick another timeslot or try again later.</label>
 			<label index="tx_appointments_list.appointment_delete_success">Your appointment was cancelled.</label>
-			<label index="tx_appointments_list.appointment_free_success">The timeslot has been freed, you'll have to reserve a date/timeslot again before you can fill out the form any further to schedule the appointment.</label>
+			<label index="tx_appointments_list.appointment_free_success">The timeslot has been freed, you&apos;ll have to reserve a date/timeslot again before you can fill out the form any further to schedule the appointment.</label>
 			<label index="tx_appointments_list.required">required field</label>
 			<label index="tx_appointments_list.email_create_subject">Appointment confirmation</label>
 			<label index="tx_appointments_list.email_update_subject">Appointment change</label>
@@ -57,13 +57,13 @@
 			
 			<label index="error.address.firstName.1221560718">Should not be empty.</label>
 			<label index="error.address.lastName.1221560718">Should not be empty.</label>
-			<label index="error.address.birthday.1238087674">Should be a valid date in 'dd-mm-yyyy' format, e.g. 24-12-1951</label>
+			<label index="error.address.birthday.1238087674">Should be a valid date in &apos;dd-mm-yyyy&apos; format, e.g. 24-12-1951</label>
 			<label index="error.address.address.1221560718">Should not be empty.</label>
 			<label index="error.address.zip.1221565130">Should be a valid zip code, e.g. 1000AD</label>
 			<label index="error.address.city.1221560718">Should not be empty.</label>
 			<label index="error.formFieldValue.value.1221560494">Should be a (whole) number.</label>
 			<label index="error.formFieldValue.value.1221560718">Should not be empty.</label>
-			<label index="error.formFieldValue.value.1238087674">Should be a valid date in 'dd-mm-yyyy' format, e.g. 24-12-1951</label>
+			<label index="error.formFieldValue.value.1238087674">Should be a valid date in &apos;dd-mm-yyyy&apos; format, e.g. 24-12-1951</label>
 			<label index="error.formFieldValue.value.1221559976">Should be a valid email address.</label>
 			<label index="error.formFieldValue.value.1221560288">Should be a number or divisional.</label>
 			<label index="error.formFieldValue.value.1221563685">Should be a number.</label>
@@ -117,19 +117,19 @@
 			<label index="tx_appointments_list.caption_list">Your appointments</label>
 			<label index="tx_appointments_list.summary_list">This is a listing of future/current appointments that belong to you.</label>
 			<label index="tx_appointments_list.caption_show">Appointment details</label>
-			<label index="tx_appointments_list.summary_show">This is a listing of details of the the appointment you've chosen to view.</label>
+			<label index="tx_appointments_list.summary_show">This is a listing of details of the the appointment you&apos;ve chosen to view.</label>
 		
 			<label index="tx_appointments_domain_model_appointment">Appointment</label>
 			<label index="tx_appointments_domain_model_appointment.type">Appointment type</label>
 			<label index="tx_appointments_domain_model_appointment.type.csh_new1">Here you may choose the appointment type. Each appointment type may differ. If you have picked a date first, the currently available choices are limited to what types are (still) possible on the chosen date.</label>
-			<label index="tx_appointments_domain_model_appointment.type.csh_new2">You may still change the appointment type for the chosen timeslot. Please note: the currently available choices are limited to what types (still) have the chosen timeslot available. If your desired appointment type is missing, then it's not available for the chosen timeslot and you'll have to change the timeslot first.</label>
+			<label index="tx_appointments_domain_model_appointment.type.csh_new2">You may still change the appointment type for the chosen timeslot. Please note: the currently available choices are limited to what types (still) have the chosen timeslot available. If your desired appointment type is missing, then it&apos;s not available for the chosen timeslot and you&apos;ll have to change the timeslot first.</label>
 			<label index="tx_appointments_domain_model_appointment.type.csh_edit">The appointment type cannot be changed for any already scheduled appointment. If you wish to create a different appointment type, you will need to schedule a new appointment for that instead.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.date">Appointment date</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_new1">The date of the appointment. The available choices consist of all dates that (still) have timeslots available, for this particular appointment type. Different appointment types may result in different available dates.</label>
-			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_new2">To change the date, you'll have to free up the currently chosen timeslot first.</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.date.csh_new2">To change the date, you&apos;ll have to free up the currently chosen timeslot first.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time">Time of appointment</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new1">The time of the appointment. The available choices consist of all (still) available timeslots on the picked date, for this particular appointment type. Different dates and/or appointment types may result in different available timeslots.</label>
-			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new2">To change the timeslot, you'll have to free up the currently chosen timeslot first.</label>
+			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new2">To change the timeslot, you&apos;ll have to free up the currently chosen timeslot first.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_reserved">Agenda reserved</label>
 			<label index="tx_appointments_domain_model_appointment.special_fields">Administration &amp; Notes</label>
 			<label index="tx_appointments_domain_model_appointment.notes">Notes</label>
@@ -165,7 +165,7 @@
 			<label index="tx_appointments_list.no_agenda">Geen agenda ingesteld of gevonden, ga de plugin instellingen na s.v.p.</label>
 			<label index="tx_appointments_list.no_types">Geen afspraaktypen gevonden, kijk s.v.p. de type-records na.</label>
 			<label index="tx_appointments_list.timeslot_not_allowed">Het door u gekozen tijdstip is niet (meer) beschikbaar, mogelijk omdat u te lang heeft gewacht. Proveer eventueel een ander tijdstip, s.v.p.</label>
-			<label index="tx_appointments_list.warn_unload">U zit midden in het maken van een afspraak. Uw actie kan tot gevolg hebben dat alle nog niet opgeslagen gegevens verloren gaan, tenzij u op de pagina blijft en de afspraak – indien gereed – eerst definitief vast legt met de knop '$1' onderaan het formulier.</label>
+			<label index="tx_appointments_list.warn_unload">U zit midden in het maken van een afspraak. Uw actie kan tot gevolg hebben dat alle nog niet opgeslagen gegevens verloren gaan, tenzij u op de pagina blijft en de afspraak – indien gereed – eerst definitief vast legt met de knop &apos;$1&apos; onderaan het formulier.</label>
 			<label index="tx_appointments_list.appointment_new">Nieuwe afspraak</label>
 			<label index="tx_appointments_list.appointment_list">Terug naar lijst</label>
 			<label index="tx_appointments_list.appointment_edit">Wijzig</label>
@@ -214,13 +214,13 @@
 			
 			<label index="error.address.firstName.1221560718">Mag niet leeg zijn.</label>
 			<label index="error.address.lastName.1221560718">Mag niet leeg zijn.</label>
-			<label index="error.address.birthday.1238087674">Dient een geldige datum van het formaat 'dd-mm-jjjj' te zijn, bijv. 24-12-1951</label>
+			<label index="error.address.birthday.1238087674">Dient een geldige datum van het formaat &apos;dd-mm-jjjj&apos; te zijn, bijv. 24-12-1951</label>
 			<label index="error.address.address.1221560718">Mag niet leeg zijn.</label>
 			<label index="error.address.zip.1221565130">Dient een geldige postcode te zijn, bijv. 1000AD</label>
 			<label index="error.address.city.1221560718">Mag niet leeg zijn.</label>
 			<label index="error.formFieldValue.value.1221560494">Dient een (heel) getal te zijn.</label>
 			<label index="error.formFieldValue.value.1221560718">Mag niet leeg zijn.</label>
-			<label index="error.formFieldValue.value.1238087674">Dient een geldige datum van het formaat 'dd-mm-jjjj' te zijn, bijv. 24-12-1951</label>
+			<label index="error.formFieldValue.value.1238087674">Dient een geldige datum van het formaat &apos;dd-mm-jjjj&apos; te zijn, bijv. 24-12-1951</label>
 			<label index="error.formFieldValue.value.1221559976">Dient een geldig email-adres te zijn.</label>
 			<label index="error.formFieldValue.value.1221560288">Dient een getal of breuk te zijn.</label>
 			<label index="error.formFieldValue.value.1221563685">Dient een nummer te zijn.</label>

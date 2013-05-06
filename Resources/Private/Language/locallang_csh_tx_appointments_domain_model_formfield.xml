@@ -25,7 +25,7 @@
 				choice1|choice1
 				choice2
 
-				If you want to have a decorative or informative label that doesn't represent an actual value, you may provide an empty value:
+				If you want to have a decorative or informative label that doesn&apos;t represent an actual value, you may provide an empty value:
 
 				|Make a choice:
 				yes

@@ -9,9 +9,9 @@
 		<languageKey index="default" type="array">
 			<label index="switchableControllerActions.description">Determines the view of the agenda. "Month" displays entire months, "Weeks" displays the configured amount of weeks.</label>
 	   		<label index="settings.agendaUid.description">Pick the agenda to show, or set it to depend on the associated TypoScript constant.</label>
-			<label index="settings.agendaNavOverride.description">It's possible to set how far back and forward you can navigate through the agenda. You can set the plugin to listen to flexform or to TypoScript values.</label>
-			<label index="settings.agendaBack.description">By setting this, you allow the user to navigate a number of units back in the agenda, allowing to view anyone's appointments from previous times.</label>
-			<label index="settings.agendaForward.description">By setting this, you allow the user to navigate a number of units forward in the agenda, allowing to view anyone's appointments ahead.</label>
+			<label index="settings.agendaNavOverride.description">It&apos;s possible to set how far back and forward you can navigate through the agenda. You can set the plugin to listen to flexform or to TypoScript values.</label>
+			<label index="settings.agendaBack.description">By setting this, you allow the user to navigate a number of units back in the agenda, allowing to view anyone&apos;s appointments from previous times.</label>
+			<label index="settings.agendaForward.description">By setting this, you allow the user to navigate a number of units forward in the agenda, allowing to view anyone&apos;s appointments ahead.</label>
 			<label index="settings.agendaWeeksBeforeCurrent.description">Allows you to set how many weeks to display before the current week, when Agenda View is set to "Weeks"</label>
 			<label index="settings.agendaWeeksAfterCurrent.description">Allows you to set how many weeks to display after the current week, when Agenda View is set to "Weeks"</label>
 			<label index="settings.appointmentTypeList.description">Limit the appointment types shown on the agenda, or set it to depend on the associated TypoScript constant.</label>

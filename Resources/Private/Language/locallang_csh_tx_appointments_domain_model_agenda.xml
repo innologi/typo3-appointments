@@ -27,7 +27,7 @@
 				###LINK### : Link to appointment
 			</label>
 			<label index="calendar_invite_address.description">Emails a calendar invitation on every scheduled appointment to the selected addresses</label>
-			<label index="calendar_invite_text.description">Calendar invitation description, which is shown in the invitation. See detail helptext of 'Email Body Text' for supported variables.</label>
+			<label index="calendar_invite_text.description">Calendar invitation description, which is shown in the invitation. See detail helptext of &apos;Email Body Text&apos; for supported variables.</label>
 			<label index="email_types.description">Determines when to send the configured confirmation email to the configured addresses</label>
 			<label index="email_owner_types.description">Determines when to send the configured confirmation email to the frontend user</label>
 			<label index="calendar_invite_types.description">Determines when to send the configured calendar invitation to the configured addresses</label>
@@ -53,7 +53,7 @@
 				###LINK### : Link naar afspraak
 			</label>
 			<label index="calendar_invite_address.description">E-mailt een kalender uitnodiging bij elk geplande afspraak naar de geselecteerde adressen</label>
-			<label index="calendar_invite_text.description">Kalender uitnodiging omschrijving, getoond in de uitnodiging. Zie de detail helptekst van 'E-mail Tekst' voor de ondersteunde variabelen.</label>
+			<label index="calendar_invite_text.description">Kalender uitnodiging omschrijving, getoond in de uitnodiging. Zie de detail helptekst van &apos;E-mail Tekst&apos; voor de ondersteunde variabelen.</label>
 			<label index="email_types.description">Bepaalt wanneer een bevestigingsmail verstuurd moet worden naar de ingestelde adressen</label>
 			<label index="email_owner_types.description">Bepaalt wanneer een bevestigingsmail verstuurd moet worden naar de frontend gebruiker</label>
 			<label index="calendar_invite_types.description">Bepaalt wanneer een kalender uitnodiging verstuurd moet worden naar de ingestelde adressen</label>

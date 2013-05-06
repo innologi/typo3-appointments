@@ -55,7 +55,7 @@
 			<label index="tx_appointments_constants_layoutRootPath">Pad naar template layouts (FE)</label>
 			<label index="tx_appointments_constants_storagePid">Standaard Opslag PID</label>
 			<label index="tx_appointments_constants_agendaUid">Agenda UID</label>
-			<label index="tx_appointments_constants_appointmentTypeList">Afspraak Typen: Komma-gescheiden lijst van UID's</label>
+			<label index="tx_appointments_constants_appointmentTypeList">Afspraak Typen: Komma-gescheiden lijst van UID&apos;s</label>
 			<label index="tx_appointments_constants_agendaBack">Agenda Navigatie Terug: De hoeveelheid navigatie eenheden terug waarnaar genavigeerd kan worden</label>
 			<label index="tx_appointments_constants_agendaForward">Agenda Navigatie Vooruit: De hoeveelheid navigatie eenheden vooruit waarnaar genavigeerd kan worden</label>
 			<label index="tx_appointments_constants_agendaWeeksBeforeCurrent">Agenda Weken Voor Huidig: Het aantal weken om te tonen voor de huidige</label>
@@ -72,7 +72,7 @@
 			<label index="tx_appointments_flexform_switchableControllerActions.item2">Weken</label>
 			<label index="tx_appointments_flexform_tsDefault">Gedefinieerd in TypoScript</label>
 			<label index="tx_appointments_flexform_agendaUid">Agenda</label>
-			<label index="tx_appointments_flexform_div_agendas">Agenda's</label>
+			<label index="tx_appointments_flexform_div_agendas">Agenda&apos;s</label>
 			<label index="tx_appointments_flexform_appointmentTypeList">Afspraak Typen</label>
 			<label index="tx_appointments_flexform_select_all_types">Alle typen (selecteert geen)</label>
 			<label index="tx_appointments_flexform_div_types">__Typen:__</label>

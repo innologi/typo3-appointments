@@ -9,7 +9,7 @@
 		<languageKey index="default" type="array">
 			<label index="settings.agendaUid.description">Pick the agenda to show, or set it to depend on the associated TypoScript constant.</label>
 			<label index="settings.appointmentTypeList.description">Limit the allowed appointment types to the types selected here, or set it to depend on the associated TypoScript constant.</label>
-			<label index="settings.suGroup.description">Members of the Superuser Group have additional permissions and rights, including the ability to edit or cancel anyone's appointment at any given time.</label>
+			<label index="settings.suGroup.description">Members of the Superuser Group have additional permissions and rights, including the ability to edit or cancel anyone&apos;s appointment at any given time.</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="settings.agendaUid.description">Kies de agenda om te tonen, of laat het afhangen van de gerelateerde TypoScript constante.</label>
