@@ -304,14 +304,19 @@ jQuery(document).ready(function() {
 			);
 		});
 		
-		//submitting the form should clear the session values, so that a second new appointment contains empty fields 
-		jQuery('.tx-appointments form#appointmentForm').submit(function() {
+		//clicking the new, edit and back links should all clear the session (also works on tab/enter).
+		jQuery('.tx-appointments .button_new').click(function() {
 			sessionStorage.clear();
 		});
-		//clicking on the edit links should also clear the session, so none of their actual values get overwritten
 		jQuery('.tx-appointments .button_edit').click(function() {
 			sessionStorage.clear();
 		});
+		jQuery('.tx-appointments .button_back').click(function() {
+			sessionStorage.clear();
+		});
+		//doing it on form submit can cause us to lose values if a validation error won't save anything,
+		//or even worse, a user can stop halfway, and start a new appointment, without checking if everything
+		//is in order because the form was filled with previous values.
 	}
 
 });

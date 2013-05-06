@@ -322,7 +322,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function new2Action(Tx_Appointments_Domain_Model_Appointment $appointment, $timeError = NULL) {
-		$this->appointmentRepository->update($appointment); //SH- .. necessary to retain fieldvalues of validation-error-returned appointments
+		#$this->appointmentRepository->update($appointment); //was necessary to retain fieldvalues of validation-error-returned appointments
 
 		//limit the available types by the already chosen timeslot
 		$types = $this->limitTypesByAppointment($this->getTypes(),$appointment);
