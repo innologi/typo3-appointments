@@ -25,6 +25,9 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_
 t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_list.xml');
 t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.list', 'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_list.xml');
 #@TODO maak de New.html if condition voor timeslots in dateslots netter! (inline)
+#@SHOULD add icon for sysfolder <http://buzz.typo3.org/people/steffen-kamper/article/new-icons-for-my-pages/>
+#@SHOULD add plugin preview <http://buzz.typo3.org/people/steffen-kamper/article/render-custom-preview-from-extension/>
+#@SHOULD see if utilizing errorAction (forward()?) for time-related errors is an option
 #@TODO make jslib get @ warnunload optional
 #@TODO __expand warnunload to expire the appointment on leave page NOT REALLY AN OPTION? Should create a link to last unfinished appointment instead
 #@TODO __make messages dismissable
@@ -37,6 +40,10 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO currently, month and day names are taken from locallang. I should see if the php locale can be changed to the typo3 locale in order to rely on strftime and/or f:format.date
 #@TODO in hoeverre zijn mijn models entity of valueObject?
 #@TODO fluid kan {settings} benaderen.. zijn sommige dingen op die manier makkelijker te doen?
+#@SHOULD look into localization:
+//Tx_Extbase_Utility_Localization::translate($key, $extensionName, $arguments=NULL)
+//$arguments
+//Allows you to specify an array of arguments passed to the function vsprintf. Allows you to fill wildcards in localized strings with values.
 #@SHOULD replace the following in the appointment list template once required TYPO3 version is upped to 4.7 or higher:
 //{v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}
 //with:
