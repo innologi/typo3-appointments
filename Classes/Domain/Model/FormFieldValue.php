@@ -44,6 +44,9 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	/**
 	 * The formfield this value belongs to
 	 *
+	 * No use in making these lazy, because when formFieldValues are called,
+	 * formfields are ALWAYS called as well to put the value in context.
+	 *
 	 * @var Tx_Appointments_Domain_Model_FormField
 	 * @validate NotEmpty
 	 */

@@ -108,13 +108,14 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var Tx_Appointments_Domain_Model_Type
 	 * @validate NotEmpty
+	 * @lazy
 	 */
 	protected $type;
 
 	/**
 	 * Form field values associated with this appointment
 	 *
-	 * Cannot cascade remove this, because Extbase is anal about deleting these then,
+	 * 1. Cannot cascade remove this, because Extbase is anal about deleting these then,
 	 * if changed from the parentObject, which I do. Also, Extbase isn't as extensible
 	 * as I hoped: creating an alternative to ObjectStorage with a slightly different
 	 * implementation of its methods would have circumvented the issue gracefully, but
@@ -127,8 +128,11 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * As an alternative to cascade remove, the records that are connected to deleted
 	 * appointments will be deleted by the GC scheduler task.
 	 *
+	 * 2. Can be lazy, because the objectStorage is ONLY manipulated by form.
+	 *
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
 	 * @validate Tx_Appointments_Domain_Validator_ObjectStorageValidator(containsVariable=1)
+	 * @lazy
 	 */
 	protected $formFieldValues; #@SHOULD create an extbase feature suggestion and patch to remedy the objectstorage behaviour with instanceof checks
 	#@SHOULD test and see if making this an array would resolve the fluid issue of directly addressing an object (e.g. formFieldValues.189.value or formFieldValues._189.value)
@@ -139,6 +143,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @var Tx_Appointments_Domain_Model_Address
 	 * @validate Tx_Appointments_Domain_Validator_ObjectPropertiesValidator
 	 * @cascade remove
+	 * @lazy
 	 */
 	protected $address;
 
@@ -150,12 +155,13 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @lazy
 	 */
 	protected $feUser;
-	#@TODO why not lazy again? because of repository?
+
 	/**
 	 * Agenda in which this appointment was made
 	 *
 	 * @var Tx_Appointments_Domain_Model_Agenda
 	 * @validate NotEmpty
+	 * @lazy
 	 */
 	protected $agenda;
 
@@ -359,6 +365,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @return Tx_Appointments_Domain_Model_Type $type
 	 */
 	public function getType() {
+		$this->noLazy($this->type);
 		return $this->type;
 	}
 
@@ -417,6 +424,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @return Tx_Appointments_Domain_Model_Address $address
 	 */
 	public function getAddress() {
+		$this->noLazy($this->address);
 		return $this->address;
 	}
 
@@ -436,6 +444,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @return Tx_Appointments_Domain_Model_Agenda $agenda
 	 */
 	public function getAgenda() {
+		$this->noLazy($this->agenda);
 		return $this->agenda;
 	}
 
@@ -466,6 +475,19 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 */
 	public function setFeUser(Tx_Appointments_Domain_Model_FrontendUser $feUser) {
 		$this->feUser = $feUser;
+	}
+
+	/**
+	 * A check for lazy objects, and converts them to their real type.
+	 *
+	 * Useful when the objects are not addressed in all cases, but still in plenty
+	 *
+	 * @param mixed $property Defined by reference because we're replacing the original reference
+	 */
+	protected function noLazy(&$property) {
+		if (is_object($property) && $property instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+			$property = $property->_loadRealInstance();
+		}
 	}
 
 }

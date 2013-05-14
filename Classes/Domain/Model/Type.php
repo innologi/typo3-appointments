@@ -354,7 +354,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * @lazy
 	 * @cascade remove
 	 */
-	protected $formFields; #@TODO find out if other property elsewhere can be lazy or not!
+	protected $formFields;
 	#@TODO find out if we can put edit to cache, paired with a typoscript clearcache command!
 
 	/**

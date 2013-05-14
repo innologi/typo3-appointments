@@ -39,9 +39,8 @@ class Tx_Appointments_Domain_Model_DateSlot extends Tx_Appointments_Domain_Model
 	 * Time Slots
 	 *
 	 * @var Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_TimeSlot>
-	 * @lazy
 	 */
-	protected $timeSlots; #@SHOULD @lazy doesn't make sense since it's not persisted, but does it hurt to leave it there in case I ever persist these?
+	protected $timeSlots;
 
 	/**
 	 * Day name
