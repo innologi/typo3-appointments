@@ -476,12 +476,12 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 				$func = 'getMaxAmount'.$day;
 				$maxAmount = $type->$func();
 				if ($maxAmount > 0) {
-					//we don't want $dateTime adjusted, so we make several instances from here on
-					$startDateTime = new DateTime($currentDate); #@TODO waarom niet gewoon clone gebruiken voor al die nieuwe instances?
-					$endDateTime = new DateTime($currentDate);
+					//we don't want $dateTime adjusted, so we clone several instances from here on
+					$startDateTime = new DateTime($currentDate); //don't clone the first, because $dateTime might have a different time #@SHOULD does that really matter?
+					$endDateTime = clone $startDateTime;
 					$endDateTime->modify('+1 day');
 						//used for interval-logic later on, but convenient to create here due to endDateTime's current state
-					$dateTimeEnd = new DateTime($endDateTime->format('d-m-Y H:i:s'));
+					$dateTimeEnd = clone $endDateTime;
 					$overrideStopTime = $dateTimeEnd->modify('-1 minute')->getTimestamp();
 
 					//if the 'per var' settings have values, override the datetime-reach for appointments to find
@@ -503,7 +503,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 						$maxAmountPerVarDays = $type->getMaxAmountPerVarDays();
 						if ($maxAmountPerVarDays > 0 && $perVarDays > 0) {
 							$notAllowed = FALSE;
-							if (!$this->processPerVarDays($appointments, $appointmentAmount, $currentDate, new DateTime($startDateTime->format('d-m-Y H:i:s')), new DateTime($endDateTime->format('d-m-Y H:i:s')), $maxAmountPerVarDays)) {
+							if (!$this->processPerVarDays($appointments, $appointmentAmount, $currentDate, clone $startDateTime, clone $endDateTime, $maxAmountPerVarDays)) {
 								$notAllowed = TRUE;
 							}
 
@@ -581,11 +581,11 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 				$maxAmount = $type->$func();
 				if ($maxAmount > 0) {
 					//we don't want $dateTime adjusted, so we make several instances from here on
-					$startDateTime = new DateTime($currentDate); #@TODO waarom niet gewoon clone gebruiken voor al die nieuwe instances?
-					$endDateTime = new DateTime($currentDate);
+					$startDateTime = new DateTime($currentDate);
+					$endDateTime = clone $startDateTime;
 					$endDateTime->modify('+1 day');
 					//used for interval-logic later on, but convenient to create here due to endDateTime's current state
-					$dateTimeEnd = new DateTime($endDateTime->format('d-m-Y H:i:s'));
+					$dateTimeEnd = clone $endDateTime;
 					$overrideStopTime = $dateTimeEnd->modify('-1 minute')->getTimestamp();
 
 					//if the 'per var' settings have values, override the datetime-reach for appointments to find
@@ -607,7 +607,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 						$maxAmountPerVarDays = $type->getMaxAmountPerVarDays();
 						if ($maxAmountPerVarDays > 0 && $perVarDays > 0) {
 							$notAllowed = FALSE;
-							if (!$this->processPerVarDays($appointments, $appointmentAmount, $currentDate, new DateTime($startDateTime->format('d-m-Y H:i:s')), new DateTime($endDateTime->format('d-m-Y H:i:s')), $maxAmountPerVarDays)) {
+							if (!$this->processPerVarDays($appointments, $appointmentAmount, $currentDate, clone $startDateTime, clone $endDateTime, $maxAmountPerVarDays)) {
 								$notAllowed = TRUE;
 							}
 
