@@ -335,13 +335,17 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * Notice that the appointment isn't added but updated. This is because the processNewAction
 	 * will have already added an unfinished appointment. We just need to change its creation_progress flag.
 	 *
+	 * Also, there is no isTimeSlotAllowed check here. So in theory, it is possible for one to have his
+	 * timeslot expire AND have firstAvailableTime passed, while keeping his session alive and not refreshing
+	 * his timeslot by submitting an invalid appointments over and over. If ever requested, we might need to
+	 * fix that, but for now the cleanup task will prevent excessive time-differences over firstAvailableTime.
+	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to create
 	 * @return void
 	 */
 	public function createAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->calculateTimes($appointment); //times can be influenced by formfields
 
-		#@TODO __think hard about what should and shouldn't happen when someone submits an expired appointment, because we have to carefully consider the consequences of having NO isTimeSlotAllowed in cases the firstAvailableTime > timeslot LONG since choosing the timeslot
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
 		//this is necessary in case another appointment is created or edited before this one is saved.
 		//isTimeSlotAllowed() does not suffice by itself, because of formfields that add time and can cause overlap

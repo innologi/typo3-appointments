@@ -231,7 +231,6 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 			}
 		}
 		return FALSE;
-		#@TODO PROBLEM: what if I want to do this check just before createAction, and the firstTimeAvailable has passed? I COULD ADD THE TIME AS CONTROL PROPERTY/SESSION VAR (sessions are vunerable..
 	}
 
 	/**
