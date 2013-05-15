@@ -6,9 +6,11 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="tx_appointments_list.login_error">You need to be logged-in with a valid user account.</label>
-			<label index="tx_appointments_list.no_agenda">No agenda set or found, please review plugin settings.</label>
-			<label index="tx_appointments_list.no_types">No appointment-types found, please review the type-records.</label>
+			<label index="tx_appointments.login_error">You need to be logged-in with a valid user account.</label>
+			<label index="tx_appointments.no_agenda">No agenda set or found, please review plugin settings.</label>
+			<label index="tx_appointments.no_types">No appointment-types found, please review the type-records.</label>
+			<label index="tx_appointments.appointment_no_longer_available">The appointment is no longer available. It may have been cancelled or deleted by someone after you visited the page.</label>
+			<label index="tx_appointments.appointment_property_deleted">The appointment is missing some property values. Someone might have deleted these manually after you visited the page.</label>
 			<label index="tx_appointments_list.timeslot_not_allowed">The timeslot you picked is no longer available, possibly because you&apos;ve waited too long. Please choose a different timeslot.</label>
 			<label index="tx_appointments_list.warn_unload">You have not yet finished creating an appointment. Your action could result in losing all unsaved data, unless you stay on the page and - when ready - finish creating the appointment first, using the button &apos;$1&apos; below the form.</label>
 			<label index="tx_appointments_list.appointment_new">New appointment</label>
@@ -39,8 +41,6 @@
 			<label index="tx_appointments_list.appointment_timerrefresh">Your last chosen timeslot was still available for you. It has been reserved by you again.</label>
 			<label index="tx_appointments_list.appointment_expired_header">Timeslot no longer reserved.</label>
 			<label index="tx_appointments_list.appointment_expired">Please renew your timeslot-choice before someone else reserves it.</label>
-			<label index="tx_appointments_list.appointment_no_longer_available">The appointment is no longer available. It may have been cancelled or deleted by someone after you visited the page.</label>
-			<label index="tx_appointments_list.appointment_property_deleted">The appointment is missing some property values. Someone might have deleted these manually after you visited the page.</label>
 			<label index="tx_appointments_list.appointment_update_success">Your appointment was updated.</label>
 			<label index="tx_appointments_list.appointment_update_crosstime">The appointment could not be saved, because your desired time-changes would result in an overlap of appointments. Please pick another timeslot or try again later.</label>
 			<label index="tx_appointments_list.appointment_delete_success">Your appointment was cancelled.</label>
@@ -161,9 +161,11 @@
 			<label index="tx_appointments_domain_model_agenda_date.is_holiday">Holiday</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
-			<label index="tx_appointments_list.login_error">U dient ingelogd te zijn met een geldig gebruikersaccount.</label>
-			<label index="tx_appointments_list.no_agenda">Geen agenda ingesteld of gevonden, ga de plugin instellingen na s.v.p.</label>
-			<label index="tx_appointments_list.no_types">Geen afspraaktypen gevonden, kijk s.v.p. de type-records na.</label>
+			<label index="tx_appointments.login_error">U dient ingelogd te zijn met een geldig gebruikersaccount.</label>
+			<label index="tx_appointments.no_agenda">Geen agenda ingesteld of gevonden, ga de plugin instellingen na s.v.p.</label>
+			<label index="tx_appointments.no_types">Geen afspraaktypen gevonden, kijk s.v.p. de type-records na.</label>
+			<label index="tx_appointments.appointment_no_longer_available">De afspraak is niet meer beschikbaar. Het is mogelijk geannuleerd of verwijderd door iemand nadat u de pagina bezocht.</label>
+			<label index="tx_appointments.appointment_property_deleted">De afspraak mist enkele formulier gegevens. Het is mogelijk dat iemand deze handmatig heeft verwijderd nadat u de pagina bezocht.</label>
 			<label index="tx_appointments_list.timeslot_not_allowed">Het door u gekozen tijdstip is niet (meer) beschikbaar, mogelijk omdat u te lang heeft gewacht. Proveer eventueel een ander tijdstip, s.v.p.</label>
 			<label index="tx_appointments_list.warn_unload">U zit midden in het maken van een afspraak. Uw actie kan tot gevolg hebben dat alle nog niet opgeslagen gegevens verloren gaan, tenzij u op de pagina blijft en de afspraak – indien gereed – eerst definitief vast legt met de knop &apos;$1&apos; onderaan het formulier.</label>
 			<label index="tx_appointments_list.appointment_new">Nieuwe afspraak</label>
@@ -195,8 +197,6 @@
 			<label index="tx_appointments_list.appointment_timerrefresh">Het laatste door u gekozen tijdstip was nog steeds beschikbaar voor u. Het tijdstip is opnieuw door u gereserveerd.</label>
 			<label index="tx_appointments_list.appointment_expired_header">Tijdstip vrijgegeven.</label>
 			<label index="tx_appointments_list.appointment_expired">Vernieuw uw tijdstip-keuze voordat iemand anders het in gebruik neemt.</label>
-			<label index="tx_appointments_list.appointment_no_longer_available">De afspraak is niet meer beschikbaar. Het is mogelijk geannuleerd of verwijderd door iemand nadat u de pagina bezocht.</label>
-			<label index="tx_appointments_list.appointment_property_deleted">De afspraak mist enkele formulier gegevens. Het is mogelijk dat iemand deze handmatig heeft verwijderd nadat u de pagina bezocht.</label>
 			<label index="tx_appointments_list.appointment_update_success">Uw afspraak is opgeslagen.</label>
 			<label index="tx_appointments_list.appointment_update_crosstime">De afspraak kon niet opgeslagen worden, omdat de door u gewenste tijdswijziging in conflict is met tijden van andere afspraken. Probeer een ander tijdstip/tijdsduur of probeer het later opnieuw.</label>
 			<label index="tx_appointments_list.appointment_delete_success">Uw afspraak is geannuleerd.</label>

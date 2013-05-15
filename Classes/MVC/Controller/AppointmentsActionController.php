@@ -42,7 +42,7 @@
  *
  */
 class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_Appointments_MVC_Controller_SettingsOverrideController {
-	#@TODO replace the language keys that were list specific with a more general key
+
 	/**
 	 * agendaRepository
 	 *
@@ -147,13 +147,13 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 			//is user logged in as required?
 			$this->feUser = $this->userService->getCurrentUser();
 			if ($this->requireLogin && !$this->feUser) {
-				$errors[] = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.login_error', $this->extensionName);
+				$errors[] = Tx_Extbase_Utility_Localization::translate('tx_appointments.login_error', $this->extensionName);
 			}
 
 			//is an agenda record set?
 			$this->agenda = $this->agendaRepository->findByUid($this->settings['agendaUid']);
 			if ($this->agenda === NULL) {
-				$errors[] = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.no_agenda', $this->extensionName);
+				$errors[] = Tx_Extbase_Utility_Localization::translate('tx_appointments.no_agenda', $this->extensionName);
 			}
 
 			//errors!
@@ -195,7 +195,7 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 			return $types;
 		} else {
 			//no types found
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.no_types', $this->extensionName);
+			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments.no_types', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 			$this->forward('none');
 		}
@@ -223,7 +223,7 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 			$objectDeleted = TRUE;
 		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) {
 			//in case not the original argument, but one of its object-properties no longer exist, try to redirect to the appropriate action
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_property_deleted', $this->extensionName);
+			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments.appointment_property_deleted', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 
 			$redirectTo = 'list';
@@ -246,7 +246,7 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 		}
 
 		if ($objectDeleted) {
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
+			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 			$this->redirect('list');
 		}
