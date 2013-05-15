@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -31,92 +31,14 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Controller_SettingsOverrideController {
+class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Controller_AppointmentsActionController {
 
 	/**
-	 * agendaRepository
+	 * Indicates if user needs to be logged in to access action methods
 	 *
-	 * @var Tx_Appointments_Domain_Repository_AgendaRepository
+	 * @var boolean
 	 */
-	protected $agendaRepository;
-
-	/**
-	 * appointmentRepository
-	 *
-	 * @var Tx_Appointments_Domain_Repository_AppointmentRepository
-	 */
-	protected $appointmentRepository;
-
-	/**
-	 * typeRepository
-	 *
-	 * @var Tx_Appointments_Domain_Repository_TypeRepository
-	 */
-	protected $typeRepository;
-
-	/**
-	 * frontendUserRepository
-	 *
-	 * @var Tx_Appointments_Domain_Repository_FrontendUserRepository
-	 */
-	protected $frontendUserRepository;
-
-	/**
-	 * frontendUserGroupRepository
-	 *
-	 * @var Tx_Appointments_Domain_Repository_FrontendUserGroupRepository
-	 */
-	protected $frontendUserGroupRepository;
-
-	/**
-	 * injectAgendaRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_AgendaRepository $agendaRepository
-	 * @return void
-	 */
-	public function injectAgendaRepository(Tx_Appointments_Domain_Repository_AgendaRepository $agendaRepository) {
-		$this->agendaRepository = $agendaRepository;
-	}
-
-	/**
-	 * injectAppointmentRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_AppointmentRepository $appointmentRepository
-	 * @return void
-	 */
-	public function injectAppointmentRepository(Tx_Appointments_Domain_Repository_AppointmentRepository $appointmentRepository) {
-		$this->appointmentRepository = $appointmentRepository;
-	}
-
-	/**
-	 * injectTypeRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_TypeRepository $typeRepository
-	 * @return void
-	 */
-	public function injectTypeRepository(Tx_Appointments_Domain_Repository_TypeRepository $typeRepository) {
-		$this->typeRepository = $typeRepository;
-	}
-
-	/**
-	 * injectFrontendUserRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_FrontendUserRepository $frontendUserRepository
-	 * @return void
-	 */
-	public function injectFrontendUserRepository(Tx_Appointments_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
-		$this->frontendUserRepository = $frontendUserRepository;
-	}
-
-	/**
-	 * injectFrontendUserGroupRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository
-	 * @return void
-	 */
-	public function injectFrontendUserGroupRepository(Tx_Appointments_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
-		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
-	}
+	protected $requireLogin = FALSE; #@SHOULD be configurable?
 
 	/**
 	 * action show month
@@ -147,46 +69,30 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 * @return void
 	 */
 	protected function showGeneral($creationFunction, $containerName, $modifier = 0) {
-		global $TSFE; #@TODO use userService?
-		$superUser = FALSE;
-		if ($TSFE->fe_user) {
-			$feUser = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
-			if ($feUser !== NULL) {
-				$suGroup = $this->frontendUserGroupRepository->findByUid($this->settings['suGroup']);
-				if ($suGroup && $feUser->getUsergroup()->contains($suGroup)) {
-					$superUser = TRUE;
-				}
-			}
-		}
-
-		$agendaUid = $this->settings['agendaUid'];
-		$agenda = $this->agendaRepository->findByUid($agendaUid);
-		$this->view->assign('agenda', $agenda);
-
-		$typeArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1);
-		$allowTypes = empty($typeArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($typeArray,$superUser);
-		$showTypes = $superUser ? $allowTypes : ( #@TODO enable/disable whether superuser type APPOINTMENTS should be SHOWN to non-superusers?
+		$allowTypes = $this->getTypes();
+		#@TODO enable/disable whether superuser type APPOINTMENTS should be SHOWN to non-superusers? or even better: what about picking showTypes separately?
+		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
+		$showTypes = $superUser ? $allowTypes : (
 				empty($typeArray) ? $this->typeRepository->findAll(TRUE) : $this->typeRepository->findIn($typeArray,TRUE)
 		);
-		$allowTypes = $allowTypes->toArray();
+
+		$allowTypes = $allowTypes->toArray(); #@SHOULD why arrays?
 		$showTypes = $showTypes->toArray();
 
-		if ($agenda !== NULL && !empty($allowTypes)) { //because there could be no agenda or no agenda selected, or even no types created
-			$modifier = intval($modifier);
-			$container = $this->$creationFunction($modifier,$agenda,$showTypes);
-			$this->view->assign('modifier', $modifier);
-			$this->view->assign($containerName, $container);
+		$modifier = intval($modifier);
+		$container = $this->$creationFunction($modifier,$this->agenda,$showTypes);
+		$this->view->assign('modifier', $modifier);
+		$this->view->assign($containerName, $container);
 
-			$currentDate = strftime('%d-%m-%Y');
-			$this->view->assign('currentDate', $currentDate);
+		$currentDate = strftime('%d-%m-%Y');
+		$this->view->assign('currentDate', $currentDate);
 
-			$blockedHours = $this->typeRepository->findBySmallestBlockedHours($allowTypes)->getBlockedHours();
-			$blockedSeconds = $blockedHours * 60 * 60;
-			$startCreateTime = strtotime($currentDate) + $blockedSeconds;
-			$this->view->assign('startCreateTime', $startCreateTime); #@TODO replace this mechanism with one that is actually aware of available timeslots, and in the very least a last day
-		} else {
-			#@TODO error?
-		}
+		$blockedHours = $this->typeRepository->findBySmallestBlockedHours($allowTypes)->getBlockedHours();
+		$blockedSeconds = $blockedHours * 60 * 60;
+		$startCreateTime = strtotime($currentDate) + $blockedSeconds;
+		$this->view->assign('startCreateTime', $startCreateTime); #@TODO replace this mechanism with one that is actually aware of available timeslots, and in the very least a last day
+
+		$this->view->assign('agenda', $this->agenda);
 	}
 
 	/**

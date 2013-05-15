@@ -31,28 +31,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_MVC_Controller_SettingsOverrideController {
-
-	/**
-	 * appointmentRepository
-	 *
-	 * @var Tx_Appointments_Domain_Repository_AppointmentRepository
-	 */
-	protected $appointmentRepository;
-
-	/**
-	 * agendaRepository
-	 *
-	 * @var Tx_Appointments_Domain_Repository_AgendaRepository
-	 */
-	protected $agendaRepository;
-
-	/**
-	 * typeRepository
-	 *
-	 * @var Tx_Appointments_Domain_Repository_TypeRepository
-	 */
-	protected $typeRepository;
+class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_MVC_Controller_AppointmentsActionController {
 
 	/**
 	 * @var Tx_Appointments_Domain_Service_SlotService
@@ -64,54 +43,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	protected $emailService;
 
-	/**
-	 * @var Tx_Appointments_Service_UserService
-	 */
-	protected $userService;
-
-	/**
-	 * Logged in frontend user
-	 *
-	 * @var Tx_Appointments_Domain_Model_FrontendUser
-	 */
-	protected $feUser;
-
-	/**
-	 * Agenda
-	 *
-	 * @var Tx_Appointments_Domain_Model_Agenda
-	 */
-	protected $agenda;
-
-	/**
-	 * injectAppointmentRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_AppointmentRepository $appointmentRepository
-	 * @return void
-	 */
-	public function injectAppointmentRepository(Tx_Appointments_Domain_Repository_AppointmentRepository $appointmentRepository) {
-		$this->appointmentRepository = $appointmentRepository;
-	}
-
-	/**
-	 * injectAgendaRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_AgendaRepository $agendaRepository
-	 * @return void
-	 */
-	public function injectAgendaRepository(Tx_Appointments_Domain_Repository_AgendaRepository $agendaRepository) {
-		$this->agendaRepository = $agendaRepository;
-	}
-
-	/**
-	 * injectTypeRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_TypeRepository $typeRepository
-	 * @return void
-	 */
-	public function injectTypeRepository(Tx_Appointments_Domain_Repository_TypeRepository $typeRepository) {
-		$this->typeRepository = $typeRepository;
-	}
 
 	/**
 	 * Injects the Slot Service
@@ -135,63 +66,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	}
 
 	/**
-	 * Injects the User Service
-	 *
-	 * @param Tx_Appointments_Service_UserService $userService
-	 * @return void
-	 */
-	public function injectUserService(Tx_Appointments_Service_UserService $userService) {
-		$this->userService = $userService;
-	}
-
-	/**
-	 * Initializes the controller before invoking an action method.
-	 *
-	 * Sets some prerequisite variables. If it fails because of any error related to these,
-	 * it will set appropriate error messages and redirect to the appropriate action.
-	 *
-	 * @return void
-	 */
-	protected function initializeAction() {
-		if ($this->actionMethodName !== 'noneAction') {
-			$errors = array();
-
-			//is user logged in as required?
-			$this->feUser = $this->userService->getCurrentUser();
-			if (!$this->feUser) {
-				$errors[] = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.login_error', $this->extensionName);
-			}
-
-			//is an agenda record set?
-			$this->agenda = $this->agendaRepository->findByUid($this->settings['agendaUid']);
-			if ($this->agenda === NULL) {
-				$errors[] = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.no_agenda', $this->extensionName);
-			}
-
-			//errors!
-			if (!empty($errors)) {
-				foreach ($errors as $flashMessage) {
-					$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-				}
-				$this->forward('none');
-			}
-
-		}
-	}
-
-	/**
-	 * action none
-	 *
-	 * If the plugin is supposed to do nothing but present flash messages.
-	 *
-	 * Note that you should FORWARD, not REDIRECT, to this action,
-	 * or we would need conditions and a redirect here as well.
-	 *
-	 * @return void
-	 */
-	public function noneAction() { }
-
-	/**
 	 * action list
 	 *
 	 * Shows the list of future appointments of the logged-in user
@@ -200,7 +74,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function listAction() {
 		//turns out getting the user id is not enough: not all fe_users are of the correct record_type
-		$appointments = $this->appointmentRepository->findByAgendaAndFeUser($this->agenda,$this->feUser,new DateTime());
+		$appointments = $this->appointmentRepository->findByAgendaAndFeUser($this->agenda,$this->feUser,new DateTime()); #@TODO missing math a argument in template if there are appointments but their types are hidden/deleted
 		$this->view->assign('appointments', $appointments);
 
 		//users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet
@@ -765,28 +639,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	protected function crossAppointments(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$crossAppointments = $this->appointmentRepository->findCrossAppointments($appointment);
 		return !empty($crossAppointments);
-	}
-
-	/**
-	 * Gets types according to settings.
-	 *
-	 * @return Tx_Extbase_Persistence_QueryResultInterface
-	 */
-	protected function getTypes() {
-		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
-		$this->view->assign('superUser', $superUser);
-
-		$typeArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1);
-		$types = empty($typeArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($typeArray,$superUser);
-		if ($types->valid()) {
-			//types found
-			return $types;
-		} else {
-			//no types found
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.no_types', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-			$this->forward('none');
-		}
 	}
 
 	/**

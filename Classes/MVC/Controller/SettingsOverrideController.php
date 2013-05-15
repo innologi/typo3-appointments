@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -27,22 +27,14 @@
 /**
  * Settings Override Controller.
  *
- * Provides some improvements/changes to the Extbase Action Controller,
- * serving as a base for this package's domain controllers. Its main
- * feature is more customization to how/when Flexform settings override
+ * More customization on how/when Flexform settings override
  * TypoScript settings and vice versa.
- *
- * Furthermore, it puts a condition on the flasherror messages and provides
- * a (necessary) try and catch construction for resolving controller arguments
- * from the database.
- *
- * THE PropertyDeleted CATCH IS 'APPOINTMENTS' SPECIFIC!!
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Extbase_MVC_Controller_ActionController {
+class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Appointments_MVC_Controller_ErrorOnDebugController {
 
 	/**
 	 * Injects the configuration manager and resolves the plugin settings.
@@ -96,70 +88,6 @@ class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Extba
 		}
 
 		$this->settings = $settings;
-	}
-
-	/**
-	 * Maps arguments delivered by the request object to the local controller arguments.
-	 *
-	 * Try and catch construction makes sure a controller argument which no longer exists
-	 * in the database, doesn't produce a full stop. It catches it, and produces a flashMessage.
-	 *
-	 * This concerns f.e. an object that was deleted in TCA or FE or by task. An appointment
-	 * in the making which expired but wasn't deleted yet, will still be retrievable.
-	 *
-	 * @return void
-	 */
-	protected function mapRequestArgumentsToControllerArguments() {
-		$objectDeleted = FALSE;
-
-		try {
-			parent::mapRequestArgumentsToControllerArguments();
-		} catch (Tx_Extbase_MVC_Exception_InvalidArgumentValue $e) {
-			$objectDeleted = TRUE;
-		} catch (Tx_Extbase_Property_Exception_TargetNotFound $e) {
-			$objectDeleted = TRUE;
-		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) {
-			//in case not the original argument, but one of its object-properties no longer exist, try to redirect to the appropriate action
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_property_deleted', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-
-			$redirectTo = 'list';
-			$arguments = array();
-			if ($this->request->hasArgument($argumentName)) {
-				$appointment = $this->request->getArgument('appointment'); //get from request, as controller argument mapping was just disrupted
-				if (isset($appointment['__identity'])) { //getting the entire array would also require the hmac property, we only need uid
-					$arguments['appointment'] = $appointment['__identity'];
-					//sending to the appropriate form will regenerate missing objects #@TODO in ALL cases? needs more testing (specifically .address & .formFieldValues)
-					switch ($this->actionMethodName) {
-						case 'createAction':
-							$redirectTo = 'new2';
-							break;
-						case 'updateAction':
-							$redirectTo = 'edit';
-					}
-				}
-			}
-			$this->redirect($redirectTo,NULL,NULL,$arguments);
-		}
-
-		if ($objectDeleted) {
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-			$this->redirect('list');
-		}
-	}
-
-	/**
-	 * A template method for displaying custom error flash messages, or to
-	 * display no flash message at all on errors. Override this to customize
-	 * the flash message in your action controller.
-	 *
-	 * @return string|boolean The flash message or FALSE if no flash message should be set
-	 */
-	protected function getErrorFlashMessage() {
-		global $TYPO3_CONF_VARS;
-		$extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][strtolower($this->extensionName)]);
-		return isset($extConf['debug']) && $extConf['debug'] ? parent::getErrorFlashMessage() : FALSE; #@TODO can't we make it rely on a TYPO3 general debug var? (global displayErrors?)
 	}
 
 }

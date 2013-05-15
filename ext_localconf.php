@@ -6,7 +6,7 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Agenda',
 	array(
-		'Agenda' => 'showMonth, showWeeks',
+		'Agenda' => 'showMonth, showWeeks, none',
 
 	),
 	// non-cacheable actions
@@ -27,8 +27,6 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 		'Appointment' => 'create, update, delete, edit, new1, new2, processNew, simpleProcessNew, free',
 	)
 );
-
-## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
 
 if (TYPO3_MODE === 'BE') {
 	#$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'Tx_Appointments_Configuration_TCA_PostProcess_Appointment';
