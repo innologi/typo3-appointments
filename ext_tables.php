@@ -33,7 +33,6 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 #@TODO __make messages dismissable
 #@TODO __add icons to messages
 #@TODO __make * = required only visible when there are required fields
-#@FIXME are flash messages stored in cache? [4.5] OUCH Extbase/Fluid!
 #@FIXME do Manual
 #@SHOULD look at / replace Resources/Public/Icons
 #@SHOULD unittesting?

@@ -126,7 +126,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			#@TODO __syslog it
 			return FALSE;
 		} catch (Exception $e) {
-			return FALSE; #@TODO separate more exceptions
+			return FALSE; #@TODO separate more exceptions OR syslog simply the thrown error message
 		}
 	}
 

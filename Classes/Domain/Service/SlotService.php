@@ -31,7 +31,6 @@
  *
  */
 class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
-	#@TODO review everything here to make sure it's all still efficient, run through the entire process from the related controller
 
 	//constants
 	const DATESLOT_KEY_FORMAT = 'Ymd';
