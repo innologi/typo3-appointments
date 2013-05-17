@@ -55,7 +55,7 @@ class Tx_Appointments_Domain_Validator_AppointmentValidator extends Tx_Appointme
 					$validatorConjunction = $this->objectManager->get('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 					$validatorConjunction->addValidator($validator);
 
-					if ($validatorConjunction->isValid($value->getAddress())) {
+					if ($validatorConjunction->isValid($appointment->getAddress())) {
 						$valid = TRUE;
 					} else {
 						$propertyError = new Tx_Extbase_Validation_PropertyError('address');
