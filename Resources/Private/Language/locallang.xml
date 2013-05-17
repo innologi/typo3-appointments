@@ -166,7 +166,7 @@
 			<label index="tx_appointments.no_types">Geen afspraaktypen gevonden, kijk s.v.p. de type-records na.</label>
 			<label index="tx_appointments.appointment_no_longer_available">De afspraak is niet meer beschikbaar. Het is mogelijk geannuleerd of verwijderd door iemand nadat u de pagina bezocht.</label>
 			<label index="tx_appointments.appointment_property_deleted">De afspraak mist enkele formulier gegevens. Het is mogelijk dat iemand deze handmatig heeft verwijderd nadat u de pagina bezocht.</label>
-			<label index="tx_appointments_list.timeslot_not_allowed">Het door u gekozen tijdstip is niet (meer) beschikbaar, mogelijk omdat u te lang heeft gewacht. Proveer eventueel een ander tijdstip, s.v.p.</label>
+			<label index="tx_appointments_list.timeslot_not_allowed">Het door u gekozen tijdstip is niet (meer) beschikbaar, mogelijk omdat u te lang heeft gewacht. Probeer eventueel een ander tijdstip, s.v.p.</label>
 			<label index="tx_appointments_list.warn_unload">U zit midden in het maken van een afspraak. Uw actie kan tot gevolg hebben dat alle nog niet opgeslagen gegevens verloren gaan, tenzij u op de pagina blijft en de afspraak – indien gereed – eerst definitief vast legt met de knop &apos;$1&apos; onderaan het formulier.</label>
 			<label index="tx_appointments_list.appointment_new">Nieuwe afspraak</label>
 			<label index="tx_appointments_list.appointment_list">Terug naar lijst</label>
