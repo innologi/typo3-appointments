@@ -85,9 +85,11 @@
 			<label index="tx_appointments_domain_model_type.blocked_hours">Hours Before First Timeslot</label>
 			<label index="tx_appointments_domain_model_type.blocked_hours_workdays">Workday Hours Before First Timeslot</label>
 			<label index="tx_appointments_domain_model_type.max_days_forward">Days Available</label>
-			<label index="tx_appointments_domain_model_type.form_fields">Form Fields</label>
+			<label index="tx_appointments_domain_model_type.form_fields">Additional Form Fields</label>
+			<label index="tx_appointments_domain_model_type.address_disable">Disable All</label>
 			<label index="tx_appointments_domain_model_type.palette.overrule">Overrule</label>
 			<label index="tx_appointments_domain_model_type.div.day_config">Per Day Configuration</label>
+			<label index="tx_appointments_domain_model_type.div.address_fields">Name/Address Form Fields</label>
 
 			<label index="tx_appointments_domain_model_formfield">Form Field</label>
 			<label index="tx_appointments_domain_model_formfield.title">Title</label>
@@ -214,9 +216,11 @@
 			<label index="tx_appointments_domain_model_type.blocked_hours">Uren Voor Eerste Tijdsslot</label>
 			<label index="tx_appointments_domain_model_type.blocked_hours_workdays">Werkdag Uren Voor Eerste Tijdsslot</label>
 			<label index="tx_appointments_domain_model_type.max_days_forward">Dagen Beschikbaar</label>
-			<label index="tx_appointments_domain_model_type.form_fields">Formulier Velden</label>
+			<label index="tx_appointments_domain_model_type.form_fields">Aanvullende Formulier Velden</label>
+			<label index="tx_appointments_domain_model_type.address_disable">Alles Uitschakelen</label>
 			<label index="tx_appointments_domain_model_type.palette.overrule">Regels Met Voorrang</label>
 			<label index="tx_appointments_domain_model_type.div.day_config">Per Dag Configuratie</label>
+			<label index="tx_appointments_domain_model_type.div.address_fields">NAW Formulier Velden</label>
 
 			<label index="tx_appointments_domain_model_formfield">Formulier Veld</label>
 			<label index="tx_appointments_domain_model_formfield.title">Titel</label>

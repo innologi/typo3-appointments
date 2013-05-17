@@ -345,6 +345,48 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	protected $maxDaysForward;
 
 	/**
+	 * If set, disables the entire address
+	 *
+	 * @var boolean
+	 */
+	protected $addressDisable;
+
+	/**
+	 * If set, enables Name fields
+	 *
+	 * @var boolean
+	 */
+	protected $addressEnableName;
+
+	/**
+	 * If set, enables Gender field
+	 *
+	 * @var boolean
+	 */
+	protected $addressEnableGender;
+
+	/**
+	 * If set, enables Birthday field
+	 *
+	 * @var boolean
+	 */
+	protected $addressEnableBirthday;
+
+	/**
+	 * If set, enables Address fields
+	 *
+	 * @var boolean
+	 */
+	protected $addressEnableAddress;
+
+	/**
+	 * If set, enables Social Security Number field
+	 *
+	 * @var boolean
+	 */
+	protected $addressEnableSecurity;
+
+	/**
 	 * Form Fields for this Type
 	 *
 	 * Lazy although a clone is modified in new/edit cases, after which count() will prove useless.
@@ -1167,6 +1209,120 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 */
 	public function setMaxDaysForward($maxDaysForward) {
 		$this->maxDaysForward = $maxDaysForward;
+	}
+
+	/**
+	 * Returns addressDisable
+	 *
+	 * @return boolean $addressDisable
+	 */
+	public function getAddressDisable() {
+		return $this->addressDisable;
+	}
+
+	/**
+	 * Sets addressDisable
+	 *
+	 * @param boolean $addressDisable
+	 * @return void
+	 */
+	public function setAddressDisable($addressDisable) {
+		$this->addressDisable = $addressDisable;
+	}
+
+	/**
+	 * Returns addressEnableName
+	 *
+	 * @return boolean $addressEnableName
+	 */
+	public function getAddressEnableName() {
+		return $this->addressEnableName;
+	}
+
+	/**
+	 * Sets addressEnableName
+	 *
+	 * @param boolean $addressEnableName
+	 * @return void
+	 */
+	public function setAddressEnableName($addressEnableName) {
+		$this->addressEnableName = $addressEnableName;
+	}
+
+	/**
+	 * Returns addressEnableGender
+	 *
+	 * @return boolean $addressEnableGender
+	 */
+	public function getAddressEnableGender() {
+		return $this->addressEnableGender;
+	}
+
+	/**
+	 * Sets addressEnableGender
+	 *
+	 * @param boolean $addressEnableGender
+	 * @return void
+	 */
+	public function setAddressEnableGender($addressEnableGender) {
+		$this->addressEnableGender = $addressEnableGender;
+	}
+
+	/**
+	 * Returns addressEnableBirthday
+	 *
+	 * @return boolean $addressEnableBirthday
+	 */
+	public function getAddressEnableBirthday() {
+		return $this->addressEnableBirthday;
+	}
+
+	/**
+	 * Sets addressEnableBirthday
+	 *
+	 * @param boolean $addressEnableBirthday
+	 * @return void
+	 */
+	public function setAddressEnableBirthday($addressEnableBirthday) {
+		$this->addressEnableBirthday = $addressEnableBirthday;
+	}
+
+	/**
+	 * Returns addressEnableAddress
+	 *
+	 * @return boolean $addressEnableAddress
+	 */
+	public function getAddressEnableAddress() {
+		return $this->addressEnableAddress;
+	}
+
+	/**
+	 * Sets addressEnableAddress
+	 *
+	 * @param boolean $addressEnableAddress
+	 * @return void
+	 */
+	public function setAddressEnableAddress($addressEnableAddress) {
+		$this->addressEnableAddress = $addressEnableAddress;
+	}
+
+	/**
+	 * Returns addressEnableSecurity
+	 *
+	 * @return boolean $addressEnableSecurity
+	 */
+	public function getAddressEnableSecurity() {
+		return $this->addressEnableSecurity;
+	}
+
+	/**
+	 * Sets addressEnableSecurity
+	 *
+	 * @param boolean $addressEnableSecurity
+	 * @return void
+	 */
+	public function setAddressEnableSecurity($addressEnableSecurity) {
+		$this->addressEnableSecurity = $addressEnableSecurity;
 	}
 
 	/**

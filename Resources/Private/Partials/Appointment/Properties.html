@@ -49,16 +49,23 @@
 	</f:if>
 	
 	<f:if condition="{showMore}">
-		<tr>
-			<th colspan="2" scope="col">
-				<f:translate key="tx_appointments_domain_model_appointment.address" />
-			</th>
-		</tr>
-		<f:render partial="Address/Properties" arguments="{address : appointment.address}" />
-	
-		<tr>
-			<td colspan="2">&nbsp;</td>
-		</tr>
+		<f:if condition="{appointment.type.addressDisable}">
+			<f:then>
+				<!-- TYPO3 4.5 compatibility -->
+			</f:then>
+			<f:else>
+				<tr>
+					<th colspan="2" scope="col">
+						<f:translate key="tx_appointments_domain_model_appointment.address" />
+					</th>
+				</tr>
+				<f:render partial="Address/Properties" arguments="{address : appointment.address, type : appointment.type}" />
+			
+				<tr>
+					<td colspan="2">&nbsp;</td>
+				</tr>
+			</f:else>
+		</f:if>
 		
 		<tr>
 			<td scope="row">

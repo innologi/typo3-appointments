@@ -231,7 +231,10 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		if (!isset($this->text)) { //put everything not-$isHTML-related in text var
 			$feUser = $appointment->getFeUser();
 			$address = $appointment->getAddress();
-			if (!is_object($feUser) || !is_object($address)) {
+			$type = $appointment->getType();
+			if (!is_object($type) || !is_object($feUser)
+					|| ( !is_object($address) && !$type->getAddressDisable() )
+			) {
 				throw new Tx_Appointments_MVC_Exception_PropertyDeleted('One or more object-properties are not available.', 407501337);
 			}
 
@@ -244,18 +247,27 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			$body = str_replace('###END_TIME###',$appointment->getEndTime()->format('H:i'),$body);
 			$body = str_replace('###NOTES###',$appointment->getNotes(),$body);
 			$body = str_replace('###NOTES_SU###',$appointment->getNotesSu(),$body);
-			$body = str_replace('###SECURITY###',$address->getSocialSecurityNumber(),$body);
+			$body = str_replace('###SECURITY###',
+					( $type->getAddressDisable() ? '' : $address->getSocialSecurityNumber() ),
+					$body
+			);
 			$this->text = $body;
 		}
 			//build address supports a variable separator, so we'll let $isHTML decide
 		if (strpos($body,'###ADDRESS###') !== FALSE) {
-			$body = str_replace('###ADDRESS###',$this->buildAddress($appointment->getAddress(),($isHTML?'<br />':"\n")),$body);
+			$body = str_replace('###ADDRESS###',
+					( $type->getAddressDisable() ? '' :
+							$this->buildAddress($appointment->getAddress(),
+									( $isHTML?'<br />':"\n" )
+							)
+					),
+					$body
+			);
 		}
 			//only build a link if action is not delete
 		if (strpos($body,'###LINK###') !== FALSE) {
-			$body = str_replace(
-					'###LINK###',
-					($action === 'delete' ? '' : $this->buildLink($appointment,$isHTML)),
+			$body = str_replace('###LINK###',
+					( $action === 'delete' ? '' : $this->buildLink($appointment,$isHTML) ),
 					$body
 			);
 		}

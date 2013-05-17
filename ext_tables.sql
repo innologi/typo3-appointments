@@ -147,6 +147,12 @@ CREATE TABLE tx_appointments_domain_model_type (
 	blocked_hours_workdays int(11) DEFAULT '0' NOT NULL,
 	max_days_forward int(11) DEFAULT '0' NOT NULL,
 	form_fields int(11) unsigned DEFAULT '0' NOT NULL,
+	address_disable tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	address_enable_name tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	address_enable_gender tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	address_enable_birthday tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	address_enable_address tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	address_enable_security tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,

@@ -1,64 +1,74 @@
-<label>
-	<f:translate key="tx_appointments_domain_model_address.first_name" /><br />
-	<f:form.textfield property="address.firstName" id="appointments-address-firstName" class="textinput session" />
-</label>
-<br />
-<br />
+<f:if condition="{type.addressEnableName}">
+	<f:form.hidden property="address.name" />
+	
+	<label>
+		<f:translate key="tx_appointments_domain_model_address.first_name" /><br />
+		<f:form.textfield property="address.firstName" id="appointments-address-firstName" class="textinput session" />
+	</label>
+	<br />
+	<br />
+	
+	<label>
+		<f:translate key="tx_appointments_domain_model_address.middle_name" /><br />
+		<f:form.textfield property="address.middleName" id="appointments-address-middleName" class="textinput session" />
+	</label>
+	<br />
+	<br />
 
-<label>
-	<f:translate key="tx_appointments_domain_model_address.middle_name" /><br />
-	<f:form.textfield property="address.middleName" id="appointments-address-middleName" class="textinput session" />
-</label>
-<br />
-<br />
+	<label>
+		<f:translate key="tx_appointments_domain_model_address.last_name" /><br />
+		<f:form.textfield property="address.lastName" id="appointments-address-lastName" class="textinput session" />
+	</label>
+	<br />
+	<br />
+</f:if>
 
-<label>
-	<f:translate key="tx_appointments_domain_model_address.last_name" /><br />
-	<f:form.textfield property="address.lastName" id="appointments-address-lastName" class="textinput session" />
-</label>
-<br />
-<br />
+<f:if condition="{type.addressEnableSecurity}">
+	<label>
+		<f:translate key="tx_appointments_domain_model_address.social_security_number" /><br />
+		<f:form.textfield property="address.socialSecurityNumber" id="appointments-address-socialSecurityNumber" class="textinput session" />
+	</label>
+	<br />
+	<br />
+</f:if>
 
-<label>
-	<f:translate key="tx_appointments_domain_model_address.social_security_number" /><br />
-	<f:form.textfield property="address.socialSecurityNumber" id="appointments-address-socialSecurityNumber" class="textinput session" />
-</label>
-<br />
-<br />
+<f:if condition="{type.addressEnableGender}">
+	<label>
+		<f:translate key="tx_appointments_domain_model_address.gender" /><br />
+		<f:form.select property="address.gender" options="{m: '{f:translate(key: \'tx_appointments_domain_model_address.gender.m\')}', f: '{f:translate(key: \'tx_appointments_domain_model_address.gender.f\')}'}"  id="appointments-address-gender" class="select session" />
+	</label>
+	<br />
+	<br />
+</f:if>
 
-<label>
-	<f:translate key="tx_appointments_domain_model_address.gender" /><br />
-	<f:form.select property="address.gender" options="{m: '{f:translate(key: \'tx_appointments_domain_model_address.gender.m\')}', f: '{f:translate(key: \'tx_appointments_domain_model_address.gender.f\')}'}"  id="appointments-address-gender" class="select session" />
-</label>
-<br />
-<br />
+<f:if condition="{type.addressEnableBirthday}">
+	<label>
+		<f:translate key="tx_appointments_domain_model_address.birthday" /><br />
+		<f:form.textfield property="address.birthday" value="{address.birthday -> f:format.date(format:'d-m-Y')}" id="appointments-address-birthday" class="textinput datepicker max-today session" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.birthday.placeholder')}" />
+	</label>
+	<br />
+	<br />
+</f:if>
 
-<label>
-	<f:translate key="tx_appointments_domain_model_address.birthday" /><br />
-	<f:form.textfield property="address.birthday" value="{address.birthday -> f:format.date(format:'d-m-Y')}" id="appointments-address-birthday" class="textinput datepicker max-today session" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.birthday.placeholder')}" />
-</label>
-<br />
-<br />
+<f:if condition="{type.addressEnableAddress}">
+	<label>
+		<f:translate key="tx_appointments_domain_model_address" /><br />
+		<f:form.textfield property="address.address" id="appointments-address-address" class="textinput session" />
+	</label>
+	<br />
+	<br />
 
-<label>
-	<f:translate key="tx_appointments_domain_model_address" /><br />
-	<f:form.textfield property="address.address" id="appointments-address-address" class="textinput session" />
-</label>
-<br />
-<br />
+	<label>
+		<f:translate key="tx_appointments_domain_model_address.zip" /><br />
+		<f:form.textfield property="address.zip" id="appointments-address-zip" class="textinput session" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.zip.placeholder')}" />
+	</label>
+	<br />
+	<br />
 
-<label>
-	<f:translate key="tx_appointments_domain_model_address.zip" /><br />
-	<f:form.textfield property="address.zip" id="appointments-address-zip" class="textinput session" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.zip.placeholder')}" />
-</label>
-<br />
-<br />
-
-<label>
-	<f:translate key="tx_appointments_domain_model_address.city" /><br />
-	<f:form.textfield property="address.city" id="appointments-address-city" class="textinput session" />
-</label>
-<br />
-<br />
-
-<f:form.hidden property="address.name" />
+	<label>
+		<f:translate key="tx_appointments_domain_model_address.city" /><br />
+		<f:form.textfield property="address.city" id="appointments-address-city" class="textinput session" />
+	</label>
+	<br />
+	<br />
+</f:if>

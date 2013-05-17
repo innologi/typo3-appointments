@@ -1,35 +1,42 @@
 <f:if condition="{formFieldValues}">
-<fieldset>
-<h4><f:translate key="tx_appointments_domain_model_appointment.form_field_values" /></h4>
-<f:for each="{formFieldValues}" as="value">
-	<f:render partial="FormField/FormFields" arguments="{formFieldValue : value, formField : value.formField}" />
-</f:for>
-</fieldset>
+	<fieldset>
+		<h4><f:translate key="tx_appointments_domain_model_appointment.form_field_values" /></h4>
+		<f:for each="{formFieldValues}" as="value">
+			<f:render partial="FormField/FormFields" arguments="{formFieldValue : value, formField : value.formField}" />
+		</f:for>
+	</fieldset>
+</f:if>
+
+<f:if condition="{appointment.type.addressDisable}">
+	<f:then>
+		<!-- TYPO3 4.5 compatibility -->
+	</f:then>
+	<f:else>
+		<fieldset>
+			<h4><f:translate key="tx_appointments_domain_model_appointment.address" /></h4>
+			<f:render partial="Address/FormFields" arguments="{address : appointment.address, type : appointment.type}" />
+		</fieldset>
+	</f:else>
 </f:if>
 
 <fieldset>
-<h4><f:translate key="tx_appointments_domain_model_appointment.address" /></h4>
-<f:render partial="Address/FormFields" arguments="{address : appointment.address}" />
-</fieldset>
-
-<fieldset>
-<h4><f:translate key="tx_appointments_domain_model_appointment.special_fields" /></h4>
-<label>
-	<f:translate key="tx_appointments_domain_model_appointment.notes" />
-	<br />
-	<f:form.textarea id="appointments-notes" property="notes" cols="40" rows="15" class="session" />
-</label>
-<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.notes.csh')}"><f:translate key="tx_appointments_list.csh" /></span>
-
-<f:if condition="{superUser}">
-<br />
-<br />
-<label>
-	<f:translate key="tx_appointments_domain_model_appointment.notes_su" />
-	<br />
-	<f:form.textarea id="appointments-notesSu" property="notesSu" cols="40" rows="15" class="session" />
-</label>
-<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.notes_su.csh')}"><f:translate key="tx_appointments_list.csh" /></span>
-</f:if>
+	<h4><f:translate key="tx_appointments_domain_model_appointment.special_fields" /></h4>
+	<label>
+		<f:translate key="tx_appointments_domain_model_appointment.notes" />
+		<br />
+		<f:form.textarea id="appointments-notes" property="notes" cols="40" rows="15" class="session" />
+	</label>
+	<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.notes.csh')}"><f:translate key="tx_appointments_list.csh" /></span>
+	
+	<f:if condition="{superUser}">
+		<br />
+		<br />
+		<label>
+			<f:translate key="tx_appointments_domain_model_appointment.notes_su" />
+			<br />
+			<f:form.textarea id="appointments-notesSu" property="notesSu" cols="40" rows="15" class="session" />
+		</label>
+		<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.notes_su.csh')}"><f:translate key="tx_appointments_list.csh" /></span>
+	</f:if>
 
 </fieldset>

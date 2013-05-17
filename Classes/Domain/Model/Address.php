@@ -32,7 +32,6 @@
  *
  */
 class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_AbstractEntity {
-	#@TODO __make these configurable in TCA
 
 	/**
 	 * First Name
@@ -77,13 +76,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	protected $birthday; #@SHOULD is property-value in formField template still necessary?
 
 	/**
-	 * Email
-	 *
-	 * @var string
-	 */
-	protected $email;
-
-	/**
 	 * Address
 	 *
 	 * @var string
@@ -96,7 +88,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * @var string
 	 */
 	protected $zip; #@SHOULD validate RegularExpression(regularExpression=/[0-9]{4}[A-Z]{2}/) but GEMHMK doesn't want to
-
+	#@TODO __webrichtlijnen html5 disable in TS
 	/**
 	 * City
 	 *
@@ -232,25 +224,6 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 */
 	public function setBirthday($birthday) {
 		$this->birthday = $birthday;
-	}
-
-	/**
-	 * Returns the email
-	 *
-	 * @return string $email
-	 */
-	public function getEmail() {
-		return $this->email;
-	}
-
-	/**
-	 * Sets the email
-	 *
-	 * @param string $email
-	 * @return void
-	 */
-	public function setEmail($email) {
-		$this->email = $email;
 	}
 
 	/**

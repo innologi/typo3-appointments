@@ -141,7 +141,6 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * Name and address information
 	 *
 	 * @var Tx_Appointments_Domain_Model_Address
-	 * @validate Tx_Appointments_Domain_Validator_ObjectPropertiesValidator
 	 * @cascade remove
 	 * @lazy
 	 */
