@@ -131,7 +131,7 @@
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new1">The time of the appointment. The available choices consist of all (still) available timeslots on the picked date, for this particular appointment type. Different dates and/or appointment types may result in different available timeslots.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new2">To change the timeslot, you&apos;ll have to free up the currently chosen timeslot first.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_reserved">Agenda reserved</label>
-			<label index="tx_appointments_domain_model_appointment.special_fields">Administration &amp; Notes</label>
+			<label index="tx_appointments_domain_model_appointment.special_fields">Notes</label>
 			<label index="tx_appointments_domain_model_appointment.notes">Notes</label>
 			<label index="tx_appointments_domain_model_appointment.notes.csh">You may set (private) notes here, relevant to the appointment.</label>
 			<label index="tx_appointments_domain_model_appointment.notes_su">Administrator notes</label>
@@ -288,7 +288,7 @@
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new1">De tijd van de afspraak. De beschikbare keuzes bestaan uit alle (nog) beschikbare tijden op de gekozen datum, voor het specifieke afspraak type. Een andere datum en/of afspraak type kan andere beschikbare tijden tot gevolg hebben.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time.time.csh_new2">Als u het tijdstip wilt wijzigen, dient u eerst het gekozen tijdstip vrij te geven.</label>
 			<label index="tx_appointments_domain_model_appointment.begin_reserved">Gereserveerd</label>
-			<label index="tx_appointments_domain_model_appointment.special_fields">Beheer &amp; Notities</label>
+			<label index="tx_appointments_domain_model_appointment.special_fields">Notities</label>
 			<label index="tx_appointments_domain_model_appointment.notes">Opmerkingen</label>
 			<label index="tx_appointments_domain_model_appointment.notes.csh">U kunt hier (privé) opmerkingen kwijt die relevant zijn voor de afspraak.</label>
 			<label index="tx_appointments_domain_model_appointment.notes_su">Opmerkingen van beheerder</label>
