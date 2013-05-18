@@ -313,6 +313,9 @@ jQuery(document).ready(function() {
 		jQuery('.tx-appointments .button_new').click(function() {
 			sessionStorage.clear();
 		});
+		jQuery('.tx-appointments .button_new_datefirst').click(function() {
+			sessionStorage.clear();
+		});
 		jQuery('.tx-appointments .button_edit').click(function() {
 			sessionStorage.clear();
 		});

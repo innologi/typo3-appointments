@@ -309,10 +309,6 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 		text-transform:lowercase;
 	}
 	
-	.tx-appointments .agendaDay .dayBar a {
-		color:#555;
-	}
-	
 	.tx-appointments .agendaShow .link_appointment {
 		font-size:0.8em;
 	}
@@ -326,6 +322,9 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments .button_back {
 		font-size:1.1em;
 		display:inline-block;
+	}
+	.tx-appointments .agendaDay .dayBar a.button_new_datefirst {
+		color:#555;
 	}
 	.tx-appointments .button_edit,
 	.tx-appointments .button_delete {
@@ -356,11 +355,11 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	}
 	
 	.tx-appointments .button_new:before,
+	.tx-appointments .button_new_datefirst:before,
 	.tx-appointments .button_edit:before,
 	.tx-appointments .button_delete:before,
 	.tx-appointments .button_back:before,
-	.tx-appointments .csh:before,
-	.tx-appointments .agendaDay .dayBar a:before {
+	.tx-appointments .csh:before {
 		background-image:url("/typo3conf/ext/appointments/Resources/Public/Icons/t3skin.png");
 		content:"";
 		float:left;
@@ -370,7 +369,7 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	}
 	
 	.tx-appointments .button_new:before,
-	.tx-appointments .agendaDay .dayBar a:before {
+	.tx-appointments .button_new_datefirst:before {
 		background-position:-180px 0;	
 	}
 	.tx-appointments .button_edit:before {
