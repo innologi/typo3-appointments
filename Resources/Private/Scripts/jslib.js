@@ -31,21 +31,25 @@ jQuery(document).ready(function() {
 	var warnUnloadEnabled = jQuery('.tx-appointments form.warnUnload');
 	//'respect REFRESH header!' variables
 	var sessionStart = new Date().getTime() / 1000;
-	var header = null;
+	var req = null;
 	
 	//set onbeforeunload if a warnUnload message exists
 	if (warnUnloadEnabled[0]) {
 		warnUnload = "###WARN_UNLOAD###";
 		warnUnload = warnUnload.replace('$1',"###WARN_UNLOAD_S1###");
 		if (warnUnload != null && warnUnload.length) {
-			//set function
+			//set function (doesn't work separately)
 			window.onbeforeunload = function() {
 				//perform a 'respect REFRESH header!' check
-				if (header != null) {
-					var currentTime = new Date().getTime() / 1000;
-					var secondsBeforeRefresh = Math.round(currentTime - sessionStart);
-					if (secondsBeforeRefresh >= header) {
-						warnUnload = ''; //unset the message
+				if (req != null && typeof(req.responseText) != 'unknown') {
+					header = req.getResponseHeader('REFRESH');
+					if (header != null && header.length) {
+						var currentTime = new Date().getTime() / 1000;
+						var secondsSinceStart = Math.round(currentTime - sessionStart);
+						var secondsUntilRefresh = parseInt(header.substring(0, header.indexOf(';',0)),10);
+						if (secondsSinceStart >= secondsUntilRefresh) {
+							warnUnload = ''; //unset the message
+						}
 					}
 				}
 				
@@ -55,14 +59,11 @@ jQuery(document).ready(function() {
 			};
 			
 			//prepare 'respect REFRESH header!'
-			var req = new XMLHttpRequest();
-			req.open('HEAD', document.location, true); //note that this produces a second GET request
+			req = new XMLHttpRequest();
+			req.open('HEAD', document.location, true); //note that this produces a second GET request asynchronously
 			req.send();
-			header = req.getResponseHeader('REFRESH');
-			header = (header != null && header.length) ? parseInt(header.substring(0, header.indexOf(';',0)),10) : null;
 		}
 	}
-	
 	
 	//exceptions
 	jQuery('.tx-appointments .allowUnload').on('submit', function() {
@@ -165,7 +166,7 @@ jQuery(document).ready(function() {
 		var displaySec = '0' + (timerRemaining % 60); //remainder of seconds by modulus
 		//set new inner html
 		timerElem.html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
-	};
+	}
 	
 	//replace timer message
 	function replaceTimerMessage() {
