@@ -781,10 +781,10 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 			//find the first free block in 'current' and splice off anything up to that point from the beginning
 			while (($b = each($blocksCurrent)) !== FALSE) {
-				$stats[$k]['bufferMultiplier']++;
+				$stats[$k]['bufferMultiplier']++; //[BUG]: the bug causes us to not write to a reference anymore, but that causes $stat['bufferMultiplier'] not to update here..
 				$block = $b['value'];
 				if (($c = count($block)) === 0) {
-					array_splice($blocksCurrent,0,($stat['bufferMultiplier']-1));
+					array_splice($blocksCurrent,0,($stats[$k]['bufferMultiplier']-1)); //[BUG]: .. so we can't use $stat['bufferMultiplier'] here! only use $stats[$k]['bufferMultiplier']!
 					break;
 				}
 				$stats[$k]['appointmentCount'] += $c;
