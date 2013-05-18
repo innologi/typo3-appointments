@@ -182,6 +182,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * @return string $name
 	 */
 	public function getName() {
+		$this->setName();
 		return $this->name;
 	}
 
