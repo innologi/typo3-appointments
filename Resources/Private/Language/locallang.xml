@@ -52,8 +52,9 @@
 			<label index="tx_appointments_list.calendar_create_subject">Appointment confirmation</label>
 			<label index="tx_appointments_list.calendar_update_subject">Appointment change</label>
 			<label index="tx_appointments_list.calendar_delete_subject">Appointment cancellation</label>
-			<label index="tx_appointments_list.email_error">Notification by email failed because of an error. Please notify the site-administrator!</label>
 			<label index="tx_appointments_list.email_link_label">View appointment</label>
+			<label index="tx_appointments_list.email_error">Notification by email failed because of an error. Please notify the site-administrator!</label>
+			<label index="tx_appointments_list.csh">Help</label>
 			
 			<label index="error.address.firstName.1221560718">Should not be empty.</label>
 			<label index="error.address.lastName.1221560718">Should not be empty.</label>
@@ -154,7 +155,6 @@
 			<label index="tx_appointments_domain_model_address.zip.placeholder">1000AD</label>
 			<label index="tx_appointments_domain_model_address.city">City</label>
 			<label index="tx_appointments_domain_model_address.social_security_number">Social Security Number</label>
-			<label index="tx_appointments_domain_model_formfield.csh">Help</label>
 			
 			<label index="tx_appointments_domain_model_agenda_month.month_back">Previous month</label>
 			<label index="tx_appointments_domain_model_agenda_month.month_forward">Next month</label>
