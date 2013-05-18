@@ -256,7 +256,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			//build address supports a variable separator, so we'll let $isHTML decide
 		if (strpos($body,'###ADDRESS###') !== FALSE) {
 			$body = str_replace('###ADDRESS###',
-					( $type->getAddressDisable() ? '' :
+					( $appointment->getType()->getAddressDisable() ? '' :
 							$this->buildAddress($appointment->getAddress(),
 									( $isHTML?'<br />':"\n" )
 							)

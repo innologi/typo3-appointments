@@ -76,6 +76,15 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	protected $birthday; #@SHOULD is property-value in formField template still necessary?
 
 	/**
+	 * Email
+	 *
+	 * Not used by appointment.address, but it is used by emailService for agenda-set email-addresses.
+	 *
+	 * @var string
+	 */
+	protected $email;
+
+	/**
 	 * Address
 	 *
 	 * @var string
@@ -224,6 +233,25 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 */
 	public function setBirthday($birthday) {
 		$this->birthday = $birthday;
+	}
+
+	/**
+	 * Returns the email
+	 *
+	 * @return string $email
+	 */
+	public function getEmail() {
+		return $this->email;
+	}
+
+	/**
+	 * Sets the email
+	 *
+	 * @param string $email
+	 * @return void
+	 */
+	public function setEmail($email) {
+		$this->email = $email;
 	}
 
 	/**
