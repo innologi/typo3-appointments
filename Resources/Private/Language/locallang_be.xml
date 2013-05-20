@@ -21,6 +21,13 @@
 			<label index="tx_appointments_constants_agendaWeeksAfterCurrent">Agenda Weeks After Current: The number of weeks to display after the current</label>
 			<label index="tx_appointments_constants_freeSlotInMinutes">Free Reserved Time-slot: The number of minutes to free up a reserved time-slot if not saved before this number is reached, counting from start</label>
 			<label index="tx_appointments_constants_suGroup">Super User Group UID</label>
+			<label index="tx_appointments_constants_js_includeJquery">Enable jQuery inclusion: Will include the jQuery library through the configured CDN. If for some reason there already is a jQuery library present, you can disable appointments' here to prevent conflicts.</label>
+			<label index="tx_appointments_constants_js_includeJqueryUI">Enable jQuery UI scripts inclusion: Will include a custom jQuery UI library for: Datepicker. You can disable it in case it is already present through other means or you're using a different datepicker in your templates.</label>
+			<label index="tx_appointments_constants_js_includeJS">Enable Javascript inclusion: Will include appointments Javascript. Most is jQuery dependent, so make sure to have jQuery enabled through this extension or another way.</label>
+			<label index="tx_appointments_constants_js_toFooter">Place Javascript in page footer: If enabled, will move the appointments Javascript out of the header and into the footer.</label>
+			<label index="tx_appointments_constants_js_jQueryCDN">jQuery CDN url: The url from which jQuery is included. Configurable to easily allow jQuery version changes.</label>
+			<label index="tx_appointments_constants_js_warnOnLeave">Set Warning On Page-Leave: If Javascript included: adds a warning message to the new-appointment forms to warn you for losing given input, which is shown when the page is refreshed or left, giving the option to 'Leave' or 'Stay' on the page, while informing the user of possible consequences.</label>
+			<label index="tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod">Allow Auto-Refresh With WarnOnLeave: When using page.meta.REFRESH or a REFRESH header (i.e. for automatic logout purposes), warnOnLeave might prevent it. Setting this to the appropriate method will respect that method when applied if warnOnLeave is enabled.</label>
 			
 			<label index="tx_appointments_extconf_emailFrom">Default sending email address: The default email address used for emails sent by this extension.</label>
 			<label index="tx_appointments_extconf_emailName">Default email name: The name used for the sending email address. (not required)</label>
@@ -62,6 +69,13 @@
 			<label index="tx_appointments_constants_agendaWeeksAfterCurrent">Agenda Weken Na Huidig: Het aantal weken om te tonen na de huidige</label>
 			<label index="tx_appointments_constants_freeSlotInMinutes">Geef Gereserveerde Tijdsslot Vrij: Het aantal minuten waarna een gereserveerde tijdsslot wordt vrijgegeven als de afspraak niet opgeslagen is voordat het aantal bereikt is, tellend vanaf het begin van het aanmaakproces</label>
 			<label index="tx_appointments_constants_suGroup">Super User Groep UID</label>
+			<label index="tx_appointments_constants_js_includeJquery">jQuery inschakelen: Voegt het jQuery script toe aan de website vanaf het ingestelde CDN. U kunt deze uitschakelen indien al aanwezig via andere methoden.</label>
+			<label index="tx_appointments_constants_js_includeJqueryUI">jQuery UI inschakelen: Voegt een aangepaste jQuery UI script toe voor: de Datepicker. U kunt deze uitschakelen indien al aanwezig via andere methoden, of wanneer u een andere datepicker benut in uw templates.</label>
+			<label index="tx_appointments_constants_js_includeJS">Javascript Functionaliteit inschakelen: Toegevoegde (niet-noodzakelijke) functionaliteit welke de gebruikservaring verbetert en de Afspraken Planner gebruiksvriendelijker maakt. Het meeste is jQuery-afhankelijk.</label>
+			<label index="tx_appointments_constants_js_toFooter">Javascript In Pagina-Footer: Indien, will move the appointments Javascript out of the header and into the footer.</label>
+			<label index="tx_appointments_constants_js_jQueryCDN">jQuery CDN url: The url from which jQuery is included. Configurable to easily allow jQuery version changes.</label>
+			<label index="tx_appointments_constants_js_warnOnLeave">Waarschuwing Pagina Verlaten: Indien Javascript ingeschakeld: toont een waarschuwingsbericht bij het verlaten of vernieuwen van de pagina voor het verliezen van ingevulde gegevens bij een nieuwe-afspraak formulier en geeft hierbij de keuze op de pagina te blijven of deze te 'verlaten', met nadruk op de mogelijke gevolgen.</label>
+			<label index="tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod">Sta Auto-Refresh Toe Bij WarnOnLeave: Wanneer uw website page.meta.REFRESH of een REFRESH header gebruikt (bijv. voor automatisch uitloggen), dan zou warnOnLeave dat kunnen voorkomen. Hier kunt u aangeven om de toegepaste methode te respecteren indien warnOnLeave is ingeschakeld.</label>
 			
 			<label index="tx_appointments_extconf_emailFrom">Standaard email adres: Het standaard email adres dat gebruikt wordt bij de door deze extensie verstuurde emails.</label>
 			<label index="tx_appointments_extconf_emailName">Standaard email naam: De standaard naam dat gebruikt wordt bij de door deze extensie verstuurde emails. (niet noodzakelijk)</label>
