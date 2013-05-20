@@ -36,6 +36,9 @@
 			{appointment.feUser.name}
 		</td>
 	</tr>
+	<tr>
+		<td colspan="2">&nbsp;</td>
+	</tr>
 	
 	<f:if condition="{appointment.formFieldValues}">
 		<tr>
@@ -46,6 +49,9 @@
 		<f:for each="{appointment.formFieldValues}" as="value">
 			<f:render partial="FormField/Properties" arguments="{formFieldValue : value, formField : value.formField}" />
 		</f:for>
+		<tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>
 	</f:if>
 	
 	<f:if condition="{showMore}">
@@ -67,8 +73,12 @@
 			</f:else>
 		</f:if>
 		
-		<h4><f:translate key="tx_appointments_domain_model_appointment.special_fields" /></h4>
 		<tr>
+			<tr>
+				<th colspan="2" scope="col">
+					<f:translate key="tx_appointments_domain_model_appointment.special_fields" />
+				</th>
+			</tr>
 			<td scope="row">
 				<f:translate key="tx_appointments_domain_model_appointment.notes" />
 			</td>
