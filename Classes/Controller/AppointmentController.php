@@ -93,7 +93,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function showAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
-		#@TODO you should be able to return to an agenda view if the plugin came from there but a list plugin is n/a .. or is that even possible?
 		//check if current user is member of the superuser group
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 		$showMore = TRUE;
@@ -149,7 +148,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_no_types', $this->extensionName);
 				$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 			}
-		}
+		} #@TODO __webrichtlijnen
 
 		if ($appointment !== NULL) {
 			//type chosen! (or dateFirst)
@@ -314,18 +313,23 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 
 			$action = 'new2';
+			$arguments['appointment'] = $appointment;
 		} else {
 			//chosen timeslot is not allowed
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.timeslot_not_allowed', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 
 			$action = 'new1';
-			$arguments['timeError'] = 1;
+
+			//this check prevents a uriBuilder exception @ redirect() if appointment wasn't persisted yet
+			if (!$appointment->_isNew()) {
+				$arguments['appointment'] = $appointment;
+				$arguments['timeError'] = 1; //has no use if appointment isn't passed along, as there would only be a type-form
+			}
 		}
 
 
-		//send to appropriate action, with changed $appointment
-		$arguments['appointment'] = $appointment;
+		//send to appropriate action
 		$this->redirect($action,NULL,NULL,$arguments);
 	}
 
