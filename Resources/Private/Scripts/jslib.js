@@ -183,17 +183,20 @@ jQuery(document).ready(function() {
 	var timerElem = jQuery('.tx-appointments span.reservation-timer');
 	var timerSeconds = 0;
 	var timerRemaining = 0;
-	var compareTime = null;
 	var flashStart = 60;
+	var flashSet = false;
 	var counter = null;
 	
 	//countdown timer-html-setter function
 	function reservationTimer() {
 		//timerSeconds--; //this isn't representative if an alert or warnunload box comes along
-		timerRemaining = timerSeconds - Math.round((new Date().getTime() - compareTime)/1000);
+		var currentTime = new Date().getTime() / 1000;
+		var secondsSinceStart = Math.round(currentTime - scriptStartTime);
+		timerRemaining = timerSeconds - secondsSinceStart;
 		
-		if (timerRemaining == flashStart) {
+		if (!flashSet && timerRemaining <= flashStart) {
 			timerElem.addClass('flash'); //starts flashing (or marking) the timer according to class css
+			flashSet = true;
 		} else if (timerRemaining < 1) {
 			clearInterval(counter); //stop counter
 			replaceTimerMessage();
@@ -240,9 +243,9 @@ jQuery(document).ready(function() {
 		var splitAt = timerVal.indexOf(':',0);
 		var minutes = parseInt(timerVal.substring(0, splitAt),10);
 		timerSeconds = (minutes * 60) + parseInt(timerVal.substring(splitAt+1),10);
-		compareTime = new Date().getTime();
-		if (timerSeconds < flashStart) {
+		if (timerSeconds <= flashStart) {
 			timerElem.addClass('flash');
+			flashSet = true;
 		}
 		//run every second (in milliseconds)
 		counter = setInterval(reservationTimer, 1000);
@@ -274,9 +277,9 @@ jQuery(document).ready(function() {
 	jQuery('.tx-appointments #disabledForm').addClass('visible');
 
 
-	//******************************
-	// Form session storage (html5)
-	//******************************
+	//**********************
+	// Form session storage
+	//**********************
 	
 	//check support for session storage in user-agent
 	function isStorageSupported() {
@@ -361,9 +364,8 @@ jQuery(document).ready(function() {
 		});
 		//doing it on form submit can cause us to lose values if a validation error won't save anything,
 		//or even worse, a user can stop halfway, and start a new appointment, without checking if everything
-		//is in order because the form was filled with previous values.
-		//doing it on the back button can cause us to lose the session even when someone decides to stay
-		//on the page.
+		//is in order because the form was filled with previous values. doing it on the back button can cause
+		//us to lose the session even when someone decides to stay on the page.
 	}
 
 });
