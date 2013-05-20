@@ -63,6 +63,14 @@ plugin.tx_appointments {
 		inlineJS.template = FILE
 		inlineJS.template.file = {$plugin.tx_appointments.js.libFile}
 		inlineJS.marks {
+			WARN_ON_LEAVE = TEXT
+			WARN_ON_LEAVE.value = {$plugin.tx_appointments.js.warnOnLeave}
+			WARN_ON_LEAVE_RESPECT_REFRESH = TEXT
+			WARN_ON_LEAVE_RESPECT_REFRESH.value = {$plugin.tx_appointments.js.warnOnLeaveRespectRefreshMethod}
+			WARN_UNLOAD = TEXT
+			WARN_UNLOAD.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.warn_unload
+			WARN_UNLOAD_S1 = TEXT
+			WARN_UNLOAD_S1.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_new
 			DELETE_CONFIRM = TEXT
 			DELETE_CONFIRM.insertData = 1
 			DELETE_CONFIRM.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_delete_confirm}
@@ -75,12 +83,6 @@ plugin.tx_appointments {
 			RENEW_TIME = TEXT
 			RENEW_TIME.insertData = 1
 			RENEW_TIME.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_time_expired}
-			WARN_UNLOAD = TEXT
-			WARN_UNLOAD.insertData = 1
-			WARN_UNLOAD.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.warn_unload}
-			WARN_UNLOAD_S1 = TEXT
-			WARN_UNLOAD_S1.insertData = 1
-			WARN_UNLOAD_S1.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_new}
 			DAY1 = TEXT
 			DAY1.insertData = 1
 			DAY1.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s1}
@@ -179,7 +181,9 @@ page.jsFooterInline.198311210 < plugin.tx_appointments.jslib.inlineJS
 
 [globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJS}] && [globalVar = LIT:1 > {$plugin.tx_appointments.js.toFooter}]
 page.jsInline.198311210 < plugin.tx_appointments.jslib.inlineJS
+
 [global]
+
 
 plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments {

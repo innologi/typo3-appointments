@@ -10,11 +10,14 @@
 
 jQuery(document).ready(function() {
 	
-	//********************
-	// confirmation boxes
-	//********************
+	//general vars
+	var scriptStartTime = new Date().getTime() / 1000;
 	
-	//:first is necessary because there could be multiple delete buttons, yet it's all the same
+	
+	//*********************
+	// delete confirmation
+	//*********************
+	
 	var confirmDeleteMessage = "###DELETE_CONFIRM###";
 	
 	//click function performs a confirm, if TRUE/OK continues button functionality
@@ -27,48 +30,84 @@ jQuery(document).ready(function() {
 	// unload warning
 	//****************
 	
-	var warnUnload = null;
-	var warnUnloadEnabled = jQuery('.tx-appointments form.warnUnload');
-	//'respect REFRESH header!' variables
-	var sessionStart = new Date().getTime() / 1000;
-	var req = null;
+	var warnUnloadEnabled = "###WARN_ON_LEAVE###";
+	var warnUnloadText = "###WARN_UNLOAD###";
+	//respect REFRESH vars
+	var secondsUntilRefresh = null;
+	var respectMethod = null;
+	var headerRequest = null;
 	
-	//set onbeforeunload if a warnUnload message exists
-	if (warnUnloadEnabled[0]) {
-		warnUnload = "###WARN_UNLOAD###";
-		warnUnload = warnUnload.replace('$1',"###WARN_UNLOAD_S1###");
-		if (warnUnload != null && warnUnload.length) {
-			//set function (doesn't work separately)
-			window.onbeforeunload = function() {
-				//perform a 'respect REFRESH header!' check
-				if (req != null && typeof(req.responseText) != 'unknown') {
-					header = req.getResponseHeader('REFRESH');
-					if (header != null && header.length) {
-						var currentTime = new Date().getTime() / 1000;
-						var secondsSinceStart = Math.round(currentTime - sessionStart);
-						var secondsUntilRefresh = parseInt(header.substring(0, header.indexOf(';',0)),10);
-						if (secondsSinceStart >= secondsUntilRefresh) {
-							warnUnload = ''; //unset the message
-						}
-					}
-				}
-				
-				if (warnUnload.length) {
-					return warnUnload;
-				}
-			};
-			
-			//prepare 'respect REFRESH header!'
-			req = new XMLHttpRequest();
-			req.open('HEAD', document.location, true); //note that this produces a second GET request asynchronously
-			req.send();
+	//gets (int)seconds from a REFRESH string
+	function getRefreshSeconds(refreshString) {
+		return parseInt(refreshString.substring(0, refreshString.indexOf(';',0)),10); 
+	}
+	
+	//checks if the amount of REFRESH seconds have passed, to see if warnUnload needs to be disabled
+	function haveRefreshSecondsPassed() {
+		var currentTime = new Date().getTime() / 1000;
+		var secondsSinceStart = Math.round(currentTime - scriptStartTime);
+		if (secondsSinceStart >= secondsUntilRefresh) {
+			warnUnloadText = ''; //disable message
 		}
 	}
 	
-	//exceptions
-	jQuery('.tx-appointments .allowUnload').on('submit', function() {
-			warnUnload = ''; //unset the message
-	});
+	//run through the warnUnload script
+	if (warnUnloadEnabled == '1') { //if warnUnload-enabled in TypoScript
+		var warnUnloadElem = jQuery('.tx-appointments form.warnUnload');
+		if (warnUnloadElem[0]) { //if a warnUnload element is available 
+			if (warnUnloadText.length) { //if warnUnloadText is empty, there's no sense in continuing
+				//set exception-button text in warnUnloadText
+				warnUnloadText = warnUnloadText.replace('$1',"###WARN_UNLOAD_S1###");
+				//check respect REFRESH settings and read seconds
+				respectMethod = "###WARN_ON_LEAVE_RESPECT_REFRESH###";
+				if (respectMethod == 'meta-tag') { //read from meta tag
+					var metaElem = jQuery('meta[http-equiv=REFRESH]'); //e.g. <meta http-equiv="REFRESH" content="1800; URL={url}" />
+					if (metaElem[0]) { //if there is a meta tag
+						secondsUntilRefresh = getRefreshSeconds(metaElem.attr('content'));
+					} else {
+						secondsUntilRefresh = -1; //disables respect REFRESH
+					}
+				} else if (respectMethod == 'header') { //read from header
+					//prepare a new HEAD request in order to be able to read the response REFRESH header
+					headerRequest = new XMLHttpRequest();
+					headerRequest.open('HEAD', document.location, true); //note that this produces a separate GET request (async)
+					headerRequest.send();
+				} 
+				
+				//set the actual onbeforeunload event
+				window.onbeforeunload = function() {
+					//before calling the message, check if respect REFRESH needs to disable it
+					if (respectMethod != 'none' && secondsUntilRefresh != -1) {
+						if (secondsUntilRefresh == null) { //never TRUE if respectMethod == meta-tag
+							//try to get seconds from headerRequest
+							if (respectMethod == 'header' && headerRequest != null && typeof(headerRequest.responseText) != 'unknown') {
+								header = headerRequest.getResponseHeader('REFRESH'); //e.g. REFRESH: 1800; URL={url}
+								if (header != null && header.length) {
+									secondsUntilRefresh = getRefreshSeconds(header);
+								}
+							}
+						}
+						
+						if (secondsUntilRefresh == null) {
+							secondsUntilRefresh = -1; //failed to get seconds so far, so disable respect REFRESH for current request
+						} else {
+							haveRefreshSecondsPassed(); //disables warnUnload if REFRESH seconds passed
+						}
+					}
+					
+					//calls message if not disabled
+					if (warnUnloadText.length) {
+						return warnUnloadText;
+					}
+				};
+				
+				//exceptions to warnUnload event
+				jQuery('.tx-appointments .allowUnload').on('submit', function() {
+						warnUnloadText = ''; //disable message 
+				});
+			}
+		}
+	}
 	
 	
 	//**********

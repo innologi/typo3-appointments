@@ -32,17 +32,22 @@ plugin.tx_appointments {
 	js {
 		# cat=plugin.tx_appointments/javascript; type=boolean; label= Enable jQuery inclusion: Will include the jQuery library through the configured CDN. If for some reason there already is a jQuery library present, you can disable appointments' here to prevent conflicts.
 		includeJquery = 1
-		# cat=plugin.tx_appointments/javascript; type=boolean; label= Enable jQuery UI scripts inclusion: Will include a custom jQuery UI library for: Datepicker. You can disable it in case it is already present through other means.
+		# cat=plugin.tx_appointments/javascript; type=boolean; label= Enable jQuery UI scripts inclusion: Will include a custom jQuery UI library for: Datepicker. You can disable it in case it is already present through other means or you like to use a different datepicker in your custom templates.
 		includeJqueryUI = 1
 		# cat=plugin.tx_appointments/javascript; type=boolean; label= Enable Javascript inclusion: Will include appointments Javascript. It's all jQuery dependent, so make sure to have jQuery enabled through this or another extension.
 		includeJS = 1
 		# cat=plugin.tx_appointments/javascript; type=boolean; label= Place Javascript in page footer: If enabled, will move the appointments Javascript out of the header and into the footer.
 		toFooter = 1
 		# cat=plugin.tx_appointments/javascript; type=string; label= jQuery CDN url: The url from which jQuery is included. Configurable to easily allow jQuery version changes.
-		jQueryCDN = http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js
+		jQueryCDN = http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
 		
 		uiLibFile = EXT:appointments/Resources/Public/Scripts/jquery-ui-1.10.2.custom.min.js
 		uiCssFile = EXT:appointments/Resources/Public/Styles/smoothness/jquery-ui-1.10.2.custom.css
 		libFile = EXT:appointments/Resources/Private/Scripts/jslib.js
+		
+		# cat=plugin.tx_appointments/javascript; type=boolean; label= Set Warning On Page-Leave: Adds a warning message shown when the page is refreshed or left, giving the option to "Leave" or "Stay" on the page, while informing the user of possible consequences. 
+		warnOnLeave = 1
+		# cat=plugin.tx_appointments/javascript; type=options[none,header,meta-tag]; label= Allow Auto-Refresh With WarnOnLeave: When using page.meta.REFRESH or a REFRESH header (i.e. for automatic logout purposes), warnOnLeave might prevent it. Setting this to the appropriate method will respect that method when applied if warnOnLeave is enabled.   
+		warnOnLeaveRespectRefreshMethod = none 
 	}
 }
