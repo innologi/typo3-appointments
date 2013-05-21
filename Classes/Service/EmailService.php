@@ -119,16 +119,20 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 */
 	public function sendAction($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$returnVal = FALSE;
+		$errorMsg = 'Could not send email because of error: ';
 		try {
 			$this->sendEmailAction($action,$appointment);
 			$this->sendCalendarAction($action,$appointment);
 			$returnVal = TRUE;
 		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) { //a property was deleted
-			#@TODO __syslog
+			t3lib_div::sysLog($errorMsg . $e->getMessage(),
+				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_ERROR);
 		} catch (Swift_RfcComplianceException $e) { //one or more email properties does not comply with RFC (e.g. sender email)
-			#@TODO syslog
+			t3lib_div::sysLog('One or more email-related configuration settings are not set or invalid: ' . $e->getMessage(),
+				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_ERROR);
 		} catch (Exception $e) {
-			#@TODO syslog simply the thrown error message
+			t3lib_div::sysLog($errorMsg . $e->getMessage(),
+				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_ERROR);
 		}
 		return $returnVal;
 	}
@@ -246,7 +250,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			if (!is_object($type) || !is_object($feUser)
 					|| ( !is_object($address) && !$type->getAddressDisable() )
 			) {
-				throw new Tx_Appointments_MVC_Exception_PropertyDeleted('One or more object-properties are not available.', 407501337);
+				throw new Tx_Appointments_MVC_Exception_PropertyDeleted('One or more object-properties of ' . get_class($appointment) . ':' . $appointment->getUid() . ' are not available and might have been deleted.', 407501337);
 			}
 
 			//replaces variables
