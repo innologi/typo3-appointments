@@ -230,16 +230,16 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * @throws Tx_Appointments_MVC_Exception_PropertyDeleted
 	 */
 	protected function getText(Tx_Appointments_Domain_Model_Appointment $appointment, $action, $bodyType = 'email', $isHTML = FALSE) {
-		$agenda = $appointment->getAgenda();
-		switch ($bodyType) {
-			case 'calendar':
-				$body = $agenda->getCalendarInviteText();
-				break;
-			default:
-				$body = $agenda->getEmailText();
-		}
-
 		if (!isset($this->text)) { //put everything not-$isHTML-related in text var
+			$agenda = $appointment->getAgenda();
+			switch ($bodyType) {
+				case 'calendar':
+					$body = $agenda->getCalendarInviteText();
+					break;
+				default:
+					$body = $agenda->getEmailText();
+			}
+
 			$feUser = $appointment->getFeUser();
 			$address = $appointment->getAddress();
 			$type = $appointment->getType();
@@ -262,7 +262,9 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 					( $type->getAddressDisable() ? '' : $address->getSocialSecurityNumber() ),
 					$body
 			);
-			$this->text = $body; #@FIXME wordt niet onthouden? wat gebeurt er? plain text versie heeft namelijk geen vervangen tags
+			$this->text = $body;
+		} else {
+			$body = $this->text;
 		}
 			//build address supports a variable separator, so we'll let $isHTML decide
 		if (strpos($body,'###ADDRESS###') !== FALSE) {
