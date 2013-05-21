@@ -193,15 +193,23 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 */
 	protected function getSender() {
 		if ($this->sender === NULL) {
-			global $TYPO3_CONF_VARS; #@TODO what about the install tool settings?
+			global $TYPO3_CONF_VARS;
 			$extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][$this->extensionName]);
-			if (isset($extConf['email_from'][0]) /*&& t3lib_div::validEmail($extConf['email_from'])*/) { #@TODO leave it out and catch it by exception?
+
+			#@TODO add support to set email address/name from agenda
+			if (isset($extConf['email_from'][0])) { /*&& t3lib_div::validEmail($extConf['email_from'])*/ #@TODO leave it out and catch it by exception?
 				$from = $extConf['email_from'];
-				if (isset($extConf['email_name'][0])) {
+				if (isset($extConf['email_name'][0])) { #@TODO document this in manual
 					$from = array($from => $extConf['email_name']);
 				}
-				$this->sender = $from;
+			} else {
+				$from = $TYPO3_CONF_VARS['MAIL']['defaultMailFromAddress'];
+				if (isset($TYPO3_CONF_VARS['MAIL']['defaultMailFromName'][0])) {
+					$from = array($from => $TYPO3_CONF_VARS['MAIL']['defaultMailFromName']);
+				}
 			}
+
+			$this->sender = $from;
 		}
 		return $this->sender;
 	}
@@ -251,7 +259,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 					( $type->getAddressDisable() ? '' : $address->getSocialSecurityNumber() ),
 					$body
 			);
-			$this->text = $body;
+			$this->text = $body; #@FIXME wordt niet onthouden? wat gebeurt er? plain text versie heeft namelijk geen vervangen tags
 		}
 			//build address supports a variable separator, so we'll let $isHTML decide
 		if (strpos($body,'###ADDRESS###') !== FALSE) {
@@ -374,7 +382,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		$start = $appointment->getBeginTime()->getTimestamp();
 		$end = $appointment->getEndTime()->getTimestamp();
 		$sender = $this->getSender();
-		$sequence = 0; #@TODO last time I checked, gmail isn't connecting updates to original calendar events, unsure about Outlook, Thunderbird OK
+		$sequence = 0; #@TODO __Gmail has never connected updates, Thunderbird doesn't any longer, and Outlook? Check and remedy this!
 
 		//id unique to this appointment and domain
 		$id = 'typo3-'.$this->extensionName.'-a'.$appointment->getAgenda()->getUid().'-t'.$appointment->getType()->getUid().'-a'.$appointment->getUid() . '@' . t3lib_div::getIndpEnv('TYPO3_SITE_URL');

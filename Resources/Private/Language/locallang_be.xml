@@ -29,8 +29,8 @@
 			<label index="tx_appointments_constants_js_warnOnLeave">Set Warning On Page-Leave: If Javascript included: adds a warning message to the new-appointment forms to warn you for losing given input, which is shown when the page is refreshed or left, giving the option to 'Leave' or 'Stay' on the page, while informing the user of possible consequences.</label>
 			<label index="tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod">Allow Auto-Refresh With WarnOnLeave: When using page.meta.REFRESH or a REFRESH header (i.e. for automatic logout purposes), warnOnLeave might prevent it. Setting this to the appropriate method will respect that method when applied if warnOnLeave is enabled.</label>
 			
-			<label index="tx_appointments_extconf_emailFrom">Default sending email address: The default email address used for emails sent by this extension.</label>
-			<label index="tx_appointments_extconf_emailName">Default email name: The name used for the sending email address. (not required)</label>
+			<label index="tx_appointments_extconf_emailFrom">Default sending email address: overrides the default email address used for emails sent by this extension. (optional)</label>
+			<label index="tx_appointments_extconf_emailName">Default email name: overrides the default name used for the sending email address. (optional)</label>
 			<label index="tx_appointments_extconf_debug">Debug: If enabled, provides some extra frontend debugging messages. Should not be enabled on production.</label>
 						
 			<label index="tx_appointments_flexform_sheet_sDEF">Settings</label>
