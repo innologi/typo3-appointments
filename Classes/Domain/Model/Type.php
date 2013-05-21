@@ -172,7 +172,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of appointments allowed on Mondays
 	 *
 	 * @var integer
-	 * @validate NumberRange(0,1440)
+	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
 	protected $maxAmountMonday;
 
@@ -180,7 +180,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of appointments allowed on Tuesdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(0,1440)
+	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
 	protected $maxAmountTuesday;
 
@@ -188,7 +188,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of appointments allowed on Wednesdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(0,1440)
+	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
 	protected $maxAmountWednesday;
 
@@ -196,7 +196,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of appointments allowed on Thursdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(0,1440)
+	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
 	protected $maxAmountThursday;
 
@@ -204,7 +204,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of appointments allowed on Fridays
 	 *
 	 * @var integer
-	 * @validate NumberRange(0,1440)
+	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
 	protected $maxAmountFriday;
 
@@ -212,7 +212,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of appointments allowed on Saturdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(0,1440)
+	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
 	protected $maxAmountSaturday;
 
@@ -220,7 +220,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of appointments allowed on Sundays
 	 *
 	 * @var integer
-	 * @validate NumberRange(0,1440)
+	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
 	protected $maxAmountSunday;
 
@@ -228,7 +228,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of minutes between allowed appointment time-slots on Mondays
 	 *
 	 * @var integer
-	 * @validate NumberRange(1,1440)
+	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
 	protected $minuteIntervalMonday;
 
@@ -236,7 +236,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of minutes between allowed appointment time-slots on Tuesdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(1,1440)
+	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
 	protected $minuteIntervalTuesday;
 
@@ -244,7 +244,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of minutes between allowed appointment time-slots on Wednesdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(1,1440)
+	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
 	protected $minuteIntervalWednesday;
 
@@ -252,7 +252,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of minutes between allowed appointment time-slots on Thursdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(1,1440)
+	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
 	protected $minuteIntervalThursday;
 
@@ -260,7 +260,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of minutes between allowed appointment time-slots on Fridays
 	 *
 	 * @var integer
-	 * @validate NumberRange(1,1440)
+	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
 	protected $minuteIntervalFriday;
 
@@ -268,7 +268,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of minutes between allowed appointment time-slots on Saturdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(1,1440)
+	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
 	protected $minuteIntervalSaturday;
 
@@ -276,7 +276,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of minutes between allowed appointment time-slots on Sundays
 	 *
 	 * @var integer
-	 * @validate NumberRange(1,1440)
+	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
 	protected $minuteIntervalSunday;
 
@@ -284,7 +284,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Overrules the allowed cumulative amount of appointments over X consecutive days
 	 *
 	 * @var integer
-	 * @validate NumberRange(0,10080)
+	 * @validate NumberRange(startRange=0,endRange=10080)
 	 */
 	protected $maxAmountPerVarDays;
 
@@ -292,7 +292,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * X consecutive days
 	 *
 	 * @var integer
-	 * @validate NumberRange(0,7)
+	 * @validate NumberRange(startRange=0,endRange=7)
 	 */
 	protected $perVarDays;
 
@@ -300,7 +300,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * X consecutive days test interval & buffer
 	 *
 	 * @var integer
-	 * @validate NumberRange(0,168)
+	 * @validate NumberRange(startRange=0,endRange=168)
 	 */
 	protected $perVarDaysInterval;
 
