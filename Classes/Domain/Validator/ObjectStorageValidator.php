@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -66,7 +66,6 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Extbase
 		$storageError = NULL;
 
 		if ($value instanceof Tx_Extbase_Persistence_ObjectStorage) {
-			$validatorResolver = new Tx_Appointments_Validation_VariableValidatorResolver();
 			$validator = $this->objectManager->get('Tx_Appointments_Validation_VariableValidatorResolver')->createValidator('Tx_Appointments_Domain_Validator_ObjectPropertiesValidator',$this->options);
 			$valid = TRUE;
 			foreach ($value as $obj) {

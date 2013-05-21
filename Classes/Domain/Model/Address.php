@@ -97,7 +97,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 * @var string
 	 */
 	protected $zip; #@SHOULD validate RegularExpression(regularExpression=/[0-9]{4}[A-Z]{2}/) but GEMHMK doesn't want to
-	#@TODO __webrichtlijnen html5 disable in TS
+
 	/**
 	 * City
 	 *

@@ -25,14 +25,15 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_
 t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_list.xml');
 t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.list', 'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_list.xml');
 #@TODO maak de New.html if condition voor timeslots in dateslots netter! (inline)
+#@SHOULD is there a native datepicker [6.1]?
 #@SHOULD add icon for sysfolder <http://buzz.typo3.org/people/steffen-kamper/article/new-icons-for-my-pages/>
 #@SHOULD add plugin preview <http://buzz.typo3.org/people/steffen-kamper/article/render-custom-preview-from-extension/>
 #@SHOULD see if utilizing errorAction (forward()?) for time-related errors is an option
-#@TODO make jslib get @ warnunload optional
 #@TODO __expand warnunload to expire the appointment on leave page NOT REALLY AN OPTION? Should create a link to last unfinished appointment instead
 #@TODO __make messages dismissable
 #@TODO __add icons to messages
 #@TODO __make * = required only visible when there are required fields
+#@TODO __add validation options to Address
 #@FIXME do Manual
 #@SHOULD look at / replace Resources/Public/Icons
 #@SHOULD unittesting?

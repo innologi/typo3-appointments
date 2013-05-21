@@ -32,7 +32,7 @@
  *
  */
 class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Controller_AppointmentsActionController {
-
+	#@TODO transform core functionality to a widget, then change the plugin(s?) so that the widget and the appointment-listAction are easily interchangable
 	/**
 	 * Indicates if user needs to be logged in to access action methods
 	 *
@@ -56,7 +56,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 * @param integer $weeksModifier Modifies the displayed weeks
 	 * @return void
 	 */
-	public function showWeeksAction($weeksModifier = 0) {
+	public function showWeeksAction($weeksModifier = 0) { #@TODO wait, why does he get an integerValidation in actionController, but do values get set to string? What's happening here?
 		$this->showGeneral('createAgendaWeeks','weeks',$weeksModifier);
 	}
 
@@ -90,7 +90,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		$blockedHours = $this->typeRepository->findBySmallestBlockedHours($allowTypes)->getBlockedHours();
 		$blockedSeconds = $blockedHours * 60 * 60;
 		$startCreateTime = strtotime($currentDate) + $blockedSeconds;
-		$this->view->assign('startCreateTime', $startCreateTime); #@TODO replace this mechanism with one that is actually aware of available timeslots, and in the very least a last day
+		$this->view->assign('startCreateTime', $startCreateTime); #@FIXME replace this mechanism with one that is actually aware of available timeslots, and in the very least a last day
 
 		$this->view->assign('agenda', $this->agenda);
 	}

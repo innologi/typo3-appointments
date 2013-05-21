@@ -123,7 +123,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @param string $dateFirst The timestamp that should be set before a type was already chosen
 	 * @param string $timeError Indicates there is a timeerror that needs to be assigned to view
-	 * @param string $showDisabledAppointment Enables showing
+	 * @param string $showDisabledAppointment Enables showing the appointment form fields
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
@@ -137,18 +137,17 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$beginTime->setTimestamp($dateFirst);
 			$types = $this->limitTypesByDate($types, $this->agenda, clone $beginTime);
 			if (!empty($types)) {
-				if ($appointment === NULL) { #@TODO this is ALWAYS NULL, currently. But what if we allow appointment in the datefirst link? Can it be done? If so, we should have an ELSE too
-					$appointment = new Tx_Appointments_Domain_Model_Appointment();
-					$appointment->setType(current($types));
-					$appointment->setBeginTime($beginTime);
-				}
+				$appointment = new Tx_Appointments_Domain_Model_Appointment();
+				$appointment->setType(current($types));
+				$appointment->setBeginTime($beginTime);
 			} else {
 				//no types available on chosen time, so no appointments either.
 				//the condition also functions as a check for a valid dateFirst
 				$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_no_types', $this->extensionName);
 				$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+				//$appointment == NULL
 			}
-		} #@TODO __webrichtlijnen
+		}
 
 		if ($appointment !== NULL) {
 			//type chosen! (or dateFirst)
@@ -229,13 +228,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * and displays a timer for the timeslot reservation.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
-	 * @param Tx_Appointments_Domain_Model_Type $type The type to change to
 	 * @dontvalidate $appointment
-	 * @dontvalidate $type
 	 * @return void
 	 */
-	public function simpleProcessNewAction(Tx_Appointments_Domain_Model_Appointment $appointment, Tx_Appointments_Domain_Model_Type $type = NULL) {
-		#@TODO reset previous type and correct func args & doc
+	public function simpleProcessNewAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->appointmentRepository->update($appointment);
 		$this->slotService->resetStorageObject($appointment->getType(),$this->agenda); //necessary to persist changes to the available timeslots
 		$arguments = array(
