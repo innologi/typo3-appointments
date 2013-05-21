@@ -118,16 +118,19 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * @return boolean
 	 */
 	public function sendAction($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
+		$returnVal = FALSE;
 		try {
 			$this->sendEmailAction($action,$appointment);
 			$this->sendCalendarAction($action,$appointment);
-			return TRUE;
-		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) {
-			#@TODO __syslog it
-			return FALSE;
+			$returnVal = TRUE;
+		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) { //a property was deleted
+			#@TODO __syslog
+		} catch (Swift_RfcComplianceException $e) { //one or more email properties does not comply with RFC (e.g. sender email)
+			#@TODO syslog
 		} catch (Exception $e) {
-			return FALSE; #@TODO separate more exceptions OR syslog simply the thrown error message
+			#@TODO syslog simply the thrown error message
 		}
+		return $returnVal;
 	}
 
 	/**
@@ -197,7 +200,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			$extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][$this->extensionName]);
 
 			#@TODO add support to set email address/name from agenda
-			if (isset($extConf['email_from'][0])) { /*&& t3lib_div::validEmail($extConf['email_from'])*/ #@TODO leave it out and catch it by exception?
+			if (isset($extConf['email_from'][0])) {
 				$from = $extConf['email_from'];
 				if (isset($extConf['email_name'][0])) { #@TODO document this in manual
 					$from = array($from => $extConf['email_name']);
