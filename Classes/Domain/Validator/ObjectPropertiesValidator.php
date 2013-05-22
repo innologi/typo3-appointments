@@ -31,22 +31,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Validator_ObjectPropertiesValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
-
-	/**
-	 * @var $objectManager Tx_Extbase_Object_ObjectManager
-	 */
-	protected $objectManager;
-
-	/**
-	 * injectObjectManager
-	 *
-	 * @param Tx_Extbase_Object_ObjectManager $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager) {
-		$this->objectManager = $objectManager;
-	}
+class Tx_Appointments_Domain_Validator_ObjectPropertiesValidator extends Tx_Appointments_Validation_Validator_PreppedAbstractValidator {
 
 	/**
 	 * Checks if an object is valid according to all its properties by passing

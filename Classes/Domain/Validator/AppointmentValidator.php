@@ -27,35 +27,36 @@
 /**
  * Appointment Domain Validator.
  *
- * A specialized validator to set domain-specific variables necessary for validation.
+ * A domain-specific validator doesn't "replace" the normal validator, but instead complements it.
+ * This validator tests whether $address needs to be validated, and if so, runs through it.
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Validator_AppointmentValidator extends Tx_Appointments_Domain_Validator_ObjectPropertiesValidator { #@TODO __technically shouldn't extend ObjectProperties
+class Tx_Appointments_Domain_Validator_AppointmentValidator extends Tx_Appointments_Validation_Validator_PreppedAbstractValidator {
 
 	/**
-	 * Sets some variable validationType properties, before passing it to parent.
+	 * Test if address needs to be validated, and if so, run through it.
 	 *
 	 * @param mixed $appointment The object instance to validate
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
-	public function isValid($appointment) { #@TODO __doc all
+	public function isValid($appointment) {
 		$valid = FALSE;
 		if ($appointment instanceof Tx_Appointments_Domain_Model_Appointment) {
 			$type = $appointment->getType();
 
-			if (is_object($type)) {
+			if ($type instanceof Tx_Appointments_Domain_Model_Type) {
 				if ($type->getAddressDisable()) {
+					//address is not to be tested
 					$valid = TRUE;
 				} else {
+					//address needs to validate, or appointment isn't valid
 					$validatorResolver = $this->objectManager->get('Tx_Extbase_Validation_ValidatorResolver');
 					$validator = $validatorResolver->createValidator('Tx_Appointments_Domain_Validator_ObjectPropertiesValidator');
-					$validatorConjunction = $this->objectManager->get('Tx_Extbase_Validation_Validator_ConjunctionValidator');
-					$validatorConjunction->addValidator($validator);
 
-					if ($validatorConjunction->isValid($appointment->getAddress())) {
+					if ($validator->isValid($appointment->getAddress())) {
 						$valid = TRUE;
 					} else {
 						$propertyError = new Tx_Extbase_Validation_PropertyError('address');
