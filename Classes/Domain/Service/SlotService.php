@@ -326,7 +326,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot>
 	 */
-	protected function alterStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
+	protected function alterStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) { #@TODO test this one
 		$typeUid = $type->getUid();
 		$dateSlotStorage = $this->dateSlots[$typeUid];
 		$firstAvailableTimestamp = $this->getFirstAvailableTime($type, $agenda)->getTimestamp();
@@ -336,7 +336,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 			$dateSlotStorage->detach($dateSlot);
 			$dateSlotStorage->next();
 		}
-		if ($dateSlot !== FALSE) { //the first available day is already present in the storage
+		if ($dateSlot !== FALSE && $dateSlotStorage->count() > 1) { //the first available day is already present in the storage and not the only one
 			$timeSlots = $dateSlot->getTimeSlots();
 			$timeSlots->rewind();
 			//remove all timeslots up to the first available one or until none are left
@@ -344,17 +344,23 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 				$timeSlots->detach($timeSlot);
 				$timeSlots->next();
 			}
+			if ($timeSlot->count() === 0) {
+				$dateSlotStorage->detach($dateSlot);
+			}
 			//everything before the first available timeslot has now been removed
 
-			//get the last timeslot in the entire date slot storage
-			$lastTimestamp = $dateSlotStorage->getLast()->getTimeSlots()->getLast()->getTimestamp();
+			//remove the last dateslot as well as it should have changed, and set dateTime to its timestamp
+			$lastDateSlot = $dateSlotStorage->getLast();
+			$dateSlotStorage->detach($lastDateSlot); //hence the count > 1: if it was the only one, we could have done a rebuild
+			$lastTimestamp = $lastDateSlot->getTimestamp();
+			$dateTime = new DateTime();
+			$dateTime->setTimestamp($lastTimestamp);
 
-			$dateTime = new DateTime($lastTimestamp);
 			//calculate the max days ahead to create dateslots for, by removing the number of days already present in the storage (excluding the last day)
-			$maxDaysAhead = ceil((($type->getMaxDaysForward() * 24 * 60 * 60) - ($lastTimestamp - $firstAvailableTimestamp)) / 60 / 60 / 24);
-			#@SHOULD bug: if the last timestamp is mid-dateslot, the function doesn't simply add new timeslots to it, but tries to create a new dateslot starting from last timestamp
+			$maxDaysAhead = ceil((($type->getMaxDaysForward() * 24 * 3600) - ($lastTimestamp - $firstAvailableTimestamp)) / 3600 / 24);
+
+			//everything missing after the last timeslot now gets added
 			$this->createDateSlots($dateSlotStorage,$dateTime,$type,$agenda,$maxDaysAhead);
-			//everything missing after the last timeslot has now been added
 		} else { //the first available day is not in the storage, so it needs a complete rebuild
 			$dateSlotStorage = $this->buildStorageObject($type, $agenda);
 		}
@@ -489,7 +495,6 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 						$endDateTime->modify('+'.($perVarDays-1).' days');
 					}
 
-
 					//if exclusive availability enabled, only include appointments of this type in the search
 					$types = $type->getExclusiveAvailability() ? array($type) : NULL;
 
@@ -499,111 +504,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 					if ($appointmentAmount < $maxAmount) {
 
 						$maxAmountPerVarDays = $type->getMaxAmountPerVarDays();
-						if ($maxAmountPerVarDays > 0 && $perVarDays > 0) {
-							$notAllowed = FALSE;
-							if (!$this->processPerVarDays($appointments, $appointmentAmount, $currentDate, clone $startDateTime, clone $endDateTime, $maxAmountPerVarDays)) {
-								$notAllowed = TRUE;
-							} else {
-								$interval = $type->getPerVarDaysInterval();
-								if ($interval > 0) {
-									$startDateTime->modify("-$interval hours");
-									$endDateTime->modify("+$interval hours");
-									$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, $interval, $excludeAppointment, $types);
-									if (!$this->processPerVarDaysInterval($appointments, $startDateTime, $endDateTime, $dateTime, $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval)) {
-										$notAllowed = TRUE;
-									}
-									$overrideStopTime = $dateTimeEnd->getTimestamp(); //might have been altered in interval method
-								}
-							}
-
-							if ($notAllowed) {
-								$dateTime->modify('+1 day')->setTime(0,0);
-								continue;
-							}
-						}
-
-
-						$timestamp = $dateTime->getTimestamp();
-						$func = 'getStopTime'.$day;
-						$stopTime = $type->$func();
-						if (!isset($stopTime[0])) { #@SHOULD remove these checks as soon as TCA regexp eval is added
-							$stopTime = '23:59';
-						}
-						$stopTimestamp = strtotime($stopTime,$timestamp);
-						if ($overrideStopTime < $stopTimestamp) {
-							$stopTimestamp = $overrideStopTime;
-						}
-
-						if ($timestamp <= $stopTimestamp) {
-							$dateSlot = $this->createDateSlot($dateTime);
-							$this->createTimeSlots($dateSlot, $type, $stopTimestamp, $appointmentsCurrent);
-							//it's possible that an amount of appointments lower than max can leave space for 0 timeSlots
-							//so we have to make sure that isn't the case before adding the dateSlot
-							if ($dateSlot->getTimeSlots()->count() > 0) {
-								$dateSlotStorage->attach($dateSlot);
-							}
-						}
-					}
-				}
-			}
-
-			//sets time to 00:00 because we're already moving to the next day and the original
-			//time was only relevant to be between start and stop time on the first candidate-day
-			$dateTime->modify('+1 day')->setTime(0,0);
-		}
-	}
-
-	/**
-	 * Creates dateslots and adds them to the $dateSlotStorage.
-	 *
-	 * @param Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot> $dateSlotStorage The dateslot storage in which to create the dateslots
-	 * @param DateTime $dateTime The DateTime representing the offset for the first available time
-	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type domain model object instance
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
-	 * @param integer $maxDaysAhead The amount of days ahead of $dateTime to get dateslots for
-	 * @param Tx_Appointments_Domain_Model_Appointment $excludeAppointment Appointment that is ignored
-	 * @return void
-	 */
-	protected function alterDateSlot(Tx_Appointments_ $dateSlotStorage, DateTime $dateTime, Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $maxDaysAhead = 365, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL) {
-		$excludeHolidays = $type->getExcludeHolidays();
-		$holidayArray = $agenda->getHolidays();
-
-		for ($counter = 0; $counter < $maxDaysAhead; $counter++) {
-
-			$currentDate = $dateTime->format('d-m-Y'); //note that 'current' from here on is equivalent to 'current in loop'
-			if (!$excludeHolidays || !in_array($currentDate,$holidayArray)) {
-				$currentDate .= ' 00:00:00'; //from here on, it's used to identify results from findBetween()
-
-				$day = $dateTime->format('l'); //full day name (english)
-				$func = 'getMaxAmount'.$day;
-				$maxAmount = $type->$func();
-				if ($maxAmount > 0) {
-					//we don't want $dateTime adjusted, so we make several instances from here on
-					$startDateTime = new DateTime($currentDate);
-					$endDateTime = clone $startDateTime;
-					$endDateTime->modify('+1 day');
-					//used for interval-logic later on, but convenient to create here due to endDateTime's current state
-					$dateTimeEnd = clone $endDateTime;
-					$overrideStopTime = $dateTimeEnd->modify('-1 minute')->getTimestamp();
-
-					//if the 'per var' settings have values, override the datetime-reach for appointments to find
-					$perVarDays = $type->getPerVarDays();
-					if ($perVarDays > 0) {
-						$startDateTime->modify('-'.($perVarDays-1).' days');
-						$endDateTime->modify('+'.($perVarDays-1).' days');
-					}
-
-
-					//if exclusive availability enabled, only include appointments of this type in the search
-					$types = $type->getExclusiveAvailability() ? array($type) : NULL;
-
-					$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, 24, $excludeAppointment, $types);
-					$appointmentsCurrent = isset($appointments[$currentDate]) ? $appointments[$currentDate] : array();
-					$appointmentAmount = count($appointmentsCurrent);
-					if ($appointmentAmount < $maxAmount) {
-
-						$maxAmountPerVarDays = $type->getMaxAmountPerVarDays();
-						if ($maxAmountPerVarDays > 0 && $perVarDays > 0) {
+						if ($maxAmountPerVarDays > 0 && $perVarDays > 0) { #@FIXME optimization: what if $appointments is empty or the amount is low? then this shouldn't be necessary
 							$notAllowed = FALSE;
 							if (!$this->processPerVarDays($appointments, $appointmentAmount, $currentDate, clone $startDateTime, clone $endDateTime, $maxAmountPerVarDays)) {
 								$notAllowed = TRUE;
