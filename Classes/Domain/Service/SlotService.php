@@ -503,17 +503,17 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 							$notAllowed = FALSE;
 							if (!$this->processPerVarDays($appointments, $appointmentAmount, $currentDate, clone $startDateTime, clone $endDateTime, $maxAmountPerVarDays)) {
 								$notAllowed = TRUE;
-							}
-
-							$interval = $type->getPerVarDaysInterval();
-							if ($interval > 0) {
-								$startDateTime->modify("-$interval hours");
-								$endDateTime->modify("+$interval hours");
-								$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, $interval, $excludeAppointment, $types);
-								if (!$this->processPerVarDaysInterval($appointments, $startDateTime, $endDateTime, $dateTime, $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval)) {
-									$notAllowed = TRUE;
+							} else {
+								$interval = $type->getPerVarDaysInterval();
+								if ($interval > 0) {
+									$startDateTime->modify("-$interval hours");
+									$endDateTime->modify("+$interval hours");
+									$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, $interval, $excludeAppointment, $types);
+									if (!$this->processPerVarDaysInterval($appointments, $startDateTime, $endDateTime, $dateTime, $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval)) {
+										$notAllowed = TRUE;
+									}
+									$overrideStopTime = $dateTimeEnd->getTimestamp(); //might have been altered in interval method
 								}
-								$overrideStopTime = $dateTimeEnd->getTimestamp(); //might have been altered in interval method
 							}
 
 							if ($notAllowed) {
@@ -607,17 +607,17 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 							$notAllowed = FALSE;
 							if (!$this->processPerVarDays($appointments, $appointmentAmount, $currentDate, clone $startDateTime, clone $endDateTime, $maxAmountPerVarDays)) {
 								$notAllowed = TRUE;
-							}
-
-							$interval = $type->getPerVarDaysInterval();
-							if ($interval > 0) {
-								$startDateTime->modify("-$interval hours");
-								$endDateTime->modify("+$interval hours");
-								$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, $interval, $excludeAppointment, $types);
-								if (!$this->processPerVarDaysInterval($appointments, $startDateTime, $endDateTime, $dateTime, $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval)) {
-									$notAllowed = TRUE;
+							} else {
+								$interval = $type->getPerVarDaysInterval();
+								if ($interval > 0) {
+									$startDateTime->modify("-$interval hours");
+									$endDateTime->modify("+$interval hours");
+									$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, $interval, $excludeAppointment, $types);
+									if (!$this->processPerVarDaysInterval($appointments, $startDateTime, $endDateTime, $dateTime, $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval)) {
+										$notAllowed = TRUE;
+									}
+									$overrideStopTime = $dateTimeEnd->getTimestamp(); //might have been altered in interval method
 								}
-								$overrideStopTime = $dateTimeEnd->getTimestamp(); //might have been altered in interval method
 							}
 
 							if ($notAllowed) {
