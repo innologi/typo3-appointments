@@ -605,10 +605,10 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		//counts amount of appointments 'per var days' backward and forward, including current day
 		$f = $startDateTime->format('d-m-Y H:i:s');
 		$e = $currentDate;
-		foreach ($stats as &$amount) {
+		foreach ($stats as $k=>$amount) { //replaced the reference because of the PHP bug documented in processPerVarDaysInterval()
 			while ($f !== $e) {
 				if (isset($appointments[$f])) {
-					$amount += count($appointments[$f]);
+					$stats[$k] += count($appointments[$f]);
 				}
 				$f = $startDateTime->modify('+1 day')->format('d-m-Y H:i:s');
 			}
@@ -715,7 +715,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		} else { //if 'current' has 1 or 0 free interval blocks..
 			$totalAppointmentCount = 0;
 			//check if placing any more appointments within 'current' would still respect the configured buffer (interval)
-			foreach ($stats as $stat) { //[BUG]: PHP [5.3.8] bug triggered here, if earlier &$stat instead of $stats[$k] #@FIXME search the entire ext for "as &$"
+			foreach ($stats as $stat) { //[BUG]: PHP [5.3.8] bug triggered here, if earlier &$stat instead of $stats[$k]
 				$totalAppointmentCount += $stat['appointmentCount'];
 			}
 			if ($totalAppointmentCount >= $maxAmountPerVarDays) {
