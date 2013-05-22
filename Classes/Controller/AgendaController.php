@@ -70,14 +70,16 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 */
 	protected function showGeneral($creationFunction, $containerName, $modifier = 0) { #@TODO can this be done in initialize instead?
 		$allowTypes = $this->getTypes();
-		#@TODO enable/disable whether superuser type APPOINTMENTS should be SHOWN to non-superusers? or even better: what about picking showTypes separately?
-		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
-		$showTypes = $superUser ? $allowTypes : (
-				empty($this->typeUidArray) ? $this->typeRepository->findAll(TRUE) : $this->typeRepository->findIn($this->typeUidArray,TRUE)
-		);
 
+		#@TODO enable/disable whether superuser type APPOINTMENTS should be SHOWN to non-superusers? or even better: what about picking showTypes separately?
 		$allowTypes = $allowTypes->toArray(); //we need them to be array because their args in repository function isn't a queryResult @ all uses
-		$showTypes = $showTypes->toArray(); #@FIXME is this even alright when showTypes == allowTypes? and why would we even? I can do it once in those cases
+		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
+		if ($superUser) {
+			$showTypes = $allowTypes;
+		} else {
+			$showTypes = empty($this->typeUidArray) ? $this->typeRepository->findAll(TRUE) : $this->typeRepository->findIn($this->typeUidArray,TRUE);
+			$showTypes = $showTypes->toArray();
+		}
 
 		$modifier = intval($modifier);
 		$container = $this->$creationFunction($modifier,$this->agenda,$showTypes,$allowTypes);
