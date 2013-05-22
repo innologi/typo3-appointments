@@ -15,6 +15,7 @@
 			<label index="tx_appointments_constants_storagePid">Default storage PID</label>
 			<label index="tx_appointments_constants_agendaUid">Agenda UID</label>
 			<label index="tx_appointments_constants_appointmentTypeList">Appointment Types: Comma separated list of UIDs</label>
+			<label index="tx_appointments_constants_allowCreate">Agenda New Appointment Buttons: If enabled, adds new appointment buttons to the agenda view</label>
 			<label index="tx_appointments_constants_agendaBack">Agenda Navigation Back: The number of navigation units to allow backwards from the initial display</label>
 			<label index="tx_appointments_constants_agendaForward">Agenda Navigation Forward: The number of navigation units to allow forward from the initial display</label>
 			<label index="tx_appointments_constants_agendaWeeksBeforeCurrent">Agenda Weeks Before Current: The number of weeks to display before the current</label>
@@ -45,6 +46,7 @@
 			<label index="tx_appointments_flexform_div_types">__Types:__</label>
 			<label index="tx_appointments_flexform_div_userGroups">__User Groups:__</label>
 			<label index="tx_appointments_flexform_suGroup">Superuser group</label>
+			<label index="tx_appointments_flexform_allowCreate">New Appointment Buttons</label>
 			<label index="tx_appointments_flexform_agendaNavOverride">Set Agenda Navigation from:</label>
 			<label index="tx_appointments_flexform_agendaNavOverride.item1">TypoScript</label>
 			<label index="tx_appointments_flexform_agendaNavOverride.item2">Flexform</label>
@@ -63,6 +65,7 @@
 			<label index="tx_appointments_constants_storagePid">Standaard Opslag PID</label>
 			<label index="tx_appointments_constants_agendaUid">Agenda UID</label>
 			<label index="tx_appointments_constants_appointmentTypeList">Afspraak Typen: Komma-gescheiden lijst van UID&apos;s</label>
+			<label index="tx_appointments_constants_allowCreate">Agenda Nieuwe Afspraak Knoppen: Voegt nieuwe afspraak knoppen toe aan de agenda weergave</label>
 			<label index="tx_appointments_constants_agendaBack">Agenda Navigatie Terug: De hoeveelheid navigatie eenheden terug waarnaar genavigeerd kan worden</label>
 			<label index="tx_appointments_constants_agendaForward">Agenda Navigatie Vooruit: De hoeveelheid navigatie eenheden vooruit waarnaar genavigeerd kan worden</label>
 			<label index="tx_appointments_constants_agendaWeeksBeforeCurrent">Agenda Weken Voor Huidig: Het aantal weken om te tonen voor de huidige</label>
@@ -92,6 +95,7 @@
 			<label index="tx_appointments_flexform_div_types">__Typen:__</label>
 			<label index="tx_appointments_flexform_div_userGroups">__Gebruikersgroepen:__</label>
 			<label index="tx_appointments_flexform_suGroup">Superuser groep</label>
+			<label index="tx_appointments_flexform_allowCreate">Nieuwe Afspraak Knoppen</label>
 			<label index="tx_appointments_flexform_agendaNavOverride">Lees Agenda Navigatie uit:</label>
 			<label index="tx_appointments_flexform_agendaNavOverride.item1">TypoScript</label>
 			<label index="tx_appointments_flexform_agendaNavOverride.item2">Dit Formulier</label>

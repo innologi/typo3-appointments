@@ -176,6 +176,31 @@
 				</config>
 			</TCEforms>
 		</settings.appointmentTypeList>
+		<settings.allowCreate>
+			<TCEforms>
+				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_allowCreate</label>
+				<config>
+					<type>select</type>
+					<items type="array">
+						<numIndex index="0" type="array">
+							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_tsDefault</numIndex>
+							<numIndex index="1">--TYPOSCRIPT--</numIndex>
+						</numIndex>
+						<numIndex index="1" type="array">
+							<numIndex index="0">LLL:EXT:lang/locallang_common.xml:yes</numIndex>
+							<numIndex index="1">1</numIndex>
+						</numIndex>
+						<numIndex index="2" type="array">
+							<numIndex index="0">LLL:EXT:lang/locallang_common.xml:no</numIndex>
+							<numIndex index="1">0</numIndex>
+						</numIndex>
+					</items>
+					<size>1</size>
+					<maxitems>1</maxitems>
+					<multiple>0</multiple>
+				</config>
+			</TCEforms>
+		</settings.allowCreate>
 		<settings.suGroup>
 			<TCEforms>
 				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_suGroup</label>

@@ -187,11 +187,12 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 
 		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
 		$allowCreateTypes = array();
-		foreach ($allowTypes as $type) { #@TODO make this configurable
-			$dateSlotStorage = $this->slotService->getDateSlots($type, $this->agenda, $freeSlotInMinutes);
-			foreach ($dateSlotStorage as $dateSlot) {
-				$dateSlot instanceof Tx_Appointments_Domain_Model_DateSlot;
-				$allowCreateTypes[] = strftime('%d-%m-%Y',$dateSlot->getTimestamp());
+		if ($this->settings['allowCreate']) { //is this peformance hog enabled?
+			foreach ($allowTypes as $type) {
+				$dateSlotStorage = $this->slotService->getDateSlots($type, $this->agenda, $freeSlotInMinutes);
+				foreach ($dateSlotStorage as $dateSlot) {
+					$allowCreateTypes[] = strftime('%d-%m-%Y',$dateSlot->getTimestamp());
+				}
 			}
 		}
 
@@ -213,7 +214,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 				$date->setDateString($fulldate);
 				$date->setTimestamp($start->getTimestamp());
 				$date->setIsHoliday(in_array($fulldate,$holidays));
-				$date->setAllowCreate(in_array($fulldate,$allowCreateTypes));
+				$date->setAllowCreate(in_array($fulldate,$allowCreateTypes)); #@TODO replace the in_arrays with isset on array_keys results
 				$fulldate .= ' 00:00:00';
 				if (isset($appointments[$fulldate])) {
 					foreach ($appointments[$fulldate] as $a) {
