@@ -58,7 +58,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function listAction() {
 		//turns out getting the user id is not enough: not all fe_users are of the correct record_type
-		$appointments = $this->appointmentRepository->findByAgendaAndFeUser($this->agenda,$this->feUser,new DateTime()); #@TODO missing math a argument in template if there are appointments but their types are hidden/deleted
+		$types = $this->getTypes(); //we need to include types in case a type was hidden or deleted, or we get all sorts of errors
+		$appointments = $this->appointmentRepository->findPersonalList($this->agenda,$types,$this->feUser,new DateTime());
 		$this->view->assign('appointments', $appointments);
 
 		//users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet

@@ -48,20 +48,22 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	}
 
 	/**
-	 * Returns all objects of this repository belonging to Agenda and FrontendUser, and optionally
+	 * Returns all objects of this repository belonging to Agenda, Types and FrontendUser, and optionally
 	 * from, between or up to a start and/or end time. Only finished appointments.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda which the appointments belong to
+	 * @param Tx_Extbase_Persistence_QueryResultInterface $types The types the appointments belong to
 	 * @param Tx_Appointments_Domain_Model_FrontendUser $feUser The user which the appointments belong to
 	 * @param DateTime $start Optional start time
 	 * @param DateTime $end Optional end time
 	 * @param boolean $descending If TRUE: sorts by begintime descending, if FALSE: ascending
 	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
-	public function findByAgendaAndFeUser(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Appointments_Domain_Model_FrontendUser $feUser, DateTime $start = NULL, DateTime $end = NULL, $descending = FALSE) {
+	public function findPersonalList(Tx_Appointments_Domain_Model_Agenda $agenda, Tx_Extbase_Persistence_QueryResultInterface $types, Tx_Appointments_Domain_Model_FrontendUser $feUser, DateTime $start = NULL, DateTime $end = NULL, $descending = FALSE) {
 		$query = $this->createQuery();
 		$constraints = array(
 				$query->equals('agenda', $agenda),
+				$query->in('type',$types),
 				$query->equals('feUser', $feUser),
 				$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::FINISHED)
 		);
