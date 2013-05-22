@@ -1,55 +1,61 @@
+## custom subcategories
+# customsubcategory=a_extconf=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_subcategory_extconf
+# customsubcategory=b_javascript=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_subcategory_javascript
+# customsubcategory=c_plugins=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_subcategory_plugins
+# customsubcategory=d_agenda=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_subcategory_agenda
+
 plugin.tx_appointments {
 	view {
-		# cat=plugin.tx_appointments/file; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_templateRootPath
+		# cat=plugin.tx_appointments/a_extconf/010; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_templateRootPath
 		templateRootPath = EXT:appointments/Resources/Private/Templates/
-		# cat=plugin.tx_appointments/file; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_partialRootPath
+		# cat=plugin.tx_appointments/a_extconf/020; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_partialRootPath
 		partialRootPath = EXT:appointments/Resources/Private/Partials/
-		# cat=plugin.tx_appointments/file; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_layoutRootPath
+		# cat=plugin.tx_appointments/a_extconf/030; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_layoutRootPath
 		layoutRootPath = EXT:appointments/Resources/Private/Layouts/
 	}
 	persistence {
-		# cat=plugin.tx_appointments//a; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_storagePid
+		# cat=plugin.tx_appointments/a_extconf/030; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_storagePid
 		storagePid = 
 	}
 	settings {
-		# cat=plugin.tx_appointments//b; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaUid
-		agendaUid = 
-		# cat=plugin.tx_appointments//c; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_appointmentTypeList
-		appointmentTypeList =
-		# cat=plugin.tx_appointments//d; type=boolean; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_allowCreate
-		allowCreate = 0
-		# cat=plugin.tx_appointments//e; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaBack
-		agendaBack = 0
-		# cat=plugin.tx_appointments//f; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaForward
-		agendaForward = 0
-		# cat=plugin.tx_appointments//g; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaWeeksBeforeCurrent
-		agendaWeeksBeforeCurrent = 0
-		# cat=plugin.tx_appointments//h; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaWeeksAfterCurrent
-		agendaWeeksAfterCurrent = 0
-		# cat=plugin.tx_appointments//i; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_freeSlotInMinutes
+		# cat=plugin.tx_appointments/a_extconf/040; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_freeSlotInMinutes
 		freeSlotInMinutes = 15
-		# cat=plugin.tx_appointments//j; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_suGroup
+		# cat=plugin.tx_appointments/c_plugins/010; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaUid
+		agendaUid = 
+		# cat=plugin.tx_appointments/c_plugins/030; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_suGroup
 		suGroup = 
+		# cat=plugin.tx_appointments/c_plugins/020; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_appointmentTypeList
+		appointmentTypeList =
+		# cat=plugin.tx_appointments/d_agenda/010; type=boolean; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_allowCreate
+		allowCreate = 0
+		# cat=plugin.tx_appointments/d_agenda/020; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaBack
+		agendaBack = 0
+		# cat=plugin.tx_appointments/d_agenda/030; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaForward
+		agendaForward = 0
+		# cat=plugin.tx_appointments/d_agenda/040; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaWeeksBeforeCurrent
+		agendaWeeksBeforeCurrent = 0
+		# cat=plugin.tx_appointments/d_agenda/050; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaWeeksAfterCurrent
+		agendaWeeksAfterCurrent = 0
 	}
 	js {
-		# cat=plugin.tx_appointments/javascript/a; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_includeJquery 
+		# cat=plugin.tx_appointments/b_javascript/010; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_includeJquery 
 		includeJquery = 1
-		# cat=plugin.tx_appointments/javascript/b; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_includeJqueryUI
+		# cat=plugin.tx_appointments/b_javascript/020; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_includeJqueryUI
 		includeJqueryUI = 1
-		# cat=plugin.tx_appointments/javascript/c; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_includeJS
+		# cat=plugin.tx_appointments/b_javascript/030; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_includeJS
 		includeJS = 1
-		# cat=plugin.tx_appointments/javascript/d; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_toFooter
+		# cat=plugin.tx_appointments/b_javascript/040; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_toFooter
 		toFooter = 1
-		# cat=plugin.tx_appointments/javascript/e; type=string; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_jQueryCDN
+		# cat=plugin.tx_appointments/b_javascript/011; type=string; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_jQueryCDN
 		jQueryCDN = http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
 		
 		uiLibFile = EXT:appointments/Resources/Public/Scripts/jquery-ui-1.10.2.custom.min.js
 		uiCssFile = EXT:appointments/Resources/Public/Styles/smoothness/jquery-ui-1.10.2.custom.css
 		libFile = EXT:appointments/Resources/Private/Scripts/jslib.js
 		
-		# cat=plugin.tx_appointments/javascript/f; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_warnOnLeave
+		# cat=plugin.tx_appointments/b_javascript/050; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_warnOnLeave
 		warnOnLeave = 1
-		# cat=plugin.tx_appointments/javascript/g; type=options[none,header,meta-tag]; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod
+		# cat=plugin.tx_appointments/b_javascript/051; type=options[none,header,meta-tag]; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod
 		warnOnLeaveRespectRefreshMethod = none 
 	}
 }

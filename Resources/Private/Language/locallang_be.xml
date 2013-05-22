@@ -9,6 +9,11 @@
 			<label index="tx_appointments_plugin_agenda_title">Appointment Scheduler: Show Agenda</label>
 			<label index="tx_appointments_plugin_list_title">Appointment Scheduler: Appointment List</label>
 			
+			<label index="tx_appointments_subcategory_extconf">Extension Configuration</label>
+			<label index="tx_appointments_subcategory_javascript">Javascript</label>
+			<label index="tx_appointments_subcategory_plugins">All Plugins (Flexform)</label>
+			<label index="tx_appointments_subcategory_agenda">Agenda Plugin (Flexform)</label>
+			
 			<label index="tx_appointments_constants_templateRootPath">Path to template root (FE)</label>
 			<label index="tx_appointments_constants_partialRootPath">Path to template partials (FE)</label>
 			<label index="tx_appointments_constants_layoutRootPath">Path to template layouts (FE)</label>
@@ -58,6 +63,11 @@
 		<languageKey index="nl" type="array">
 			<label index="tx_appointments_plugin_agenda_title">Afspraken Planner: Toon Agenda</label>
 			<label index="tx_appointments_plugin_list_title">Afspraken Planner: Afspraken Lijst</label>
+			
+			<label index="tx_appointments_subcategory_extconf">Extensie Configuratie</label>
+			<label index="tx_appointments_subcategory_javascript">Javascript</label>
+			<label index="tx_appointments_subcategory_plugins">Plugins Algemeen (Flexform)</label>
+			<label index="tx_appointments_subcategory_agenda">Agenda Plugin (Flexform)</label>
 			
 			<label index="tx_appointments_constants_templateRootPath">Pad naar template root (FE)</label>
 			<label index="tx_appointments_constants_partialRootPath">Pad naar template partials (FE)</label>
