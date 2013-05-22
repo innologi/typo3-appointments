@@ -33,7 +33,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_DateSlot extends Tx_Appointments_Domain_Model_TimeSlot {
+class Tx_Appointments_Domain_Model_DateSlot extends Tx_Appointments_Domain_Model_AbstractSlot {
 
 	/**
 	 * Time Slots
