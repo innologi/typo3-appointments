@@ -80,18 +80,12 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		$showTypes = $showTypes->toArray();
 
 		$modifier = intval($modifier);
-		$container = $this->$creationFunction($modifier,$this->agenda,$showTypes);
+		$container = $this->$creationFunction($modifier,$this->agenda,$showTypes,$allowTypes);
 		$this->view->assign('modifier', $modifier);
 		$this->view->assign($containerName, $container);
 
 		$currentDate = strftime('%d-%m-%Y');
 		$this->view->assign('currentDate', $currentDate);
-
-		$blockedHours = $this->typeRepository->findBySmallestBlockedHours($allowTypes)->getBlockedHours();
-		$blockedSeconds = $blockedHours * 60 * 60;
-		$startCreateTime = strtotime($currentDate) + $blockedSeconds;
-		$this->view->assign('startCreateTime', $startCreateTime); #@FIXME replace this mechanism with one that is actually aware of available timeslots, and in the very least a last day
-
 		$this->view->assign('agenda', $this->agenda);
 	}
 
@@ -100,10 +94,11 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 *
 	 * @param integer $monthModifier Relative modifier of month to get
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to display appointments from
-	 * @param array $types Types to show on the agenda
+	 * @param array $showTypes Types to show on the agenda
+	 * @param array $allowTypes Types to allow on the agenda
 	 * @return Tx_Appointments_Domain_Model_Agenda_Month
 	 */
-	protected function createAgendaMonth($monthModifier, Tx_Appointments_Domain_Model_Agenda $agenda, array $types) {
+	protected function createAgendaMonth($monthModifier, Tx_Appointments_Domain_Model_Agenda $agenda, array $showTypes, array $allowTypes) {
 		$month = new Tx_Appointments_Domain_Model_Agenda_Month();
 
 		$start = new DateTime(); //will represent the first minute of the month
@@ -123,7 +118,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		//Number of days counting backwards until monday
 		$month->setWeekdaysBeforeFirst(intval($start->format('N')) - 1); // [1 (Monday) - 7 (Sunday)]
 
-		$this->setGeneralContainerProperties($month,$monthModifier,1,'month',$agenda,$types,$start);
+		$this->setGeneralContainerProperties($month,$monthModifier,1,'month',$agenda,$showTypes,$allowTypes,$start);
 
 		//Number of days counting forward until sunday
 		$month->setWeekdaysAfterLast(7 - intval($start->modify('-1 day')->format('N')));
@@ -136,10 +131,11 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 *
 	 * @param integer $weeksModifier Relative modifier of weeks to get
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to display appointments from
-	 * @param array $types Types to show on the agenda
+	 * @param array $showTypes Types to show on the agenda
+	 * @param array $allowTypes Types to allow on the agenda
 	 * @return Tx_Appointments_Domain_Model_Agenda_Weeks
 	 */
-	protected function createAgendaWeeks($weeksModifier, Tx_Appointments_Domain_Model_Agenda $agenda, array $types) {
+	protected function createAgendaWeeks($weeksModifier, Tx_Appointments_Domain_Model_Agenda $agenda, array $showTypes, array $allowTypes) {
 		$weeks = new Tx_Appointments_Domain_Model_Agenda_Weeks();
 		$weeksBefore = intval($this->settings['agendaWeeksBeforeCurrent']);
 		$weeksAfter = intval($this->settings['agendaWeeksAfterCurrent']);
@@ -158,7 +154,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 			$start->modify("$operator$totalWeeks weeks");
 		}
 
-		$this->setGeneralContainerProperties($weeks,$weeksModifier,$modWeeks,'weeks',$agenda,$types,$start);
+		$this->setGeneralContainerProperties($weeks,$weeksModifier,$modWeeks,'weeks',$agenda,$showTypes,$allowTypes,$start);
 
 		return $weeks;
 	}
@@ -171,11 +167,12 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 * @param integer $modEndModifier Modifier value for container endtime
 	 * @param string  $modEndUnit Modifier unit for container endtime
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to display appointments from
-	 * @param array $types Types to show on the agenda
+	 * @param array $showTypes Types to show on the agenda
+	 * @param array $allowTypes Types to allow on the agenda
 	 * @param DateTime $start container starttime
 	 * @return void
 	 */
-	protected function setGeneralContainerProperties(Tx_Appointments_Domain_Model_Agenda_AbstractContainer $container, $modifier, $modEndModifier, $modEndUnit, Tx_Appointments_Domain_Model_Agenda $agenda, array $types, DateTime $start) {
+	protected function setGeneralContainerProperties(Tx_Appointments_Domain_Model_Agenda_AbstractContainer $container, $modifier, $modEndModifier, $modEndUnit, Tx_Appointments_Domain_Model_Agenda $agenda, array $showTypes, array $allowTypes, DateTime $start) {
 		//set standard container properties
 		$container->setMaxBack(-intval($this->settings['agendaBack']));
 		$container->setBackModifier($modifier-1);
@@ -186,10 +183,21 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		$end = new DateTime($start->format('Y-m-d\TH:i:s'),$start->getTimezone());
 		$end->modify("+$modEndModifier $modEndUnit");
 
+		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
+		$allowCreateTypes = array();
+		foreach ($allowTypes as $type) { #@TODO make this configurable
+			$dateSlotStorage = $this->slotService->getDateSlots($type, $this->agenda, $freeSlotInMinutes);
+			foreach ($dateSlotStorage as $dateSlot) {
+				$dateSlot instanceof Tx_Appointments_Domain_Model_DateSlot;
+				$allowCreateTypes[] = strftime('%d-%m-%Y',$dateSlot->getTimestamp());
+			}
+		}
+
+		#@TODO can we do some caching here?
 		//creates date objects in week storages for the container, because each day and week contain different properties
 		$endTime = $end->getTimestamp();
 		$holidays = $agenda->getHolidays();
-		$appointments = $this->appointmentRepository->findBetween($agenda, $start, $end, 0, 24, NULL, $types);
+		$appointments = $this->appointmentRepository->findBetween($agenda, $start, $end, 0, 24, NULL, $showTypes);
 		while ($start->getTimestamp() < $endTime) {
 			$week = new Tx_Extbase_Persistence_ObjectStorage();
 			for ($i = intval($start->format('N')); $i <= 7 && $start->getTimestamp() < $endTime; $i++) {
@@ -201,6 +209,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 				$date->setDateString($fulldate);
 				$date->setTimestamp($start->getTimestamp());
 				$date->setIsHoliday(in_array($fulldate,$holidays));
+				$date->setAllowCreate(in_array($fulldate,$allowCreateTypes));
 				$fulldate .= ' 00:00:00';
 				if (isset($appointments[$fulldate])) {
 					foreach ($appointments[$fulldate] as $a) {

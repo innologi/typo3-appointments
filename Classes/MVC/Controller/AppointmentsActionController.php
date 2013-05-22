@@ -70,6 +70,11 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 	protected $userService;
 
 	/**
+	 * @var Tx_Appointments_Domain_Service_SlotService
+	 */
+	protected $slotService;
+
+	/**
 	 * Logged in frontend user
 	 *
 	 * @var Tx_Appointments_Domain_Model_FrontendUser
@@ -130,6 +135,17 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 	 */
 	public function injectUserService(Tx_Appointments_Service_UserService $userService) {
 		$this->userService = $userService;
+	}
+
+
+	/**
+	 * Injects the Slot Service
+	 *
+	 * @param Tx_Appointments_Domain_Service_SlotService $slotService
+	 * @return void
+	 */
+	public function injectSlotService(Tx_Appointments_Domain_Service_SlotService $slotService) {
+		$this->slotService = $slotService;
 	}
 
 	/**
@@ -217,7 +233,7 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 
 		try {
 			parent::mapRequestArgumentsToControllerArguments();
-		} catch (Tx_Extbase_MVC_Exception_InvalidArgumentValue $e) {
+		} catch (Tx_Extbase_MVC_Exception_InvalidArgumentValue $e) { #@TODO I should syslog these as well
 			$objectDeleted = TRUE;
 		} catch (Tx_Extbase_Property_Exception_TargetNotFound $e) {
 			$objectDeleted = TRUE;

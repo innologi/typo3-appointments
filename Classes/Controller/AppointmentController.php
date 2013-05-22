@@ -34,25 +34,9 @@
 class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_MVC_Controller_AppointmentsActionController {
 
 	/**
-	 * @var Tx_Appointments_Domain_Service_SlotService
-	 */
-	protected $slotService;
-
-	/**
 	 * @var Tx_Appointments_Service_EmailService
 	 */
 	protected $emailService;
-
-
-	/**
-	 * Injects the Slot Service
-	 *
-	 * @param Tx_Appointments_Domain_Service_SlotService $slotService
-	 * @return void
-	 */
-	public function injectSlotService(Tx_Appointments_Domain_Service_SlotService $slotService) {
-		$this->slotService = $slotService;
-	}
 
 	/**
 	 * Injects the Email Service

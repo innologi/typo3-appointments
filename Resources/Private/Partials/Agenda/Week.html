@@ -1,7 +1,7 @@
 <f:for each="{week}" as="date">
 	<td class="agendaDay{f:if(condition: date.isHoliday, then: ' holiday')}{f:if(condition: '{date.dateString} == {currentDate}', then: ' current')}">
 		<div class="dayBar">
-			<f:if condition="{date.timestamp} >= {startCreateTime}">
+			<f:if condition="{date.allowCreate}">
 				<f:then>
 					<f:link.action controller="Appointment" arguments="{dateFirst : date.timestamp}" action="new1" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[timeError]'}" class="button_new_datefirst">
 						{date.dayNumber} {date.monthShort}

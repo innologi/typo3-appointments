@@ -68,7 +68,14 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var boolean
 	 */
-	protected $isHoliday;
+	protected $isHoliday = FALSE;
+
+	/**
+	 * Allows creation of new appointments
+	 *
+	 * @var boolean
+	 */
+	protected $allowCreate = FALSE;
 
 	/**
 	 * Appointments
@@ -194,6 +201,25 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_A
 	 */
 	public function setIsHoliday($isHoliday) {
 		$this->isHoliday = $isHoliday;
+	}
+
+	/**
+	 * Returns allowCreate
+	 *
+	 * @return boolean $allowCreate
+	 */
+	public function getAllowCreate() {
+		return $this->allowCreate;
+	}
+
+	/**
+	 * Sets allowCreate
+	 *
+	 * @param boolean $allowCreate
+	 * @return void
+	 */
+	public function setAllowCreate($allowCreate) {
+		$this->allowCreate = $allowCreate;
 	}
 
 	/**

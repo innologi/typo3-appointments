@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -82,7 +82,7 @@ class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Extbase_Persis
 	 * @param array $types Contains type uid's to filter by
 	 * @return Tx_Appointments_Domain_Model_Type The type
 	 */
-	public function findBySmallestBlockedHours(array $types) {
+	public function findBySmallestBlockedHours(array $types) { #@SHOULD no longer used, clean up?
 		$query = $this->createQuery();
 		$result = $query->matching(
 				$query->in('uid', $types)
