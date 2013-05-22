@@ -68,16 +68,16 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 * @param integer $modifier Modifies the displayed units of time
 	 * @return void
 	 */
-	protected function showGeneral($creationFunction, $containerName, $modifier = 0) {
+	protected function showGeneral($creationFunction, $containerName, $modifier = 0) { #@TODO can this be done in initialize instead?
 		$allowTypes = $this->getTypes();
 		#@TODO enable/disable whether superuser type APPOINTMENTS should be SHOWN to non-superusers? or even better: what about picking showTypes separately?
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 		$showTypes = $superUser ? $allowTypes : (
-				empty($typeArray) ? $this->typeRepository->findAll(TRUE) : $this->typeRepository->findIn($typeArray,TRUE)
+				empty($typeArray) ? $this->typeRepository->findAll(TRUE) : $this->typeRepository->findIn($typeArray,TRUE) #@FIXME BUG! BUG! BUG! typeArray is altijd NULL hier!
 		);
 
-		$allowTypes = $allowTypes->toArray(); #@SHOULD why arrays?
-		$showTypes = $showTypes->toArray();
+		$allowTypes = $allowTypes->toArray(); //we need them to be array because their args in repository function isn't a queryResult @ all uses
+		$showTypes = $showTypes->toArray(); #@FIXME is this even alright when showTypes == allowTypes? and why would we even? I can do it once in those cases
 
 		$modifier = intval($modifier);
 		$container = $this->$creationFunction($modifier,$this->agenda,$showTypes,$allowTypes);
@@ -197,7 +197,9 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		//creates date objects in week storages for the container, because each day and week contain different properties
 		$endTime = $end->getTimestamp();
 		$holidays = $agenda->getHolidays();
-		$appointments = $this->appointmentRepository->findBetween($agenda, $start, $end, 0, 24, NULL, $showTypes);
+		$appointments = $this->appointmentRepository->rearrangeAppointmentArray(
+				$this->appointmentRepository->findBetween($agenda, $start, $end, $showTypes), 24
+		);
 		while ($start->getTimestamp() < $endTime) {
 			$week = new Tx_Extbase_Persistence_ObjectStorage();
 			for ($i = intval($start->format('N')); $i <= 7 && $start->getTimestamp() < $endTime; $i++) {

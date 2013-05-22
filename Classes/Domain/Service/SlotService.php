@@ -498,23 +498,31 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 					//if exclusive availability enabled, only include appointments of this type in the search
 					$types = $type->getExclusiveAvailability() ? array($type) : NULL;
 
-					$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, 24, $excludeAppointment, $types);
+					$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, $types, $excludeAppointment, 1);
+					$appointmentsTotalAmount = count($appointments);
+					$appointments = $this->appointmentRepository->rearrangeAppointmentArray($appointments, 24);
 					$appointmentsCurrent = isset($appointments[$currentDate]) ? $appointments[$currentDate] : array();
-					$appointmentAmount = count($appointmentsCurrent);
-					if ($appointmentAmount < $maxAmount) {
+					$appointmentsCurrentAmount = count($appointmentsCurrent);
+					if ($appointmentsCurrentAmount < $maxAmount) {
 
 						$maxAmountPerVarDays = $type->getMaxAmountPerVarDays();
-						if ($maxAmountPerVarDays > 0 && $perVarDays > 0) { #@FIXME optimization: what if $appointments is empty or the amount is low? then this shouldn't be necessary
+						if ($maxAmountPerVarDays > 0 && $perVarDays > 0 && $appointmentsTotalAmount > 0) { //if totalAmount is 0, the entire perVarDays mechanism is unnecessary
 							$notAllowed = FALSE;
-							if (!$this->processPerVarDays($appointments, $appointmentAmount, $currentDate, clone $startDateTime, clone $endDateTime, $maxAmountPerVarDays)) {
+							if ($appointmentsTotalAmount >= $maxAmountPerVarDays //the totalAmount needs to be at least as much as the maxAmount for perVarDays to have any effect
+									&& !$this->processPerVarDays($appointments, $appointmentsCurrentAmount, $currentDate, clone $startDateTime, clone $endDateTime, $maxAmountPerVarDays)
+							) {
 								$notAllowed = TRUE;
 							} else {
 								$interval = $type->getPerVarDaysInterval();
 								if ($interval > 0) {
 									$startDateTime->modify("-$interval hours");
 									$endDateTime->modify("+$interval hours");
-									$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, 1, $interval, $excludeAppointment, $types);
-									if (!$this->processPerVarDaysInterval($appointments, $startDateTime, $endDateTime, $dateTime, $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval)) {
+									$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, $types, $excludeAppointment, 1);
+									$appointmentsTotalAmount = count($appointments);
+									$appointments = $this->appointmentRepository->rearrangeAppointmentArray($appointments, $interval);
+									if ($appointmentsTotalAmount >= $maxAmountPerVarDays //the totalAmount needs to be at least as much as the maxAmount for perVarDaysInterval to have any effect
+											&& !$this->processPerVarDaysInterval($appointments, $startDateTime, $endDateTime, $dateTime, $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval)
+									) {
 										$notAllowed = TRUE;
 									}
 									$overrideStopTime = $dateTimeEnd->getTimestamp(); //might have been altered in interval method
@@ -626,7 +634,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * Note that a return value of TRUE does not guarantee availability, as it does not
 	 * check if $dateTimeEnd < $dateTime. (for now)
 	 *
-	 * Note that his function suffered from a PHP bug. See the 2 [BUG] inline comments below.
+	 * Note that this function suffered from a PHP bug. See the 4 [BUG] inline comments below.
 	 *
 	 * @param array $appointments Appointments within 'per var days' range, including the additional buffer
 	 * @param DateTime $startDateTime Represents starting point of the 'before' buffer
@@ -707,7 +715,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		} else { //if 'current' has 1 or 0 free interval blocks..
 			$totalAppointmentCount = 0;
 			//check if placing any more appointments within 'current' would still respect the configured buffer (interval)
-			foreach ($stats as $stat) { //[BUG]: PHP [5.3.8] bug triggered here, if earlier &$stat instead of $stats[$k]
+			foreach ($stats as $stat) { //[BUG]: PHP [5.3.8] bug triggered here, if earlier &$stat instead of $stats[$k] #@FIXME search the entire ext for "as &$"
 				$totalAppointmentCount += $stat['appointmentCount'];
 			}
 			if ($totalAppointmentCount >= $maxAmountPerVarDays) {
@@ -923,7 +931,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	public function resetStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		$typeUid = $type->getUid();
 
-		#@TODO it doesn't reset other types, although they are affected unless they have exclusiveAvailability on.. maybe the alterStorageObject wasn't such a bad idea, using it to clean a number of days AROUND beginTime, of every Type except exclusive availability types? That would seriously cut back the overhead if maxDaysForward is huge and/or there are tons of types
+		#@FIXME it doesn't reset other types, although they are affected unless they have exclusiveAvailability on.. maybe the alterStorageObject wasn't such a bad idea, using it to clean a number of days AROUND beginTime, of every Type except exclusive availability types? That would seriously cut back the overhead if maxDaysForward is huge and/or there are tons of types
 		$key = $this->getCacheKey($type, $agenda);
 
 		$id = 'dateSlotStorage';

@@ -121,13 +121,12 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda which the appointments belong to
 	 * @param DateTime $start The starting time
 	 * @param DateTime $end The ending time
-	 * @param boolean $includeUnfinished On true, includes unfinished appointments
-	 * @param integer $rearrangePerHours On true, rebuilds the array through rearrangeAppointmentArray()
-	 * @param Tx_Appointments_Domain_Model_Appointment $excludeAppointment Appointment that is ignored in retrieving appointments
 	 * @param array $types Types to limit appointments by, if not NULL
+	 * @param Tx_Appointments_Domain_Model_Appointment $excludeAppointment Appointment that is ignored in retrieving appointments
+	 * @param boolean $includeUnfinished On true, includes unfinished appointments
 	 * @return array An array of objects, empty if no objects found
 	 */
-	public function findBetween(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $start, DateTime $end, $includeUnfinished = FALSE, $rearrangePerHours = 0, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL, array $types = NULL) {
+	public function findBetween(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $start, DateTime $end, array $types = NULL, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL, $includeUnfinished = FALSE) {
 		$query = $this->createQuery();
 
 		$constraint = array(
@@ -163,10 +162,6 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 						'beginTime' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
 				)
 		)->execute()->toArray();
-
-		if ($rearrangePerHours > 0) {
-			return $this->rearrangeAppointmentArray($result, $rearrangePerHours); #@SHOULD call this method separately, but where to define it?
-		}
 
 		return $result;
 	}
@@ -271,7 +266,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @param integer $perHours Length of each timeblock in hours
 	 * @return array Resulting multidimensional array
 	 */
-	protected function rearrangeAppointmentArray($array, $perHours) {
+	public function rearrangeAppointmentArray($array, $perHours) {
 		//timeblock hours, includes 24 for structural purposes
 		$hours = array();
 		for ($i = 0; $i <= 24; $i += $perHours) {
