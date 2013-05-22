@@ -237,25 +237,44 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 	 */
 	protected function mapRequestArgumentsToControllerArguments() {
 		$objectDeleted = FALSE;
+		$propertyDeleted = FALSE;
 
 		try {
 			parent::mapRequestArgumentsToControllerArguments();
-		} catch (Tx_Extbase_MVC_Exception_InvalidArgumentValue $e) { #@TODO I should syslog these as well
+		} catch (Tx_Extbase_MVC_Exception_InvalidArgumentValue $e) {
 			$objectDeleted = TRUE;
 		} catch (Tx_Extbase_Property_Exception_TargetNotFound $e) {
 			$objectDeleted = TRUE;
 		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) {
-			//in case not the original argument, but one of its object-properties no longer exist, try to redirect to the appropriate action
+			$propertyDeleted = TRUE;
+		} catch (t3lib_error_Exception $e) {
+			$propertyDeleted = TRUE;
+		}
+
+		if ($objectDeleted) {
+			t3lib_div::sysLog('An appointment disappeared while an feuser tried to interact with it: ' . $e->getMessage(),
+				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_NOTICE);
+
+			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
+			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+			$this->redirect('list');
+		}
+		if ($propertyDeleted) {
+			t3lib_div::sysLog('An appointment is missing a property which was most likely deleted by a backend user: ' . $e->getMessage(),
+				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_ERROR);
+
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments.appointment_property_deleted', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 
+			//in case not the original argument, but one of its object-properties no longer exist, try to redirect to the appropriate action
 			$redirectTo = 'list';
 			$arguments = array();
+			$argumentName = 'appointment';
 			if ($this->request->hasArgument($argumentName)) {
-				$appointment = $this->request->getArgument('appointment'); //get from request, as controller argument mapping was just disrupted
+				$appointment = $this->request->getArgument($argumentName); //get from request, as controller argument mapping was just disrupted
 				if (isset($appointment['__identity'])) { //getting the entire array would also require the hmac property, we only need uid
-					$arguments['appointment'] = $appointment['__identity'];
-					//sending to the appropriate form will regenerate missing objects #@TODO in ALL cases? needs more testing (specifically .address & .formFieldValues and lazy vs non-lazy)
+					$arguments[$argumentName] = $appointment['__identity'];
+					//sending to the appropriate form will regenerate missing objects (but not their values)
 					switch ($this->actionMethodName) {
 						case 'createAction':
 							$redirectTo = 'new2';
@@ -266,12 +285,6 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 				}
 			}
 			$this->redirect($redirectTo,NULL,NULL,$arguments);
-		}
-
-		if ($objectDeleted) {
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-			$this->redirect('list');
 		}
 	}
 
