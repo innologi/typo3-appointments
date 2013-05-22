@@ -389,7 +389,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 		// if true, we need to take into account separation of weekend- and workdays, in calculating the correct offset
 		if ($offsetHoursWorkdays > 0) {
-			$this->recalculateDateTimeForWorkdaysOffset($dateTime, $offsetHoursWorkdays, $now, $excludeHolidays, $agenda->getHolidays());
+			$this->recalculateDateTimeForWorkdaysOffset($dateTime, $offsetHoursWorkdays, $now, $excludeHolidays, $agenda->getHolidayArray());
 		}
 
 		return $dateTime;
@@ -402,7 +402,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * @param integer $offsetHoursWorkdays The offsetHoursWorkdays setting of the appointment Type
 	 * @param integer $now Timestamp NOW, not of the DateTime reference
 	 * @param boolean $excludeHolidays Whether holidays are to be excluded. If TRUE, holidays aren't workdays either..
-	 * @param array $holidayArray Contains the holidays in dd-mm-yyyy format
+	 * @param array $holidayArray Contains the holidays in dd-mm-yyyy format as keys
 	 * @return void
 	 */
 	protected function recalculateDateTimeForWorkdaysOffset(DateTime $dateTime, $offsetHoursWorkdays, $now, $excludeHolidays = FALSE, $holidayArray = array()) {
@@ -416,14 +416,14 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 			$date = $dateTime->format('d-m-Y');
 
 			//if a weekday and NOT a holiday if excluded
-			if ($day < 6 && (!$excludeHolidays || !in_array($date,$holidayArray))) {
+			if ($day < 6 && (!$excludeHolidays || !isset($holidayArray[$date]))) {
 				$add = 6 - $day; //number of days until weekend
 
 				//if holidays are exempt, we'll move up in days until weekend or the first holiday
 				if ($excludeHolidays) {
 					for ($d = 0; $d < $add; $d++) {
 						$date = $dateTime->modify('+1 day')->format('d-m-Y');
-						if (in_array($date,$holidayArray)) {
+						if (isset($holidayArray[$date])) {
 							break; //reached a holiday before weekend
 						}
 					}
@@ -468,12 +468,12 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 */
 	protected function createDateSlots(Tx_Appointments_Persistence_KeyObjectStorage $dateSlotStorage, DateTime $dateTime, Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $maxDaysAhead = 365, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL) {
 		$excludeHolidays = $type->getExcludeHolidays();
-		$holidayArray = $agenda->getHolidays();
+		$holidayArray = $agenda->getHolidayArray();
 
 		for ($counter = 0; $counter < $maxDaysAhead; $counter++) {
 
 			$currentDate = $dateTime->format('d-m-Y'); //note that 'current' from here on is equivalent to 'current in loop'
-			if (!$excludeHolidays || !in_array($currentDate,$holidayArray)) {
+			if (!$excludeHolidays || !isset($holidayArray[$currentDate])) {
 				$currentDate .= ' 00:00:00'; //from here on, it's used to identify results from findBetween()
 
 				$day = $dateTime->format('l'); //full day name (english)

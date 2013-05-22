@@ -191,7 +191,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 			foreach ($allowTypes as $type) {
 				$dateSlotStorage = $this->slotService->getDateSlots($type, $this->agenda, $freeSlotInMinutes);
 				foreach ($dateSlotStorage as $dateSlot) {
-					$allowCreateTypes[] = strftime('%d-%m-%Y',$dateSlot->getTimestamp());
+					$allowCreateTypes[strftime('%d-%m-%Y',$dateSlot->getTimestamp())] = 1;
 				}
 			}
 		}
@@ -199,7 +199,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		#@TODO can we do some caching here?
 		//creates date objects in week storages for the container, because each day and week contain different properties
 		$endTime = $end->getTimestamp();
-		$holidays = $agenda->getHolidays();
+		$holidayArray = $agenda->getHolidayArray();
 		$appointments = $this->appointmentRepository->rearrangeAppointmentArray(
 				$this->appointmentRepository->findBetween($agenda, $start, $end, $showTypes), 24
 		);
@@ -213,8 +213,8 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 				$fulldate = $start->format('d-m-Y');
 				$date->setDateString($fulldate);
 				$date->setTimestamp($start->getTimestamp());
-				$date->setIsHoliday(in_array($fulldate,$holidays));
-				$date->setAllowCreate(in_array($fulldate,$allowCreateTypes)); #@TODO replace the in_arrays with isset on array_keys results
+				$date->setIsHoliday(isset($holidayArray[$fulldate]));
+				$date->setAllowCreate(isset($allowCreateTypes[$fulldate]));
 				$fulldate .= ' 00:00:00';
 				if (isset($appointments[$fulldate])) {
 					foreach ($appointments[$fulldate] as $a) {

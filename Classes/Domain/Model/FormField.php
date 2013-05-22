@@ -245,8 +245,8 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 * @return void
 	 */
 	protected function setIsDate() {
-		$array = explode(',',$this->validationTypes);
-		$this->isDate = in_array(strval(self::VALIDATE_DATE_TIME),$array,1);
+		$array = array_flip(explode(',',$this->validationTypes));
+		$this->isDate = isset($array[self::VALIDATE_DATE_TIME]);
 	}
 
 	/**

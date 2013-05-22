@@ -49,6 +49,14 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	protected $holidays;
 
 	/**
+	 * Array of the holiday dates, with the holidays as key
+	 *
+	 * @var array
+	 * @transient
+	 */
+	protected $holidayArray;
+
+	/**
 	 * Email types
 	 *
 	 * @var integer
@@ -149,13 +157,7 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	 * @return array $holidays
 	 */
 	public function getHolidays() {
-		if (isset($this->holidays[0])) {
-			$holidays = str_replace("\r\n","\n",$this->holidays);
-			$holidayArray = t3lib_div::trimExplode("\n", $this->holidays, 1);
-			return $holidayArray;
-		}
-
-		return array();
+		return $this->holidays;
 	}
 
 	/**
@@ -166,6 +168,28 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	 */
 	public function setHolidays($holidays) {
 		$this->holidays = $holidays;
+	}
+
+	/**
+	 * Returns the holidayArray
+	 *
+	 * @return array $holidayArray
+	 */
+	public function getHolidayArray() {
+		if ($this->holidayArray === NULL) {
+			$this->setHolidayArray();
+		}
+		return $this->holidayArray;
+	}
+
+	/**
+	 * Sets the holidayArray
+	 *
+	 * @return void
+	 */
+	public function setHolidayArray() {
+		$holidays = str_replace("\r\n","\n",$this->holidays);
+		$this->holidayArray = array_flip(t3lib_div::trimExplode("\n", $holidays, 1));
 	}
 
 	/**
