@@ -348,7 +348,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot>
 	 */
-	protected function alterStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) { #@TODO test this one
+	protected function alterStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) { #@FIXME test this one
 		$typeUid = $type->getUid();
 		$dateSlotStorage = $this->dateSlots[$typeUid];
 		$firstAvailableTimestamp = $this->getFirstAvailableTime($type, $agenda)->getTimestamp();

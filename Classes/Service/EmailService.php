@@ -126,7 +126,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			$returnVal = TRUE;
 		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) { //a property was deleted
 			t3lib_div::sysLog($errorMsg . $e->getMessage(),
-				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_ERROR);
+				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_ERROR); #@TODO add 6.x logger as well
 		} catch (Swift_RfcComplianceException $e) { //one or more email properties does not comply with RFC (e.g. sender email)
 			t3lib_div::sysLog('One or more email-related configuration settings are not set or invalid: ' . $e->getMessage(),
 				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_ERROR);

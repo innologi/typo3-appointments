@@ -82,7 +82,7 @@ abstract class Tx_Appointments_Domain_Model_Agenda_AbstractContainer extends Tx_
 	 *
 	 * @var Array<Tx_Extbase_Persistence_ObjectStorage>
 	 */
-	protected $weeks;
+	protected $weeks; #@SHOULD why not array<array> again?
 
 	/**
 	 * __construct
