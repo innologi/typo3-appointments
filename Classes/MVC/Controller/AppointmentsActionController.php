@@ -187,6 +187,12 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 				$this->forward('none');
 			}
 
+			//no errors? initialize slotService as it is used in most actions
+			$this->slotService->initialize(
+					$this->extensionName,
+					intval($this->settings['freeSlotInMinutes']),
+					intval($this->settings['shiftSlotPerInterval'])
+			);
 		}
 	}
 

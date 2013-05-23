@@ -25,7 +25,8 @@
 			<label index="tx_appointments_constants_agendaForward">Agenda Navigation Forward: The number of navigation units to allow forward from the initial display</label>
 			<label index="tx_appointments_constants_agendaWeeksBeforeCurrent">Agenda Weeks Before Current: The number of weeks to display before the current</label>
 			<label index="tx_appointments_constants_agendaWeeksAfterCurrent">Agenda Weeks After Current: The number of weeks to display after the current</label>
-			<label index="tx_appointments_constants_freeSlotInMinutes">Free Reserved Time-slot: The number of minutes to free up a reserved time-slot if not saved before this number is reached, counting from start</label>
+			<label index="tx_appointments_constants_freeSlotInMinutes">Reserve Time-slot: The number of minutes a time-slot remains reserved if the appointment is not created before this number is reached, counting from start</label>
+			<label index="tx_appointments_constants_shiftSlotPerInterval">Shift Time-slots Per Interval: Normally, the available timeslots shift on a daily basis at midnight, but enabling this option will shift them every X amount of minutes, where X is the relevant Appointment Type's interval</label>
 			<label index="tx_appointments_constants_suGroup">Super User Group UID</label>
 			<label index="tx_appointments_constants_js_includeJquery">Enable jQuery inclusion: Will include the jQuery library through the configured CDN. If for some reason there already is a jQuery library present, you can disable appointments' here to prevent conflicts.</label>
 			<label index="tx_appointments_constants_js_includeJqueryUI">Enable jQuery UI scripts inclusion: Will include a custom jQuery UI library for: Datepicker. You can disable it in case it is already present through other means or you're using a different datepicker in your templates.</label>
@@ -80,7 +81,8 @@
 			<label index="tx_appointments_constants_agendaForward">Agenda Navigatie Vooruit: De hoeveelheid navigatie eenheden vooruit waarnaar genavigeerd kan worden</label>
 			<label index="tx_appointments_constants_agendaWeeksBeforeCurrent">Agenda Weken Voor Huidig: Het aantal weken om te tonen voor de huidige</label>
 			<label index="tx_appointments_constants_agendaWeeksAfterCurrent">Agenda Weken Na Huidig: Het aantal weken om te tonen na de huidige</label>
-			<label index="tx_appointments_constants_freeSlotInMinutes">Geef Gereserveerde Tijdsslot Vrij: Het aantal minuten waarna een gereserveerde tijdsslot wordt vrijgegeven als de afspraak niet opgeslagen is voordat het aantal bereikt is, tellend vanaf het begin van het aanmaakproces</label>
+			<label index="tx_appointments_constants_freeSlotInMinutes">Reserveer Tijdsslot: Het aantal minuten waarin een tijdsslot gereserveerd blijft voordat hij weer wordt vrijgegeven als de afspraak niet aangemaakt is, tellend vanaf het begin van het aanmaakproces</label>
+			<label index="tx_appointments_constants_shiftSlotPerInterval">Schuif Tijdssloten Per Interval: De beschikbare tijddsloten worden normaal dagelijks op middernacht verschoven, maar als u deze optie inschakelt verschuiven ze elke X aantal minuten, waar X het interval is van de relevante Afspraak Type</label>
 			<label index="tx_appointments_constants_suGroup">Super User Groep UID</label>
 			<label index="tx_appointments_constants_js_includeJquery">jQuery inschakelen: Voegt het jQuery script toe aan de website vanaf het ingestelde CDN. U kunt deze uitschakelen indien al aanwezig via andere methoden.</label>
 			<label index="tx_appointments_constants_js_includeJqueryUI">jQuery UI inschakelen: Voegt een aangepaste jQuery UI script toe voor: de Datepicker. U kunt deze uitschakelen indien al aanwezig via andere methoden, of wanneer u een andere datepicker benut in uw templates.</label>

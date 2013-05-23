@@ -137,8 +137,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		if ($appointment !== NULL) {
 			//type chosen! (or dateFirst)
 
-			$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
-			$dateSlots = $this->slotService->getDateSlots($appointment->getType(), $this->agenda, $freeSlotInMinutes); #@TODO can we throw error somewhere when this one is empty, about the type not having any available timeslots?
+			$dateSlots = $this->slotService->getDateSlots($appointment->getType(), $this->agenda); #@TODO can we throw error somewhere when this one is empty, about the type not having any available timeslots?
 			$this->view->assign('dateSlots', $dateSlots);
 
 			if ($appointment->getBeginTime() !== NULL) {
@@ -241,8 +240,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$appointment->setFeUser($this->feUser);
 
 
-		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
-		if ($this->slotService->isTimeSlotAllowed($appointment,$freeSlotInMinutes)) {
+		if ($this->slotService->isTimeSlotAllowed($appointment)) {
 			$this->calculateTimes($appointment); //set the remaining DateTime properties of appointment
 			$timerStart = FALSE;
 
@@ -283,6 +281,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 
 			if ($timerStart) {
+				$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']); #@SHOULD is 0 supported everywhere? it should be, but I think I left a <1 check somewhere. Also timer messages should react to 0
 				//message for a new timeslot
 				$flashMessage = str_replace('$1', $freeSlotInMinutes,
 						Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timerstart', $this->extensionName)
@@ -381,8 +380,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$appointment->setBeginTime(new DateTime($changedDate)); #@SHOULD couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
 			$appointment->_memorizeCleanState('beginTime'); //makes sure it isn't persisted automatically
 		}
-		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']); #@SHOULD is 0 supported everywhere? it should be, but I think I left a <1 check somewhere. Also timer messages should react to 0
-		$dateSlots = $this->slotService->getDateSlotsIncludingCurrent($appointment,$freeSlotInMinutes,TRUE);
+		$dateSlots = $this->slotService->getDateSlotsIncludingCurrent($appointment,TRUE);
 		$timeSlots = $this->slotService->getTimeSlots($dateSlots,$appointment);
 
 		$this->view->assign('dateSlots', $dateSlots);
@@ -638,9 +636,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	protected function limitTypesByDate($types, Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $dateTime) {
 		$newTypes = array();
-		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
 		foreach ($types as $type) {
-			$slotStorage = $this->slotService->getSingleDateSlot($type, $agenda, $freeSlotInMinutes, clone $dateTime);
+			$slotStorage = $this->slotService->getSingleDateSlot($type, $agenda, clone $dateTime);
 			if ($slotStorage->valid()) { //returns true only if it contains at least one valid dateslot
 				$newTypes[] = $type;
 			}
@@ -658,11 +655,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	protected function limitTypesByAppointment($types, Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$newTypes = array();
-		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
 		$timeSlotKey = $appointment->getBeginTime()->format(Tx_Appointments_Domain_Service_SlotService::TIMESLOT_KEY_FORMAT);
 
 		foreach ($types as $type) {
-			$slotStorage = $this->slotService->getSingleDateSlotIncludingCurrent($appointment, $freeSlotInMinutes, $type);
 			$timeSlots = $this->slotService->getTimeSlots($slotStorage,$appointment);
 			if ($timeSlots && isset($timeSlots[$timeSlotKey])) {
 				$newTypes[] = $type;

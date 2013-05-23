@@ -42,7 +42,21 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 *
 	 * @var string
 	 */
-	protected $extensionName = 'appointments'; #@SHOULD be taken from controller
+	protected $extensionName;
+
+	/**
+	 * Reservation time for timeslots
+	 *
+	 * @var integer
+	 */
+	protected $expireMinutes;
+
+	/**
+	 * Sets whether timeslots will be shifted on a daily basis (FALSE) or per appointment-type interval (TRUE)
+	 *
+	 * @var boolean
+	 */
+	protected $intervalBasedShifting = FALSE;
 
 	/**
 	 * DateSlot storage array
@@ -76,16 +90,29 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	}
 
 	/**
+	 * Initializes slot service
+	 *
+	 * @param string $extensionName
+	 * @param integer $expireMinutes Minutes after which a reserved timeslot expires
+	 * @param boolean $intervalBasedShifting If TRUE, enables shifting of timeslots per appointment type interval instead of a daily basis
+	 * @return void
+	 */
+	public function initialize($extensionName, $expireMinutes, $intervalBasedShifting) {
+		$this->extensionName = $extensionName;
+		$this->expireMinutes = $expireMinutes;
+		$this->intervalBasedShifting = $intervalBasedShifting;
+	}
+
+	/**
 	 * Returns the dateSlot storage of the specified type.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type domain model object instance
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
-	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage
 	 */
-	public function getDateSlots(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes) {
+	public function getDateSlots(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		$typeUid = $type->getUid();
-		if ($this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes) || !isset($this->dateSlots[$typeUid])) {
+		if ($this->clearExpiredAppointmentTimeSlots($type,$agenda) || !isset($this->dateSlots[$typeUid])) {
 			$this->dateSlots[$typeUid] = $this->getStorageObject($type, $agenda);
 		}
 
@@ -96,18 +123,17 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * Get dateslots and include the timeslots in use due to the current appointment
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment Current appointment
-	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
 	 * @param boolean $disregardConditions If TRUE, disregards the type's firstAvailableTime and maxDaysForward conditions for current appointment
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage
 	 */
-	public function getDateSlotsIncludingCurrent(Tx_Appointments_Domain_Model_Appointment $appointment, $expireMinutes, $disregardConditions = FALSE) {
+	public function getDateSlotsIncludingCurrent(Tx_Appointments_Domain_Model_Appointment $appointment, $disregardConditions = FALSE) {
 		$type = $appointment->getType();
 		$agenda = $appointment->getAgenda();
 
-		$dateSlotStorage = $this->getDateSlots($type,$agenda,$expireMinutes);
+		$dateSlotStorage = $this->getDateSlots($type,$agenda);
 
 		if (!$appointment->_isNew() && $appointment->getCreationProgress() !== Tx_Appointments_Domain_Model_Appointment::EXPIRED) {
-			$singleDateSlotStorage = $this->getSingleDateSlotIncludingCurrent($appointment,$expireMinutes,$type,$disregardConditions);
+			$singleDateSlotStorage = $this->getSingleDateSlotIncludingCurrent($appointment,$type,$disregardConditions);
 			$dateSlotStorage->addAll($singleDateSlotStorage);
 		}
 
@@ -121,15 +147,14 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 *
 	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type domain model object instance
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
-	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
 	 * @param DateTime $dateTime DateTime object to get Dateslot for
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage
 	 */
-	public function getSingleDateSlot(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes, DateTime $dateTime) {
+	public function getSingleDateSlot(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $dateTime) {
 		$typeUid = $type->getUid();
 		$dateSlotKey = $dateTime->format(self::DATESLOT_KEY_FORMAT);
 
-		if (($cleared = $this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes)) || !isset($this->singleDateSlots[$typeUid][$dateSlotKey])) {
+		if (($cleared = $this->clearExpiredAppointmentTimeSlots($type,$agenda)) || !isset($this->singleDateSlots[$typeUid][$dateSlotKey])) {
 			if (
 					!$cleared && ( //try to retrieve it from a normal dateSlotStorage if available
 							(isset($this->dateSlots[$typeUid][$dateSlotKey]) && $dateSlotStorage = $this->dateSlots[$typeUid])
@@ -152,23 +177,22 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * Returns a dateSlotStorage with a single dateSlot, including the times that would be allowed without current appointment.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment Appointment that is ignored when building the storage
-	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
 	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type domain model object instance
 	 * @param boolean $disregardConditions If TRUE, disregards the type's firstAvailableTime and maxDaysForward conditions
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage
 	 */
-	public function getSingleDateSlotIncludingCurrent(Tx_Appointments_Domain_Model_Appointment $appointment, $expireMinutes, Tx_Appointments_Domain_Model_Type $type = NULL, $disregardConditions = FALSE) {
+	public function getSingleDateSlotIncludingCurrent(Tx_Appointments_Domain_Model_Appointment $appointment, Tx_Appointments_Domain_Model_Type $type = NULL, $disregardConditions = FALSE) {
 		if ($type === NULL) {
 			$type = $appointment->getType();
 		}
 		$agenda = $appointment->getAgenda();
 
-		$this->clearExpiredAppointmentTimeSlots($type,$agenda,$expireMinutes); #@SHOULD probably inefficient @ every type with limitTypes :/
+		$this->clearExpiredAppointmentTimeSlots($type,$agenda); #@SHOULD probably inefficient @ every type with limitTypes :/
 		$dateSlotStorage = $this->buildSingleStorageObject($type,$agenda,clone $appointment->getBeginTime(),$appointment,$disregardConditions);
 
 		#@TODO finish this alternative that could alter a cached dateSlotStorage instead
 		//clone, because we don't want to influence the storage mapped in the service
-		#$dateSlotStorage = clone $this->getSingleDateSlot($type, $agenda, $expireMinutes, clone $appointment->getBeginTime());
+		#$dateSlotStorage = clone $this->getSingleDateSlot($type, $agenda, clone $appointment->getBeginTime());
 		#$dateSlotKey = $appointment->getBeginTime()->format(self::DATESLOT_KEY_FORMAT);
 		#if (isset($dateSlotStorage[$dateSlotKey])) {
 		#	$dateSlot = $dateSlotStorage[$dateSlotKey];
@@ -218,11 +242,10 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * will return FALSE.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to check the timeslot for
-	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
 	 * @return boolean
 	 */
-	public function isTimeSlotAllowed(Tx_Appointments_Domain_Model_Appointment $appointment, $expireMinutes) {
-		$dateSlotStorage = $this->getSingleDateSlotIncludingCurrent($appointment, $expireMinutes);
+	public function isTimeSlotAllowed(Tx_Appointments_Domain_Model_Appointment $appointment) {
+		$dateSlotStorage = $this->getSingleDateSlotIncludingCurrent($appointment);
 		$timeSlots = $this->getTimeSlots($dateSlotStorage, $appointment);
 		if ($timeSlots) {
 			$key = $appointment->getBeginTime()->format(self::TIMESLOT_KEY_FORMAT);
@@ -238,11 +261,10 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 *
 	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type to which the expired appointments belong to
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
-	 * @param integer $expireMinutes Number of minutes in which unfinished appointments expire unless finished
 	 * @return boolean TRUE on change, FALSE on no change
 	 */
-	protected function clearExpiredAppointmentTimeSlots(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes) {
-		$temp = $this->appointmentRepository->findExpiredUnfinished($expireMinutes);
+	protected function clearExpiredAppointmentTimeSlots(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
+		$temp = $this->appointmentRepository->findExpiredUnfinished($this->expireMinutes);
 
 		if (!empty($temp)) {
 			foreach ($temp as $appointment) {
@@ -384,6 +406,9 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 		$excludeHolidays = $type->getExcludeHolidays();
 		$dateTime = new DateTime();
+		if (!$this->intervalBasedShifting) { //if intervalbased shifting isn't enabled, just move starting point to midnight
+			$dateTime->modify('+1 day')->setTime(0,0);
+		}
 		$now = $dateTime->getTimestamp();
 		$dateTime->modify("+$offsetHours hours"); //this sets the DateTime object at the offset to start finding slots
 
@@ -755,7 +780,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		$intervalSeconds = $intervalMinutes * 60;
 
 		//makes the hours actually count when appointing time slots
-		if ($timestamp < $originalTimestamp) { #@TODO if we want to make it day-based instead of hour-based, how can we do that without affecting originalTimestamp-alterations in previous functions?
+		if ($timestamp < $originalTimestamp) {
 			//most of the times, this solution should be faster than a loop-solution
 			$diff = $originalTimestamp - $timestamp;
 			$intervalIncrease = intval(ceil($diff / $intervalSeconds));

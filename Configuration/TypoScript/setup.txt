@@ -20,9 +20,8 @@ config.tx_extbase {
 		Tx_Appointments_Domain_Model_FrontendUserGroup.mapping.tableName = fe_groups
 	} 
 	
-	# this override method is global and fails once when cache is cleared (4.7.8), so I can not depend on it
+	# this override method is global and fails once when cache is cleared (4.7.8), so I cannot depend on it
 	#objects {
-		# keep this in mind for when I require it for a property that isn't somewhere deep down another property
 		#Tx_Extbase_Validation_ValidatorResolver {
 		#	className = Tx_Appointments_Validation_VariableValidatorResolver
 		#}
@@ -128,6 +127,7 @@ plugin.tx_appointments {
 		agendaWeeksBeforeCurrent = {$plugin.tx_appointments.settings.agendaWeeksBeforeCurrent}
 		agendaWeeksAfterCurrent = {$plugin.tx_appointments.settings.agendaWeeksAfterCurrent}
 		freeSlotInMinutes = {$plugin.tx_appointments.settings.freeSlotInMinutes}
+		shiftSlotPerInterval = {$plugin.tx_appointments.settings.shiftSlotPerInterval}
 		suGroup = {$plugin.tx_appointments.settings.suGroup}
 	}
 	tsOverride {

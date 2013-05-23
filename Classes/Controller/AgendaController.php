@@ -185,18 +185,17 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		$end = new DateTime($start->format('Y-m-d\TH:i:s'),$start->getTimezone());
 		$end->modify("+$modEndModifier $modEndUnit");
 
-		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
 		$allowCreateTypes = array();
 		if ($this->settings['allowCreate']) { //is this peformance hog enabled?
 			foreach ($allowTypes as $type) {
-				$dateSlotStorage = $this->slotService->getDateSlots($type, $this->agenda, $freeSlotInMinutes);
+				$dateSlotStorage = $this->slotService->getDateSlots($type, $this->agenda);
 				foreach ($dateSlotStorage as $dateSlot) {
 					$allowCreateTypes[strftime('%d-%m-%Y',$dateSlot->getTimestamp())] = 1;
 				}
 			}
 		}
 
-		#@TODO can we do some caching here?
+		#@TODO can we do some caching here? the container is created from scratch every single time
 		//creates date objects in week storages for the container, because each day and week contain different properties
 		$endTime = $end->getTimestamp();
 		$holidayArray = $agenda->getHolidayArray();
