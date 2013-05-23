@@ -27,8 +27,9 @@
 				<f:form.select id="appointments-select-date" name="changedDate" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" />
 			</label>
 			&rarr;
-			<f:form.submit id="appointments-submit-date" value="{f:translate(key: 'tx_appointments_list.submit_date_slot')}" class="submit" />
-			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_new1')}"><f:translate key="tx_appointments_list.csh" /></span>
+			
+			<f:render partial="Appointment/FormFieldDateSubmit" arguments="{timeSlots : timeSlots}" />
+			<f:render partial="Appointment/FormFieldDateCsh" arguments="{step : 1}" />
 		</fieldset>
 	</f:form>
 </f:if>
@@ -39,9 +40,9 @@
 			<label>
 				<f:translate key="tx_appointments_list.label_time_slot" />
 				<br />
-				<f:form.select property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select" />
+				<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select{f:if(condition: timeError, then: ' f3-form-error')}" />
 			</label>
-			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.time.csh_new1')}"><f:translate key="tx_appointments_list.csh" /></span>
+			<f:render partial="Appointment/FormFieldTimeCsh" arguments="{step : 1}" />
 			<br />
 			<br />
 			<span class="required">*</span> = <f:translate key="tx_appointments_list.required" />

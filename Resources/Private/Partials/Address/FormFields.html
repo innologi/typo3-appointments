@@ -33,7 +33,9 @@
 <f:if condition="{type.addressEnableGender}">
 	<label>
 		<f:translate key="tx_appointments_domain_model_address.gender" /><br />
-		<f:form.select property="address.gender" options="{m: '{f:translate(key: \'tx_appointments_domain_model_address.gender.m\')}', f: '{f:translate(key: \'tx_appointments_domain_model_address.gender.f\')}'}"  id="appointments-address-gender" class="select session" />
+		<f:form.select property="address.gender" id="appointments-address-gender" class="select session"
+			options="{m: '{f:translate(key: \'tx_appointments_domain_model_address.gender.m\')}', f: '{f:translate(key: \'tx_appointments_domain_model_address.gender.f\')}'}"
+		/>
 	</label>
 	<br />
 	<br />

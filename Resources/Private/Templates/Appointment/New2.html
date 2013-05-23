@@ -10,19 +10,7 @@
 <f:if condition="{types}">
 	<f:form enctype="multipart/form-data" method="post" action="simpleProcessNew" id="typeForm" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
-			<!-- The hidden properties in each form are for unpersisted appointments, to maintain values that are chosen in other forms if available -->
-			<f:form.hidden property="beginTime"  value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
-			
-			<label>
-				<f:translate key="tx_appointments_list.label_type" />
-				<br />
-				<f:form.select id="appointments-select-type" property="type" options="{types}" optionValueField="uid" optionLabelField="name" class="select" />
-			</label>
-			&rarr;
-			
-			<f:form.submit id="appointments-submit-type" value="{f:translate(key: 'tx_appointments_list.submit_type')}" class="submit" />
-			
-			<span class="csh" title="{f:translate(key: 'tx_appointments_domain_model_appointment.type.csh_new2')}"><f:translate key="tx_appointments_list.csh" /></span>
+			<f:render partial="Appointment/FormFieldType" arguments="{appointment : appointment, types : types, dateSlots : dateSlots, step : 2}" />
 		</fieldset>
 	</f:form>
 </f:if>
@@ -35,7 +23,8 @@
 				<br />
 				<f:form.select id="appointments-select-date" property="beginTime" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" disabled="disabled" />
 			</label>
-			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_new2')}"><f:translate key="tx_appointments_list.csh" /></span>
+			
+			<f:render partial="Appointment/FormFieldDateCsh" arguments="{step : 2}" />
 		</fieldset>
 	</f:form>
 </f:if>
@@ -49,9 +38,11 @@
 				<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select{f:if(condition: timeError, then: ' f3-form-error')}" disabled="disabled" />
 			</label>
 			&larr;
-					
-			<f:form.submit id="appointments-submit-time" value="{f:translate(key: '{f:if(condition: expired, then: \'tx_appointments_list.submit_time_expired\', else: \'tx_appointments_list.submit_free\' )}')}" class="submit" />
-			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.time.csh_new2')}"><f:translate key="tx_appointments_list.csh" /></span>
+				
+			<f:form.submit id="appointments-submit-time" class="submit"
+				value="{f:translate(key: '{f:if(condition: expired, then: \'tx_appointments_list.submit_time_expired\', else: \'tx_appointments_list.submit_free\' )}')}"
+			/>
+			<f:render partial="Appointment/FormFieldTimeCsh" arguments="{step : 2}" />
 		</fieldset>
 	</f:form>
 </f:if>

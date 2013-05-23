@@ -163,7 +163,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('types', $types);
 		$this->view->assign('appointment', $appointment);
 		$this->view->assign('timeError', $timeError);
-		$this->view->assign('step', 1);
 	}
 
 	/**
@@ -202,7 +201,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('types', $types);
 		$this->view->assign('appointment', $appointment);
 		$this->view->assign('timeError', $timeError); #@TODO don't we need excludedArguments on back & dateFirst links? Or is there another way to do this var?
-		$this->view->assign('step', 2); #@TODO check of het template niet wat meer van dit variabel af kan hangen zonder dat ik meerdere forms hoef te definiëren
 	}
 
 	/**

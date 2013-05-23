@@ -10,27 +10,8 @@
 <f:if condition="{types}">
 	<f:form enctype="multipart/form-data" method="post" action="new1" id="typeForm" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
-			<!-- The hidden properties in each form are for unpersisted appointments, to maintain values that are chosen in other forms if available -->
-			<f:form.hidden property="beginTime"  value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
 			<f:form.hidden name="showDisabledAppointment" value="{showDisabledAppointment}"/>
-			
-			<label>
-				<f:translate key="tx_appointments_list.label_type" />
-				<br />
-				<f:form.select id="appointments-select-type" property="type" options="{types}" optionValueField="uid" optionLabelField="name" class="select" />
-			</label>
-			&rarr;
-			
-			<f:if condition="{dateSlots}">
-				<f:then>
-					<f:form.submit id="appointments-submit-type" value="{f:translate(key: 'tx_appointments_list.submit_type')}" class="submit" />
-				</f:then>
-				<f:else>
-					<f:form.submit id="appointments-submit-type" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
-				</f:else>
-			</f:if>
-			
-			<span class="csh" title="{f:translate(key: 'tx_appointments_domain_model_appointment.type.csh_new1')}"><f:translate key="tx_appointments_list.csh" /></span>
+			<f:render partial="Appointment/FormFieldType" arguments="{appointment : appointment, types : types, dateSlots : dateSlots, step : 1}" />
 		</fieldset>
 	</f:form>
 </f:if>
@@ -38,8 +19,8 @@
 <f:if condition="{dateSlots}">
 	<f:form enctype="multipart/form-data" method="post" action="new1" id="dateForm" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
-			<f:form.hidden property="type" />
 			<f:form.hidden name="showDisabledAppointment" value="{showDisabledAppointment}"/>
+			<f:form.hidden property="type" />
 			
 			<label>
 				<f:translate key="tx_appointments_list.label_date_slot" />
@@ -48,16 +29,8 @@
 			</label>
 			&rarr;
 			
-			<f:if condition="{timeSlots}">
-				<f:then>
-					<f:form.submit id="appointments-submit-date" value="{f:translate(key: 'tx_appointments_list.submit_date_slot')}" class="submit" />
-				</f:then>
-				<f:else>
-					<f:form.submit id="appointments-submit-date" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
-				</f:else>
-			</f:if>
-			
-			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.date.csh_new1')}"><f:translate key="tx_appointments_list.csh" /></span>
+			<f:render partial="Appointment/FormFieldDateSubmit" arguments="{timeSlots : timeSlots}" />
+			<f:render partial="Appointment/FormFieldDateCsh" arguments="{step : 1}" />
 		</fieldset>
 	</f:form>
 </f:if>
@@ -75,8 +48,7 @@
 			&rarr;
 			
 			<f:form.submit id="appointments-submit-time" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
-			
-			<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.begin_time.time.csh_new1')}"><f:translate key="tx_appointments_list.csh" /></span>
+			<f:render partial="Appointment/FormFieldTimeCsh" arguments="{step : 1}" />
 		</fieldset>
 	</f:form>
 </f:if>
