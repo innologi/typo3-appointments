@@ -60,7 +60,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		//turns out getting the user id is not enough: not all fe_users are of the correct record_type
 		$types = $this->getTypes(); //we need to include types in case a type was hidden or deleted, or we get all sorts of errors
 		$appointments = $this->appointmentRepository->findPersonalList($this->agenda,$types,$this->feUser,new DateTime());
-		$this->view->assign('appointments', $appointments);
+		$this->view->assign('appointments', $appointments); #@TODO _can we create an undo link for cancelling? consider the consequences for the emailactions
 
 		//users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet
 		//a superuser can ALWAYS mutate, so 'now = 0' fixes that
@@ -658,6 +658,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$timeSlotKey = $appointment->getBeginTime()->format(Tx_Appointments_Domain_Service_SlotService::TIMESLOT_KEY_FORMAT);
 
 		foreach ($types as $type) {
+			$slotStorage = $this->slotService->getSingleDateSlotIncludingCurrent($appointment, $type);
 			$timeSlots = $this->slotService->getTimeSlots($slotStorage,$appointment);
 			if ($timeSlots && isset($timeSlots[$timeSlotKey])) {
 				$newTypes[] = $type;
