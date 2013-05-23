@@ -72,74 +72,51 @@ plugin.tx_appointments {
 			WARN_UNLOAD_S1 = TEXT
 			WARN_UNLOAD_S1.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_new
 			DELETE_CONFIRM = TEXT
-			DELETE_CONFIRM.insertData = 1
-			DELETE_CONFIRM.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_delete_confirm}
+			DELETE_CONFIRM.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_delete_confirm
 			TIMER_ZERO = TEXT
-			TIMER_ZERO.insertData = 1
-			TIMER_ZERO.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_expired}
+			TIMER_ZERO.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_expired
 			TIMER_ZERO_HEAD = TEXT
-			TIMER_ZERO_HEAD.insertData = 1
-			TIMER_ZERO_HEAD.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_expired_header}
+			TIMER_ZERO_HEAD.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_expired_header
 			RENEW_TIME = TEXT
-			RENEW_TIME.insertData = 1
-			RENEW_TIME.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_time_expired}
+			RENEW_TIME.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_time_expired
 			DAY1 = TEXT
-			DAY1.insertData = 1
-			DAY1.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s1}
+			DAY1.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s1
 			DAY2 = TEXT
-			DAY2.insertData = 1
-			DAY2.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s2}
+			DAY2.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s2
 			DAY3 = TEXT
-			DAY3.insertData = 1
-			DAY3.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s3}
+			DAY3.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s3
 			DAY4 = TEXT
-			DAY4.insertData = 1
-			DAY4.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s4}
+			DAY4.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s4
 			DAY5 = TEXT
-			DAY5.insertData = 1
-			DAY5.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s5}
+			DAY5.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s5
 			DAY6 = TEXT
-			DAY6.insertData = 1
-			DAY6.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s6}
+			DAY6.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s6
 			DAY7 = TEXT
-			DAY7.insertData = 1
-			DAY7.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s7}
+			DAY7.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s7
 			MON1 = TEXT
-			MON1.insertData = 1
-			MON1.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s1}
+			MON1.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s1
 			MON2 = TEXT
-			MON2.insertData = 1
-			MON2.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s2}
+			MON2.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s2
 			MON3 = TEXT
-			MON3.insertData = 1
-			MON3.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s3}
+			MON3.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s3
 			MON4 = TEXT
-			MON4.insertData = 1
-			MON4.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s4}
+			MON4.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s4
 			MON5 = TEXT
-			MON5.insertData = 1
-			MON5.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s5}
+			MON5.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s5
 			MON6 = TEXT
-			MON6.insertData = 1
-			MON6.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s6}
+			MON6.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s6
 			MON7 = TEXT
-			MON7.insertData = 1
-			MON7.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s7}
+			MON7.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s7
 			MON8 = TEXT
-			MON8.insertData = 1
-			MON8.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s8}
+			MON8.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s8
 			MON9 = TEXT
-			MON9.insertData = 1
-			MON9.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s9}
+			MON9.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s9
 			MON10 = TEXT
-			MON10.insertData = 1
-			MON10.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s10}
+			MON10.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s10
 			MON11 = TEXT
-			MON11.insertData = 1
-			MON11.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s11}
+			MON11.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s11
 			MON12 = TEXT
-			MON12.insertData = 1
-			MON12.value = {LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s12}
+			MON12.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s12
 		}
 	}
 	settings {
@@ -158,7 +135,7 @@ plugin.tx_appointments {
 		selectFields = agendaNavOverride
 	}
 	features {
-		# need to test this at some point
+		# need to test this when I'm allowed to drop pre-6.2 support
 		#rewrittenPropertyMapper = 1
 	}
 }
