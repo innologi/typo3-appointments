@@ -775,7 +775,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 			$blockedTime[] = array(
 				//defaultduration-1 needs to be taken from the begin timestamp, or we still get timeslots that overlap regardless
 				'begin' => $appointment->getBeginReserved()->getTimestamp() - $defaultDuration,
-				'end' => $thisEndReserved
+				'end' => $thisEndReserved < $timestamp ? $timestamp : $thisEndReserved //if timestamp is higher, we have to set it here so the last foreach doesn't make timestamp lower
 			);
 		}
 		//the last block forces correct behaviour of the coming loop with regards to available time, either after the last appointment or lack thereof
