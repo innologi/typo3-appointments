@@ -83,11 +83,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 
 		$modifier = intval($modifier);
 		$container = $this->$creationFunction($modifier,$this->agenda,$showTypes,$allowTypes);
-		$this->view->assign('modifier', $modifier);
 		$this->view->assign($containerName, $container);
-
-		$currentDate = strftime('%d-%m-%Y');
-		$this->view->assign('currentDate', $currentDate);
 		$this->view->assign('agenda', $this->agenda);
 	}
 
@@ -198,6 +194,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		#@TODO can we do some caching here? the container is created from scratch every single time
 		//creates date objects in week storages for the container, because each day and week contain different properties
 		$endTime = $end->getTimestamp();
+		$currentDate = strftime('%d-%m-%Y');
 		$holidayArray = $agenda->getHolidayArray();
 		$appointments = $this->appointmentRepository->rearrangeAppointmentArray(
 				$this->appointmentRepository->findBetween($agenda, $start, $end, $showTypes), 24
@@ -209,14 +206,14 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 				$date->setDayNumber($start->format('j'));
 				$monthShort = Tx_Extbase_Utility_Localization::translate('tx_appointments_agenda.month_s'.$start->format('n'), $this->extensionName); #@TODO this can be stored in an array or smth .. or not necessary if we use locales
 				$date->setMonthShort($monthShort);
-				$fulldate = $start->format('d-m-Y');
-				$date->setDateString($fulldate);
+				$fullDate = $start->format('d-m-Y');
 				$date->setTimestamp($start->getTimestamp());
-				$date->setIsHoliday(isset($holidayArray[$fulldate]));
-				$date->setAllowCreate(isset($allowCreateTypes[$fulldate]));
-				$fulldate .= ' 00:00:00';
-				if (isset($appointments[$fulldate])) {
-					foreach ($appointments[$fulldate] as $a) {
+				$date->setIsToday($fullDate === $currentDate);
+				$date->setIsHoliday(isset($holidayArray[$fullDate]));
+				$date->setAllowCreate(isset($allowCreateTypes[$fullDate]));
+				$fullDate .= ' 00:00:00';
+				if (isset($appointments[$fullDate])) {
+					foreach ($appointments[$fullDate] as $a) {
 						$date->addAppointment($a);
 					}
 				}

@@ -36,11 +36,11 @@
 class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
-	 * Date String
+	 * Classes for agenda use
 	 *
 	 * @var string
 	 */
-	protected $dateString;
+	protected $agendaClasses = '';
 
 	/**
 	 * Number of day in month
@@ -69,6 +69,13 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_A
 	 * @var boolean
 	 */
 	protected $isHoliday = FALSE;
+
+	/**
+	 * Is today
+	 *
+	 * @var boolean
+	 */
+	protected $isToday = FALSE;
 
 	/**
 	 * Allows creation of new appointments
@@ -109,22 +116,32 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_A
 	}
 
 	/**
-	 * Returns the Date String
+	 * Returns the Agenda Classes
 	 *
-	 * @return string $dateString
+	 * @return string $agendaClasses
 	 */
-	public function getDateString() {
-		return $this->dateString;
+	public function getAgendaClasses() {
+		return $this->agendaClasses;
 	}
 
 	/**
-	 * Sets the Date String
+	 * Sets the Agenda Classes
 	 *
-	 * @param string $dateString
+	 * @param string $agendaClasses
 	 * @return void
 	 */
-	public function setDateString($dateString) {
-		$this->dateString = $dateString;
+	public function setAgendaClasses($agendaClasses) {
+		$this->agendaClasses = $agendaClasses;
+	}
+
+	/**
+	 * Adds a single Agenda Class
+	 *
+	 * @param string $agendaClass
+	 * @return void
+	 */
+	public function addAgendaClass($agendaClass) {
+		$this->agendaClasses .= ' ' . $agendaClass;
 	}
 
 	/**
@@ -201,6 +218,31 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_A
 	 */
 	public function setIsHoliday($isHoliday) {
 		$this->isHoliday = $isHoliday;
+		if ($isHoliday) {
+			$this->addAgendaClass('holiday');
+		}
+	}
+
+	/**
+	 * Returns IsToday
+	 *
+	 * @return boolean $isToday
+	 */
+	public function getIsToday() {
+		return $this->isToday;
+	}
+
+	/**
+	 * Sets IsToday
+	 *
+	 * @param boolean $isToday
+	 * @return void
+	 */
+	public function setIsToday($isToday) {
+		$this->isToday = $isToday;
+		if ($isToday) {
+			$this->addAgendaClass('current');
+		}
 	}
 
 	/**

@@ -1,5 +1,5 @@
 <f:for each="{week}" as="date">
-	<td class="agendaDay{f:if(condition: date.isHoliday, then: ' holiday')}{f:if(condition: '{date.dateString} == {currentDate}', then: ' current')}">
+	<td class="agendaDay{date.agendaClasses}">
 		<div class="dayBar">
 			<f:if condition="{date.allowCreate}">
 				<f:then>
