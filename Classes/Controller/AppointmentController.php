@@ -108,11 +108,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @param string $dateFirst The timestamp that should be set before a type was already chosen
 	 * @param string $timeError Indicates there is a timeerror that needs to be assigned to view
-	 * @param string $showDisabledAppointment Enables showing the appointment form fields
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
-	public function new1Action(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL, $timeError = NULL, $showDisabledAppointment = NULL) {
+	public function new1Action(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL, $timeError = NULL) {
 		//find types
 		$types = $this->getTypes();
 		#@SHOULD in a seperate action that forwards/redirects or not.. consider the extra overhead, it's probably not worth it
@@ -146,13 +145,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				//an impossible type/date combo will result in $timeSlots == FALSE, so the user can't continue without re-picking
 				$timeSlots = $this->slotService->getTimeSlots($dateSlots,$appointment);
 				if ($timeSlots) {
-					if ($showDisabledAppointment) {
+					if (!$appointment->_isNew()) { //will show disabledform, so requires formFieldValues to be assigned
 						$formFieldValues = $appointment->getFormFieldValues();
 						$formFields = clone $appointment->getType()->getFormFields(); //formFields is modified for this process but not to persist, hence clone
 						$formFieldValues = $this->addMissingFormFields($formFields,$formFieldValues);
 						//adding the formFieldValues already will get them persisted too soon, empty and unused, so we're assigning them separately from $appointment
 						$this->view->assign('formFieldValues', $formFieldValues);
-						$this->view->assign('showDisabledAppointment', $showDisabledAppointment); #@TODO __can't we do better? at least rename it
 					}
 				}
 				$this->view->assign('timeSlots', $timeSlots);
@@ -459,8 +457,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 
 		$arguments = array(
-				'appointment' => $appointment,
-				'showDisabledAppointment' => 1
+				'appointment' => $appointment
 		);
 		$this->redirect('new1',NULL,NULL,$arguments);
 	}

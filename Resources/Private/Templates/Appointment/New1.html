@@ -10,7 +10,6 @@
 <f:if condition="{types}">
 	<f:form enctype="multipart/form-data" method="post" action="new1" id="typeForm" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
-			<f:form.hidden name="showDisabledAppointment" value="{showDisabledAppointment}"/>
 			<f:render partial="Appointment/FormFieldType" arguments="{appointment : appointment, types : types, dateSlots : dateSlots, step : 1}" />
 		</fieldset>
 	</f:form>
@@ -19,7 +18,6 @@
 <f:if condition="{dateSlots}">
 	<f:form enctype="multipart/form-data" method="post" action="new1" id="dateForm" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
-			<f:form.hidden name="showDisabledAppointment" value="{showDisabledAppointment}"/>
 			<f:form.hidden property="type" />
 			
 			<label>
@@ -53,7 +51,7 @@
 	</f:form>
 </f:if>
 
-<f:if condition="{showDisabledAppointment}">
+<f:if condition="{appointment.uid}">
 	<f:form enctype="multipart/form-data" method="post" action="new1" id="disabledForm" object="{appointment}" objectName="appointment" class="warnUnload">
 		<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, superUser : superUser}" />
 	</f:form>
