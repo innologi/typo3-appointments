@@ -977,6 +977,23 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 		unset($this->dateSlots[$typeUid]);
 		unset($this->singleDateSlots[$typeUid]);
+
+		#@SHOULD imagine a different approach to building and caching storageObjects:
+		/*
+		 * - create a week worth of slots for a type, and cache it with an identifier that changes only when the type record is changed
+		 * - retrieve the cache, then create a new storage with it, according to firstAvailableTime and maxDaysForward
+		 * - remove all dateslots that are holidays, and place appointments in a blockarray by which we first check max,
+		 * then maxpervardays, then maxpervardaysinterval, in turn removing dateslots and timeslots where necessary
+		 * - in case timeslots are removed instead of dateslots, check at the end of that part whether there are timeslots
+		 * left, and delete the dateslot if not
+		 * - cache the result by type, agenda, and a configurable amount of minutes, like now
+		 * - etc.
+		 *
+		 *  Would that be more efficient?
+		 *
+		 *  I should seriously time the results on empty agenda's, as well as agenda's with small,
+		 *  medium or large appointment-sets, iterating with different values for maxDaysForward as well.
+		 */
 	}
 
 }

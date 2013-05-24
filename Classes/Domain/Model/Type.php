@@ -54,6 +54,38 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * @var boolean
 	 */
 	protected $exclusiveAvailability = FALSE;
+	#@SHOULD imagine a different approach to type-binding:
+	/*
+	 * - set sub-types inline in agenda record
+	 * - sub-type consists of type record, name, and agenda-specific settings like:
+	 * exclusiveAvailability, SuperUser-only
+	 * - this way, you can define a type to be inherited by sub-types, include it
+	 * multiple times, and give each a different role which are all supposed to be
+	 * similar in conditions and formfields
+	 * - if alternate slotstorage/caching works, all sub-types could retrieve from
+	 * a single type-cache
+	 * - a change in a type would echo through ALL sub-types, however, if you wish
+	 * to change a single sub-type, you could make it inherit a different type
+	 * without influencing other sub-types or removing its appointments
+	 * - if you don't want the implications to echo through the appointments,
+	 * you would still require a new sub-type, just like you would currently
+	 * require a new type
+	 * - in the plugin you would set which of the sub-types to show, and which
+	 * can be created. This way, if you create a replacement sub-type with the same
+	 * name as the old, you can set the old to show only, and this way leave
+	 * every old appointment intact
+	 * - an update script would be required to set the relations between sub-types
+	 * (which the script would create for you) and agenda's, reading the relevant
+	 * values from type and writing them into the sub-types
+	 * - as long as the update script remains, the old table columns of type will
+	 * also remain in the sql so they don't get deleted before you could run the
+	 * update script
+	 *
+	 * Would that increase flexibility and usability?
+	 * Would that also increase configuration complexity?
+	 * Is that trade-off acceptable?
+	 * Or is it rather useless as the current situation works just fine?
+	 */
 
 	/**
 	 * Default duration
