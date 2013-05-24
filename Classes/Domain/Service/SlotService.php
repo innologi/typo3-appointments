@@ -112,7 +112,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 */
 	public function getDateSlots(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		$typeUid = $type->getUid();
-		if ($this->clearExpiredAppointmentTimeSlots($type,$agenda) || !isset($this->dateSlots[$typeUid])) {
+		if ($this->clearExpiredAppointmentTimeSlots($agenda) || !isset($this->dateSlots[$typeUid])) {
 			$this->dateSlots[$typeUid] = $this->getStorageObject($type, $agenda);
 		}
 
@@ -154,7 +154,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		$typeUid = $type->getUid();
 		$dateSlotKey = $dateTime->format(self::DATESLOT_KEY_FORMAT);
 
-		if (($cleared = $this->clearExpiredAppointmentTimeSlots($type,$agenda)) || !isset($this->singleDateSlots[$typeUid][$dateSlotKey])) {
+		if (($cleared = $this->clearExpiredAppointmentTimeSlots($agenda)) || !isset($this->singleDateSlots[$typeUid][$dateSlotKey])) {
 			if (
 					!$cleared && ( //try to retrieve it from a normal dateSlotStorage if available
 							(isset($this->dateSlots[$typeUid][$dateSlotKey]) && $dateSlotStorage = $this->dateSlots[$typeUid])
@@ -187,7 +187,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		}
 		$agenda = $appointment->getAgenda();
 
-		$this->clearExpiredAppointmentTimeSlots($type,$agenda); #@SHOULD probably inefficient @ every type with limitTypes :/
+		$this->clearExpiredAppointmentTimeSlots($agenda); #@SHOULD probably inefficient @ every type with limitTypes :/
 		$dateSlotStorage = $this->buildSingleStorageObject($type,$agenda,clone $appointment->getBeginTime(),$appointment,$disregardConditions);
 
 		#@TODO finish this alternative that could alter a cached dateSlotStorage instead
@@ -259,19 +259,24 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	/**
 	 * Clears expired appointments to free up timeslots, and returns whether there are any changes.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Type $type Appointment Type to which the expired appointments belong to
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
 	 * @return boolean TRUE on change, FALSE on no change
 	 */
-	protected function clearExpiredAppointmentTimeSlots(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
-		$temp = $this->appointmentRepository->findExpiredUnfinished($this->expireMinutes);
+	protected function clearExpiredAppointmentTimeSlots(Tx_Appointments_Domain_Model_Agenda $agenda) {
+		$temp = $this->appointmentRepository->findExpiredUnfinished($agenda, $this->expireMinutes);
 
 		if (!empty($temp)) {
+			$types = new Tx_Extbase_Persistence_ObjectStorage();
 			foreach ($temp as $appointment) {
 				$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
-				$this->appointmentRepository->update($appointment);
+				//this is really the only reason we have a boolean in update()'s arguments: prevent multiple resets for a single type
+				$this->appointmentRepository->update($appointment,FALSE);
+				$types->attach($appointment->getType()); //this makes sure we only reset each type's storageObject once, so that we don't make redundant cache queries
 			}
-			$this->resetStorageObject($type,$agenda);
+			$this->appointmentRepository->persistChanges(); //persist the changed appointments because persistAll() isn't up until after rebuilding slotStorages
+			foreach ($types as $type) { //reset after persist is always better, because this way nothing gets rebuild in another request before persisting
+				$this->resetStorageObject($type,$agenda);
+			}
 			return TRUE;
 		}
 		return FALSE;
@@ -969,8 +974,6 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		if (isset($cacheContent)) {
 			$this->setCache($key,$id,NULL);
 		}
-
-		$this->appointmentRepository->persistChanges();
 
 		unset($this->dateSlots[$typeUid]);
 		unset($this->singleDateSlots[$typeUid]);

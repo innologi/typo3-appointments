@@ -213,7 +213,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function simpleProcessNewAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->appointmentRepository->update($appointment);
-		$this->slotService->resetStorageObject($appointment->getType(),$this->agenda); //necessary to persist changes to the available timeslots
 		$arguments = array(
 				'appointment' => $appointment
 		);
@@ -246,6 +245,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			//when a validation error ensues, we don't want the unfinished appointment being re-added, hence the check
 			if ($appointment->_isNew()) {
 				$this->appointmentRepository->add($appointment);
+				#currently, persist happens within add
+				#$this->appointmentRepository->persistChanges(); //because $appointment is used as argument @ redirect() and thus to be serialized by uriBuilder (which requires an uid)
 				$timerStart = TRUE;
 			} else {
 
@@ -275,7 +276,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 				$this->appointmentRepository->update($appointment);
 			}
-			$this->slotService->resetStorageObject($appointment->getType(),$this->agenda); //necessary to persist changes to the available timeslots
 
 
 			if ($timerStart) {
@@ -342,7 +342,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		} else {
 			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::FINISHED);
 			$this->appointmentRepository->update($appointment);
-			$this->slotService->resetStorageObject($appointment->getType(),$this->agenda); //persist changes in timeslots, in case they were freed up for some reason
 
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_success', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
@@ -411,8 +410,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
 
-			$this->slotService->resetStorageObject($appointment->getType(),$appointment->getAgenda()); //persist changes in timeslots, in case they were freed up for some reason
-
 			$this->performMailingActions('update',$appointment);
 
 			$this->redirect('list');
@@ -430,8 +427,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->appointmentRepository->remove($appointment);
 		$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_delete_success', $this->extensionName);
 		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
-
-		$this->slotService->resetStorageObject($appointment->getType(),$appointment->getAgenda()); //persist changes in timeslots
 
 		$this->performMailingActions('delete',$appointment);
 
@@ -451,7 +446,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		//set it to expired to free up the timeslot, but still pass along the appointment so that it may be reconstituted in the same session
 		$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
 		$this->appointmentRepository->update($appointment);
-		$this->slotService->resetStorageObject($appointment->getType(),$this->agenda); //persist changes in timeslots
 
 		$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_free_success', $this->extensionName);
 		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);

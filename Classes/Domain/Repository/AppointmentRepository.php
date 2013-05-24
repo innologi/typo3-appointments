@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -39,6 +39,11 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	protected $persistenceManager;
 
 	/**
+	 * @var Tx_Appointments_Domain_Service_SlotService
+	 */
+	protected $slotService;
+
+	/**
 	 * @param Tx_Appointments_Persistence_Manager $persistenceManager
 	 * @return void
 	 */
@@ -46,6 +51,21 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		$this->persistenceManager = $persistenceManager;
 		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
 	}
+
+	/**
+	 * Injects the Slot Service
+	 *
+	 * @param Tx_Appointments_Domain_Service_SlotService $slotService
+	 * @return void
+	 */
+	public function injectSlotService(Tx_Appointments_Domain_Service_SlotService $slotService) {
+		$this->slotService = $slotService;
+	}
+
+
+	//************************
+	// Query Result functions
+	//************************
 
 	/**
 	 * Returns all objects of this repository belonging to Agenda, Types and FrontendUser, and optionally
@@ -185,7 +205,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 
 		$constraint = array(
 			//apparently, if $agenda isn't validated separately, its lazy storages aren't resolved, which generates an exception, hence we'll stick with its uid
-			$query->equals('agenda', $appointment->getAgenda()->getUid()),
+			$query->equals('agenda', $appointment->getAgenda()->getUid()), #@TODO _is the getUid() still necessary?
 			$query->logicalNot(
 					$query->equals('uid', $appointment->getUid())
 			),
@@ -237,10 +257,11 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 *
 	 * An unfinished appointment expires counting from its crdate, NOT its tstamp!
 	 *
+	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to check
 	 * @param integer $expireMinutes The number of minutes since creation date
 	 * @return array An array of objects, empty if no objects found
 	 */
-	public function findExpiredUnfinished($expireMinutes = 15) {
+	public function findExpiredUnfinished(Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes = 15) {
 		if ($expireMinutes < 1) {
 			$expireMinutes = 15;
 		}
@@ -248,6 +269,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		$query = $this->createQuery();
 		$result = $query->matching(
 				$query->logicalAnd( array(
+						$query->equals('agenda', $agenda),
 						$query->lessThanOrEqual('crdate', time() - ($expireMinutes * 60)),
 						$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::UNFINISHED)
 					)
@@ -255,6 +277,11 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		)->execute()->toArray();
 		return $result;
 	}
+
+
+	//***************************
+	// Query Result Manipulation
+	//***************************
 
 	/**
 	 * Rearranges an appointment array in a multidimensional array per timeblock.
@@ -291,6 +318,11 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		return $resultArray;
 	}
 
+
+	//*********************************
+	// Override functions / variations
+	//*********************************
+
 	/**
 	 * Persists all changes manually.
 	 *
@@ -300,5 +332,41 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		$this->persistenceManager->persistRepository($this);
 	}
 
+	/**
+	 * Adds an object to this repository
+	 *
+	 * @param object $object The object to add
+	 * @return void
+	 */
+	public function add($object) {
+		parent::add($object);
+		$this->persistChanges(); //because the only use add() sees requires persisting
+		$this->slotService->resetStorageObject($object->getType(), $object->getAgenda());
+	}
+
+	/**
+	 * Replaces an existing object with the same identifier by the given object
+	 *
+	 * @param object $modifiedObject The modified object
+	 * @param boolean $resetStorageObject If set to FALSE, won't reset storage object automatically
+	 * @return void
+	 */
+	public function update($modifiedObject, $resetStorageObject = TRUE) {
+		parent::update($modifiedObject);
+		if ($resetStorageObject) {
+			$this->slotService->resetStorageObject($modifiedObject->getType(), $modifiedObject->getAgenda());
+		}
+	}
+
+	/**
+	 * Removes an object from this repository.
+	 *
+	 * @param object $object The object to remove
+	 * @return void
+	 */
+	public function remove($object) {
+		parent::remove($object);
+		$this->slotService->resetStorageObject($object->getType(), $object->getAgenda());
+	}
 }
 ?>
