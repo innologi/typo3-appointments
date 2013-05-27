@@ -413,7 +413,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		$excludeHolidays = $type->getExcludeHolidays();
 		$dateTime = new DateTime();
 		if (!$this->intervalBasedShifting) { //if intervalbased shifting isn't enabled, just move starting point to midnight
-			$dateTime->modify('+1 day')->setTime(0,0);
+			$dateTime->modify('+1 day')->setTime(0,0); #@TODO _make the time configurable?
 		}
 		$now = $dateTime->getTimestamp();
 		$dateTime->modify("+$offsetHours hours"); //this sets the DateTime object at the offset to start finding slots

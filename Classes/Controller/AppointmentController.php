@@ -197,7 +197,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('dateSlots', $dateSlots);
 		$this->view->assign('types', $types);
 		$this->view->assign('appointment', $appointment);
-		$this->view->assign('timeError', $timeError); #@TODO don't we need excludedArguments on back & dateFirst links? Or is there another way to do this var?
+		$this->view->assign('timeError', $timeError); #@TODO is there another way to do this var? something in initializeCreateAction?
 	}
 
 	/**
