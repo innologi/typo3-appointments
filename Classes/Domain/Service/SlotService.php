@@ -271,12 +271,13 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 				$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
 				//this is really the only reason we have a boolean in update()'s arguments: prevent multiple resets for a single type
 				$this->appointmentRepository->update($appointment,FALSE);
-				$types->attach($appointment->getType()); //this makes sure we only reset each type's storageObject once, so that we don't make redundant cache queries
+				#$types->attach($appointment->getType()); //this makes sure we only reset each type's storageObject once, so that we don't make redundant cache queries
 			}
 			$this->appointmentRepository->persistChanges(); //persist the changed appointments because persistAll() isn't up until after rebuilding slotStorages
-			foreach ($types as $type) { //reset after persist is always better, because this way nothing gets rebuild in another request before persisting
-				$this->resetStorageObject($type,$agenda);
-			}
+			#foreach ($types as $type) { //reset after persist is always better, because this way nothing gets rebuild in another request before persisting
+				#$this->resetStorageObject($type,$agenda);
+			#}
+			$this->resetStorageObject($appointment->getType(),$agenda);
 			return TRUE;
 		}
 		return FALSE;
@@ -959,24 +960,25 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function resetStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
-		$typeUid = $type->getUid();
+		$types = $agenda->getTypes();
+		foreach ($types as $type) { #@FIXME _currently also resets those with exclusive availability, those could be an exception here, which proves the $type arg useful again
+			$typeUid = $type->getUid();
+			$key = $this->getCacheKey($type, $agenda);
 
-		#@FIXME it doesn't reset other types, although they are affected unless they have exclusiveAvailability on.. maybe the alterStorageObject wasn't such a bad idea, using it to clean a number of days AROUND beginTime, of every Type except exclusive availability types? That would seriously cut back the overhead if maxDaysForward is huge and/or there are tons of types
-		$key = $this->getCacheKey($type, $agenda);
+			$id = 'dateSlotStorage';
+			$cacheContent = $this->getCache($key,$id);
+			if (isset($cacheContent)) {
+				$this->setCache($key,$id,NULL);
+			}
+			$id = 'singleDateSlotStorage';
+			$cacheContent = $this->getCache($key,$id);
+			if (isset($cacheContent)) {
+				$this->setCache($key,$id,NULL);
+			}
 
-		$id = 'dateSlotStorage';
-		$cacheContent = $this->getCache($key,$id);
-		if (isset($cacheContent)) {
-			$this->setCache($key,$id,NULL);
+			unset($this->dateSlots[$typeUid]);
+			unset($this->singleDateSlots[$typeUid]);
 		}
-		$id = 'singleDateSlotStorage';
-		$cacheContent = $this->getCache($key,$id);
-		if (isset($cacheContent)) {
-			$this->setCache($key,$id,NULL);
-		}
-
-		unset($this->dateSlots[$typeUid]);
-		unset($this->singleDateSlots[$typeUid]);
 
 		#@SHOULD imagine a different approach to building and caching storageObjects:
 		/*
