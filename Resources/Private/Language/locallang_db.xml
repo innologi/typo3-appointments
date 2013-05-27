@@ -25,6 +25,7 @@
 			<label index="tx_appointments_domain_model_agenda">Agenda</label>
 			<label index="tx_appointments_domain_model_agenda.name">Name</label>
 			<label index="tx_appointments_domain_model_agenda.holidays">Holidays</label>
+			<label index="tx_appointments_domain_model_agenda.types">Appointment Types</label>
 			<label index="tx_appointments_domain_model_agenda.email_address">Email Address</label>
 			<label index="tx_appointments_domain_model_agenda.email_text">Email Body Text</label>
 			<label index="tx_appointments_domain_model_agenda.calendar_invite_address">Calendar Invite Address</label>
@@ -156,6 +157,7 @@
 			<label index="tx_appointments_domain_model_agenda">Agenda</label>
 			<label index="tx_appointments_domain_model_agenda.name">Naam</label>
 			<label index="tx_appointments_domain_model_agenda.holidays">Feestdagen</label>
+			<label index="tx_appointments_domain_model_agenda.types">Afspraak Typen</label>
 			<label index="tx_appointments_domain_model_agenda.email_address">E-mail Adres</label>
 			<label index="tx_appointments_domain_model_agenda.email_text">E-mail Tekst</label>
 			<label index="tx_appointments_domain_model_agenda.calendar_invite_address">Kalender Uitnodiging Adres</label>

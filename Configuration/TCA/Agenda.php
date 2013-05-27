@@ -16,10 +16,10 @@ $appointments_agenda_checkboxes = array(
 $TCA['tx_appointments_domain_model_agenda'] = array(
 	'ctrl' => $TCA['tx_appointments_domain_model_agenda']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, holidays, email_address, email_text, email_types, email_owner_types, calendar_invite_address, calendar_invite_text, calendar_invite_types',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, holidays, types, email_address, email_text, email_types, email_owner_types, calendar_invite_address, calendar_invite_text, calendar_invite_types',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, holidays,
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, types, holidays,
 				--div--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.div.email,
 					--palette--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.palette.email_types;email_types,
 						email_address, email_text,
@@ -130,6 +130,18 @@ $TCA['tx_appointments_domain_model_agenda'] = array(
 				'cols' => 40,
 				'rows' => 15,
 				'eval' => 'nospace' #@SHOULD custom regexp validation
+			),
+		),
+		'types' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.types', #@TODO _csh
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'tx_appointments_domain_model_type',
+				'size' => 10,
+				'autoSizeMax' => 30,
+				'maxitems' => 9999,
+				'multiple' => 0,
 			),
 		),
 		'email_address' => array(

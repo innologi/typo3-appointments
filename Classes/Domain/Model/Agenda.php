@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -25,7 +25,7 @@
  ***************************************************************/
 
 /**
- *
+ * Agenda domain model
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
@@ -37,9 +37,8 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	 * Name of agenda
 	 *
 	 * @var string
-	 * @validate NotEmpty
 	 */
-	protected $name;
+	protected $name; //validate NotEmpty
 
 	/**
 	 * Holiday dates, one on each line
@@ -56,6 +55,15 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	 */
 	protected $holidayArray;
 
+	/**
+	 * Types
+	 *
+	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Type>
+	 * @lazy
+	 */
+	protected $types;
+	#@FIXME _perhaps we do need different storages for the types, or subTypes .. storing their status in the type themselves and relying on TYPO3's clipboard to make copy's and create the same appointment types with a different name and status is way redundant and not flexible
+	#@TODO _type needs a setting that says whether other appointments of which ones count towards their max
 	/**
 	 * Email types
 	 *
@@ -128,6 +136,7 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
+		$this->types = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->emailAddress = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->calendarInviteAddress = new Tx_Extbase_Persistence_ObjectStorage();
 	}
@@ -190,6 +199,45 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	public function setHolidayArray() {
 		$holidays = str_replace("\r\n","\n",$this->holidays);
 		$this->holidayArray = array_flip(t3lib_div::trimExplode("\n", $holidays, 1));
+	}
+
+	/**
+	 * Adds a Type
+	 *
+	 * @param Tx_Appointments_Domain_Model_Type $type
+	 * @return void
+	 */
+	public function addTypes(Tx_Appointments_Domain_Model_Type $type) {
+		$this->types->attach($type);
+	}
+
+	/**
+	 * Removes a Type
+	 *
+	 * @param Tx_Appointments_Domain_Model_Type $typeToRemove The Type to be removed
+	 * @return void
+	 */
+	public function removeTypes(Tx_Appointments_Domain_Model_Type $typeToRemove) {
+		$this->types->detach($typeToRemove);
+	}
+
+	/**
+	 * Returns types
+	 *
+	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Type> $types
+	 */
+	public function getTypes() {
+		return $this->types;
+	}
+
+	/**
+	 * Sets types
+	 *
+	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Type> $types
+	 * @return void
+	 */
+	public function setTypes(Tx_Extbase_Persistence_ObjectStorage $types) {
+		$this->types = $types;
 	}
 
 	/**

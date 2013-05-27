@@ -32,7 +32,7 @@
  *
  */
 class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Extbase_Persistence_Repository {
-
+	#@FIXME _the use of this function has changed, so you might want to look if the function itself might benefit from a change
 	/**
 	 * Returns all objects of this repository belonging to the provided category
 	 *

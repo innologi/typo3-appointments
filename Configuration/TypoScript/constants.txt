@@ -26,8 +26,8 @@ plugin.tx_appointments {
 		agendaUid = 
 		# cat=plugin.tx_appointments/c_plugins/030; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_suGroup
 		suGroup = 
-		# cat=plugin.tx_appointments/c_plugins/020; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_appointmentTypeList
-		appointmentTypeList =
+		#cat=plugin.tx_appointments/c_plugins/020; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_appointmentTypeList
+		#appointmentTypeList =
 		# cat=plugin.tx_appointments/d_agenda/010; type=boolean; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_allowCreate
 		allowCreate = 0
 		# cat=plugin.tx_appointments/d_agenda/020; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaBack

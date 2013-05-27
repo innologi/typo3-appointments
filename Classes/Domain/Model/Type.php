@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -37,9 +37,8 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Name of type
 	 *
 	 * @var string
-	 * @validate NotEmpty
 	 */
-	protected $name;
+	protected $name; //validate NotEmpty
 
 	/**
 	 * Superuser only?
@@ -91,9 +90,8 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Default duration
 	 *
 	 * @var integer
-	 * @validate Integer
 	 */
-	protected $defaultDuration;
+	protected $defaultDuration; //validate Integer
 
 	/**
 	 * Earliest possible time to make appointments on Mondays
@@ -204,177 +202,155 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Number of appointments allowed on Mondays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
-	protected $maxAmountMonday;
+	protected $maxAmountMonday; //validate NumberRange(startRange=0,endRange=1440)
 
 	/**
 	 * Number of appointments allowed on Tuesdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
-	protected $maxAmountTuesday;
+	protected $maxAmountTuesday; //validate NumberRange(startRange=0,endRange=1440)
 
 	/**
 	 * Number of appointments allowed on Wednesdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
-	protected $maxAmountWednesday;
+	protected $maxAmountWednesday; //validate NumberRange(startRange=0,endRange=1440)
 
 	/**
 	 * Number of appointments allowed on Thursdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
-	protected $maxAmountThursday;
+	protected $maxAmountThursday; //validate NumberRange(startRange=0,endRange=1440)
 
 	/**
 	 * Number of appointments allowed on Fridays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
-	protected $maxAmountFriday;
+	protected $maxAmountFriday; //validate NumberRange(startRange=0,endRange=1440)
 
 	/**
 	 * Number of appointments allowed on Saturdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
-	protected $maxAmountSaturday;
+	protected $maxAmountSaturday; //validate NumberRange(startRange=0,endRange=1440)
 
 	/**
 	 * Number of appointments allowed on Sundays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=0,endRange=1440)
 	 */
-	protected $maxAmountSunday;
+	protected $maxAmountSunday; //validate NumberRange(startRange=0,endRange=1440)
 
 	/**
 	 * Number of minutes between allowed appointment time-slots on Mondays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
-	protected $minuteIntervalMonday;
+	protected $minuteIntervalMonday; //validate NumberRange(startRange=1,endRange=1440)
 
 	/**
 	 * Number of minutes between allowed appointment time-slots on Tuesdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
-	protected $minuteIntervalTuesday;
+	protected $minuteIntervalTuesday; //validate NumberRange(startRange=1,endRange=1440)
 
 	/**
 	 * Number of minutes between allowed appointment time-slots on Wednesdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
-	protected $minuteIntervalWednesday;
+	protected $minuteIntervalWednesday; //validate NumberRange(startRange=1,endRange=1440)
 
 	/**
 	 * Number of minutes between allowed appointment time-slots on Thursdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
-	protected $minuteIntervalThursday;
+	protected $minuteIntervalThursday; //validate NumberRange(startRange=1,endRange=1440)
 
 	/**
 	 * Number of minutes between allowed appointment time-slots on Fridays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
-	protected $minuteIntervalFriday;
+	protected $minuteIntervalFriday; //validate NumberRange(startRange=1,endRange=1440)
 
 	/**
 	 * Number of minutes between allowed appointment time-slots on Saturdays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
-	protected $minuteIntervalSaturday;
+	protected $minuteIntervalSaturday; //validate NumberRange(startRange=1,endRange=1440)
 
 	/**
 	 * Number of minutes between allowed appointment time-slots on Sundays
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=1,endRange=1440)
 	 */
-	protected $minuteIntervalSunday;
+	protected $minuteIntervalSunday; //validate NumberRange(startRange=1,endRange=1440)
 
 	/**
 	 * Overrules the allowed cumulative amount of appointments over X consecutive days
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=0,endRange=10080)
 	 */
-	protected $maxAmountPerVarDays;
+	protected $maxAmountPerVarDays; //validate NumberRange(startRange=0,endRange=10080)
 
 	/**
 	 * X consecutive days
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=0,endRange=7)
 	 */
-	protected $perVarDays;
+	protected $perVarDays; //validate NumberRange(startRange=0,endRange=7)
 
 	/**
 	 * X consecutive days test interval & buffer
 	 *
 	 * @var integer
-	 * @validate NumberRange(startRange=0,endRange=168)
 	 */
-	protected $perVarDaysInterval;
+	protected $perVarDaysInterval; //validate NumberRange(startRange=0,endRange=168)
 
 	/**
 	 * Number of minutes reserved between, before, and after appointments
 	 *
 	 * @var integer
-	 * @validate Integer
 	 */
-	protected $betweenMinutes;
+	protected $betweenMinutes; //validate Integer
 
 	/**
 	 * Number of hours the appointment can be changed after being scheduled.
 	 *
 	 * @var integer
-	 * @validate Integer
 	 */
-	protected $hoursMutable;
+	protected $hoursMutable; //validate Integer
 
 	/**
 	 * Number of hours blocked until first appointment the user is able to schedule
 	 *
 	 * @var integer
-	 * @validate Integer
 	 */
-	protected $blockedHours;
+	protected $blockedHours; //validate Integer
 
 	/**
 	 * Number of hours blocked from workdays, in case blocked hours fall in weekend
 	 *
 	 * @var integer
-	 * @validate Integer
 	 */
-	protected $blockedHoursWorkdays;
+	protected $blockedHoursWorkdays; //validate Integer
 
 	/**
 	 * Maximum days forward available to schedule
 	 *
 	 * @var integer
-	 * @validate Integer
 	 */
-	protected $maxDaysForward;
+	protected $maxDaysForward; //validate Integer
 
 	/**
 	 * If set, disables the entire address

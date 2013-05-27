@@ -120,7 +120,7 @@ plugin.tx_appointments {
 	}
 	settings {
 		agendaUid = {$plugin.tx_appointments.settings.agendaUid}
-		appointmentTypeList = {$plugin.tx_appointments.settings.appointmentTypeList}
+		#appointmentTypeList = {$plugin.tx_appointments.settings.appointmentTypeList}
 		allowCreate = {$plugin.tx_appointments.settings.allowCreate}
 		agendaBack = {$plugin.tx_appointments.settings.agendaBack}
 		agendaForward = {$plugin.tx_appointments.settings.agendaForward}

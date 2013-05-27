@@ -72,14 +72,15 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		$allowTypes = $this->getTypes();
 
 		#@TODO enable/disable whether superuser type APPOINTMENTS should be SHOWN to non-superusers? or even better: what about picking showTypes separately?
-		$allowTypes = $allowTypes->toArray(); //we need them to be array because their args in repository function isn't a queryResult @ all uses
+		#$allowTypes = $allowTypes->toArray(); //we need them to be array because their args in repository function isn't a queryResult @ all uses #@FIXME _cleanup
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
-		if ($superUser) {
-			$showTypes = $allowTypes;
-		} else {
-			$showTypes = empty($this->typeUidArray) ? $this->typeRepository->findAll(TRUE) : $this->typeRepository->findIn($this->typeUidArray,TRUE);
-			$showTypes = $showTypes->toArray();
-		}
+		#if ($superUser) { @FIXME _cleanup
+		#	$showTypes = $allowTypes;
+		#} else {
+		#	$showTypes = empty($this->typeUidArray) ? $this->typeRepository->findAll(TRUE) : $this->typeRepository->findIn($this->typeUidArray,TRUE);
+		#	$showTypes = $showTypes->toArray();
+		#}
+		$showTypes = $superUser ? $allowTypes : $this->agenda->getTypes()->toArray();
 
 		$modifier = intval($modifier);
 		$container = $this->$creationFunction($modifier,$this->agenda,$showTypes,$allowTypes);

@@ -59,6 +59,7 @@ CREATE TABLE tx_appointments_domain_model_agenda (
 
 	name varchar(255) DEFAULT '' NOT NULL,
 	holidays text NOT NULL,
+	types varchar(255) DEFAULT '' NOT NULL,
 	email_address int(11) unsigned DEFAULT '0' NOT NULL,
 	email_text text NOT NULL,
 	email_types tinyint(4) unsigned DEFAULT '0' NOT NULL,

@@ -93,7 +93,7 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 	 *
 	 * @var array
 	 */
-	protected $typeUidArray;
+	#protected $typeUidArray; #@FIXME _cleanup
 
 	/**
 	 * Indicates if user needs to be logged in
@@ -211,15 +211,16 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 	/**
 	 * Gets types according to settings.
 	 *
-	 * @return Tx_Extbase_Persistence_QueryResultInterface
+	 * @return array
 	 */
 	protected function getTypes() {
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 		$this->view->assign('superUser', $superUser);
 
-		$this->typeUidArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1);
-		$types = empty($this->typeUidArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($this->typeUidArray,$superUser);
-		if ($types->valid()) {
+		#$this->typeUidArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1); #@FIXME _need to reuse this as showTypes/allowTypes or something
+		#$types = empty($this->typeUidArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($this->typeUidArray,$superUser);
+		$types = $superUser ? $this->agenda->getTypes()->toArray() : $this->typeRepository->findIn($this->agenda->getTypes()->toArray())->toArray();
+		if (!empty($types)) {
 			//types found
 			return $types;
 		} else {
