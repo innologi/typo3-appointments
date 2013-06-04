@@ -31,7 +31,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Repository_FrontendUserGroupRepository extends Tx_Extbase_Persistence_Repository {
+class Tx_Appointments_Domain_Repository_FrontendUserGroupRepository extends Tx_Appointments_Persistence_NoPersistRepository {
 
 }
 ?>

@@ -4,7 +4,7 @@
  *  Copyright notice
  *
  *  (c) 2012 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,13 +25,13 @@
  ***************************************************************/
 
 /**
- *
+ * Agenda Repository
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Repository_AgendaRepository extends Tx_Extbase_Persistence_Repository {
+class Tx_Appointments_Domain_Repository_AgendaRepository extends Tx_Appointments_Persistence_NoPersistRepository {
 
 }
 ?>

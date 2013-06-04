@@ -34,23 +34,9 @@
 class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase_Persistence_Repository {
 
 	/**
-	 * @var Tx_Appointments_Persistence_Manager
-	 */
-	protected $persistenceManager;
-
-	/**
 	 * @var Tx_Appointments_Domain_Service_SlotService
 	 */
 	protected $slotService;
-
-	/**
-	 * @param Tx_Appointments_Persistence_Manager $persistenceManager
-	 * @return void
-	 */
-	public function injectPersistenceManager(Tx_Appointments_Persistence_Manager $persistenceManager) {
-		$this->persistenceManager = $persistenceManager;
-		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
-	}
 
 	/**
 	 * Injects the Slot Service
@@ -329,7 +315,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @return void
 	 */
 	public function persistChanges() {
-		$this->persistenceManager->persistRepository($this);
+		$this->persistenceManager->persistAll();
 	}
 
 	/**

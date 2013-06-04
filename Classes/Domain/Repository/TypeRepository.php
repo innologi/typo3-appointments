@@ -31,7 +31,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Extbase_Persistence_Repository {
+class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Appointments_Persistence_NoPersistRepository {
 	#@FIXME _the use of this function has changed, so you might want to look if the function itself might benefit from a change
 	/**
 	 * Returns all objects of this repository belonging to the provided category

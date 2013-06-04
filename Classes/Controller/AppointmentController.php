@@ -402,7 +402,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function deleteAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->appointmentRepository->remove($appointment);
-		#$this->appointmentRepository->persistChanges(); #@FIXME gemhmk FIX .. wtf, why isn't this persisted without this command here? Isn't persistAll() called after redirect()?
 		$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_delete_success', $this->extensionName);
 		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
 

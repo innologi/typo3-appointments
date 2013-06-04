@@ -28,6 +28,20 @@
  *
  * Adds a method to persist a single repository, as well as session.
  *
+ * CURRENTLY UNUSED: using this one in a repository means every add() and remove(), you'll
+ * need to persist manually, in addition to the automatic persistAll() that happens in the
+ * normal repository singleton. WHY? Because a repository stores itself in the
+ * persistencemanager it refers to, the pesistencemanager is a singleton which stores
+ * those references globally in its single instance, and thus the normal persistencemanager
+ * instantiated by Bootstrap never registers our repository. update() calls DO get persisted
+ * by it, because the replace() method stores these changes also in the session singleton,
+ * which is checked as well @ persistAll().
+ *
+ * Add to this the compatibility issues that might arise in major version changes when
+ * changing core classes, as well as the use of this class' method having been DRASTICALLY
+ * reduced: the tiny performance-gain that might still be there is hardly worth the
+ * sacrifice of software quality I made here.
+ *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
