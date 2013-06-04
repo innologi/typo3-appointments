@@ -107,11 +107,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @param string $dateFirst The timestamp that should be set before a type was already chosen
-	 * @param string $timeError Indicates there is a timeerror that needs to be assigned to view
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
-	public function new1Action(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL, $timeError = NULL) {
+	public function new1Action(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL) {
 		//find types
 		$types = $this->getTypes();
 		#@SHOULD in a seperate action that forwards/redirects or not.. consider the extra overhead, it's probably not worth it
@@ -142,24 +141,22 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			if ($appointment->getBeginTime() !== NULL) {
 				//date chosen! (or dateFirst)
 
-				//an impossible type/date combo will result in $timeSlots == FALSE, so the user can't continue without re-picking
 				$timeSlots = $this->slotService->getTimeSlots($dateSlots,$appointment);
-				if ($timeSlots) {
-					if (!$appointment->_isNew()) { //will show disabledform, so requires formFieldValues to be assigned
-						$formFieldValues = $appointment->getFormFieldValues();
-						$formFields = clone $appointment->getType()->getFormFields(); //formFields is modified for this process but not to persist, hence clone
-						$formFieldValues = $this->addMissingFormFields($formFields,$formFieldValues);
-						//adding the formFieldValues already will get them persisted too soon, empty and unused, so we're assigning them separately from $appointment
-						$this->view->assign('formFieldValues', $formFieldValues);
-					}
+				$this->view->assign('timeSlots', $timeSlots); //an impossible type/date combo will result in $timeSlots == FALSE, so the user can't continue without re-picking
+
+				//will show disabledform, so requires formFieldValues to be assigned
+				if (!$appointment->_isNew()) {
+					$formFieldValues = $appointment->getFormFieldValues();
+					$formFields = clone $appointment->getType()->getFormFields(); //formFields is modified for this process but not to persist, hence clone
+					$formFieldValues = $this->addMissingFormFields($formFields,$formFieldValues);
+					//adding the formFieldValues already will get them persisted too soon, empty and unused, so we're assigning them separately from $appointment
+					$this->view->assign('formFieldValues', $formFieldValues);
 				}
-				$this->view->assign('timeSlots', $timeSlots);
 			}
 		}
 
 		$this->view->assign('types', $types);
 		$this->view->assign('appointment', $appointment);
-		$this->view->assign('timeError', $timeError);
 	}
 
 	/**
@@ -170,11 +167,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * and displays a timer for the timeslot reservation.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
-	 * @param string $timeError Indicates there is a timeerror that needs to be assigned to view
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
-	public function new2Action(Tx_Appointments_Domain_Model_Appointment $appointment, $timeError = NULL) {
+	public function new2Action(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		#$this->appointmentRepository->update($appointment); //was necessary to retain fieldvalues of validation-error-returned appointments
 
 		//limit the available types by the already chosen timeslot
@@ -197,7 +193,6 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('dateSlots', $dateSlots);
 		$this->view->assign('types', $types);
 		$this->view->assign('appointment', $appointment);
-		$this->view->assign('timeError', $timeError); #@TODO is there another way to do this var? something in initializeCreateAction?
 	}
 
 	/**
@@ -227,11 +222,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * the appropriate action.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
-	 * @param boolean $crossAppointment Indicates an overlap caused by $appointment
 	 * @dontvalidate $appointment
 	 * @return void
 	 */
-	public function processNewAction(Tx_Appointments_Domain_Model_Appointment $appointment, $crossAppointment = '') {
+	public function processNewAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$arguments = array();
 		$appointment->setAgenda($this->agenda);
 		$appointment->setFeUser($this->feUser);
@@ -240,6 +234,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		if ($this->slotService->isTimeSlotAllowed($appointment)) {
 			$this->calculateTimes($appointment); //set the remaining DateTime properties of appointment
 			$timerStart = FALSE;
+			$action = 'new2';
+			$arguments['appointment'] = $appointment;
 
 
 			//when a validation error ensues, we don't want the unfinished appointment being re-added, hence the check
@@ -250,29 +246,19 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				$timerStart = TRUE;
 			} else {
 
-
 				//expired appointments should be refreshed
 				if ($appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::EXPIRED) { //it's possible to get here when expired and the appointment no longer exists, thus throwing an exception #@TODO caught by.. ? SettingsOverride? I don't remember!
-					//.. unless a crossAppointment check returned true
-					if ($crossAppointment) { //indicates there is an overlap caused by this appointment's own add-time formfield
-						#@TODO __can we indicate how much time overlaps?
-						$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName);
-						$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-						$arguments['timeError'] = 1;
+					//checks whether the timeslot was changed or not
+					$cleanBeginTime = $appointment->_getCleanProperty('beginTime');
+					if ($cleanBeginTime instanceof DateTime && $cleanBeginTime->getTimestamp() !== $appointment->getBeginTime()->getTimestamp()) {
+						$timerStart = TRUE;
 					} else {
-						//checks whether the timeslot was changed or not
-						$cleanBeginTime = $appointment->_getCleanProperty('beginTime');
-						if ($cleanBeginTime instanceof DateTime && $cleanBeginTime->getTimestamp() !== $appointment->getBeginTime()->getTimestamp()) {
-							$timerStart = TRUE;
-						} else {
-							//messages for the same timeslot again (refresh)
-							$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timerrefresh', $this->extensionName);
-							$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
-						}
-						$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED); #@TODO __cleanup task for expired records?
+						//messages for the same timeslot again (refresh)
+						$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timerrefresh', $this->extensionName);
+						$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 					}
+					$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED); #@TODO __cleanup task for expired records?
 				}
-
 
 				$this->appointmentRepository->update($appointment);
 			}
@@ -286,24 +272,17 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				);
 				$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 			}
-
-
-			$action = 'new2';
-			$arguments['appointment'] = $appointment;
 		} else {
-			//chosen timeslot is not allowed
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.timeslot_not_allowed', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+			$action = 'new1'; //if a timeslot is not allowed, we'll need to force the user to pick a new one
+			$timeErrorMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.timeslot_not_allowed', $this->extensionName);
 
-			$action = 'new1';
-
-			//this check prevents a uriBuilder exception @ redirect() if appointment wasn't persisted yet
-			if (!$appointment->_isNew()) {
-				$arguments['appointment'] = $appointment;
-				$arguments['timeError'] = 1; //has no use if appointment isn't passed along, as there would only be a type-form
+			//not adding appointment as argument prevents a uriBuilder exception @ redirect() if appointment wasn't persisted yet..
+			if (!$appointment->_isNew()) { //.. but since we're not redirecting if this condition returns TRUE, there's no need for it here anyway
+				$this->failTimeValidation($timeErrorMessage, $action);
+			} else { //if appointment wasn't persisted, there is no validation error to apply as there only a type-form #@TODO _couldn't we also pass along a timestamp through the dateFirst mechanism then? that would include the date and time fields again..
+				$this->flashMessageContainer->add($timeErrorMessage,'',t3lib_FlashMessage::ERROR);
 			}
 		}
-
 
 		//send to appropriate action
 		$this->redirect($action,NULL,NULL,$arguments);
@@ -332,13 +311,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		if ($this->crossAppointments($appointment)) { //an appointment was found that makes the current one's times not possible
 			//updating it as expired so the fields get saved while not blocking any appointment that might have caused crossAppointment to be TRUE
 			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
-			$this->appointmentRepository->update($appointment);
-			//not resetting the storage object just yet because this one still has a chance regaining his prematurely ended reservation
-			$arguments = array(
-				'appointment' => $appointment,
-				'crossAppointment' => TRUE
-			);
-			$this->redirect('processNew',NULL,NULL,$arguments);
+			$this->appointmentRepository->update($appointment, FALSE); //not resetting the storage object just yet because this one still has a chance regaining his prematurely ended reservation
+
+			#@TODO __can we indicate how much time overlaps?
+			$timeErrorMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName);
+			$this->failTimeValidation($timeErrorMessage,'new2');
 		} else {
 			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::FINISHED);
 			$this->appointmentRepository->update($appointment);
@@ -425,6 +402,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function deleteAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->appointmentRepository->remove($appointment);
+		#$this->appointmentRepository->persistChanges(); #@FIXME gemhmk FIX .. wtf, why isn't this persisted without this command here? Isn't persistAll() called after redirect()?
 		$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_delete_success', $this->extensionName);
 		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
 
@@ -478,7 +456,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue> $formFieldValues
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
 	 */
-	protected function addMissingFormFields(Tx_Extbase_Persistence_ObjectStorage $formFields, Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
+	protected function addMissingFormFields(Tx_Extbase_Persistence_ObjectStorage $formFields, Tx_Extbase_Persistence_ObjectStorage $formFieldValues) { #@TODO _can we once again check if this doesn't just readd everything? There were some artifacts last time I debugged this
 		$items = array();
 		$order = array();
 
@@ -554,7 +532,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				switch ($fieldType) {
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE:
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL:
-						$timestamp += intval($value) * 60; #@TODO __tag these fields with f3-form-error class if {timeError} once T3 requirement is >4.5, so that I can do inline chaining (see example in ext_tables.php) OR I should assign an array to view that corresponds to formfields
+						$timestamp += intval($value) * 60;
 						break;
 					case Tx_Appointments_Domain_Model_FormField::TYPE_SELECT:
 						#@TODO moet mogelijk zijn met de timeAdd optie
@@ -672,6 +650,30 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.email_error', $this->extensionName);
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 		}
+	}
+
+	/**
+	 * Fails validation manually based on time-related fields.
+	 * It then forwards to requested $action.
+	 *
+	 * @param string $errorMsg The error message to give to the validation error
+	 * @param string $action The action to forward to
+	 * @return void
+	 */
+	protected function failTimeValidation($errorMsg, $action) {
+		//this marks the beginTime fields (date / time), and adds the validation error message to it
+		$propertyError = new Tx_Extbase_Validation_PropertyError('beginTime'); #@TODO __add other time related fields
+		$propertyError->addErrors(array(
+			new Tx_Extbase_Validation_Error($errorMsg,407501337)
+		));
+
+		//this adds the validation error to the appointment property, which identifies with a form's objectName
+		$error = new Tx_Extbase_Validation_PropertyError('appointment');
+		$error->addErrors(array($propertyError));
+
+		//set the errors within the request, which will survive the forward()
+		$this->request->setErrors(array($error));
+		$this->forward($action);
 	}
 
 }
