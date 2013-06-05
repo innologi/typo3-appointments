@@ -129,6 +129,7 @@ plugin.tx_appointments {
 		freeSlotInMinutes = {$plugin.tx_appointments.settings.freeSlotInMinutes}
 		shiftSlotPerInterval = {$plugin.tx_appointments.settings.shiftSlotPerInterval}
 		suGroup = {$plugin.tx_appointments.settings.suGroup}
+		redirectAfterSave = {$plugin.tx_appointments.settings.redirectAfterSave}
 	}
 	tsOverride {
 		checkFields = agendaUid,appointmentTypeList,suGroup,allowCreate

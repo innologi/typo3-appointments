@@ -329,7 +329,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 			$this->performMailingActions('create',$appointment);
 
-			$this->redirect('list');
+			$this->redirect($this->settings['redirectAfterSave'],NULL,NULL,
+					$this->settings['redirectAfterSave']=='show' ? array('appointment' => $appointment) : NULL
+			);
 		}
 	}
 
@@ -393,7 +395,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 			$this->performMailingActions('update',$appointment);
 
-			$this->redirect('list');
+			$this->redirect($this->settings['redirectAfterSave'],NULL,NULL,
+					$this->settings['redirectAfterSave']=='show' ? array('appointment' => $appointment) : NULL
+			);
 		}
 	}
 
