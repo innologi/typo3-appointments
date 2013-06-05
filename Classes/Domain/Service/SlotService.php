@@ -533,7 +533,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 					$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, $types, $excludeAppointment, 1);
 					$appointmentsTotalAmount = count($appointments);
-					$appointments = $this->appointmentRepository->rearrangeAppointmentArray($appointments, 24);
+					$appointments = $this->appointmentRepository->rearrangeAppointmentArray($appointments);
 					$appointmentsCurrent = isset($appointments[$currentDate]) ? $appointments[$currentDate] : array();
 					$appointmentsCurrentAmount = count($appointmentsCurrent);
 					if ($appointmentsCurrentAmount < $maxAmount) {

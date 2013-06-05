@@ -72,9 +72,9 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		$allowTypes = $this->getTypes();
 
 		#@TODO enable/disable whether superuser type APPOINTMENTS should be SHOWN to non-superusers? or even better: what about picking showTypes separately?
-		#$allowTypes = $allowTypes->toArray(); //we need them to be array because their args in repository function isn't a queryResult @ all uses #@FIXME _cleanup
+		#$allowTypes = $allowTypes->toArray(); //we need them to be array because their args in repository function isn't a queryResult @ all uses
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
-		#if ($superUser) { @FIXME _cleanup
+		#if ($superUser) {
 		#	$showTypes = $allowTypes;
 		#} else {
 		#	$showTypes = empty($this->typeUidArray) ? $this->typeRepository->findAll(TRUE) : $this->typeRepository->findIn($this->typeUidArray,TRUE);
@@ -198,7 +198,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		$currentDate = strftime('%d-%m-%Y');
 		$holidayArray = $agenda->getHolidayArray();
 		$appointments = $this->appointmentRepository->rearrangeAppointmentArray(
-				$this->appointmentRepository->findBetween($agenda, $start, $end, $showTypes), 24
+				$this->appointmentRepository->findBetween($agenda, $start, $end, $showTypes)
 		);
 		while ($start->getTimestamp() < $endTime) {
 			$week = new Tx_Extbase_Persistence_ObjectStorage();
