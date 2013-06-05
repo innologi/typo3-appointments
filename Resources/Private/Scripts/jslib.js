@@ -35,7 +35,6 @@ jQuery(document).ready(function() {
 	//respect REFRESH vars
 	var secondsUntilRefresh = null;
 	var respectMethod = null;
-	var headerRequest = null;
 	
 	//gets (int)seconds from a REFRESH string
 	function getRefreshSeconds(refreshString) {
@@ -64,35 +63,22 @@ jQuery(document).ready(function() {
 					var metaElem = jQuery('meta[http-equiv=REFRESH]'); //e.g. <meta http-equiv="REFRESH" content="1800; URL={url}" />
 					if (metaElem[0]) { //if there is a meta tag
 						secondsUntilRefresh = getRefreshSeconds(metaElem.attr('content'));
-					} else {
-						secondsUntilRefresh = -1; //disables respect REFRESH
 					}
 				} else if (respectMethod == 'header') { //read from header
 					//prepare a new HEAD request in order to be able to read the response REFRESH header
-					headerRequest = new XMLHttpRequest();
-					headerRequest.open('HEAD', document.location, true); //note that this produces a separate GET request (async)
-					headerRequest.send();
+					var jqxhr = jQuery.ajax({type:'HEAD'}).done(function() {
+						var refreshHeader = jqxhr.getResponseHeader('REFRESH'); //e.g. REFRESH: 1800;URL={url}
+						if (refreshHeader != null && refreshHeader.length) {
+							secondsUntilRefresh = getRefreshSeconds(refreshHeader);
+						}
+					});
 				} 
 				
 				//set the actual onbeforeunload event
 				window.onbeforeunload = function() {
 					//before calling the message, check if respect REFRESH needs to disable it
-					if (respectMethod != 'none' && secondsUntilRefresh != -1) {
-						if (secondsUntilRefresh == null) { //never TRUE if respectMethod == meta-tag
-							//try to get seconds from headerRequest
-							if (respectMethod == 'header' && headerRequest != null && typeof(headerRequest.responseText) != 'unknown') {
-								header = headerRequest.getResponseHeader('REFRESH'); //e.g. REFRESH: 1800; URL={url}
-								if (header != null && header.length) {
-									secondsUntilRefresh = getRefreshSeconds(header);
-								}
-							}
-						}
-						
-						if (secondsUntilRefresh == null) {
-							secondsUntilRefresh = -1; //failed to get seconds so far, so disable respect REFRESH for current request
-						} else {
-							haveRefreshSecondsPassed(); //disables warnUnload if REFRESH seconds passed
-						}
+					if (secondsUntilRefresh != null) {
+						haveRefreshSecondsPassed(); //disables warnUnload if REFRESH seconds passed
 					}
 					
 					//calls message if not disabled
