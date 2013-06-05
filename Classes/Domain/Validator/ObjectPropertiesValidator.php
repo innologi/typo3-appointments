@@ -47,7 +47,7 @@ class Tx_Appointments_Domain_Validator_ObjectPropertiesValidator extends Tx_Appo
 	 */
 	public function isValid($value) {
 		if (!is_object($value)) { //also works on objectStorage objects
-			throw new Tx_Appointments_MVC_Exception_PropertyDeleted('One or more object-properties are not available.', 407501337);
+			throw new Tx_Appointments_MVC_Exception_PropertyDeleted();
 		}
 
 		$validatorResolver = $this->objectManager->get('Tx_Appointments_Validation_VariableValidatorResolver');

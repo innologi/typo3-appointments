@@ -33,5 +33,9 @@
  */
 class Tx_Appointments_MVC_Exception_PropertyDeleted extends Tx_Extbase_MVC_Exception {
 
+	protected $message = 'One or more object-properties are not available.';
+
+	protected $code = 407501337;
+
 }
 ?>
