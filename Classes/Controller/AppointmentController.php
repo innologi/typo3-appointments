@@ -317,6 +317,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$timeErrorMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName);
 			$this->failTimeValidation($timeErrorMessage,'new2');
 		} else {
+			#@SHOULD remove if TYPO3 version dependency is raised
+			if (version_compare(TYPO3_branch, '4.7', '<') && $appointment->getAddress() !== NULL) {
+				$appointment->getAddress()->setName(); //otherwise, it isn't set until show
+			}
 			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::FINISHED);
 			$this->appointmentRepository->update($appointment);
 
