@@ -250,7 +250,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			if (!is_object($type) || !is_object($feUser)
 					|| ( !is_object($address) && !$type->getAddressDisable() )
 			) {
-				throw new Tx_Appointments_MVC_Exception_PropertyDeleted('One or more object-properties of ' . get_class($appointment) . ':' . $appointment->getUid() . ' are not available and might have been deleted.', 407501337);
+				throw new Tx_Appointments_MVC_Exception_PropertyDeleted('One or more object-properties of ' . get_class($appointment) . ':' . $appointment->getUid() . ' are not available and might have been deleted.');
 			}
 
 			//replaces variables
