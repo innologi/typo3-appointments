@@ -34,7 +34,13 @@
 			<label index="tx_appointments_list.no">No</label>
 			<label index="tx_appointments_list.appointment_create_success">Your appointment was created.</label>
 			<label index="tx_appointments_list.appointment_create_no_types">It is not possible to schedule an appointment on the chosen day (anymore), please pick another day.</label>
-			<label index="tx_appointments_list.appointment_create_crosstime">The appointment could not be saved, because its length would result in an overlap with other appointments. Please try to change the length of the appointment or try a different timeslot.</label>
+			<label index="tx_appointments_list.crosstime_title">Conflicting times</label>
+			<label index="tx_appointments_list.crosstime_info">Your appointment could not be saved, because the times you desired would conflict with other appointments.
+%s</label>
+			<label index="tx_appointments_list.crosstime_begin">
+- Begintime (%s) has a %d-minute overlap with an earlier appointment</label>
+			<label index="tx_appointments_list.crosstime_end">
+- Endtime (%s) has a %d-minute overlap with a later appointment</label>
 			<label index="tx_appointments_list.appointment_timerstart">Your chosen timeslot is now reserved temporarily by you. The timeslot is unavailable for $1 minutes, so that you can fill out the form and schedule the appointment for the chosen time. If you did not finish creating the appointment before the timer runs out, then the timeslot will be made available again for you or someone else.</label>
 			<label index="tx_appointments_list.appointment_timer_header">Timeslot is reserved temporarily by you.</label>
 			<label index="tx_appointments_list.appointment_timer">Will automatically be available again after: $1</label>
@@ -56,6 +62,8 @@
 			<label index="tx_appointments_list.email_error">Notification by email failed because of an error. Please notify the site-administrator!</label>
 			<label index="tx_appointments_list.csh">Help</label>
 			
+			<label index="tx_appointments_list.time_validation_error">This field adds to the appointment-duration. Please review if changing it is an option to resolve the time-conflict.</label>
+			<label index="error.appointment.beginTime.407501337">If you have no other option, you might have to renew the appointment with another timeslot.</label>
 			<label index="error.address.firstName.1221560718">Should not be empty.</label>
 			<label index="error.address.lastName.1221560718">Should not be empty.</label>
 			<label index="error.address.birthday.1238087674">Should be a valid date in &apos;dd-mm-yyyy&apos; format, e.g. 24-12-1951</label>
@@ -190,8 +198,14 @@
 			<label index="tx_appointments_list.yes">Ja</label>
 			<label index="tx_appointments_list.no">Nee</label>
 			<label index="tx_appointments_list.appointment_create_success">Uw afspraak is aangemaakt.</label>
-			<label index="tx_appointments_list.appointment_create_crosstime">De afspraak kon niet opgeslagen worden, omdat de gewenste tijdsduur de afspraak in conflict brengt met tijden van andere afspraken. Probeer een ander tijdstip/tijdsduur.</label>
 			<label index="tx_appointments_list.appointment_create_no_types">Er zijn geen (nieuwe) afspraken mogelijk op de door u gekozen datum, kies s.v.p. een andere dag.</label>
+			<label index="tx_appointments_list.crosstime_title">Tijdsconflict</label>
+			<label index="tx_appointments_list.crosstime_info">Uw afspraak kan niet opgeslagen worden, omdat de de door u gewenste tijden in conflict zijn met andere afspraken.
+%s</label>
+			<label index="tx_appointments_list.crosstime_begin">
+- Begintijd (%s) heeft een %d-minuten overlap met een eerdere afspraak</label>
+			<label index="tx_appointments_list.crosstime_end">
+- Eindtijd (%s) heeft een %d-minuten overlap met een latere afspraak</label>
 			<label index="tx_appointments_list.appointment_timerstart">Het gekozen tijdstip is door u tijdelijk gereserveerd. Het tijdstip wordt $1 minuten bezet gehouden, zodat u binnen die tijd het formulier kunt invullen en de afspraak definitief kunt maken. Is het vastleggen van de afspraak niet voor het aflopen van de timer afgerond, dan wordt het tijdstip vrijgegeven en kan door u of iemand anders in gebruik genomen worden.</label>
 			<label index="tx_appointments_list.appointment_timer_header">Tijdstip is tijdelijk door u gereserveerd.</label>
 			<label index="tx_appointments_list.appointment_timer">Wordt automatisch vrijgegeven na: $1</label>
@@ -213,6 +227,8 @@
 			<label index="tx_appointments_list.email_error">Berichtgeving middels e-mail is mislukt vanwege een fout. Het is misschien verstandig de website-beheerder hiervan op de hoogte te brengen!</label>
 			<label index="tx_appointments_list.csh">Toelichting</label>
 			
+			<label index="tx_appointments_list.time_validation_error">Dit veld draagt bij aan de afspraakduur. Mogelijk lost u het tijdsconflict op als u een verandering in dit veld doorvoert.</label>
+			<label index="error.appointment.beginTime.407501337">Als u geen andere opties heeft, kunt het tijdsconflict verhelpen door de afspraak met een ander tijdstip te vernieuwen.</label>
 			<label index="error.address.firstName.1221560718">Mag niet leeg zijn.</label>
 			<label index="error.address.lastName.1221560718">Mag niet leeg zijn.</label>
 			<label index="error.address.birthday.1238087674">Dient een geldige datum van het formaat &apos;dd-mm-jjjj&apos; te zijn, bijv. 24-12-1951</label>

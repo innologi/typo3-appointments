@@ -274,14 +274,14 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			}
 		} else {
 			$action = 'new1'; //if a timeslot is not allowed, we'll need to force the user to pick a new one
-			$timeErrorMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.timeslot_not_allowed', $this->extensionName);
+			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.timeslot_not_allowed', $this->extensionName);
+			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 
 			//not adding appointment as argument prevents a uriBuilder exception @ redirect() if appointment wasn't persisted yet..
 			if (!$appointment->_isNew()) { //.. but since we're not redirecting if this condition returns TRUE, there's no need for it here anyway
-				$this->failTimeValidation($timeErrorMessage, $action);
-			} else { //if appointment wasn't persisted, there is no validation error to apply as there only a type-form #@TODO _couldn't we also pass along a timestamp through the dateFirst mechanism then? that would include the date and time fields again..
-				$this->flashMessageContainer->add($timeErrorMessage,'',t3lib_FlashMessage::ERROR);
+				$this->failTimeValidation($action);
 			}
+			//if appointment wasn't persisted, there is no validation error to apply as there only a type-form #@TODO _couldn't we also pass along a timestamp through the dateFirst mechanism then? that would include the date and time fields again..
 		}
 
 		//send to appropriate action
@@ -304,20 +304,19 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function createAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->calculateTimes($appointment); //times can be influenced by formfields
-
+		#@FIXME _ there is no check whether timeslotisallowed, which is good for the firstavailabletime, but what about maxPerDays and all that?
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
 		//this is necessary in case another appointment is created or edited before this one is saved.
 		//isTimeSlotAllowed() does not suffice by itself, because of formfields that add time and can cause overlap
-		if ($this->crossAppointments($appointment)) { //an appointment was found that makes the current one's times not possible
+		if (($overlap = $this->crossAppointments($appointment)) !== FALSE) { //an appointment was found that makes the current one's times not possible
 			//updating it as expired so the fields get saved while not blocking any appointment that might have caused crossAppointment to be TRUE
 			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
 			$this->appointmentRepository->update($appointment, FALSE); //not resetting the storage object just yet because this one still has a chance regaining his prematurely ended reservation
 
-			#@TODO __can we indicate how much time overlaps?
-			$timeErrorMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_crosstime', $this->extensionName);
-			$this->failTimeValidation($timeErrorMessage,'new2');
+			$this->processOverlapInfo($overlap,$appointment);
+			$this->failTimeValidation('new2');
 		} else {
-			#@SHOULD remove if TYPO3 version dependency is raised
+			#@SHOULD remove when TYPO3 version dependency is raised
 			if (version_compare(TYPO3_branch, '4.7', '<') && $appointment->getAddress() !== NULL) {
 				$appointment->getAddress()->setName(); //otherwise, it isn't set until show
 			}
@@ -330,7 +329,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$this->performMailingActions('create',$appointment);
 
 			$this->redirect($this->settings['redirectAfterSave'],NULL,NULL,
-					$this->settings['redirectAfterSave']=='show' ? array('appointment' => $appointment) : NULL
+					($this->settings['redirectAfterSave'] == 'show') ? array('appointment' => $appointment) : NULL
 			);
 		}
 	}
@@ -396,7 +395,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$this->performMailingActions('update',$appointment);
 
 			$this->redirect($this->settings['redirectAfterSave'],NULL,NULL,
-					$this->settings['redirectAfterSave']=='show' ? array('appointment' => $appointment) : NULL
+					($this->settings['redirectAfterSave'] == 'show') ? array('appointment' => $appointment) : NULL
 			);
 		}
 	}
@@ -539,7 +538,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				switch ($fieldType) {
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE:
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL:
-						$timestamp += intval($value) * 60;
+						$timestamp += intval($value) * 60; #@FIXME _test: wat als deze in de min is?
 						break;
 					case Tx_Appointments_Domain_Model_FormField::TYPE_SELECT:
 						#@TODO moet mogelijk zijn met de timeAdd optie
@@ -594,12 +593,77 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * Checks to see if an appointment's time properties are taken up by any other appointment.
 	 *
+	 * If an overlap is found, returns an array with at least 1 of 2 possible elements with key:
+	 * - begin => the amount of seconds the beginTime overlaps the closest (earlier) appointment
+	 * - end => the amount of seconds the endTime overlaps the closest (later) appointment
+	 *
+	 * Currently unused are the following, disabled keys:
+	 * - changeTimeSlot => boolean whether the timeslot NEEDS to be changed
+	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to check
-	 * @return boolean
+	 * @return mixed Array on overlap, boolean FALSE on no overlap
 	 */
 	protected function crossAppointments(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$crossAppointments = $this->appointmentRepository->findCrossAppointments($appointment);
-		return !empty($crossAppointments);
+		if (!empty($crossAppointments)) {
+			$beginTimeDiff = array();
+			$endTimeDiff = array();
+
+			$beginTime = $appointment->getBeginTime()->getTimestamp();
+			$endTime = $appointment->getEndTime()->getTimestamp();
+			$beginReserved = $appointment->getBeginReserved()->getTimestamp();
+			$endReserved = $appointment->getEndReserved()->getTimestamp();
+			foreach ($crossAppointments as $ca) {
+				$cbt = $ca->getBeginTime()->getTimestamp();
+				$cet = $ca->getEndTime()->getTimestamp();
+				$cbr = $ca->getBeginReserved()->getTimestamp();
+				$cer = $ca->getEndReserved()->getTimestamp();
+				if ($beginTime >= $cbt) { //any appointment overlap UNTIL (AND INCLUDING, as timeslot will need to be changed anyway) beginTime
+					//we add the difference of BOTH possible overlaps, so that we can later get the largest
+					//difference inbetween different reserved-blocks in case of different appointment types
+					if ($beginReserved < $cet) {
+						$beginTimeDiff[] = $cet - $beginReserved;
+					}
+					if ($beginTime < $cer) {
+						$beginTimeDiff[] = $cer - $beginTime;
+					}
+				} else { //any appointment overlap AFTER beginTime
+					//reversed logic of 'until beginTime'
+					if ($endReserved > $cbt) {
+						$endTimeDiff[] = $endReserved - $cbt;
+					}
+					if ($endTime < $cbr) {
+						$endTimeDiff[] = $endTime - $cbr;
+					}
+				}
+			}
+
+			#@SHOULD _consider adding the appointment(s) that is conflicting to the overlapArray, so we have more details for the overlapInfo
+			$overlapArray = array(
+					#'changeTimeSlot' => FALSE //indicates whether we're absolutely sure the user NEEDS to change the timeslot
+			);
+			//set the largest values in the array
+			if (isset($beginTimeDiff[0])) {
+				rsort($beginTimeDiff); //sets the largest difference (between appointments and INBETWEEN reserved-times) @ pos 0
+				$overlapArray['begin'] = $beginTimeDiff[0];
+				#$overlapArray['changeTimeSlot'] = TRUE;
+			}
+			if (isset($endTimeDiff[0])) { //do the same for endTime
+				rsort($endTimeDiff);
+				$overlapArray['end'] = $endTimeDiff[0];
+				#@SHOULD clean up? forcing a new1 action can make the original time disappear if it was no longer available, which might confuse the user
+				#if (!$overlapArray['changeTimeSlot']) { //if not yet TRUE, let it depend on whether the diff is larger than time added by (formfields)
+				#	$appointmentTime = ($endTime - $beginTime);
+				#	$appointmentTimeVariable = $appointmentTime - ($appointment->getType()->getDefaultDuration() * 60);
+				#	if ($endTimeDiff[0] > $appointmentTimeVariable) {
+				#		$overlapArray['changeTimeSlot'] = TRUE;
+				#	}
+				#}
+			}
+
+			return $overlapArray;
+		}
+		return FALSE;
 	}
 
 	/**
@@ -663,11 +727,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * Fails validation manually based on time-related fields.
 	 * It then forwards to requested $action.
 	 *
-	 * @param string $errorMsg The error message to give to the validation error
 	 * @param string $action The action to forward to
 	 * @return void
 	 */
-	protected function failTimeValidation($errorMsg, $action) {
+	protected function failTimeValidation($action = 'new1') {
+		$errorMsg = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.time_validation_error', $this->extensionName);
+
 		//this marks the beginTime fields (date / time), and adds the validation error message to it
 		$propertyError = new Tx_Extbase_Validation_PropertyError('beginTime'); #@TODO __add other time related fields
 		$propertyError->addErrors(array(
@@ -678,9 +743,48 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$error = new Tx_Extbase_Validation_PropertyError('appointment');
 		$error->addErrors(array($propertyError));
 
-		//set the errors within the request, which will survive the forward()
+		//set the errors within the request, which survives the forward()
 		$this->request->setErrors(array($error));
 		$this->forward($action);
+	}
+
+	/**
+	 * Process overlap-info.
+	 *
+	 * Currently only appends related messages.
+	 *
+	 * @param array $overlapInfo As returned by crossAppointments()
+	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that is overlapping
+	 * @return void
+	 * @see self::crossAppointments()
+	 */
+	protected function processOverlapInfo(array $overlapInfo, Tx_Appointments_Domain_Model_Appointment $appointment) {
+		$messageParts = '';
+
+		if (isset($overlapInfo['begin'])) {
+			$messageParts .= Tx_Extbase_Utility_Localization::translate('tx_appointments_list.crosstime_begin',
+					$this->extensionName,
+					array(
+							$appointment->getBeginTime()->format('H:i'),
+							$overlapInfo['begin'] / 60
+					)
+			);
+		}
+		if (isset($overlapInfo['end'])) {
+			$messageParts .= Tx_Extbase_Utility_Localization::translate('tx_appointments_list.crosstime_end',
+					$this->extensionName,
+					array(
+							$appointment->getEndTime()->format('H:i'),
+							$overlapInfo['end'] / 60
+					)
+			);
+		}
+
+		$this->flashMessageContainer->add(
+				nl2br(Tx_Extbase_Utility_Localization::translate('tx_appointments_list.crosstime_info',$this->extensionName,array($messageParts))),
+				Tx_Extbase_Utility_Localization::translate('tx_appointments_list.crosstime_title',$this->extensionName),
+				t3lib_FlashMessage::ERROR
+		);
 	}
 
 }
