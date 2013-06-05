@@ -11,7 +11,7 @@
 			<label index="tx_appointments.no_types">No appointment-types found or associated with this agenda, please review the related records.</label>
 			<label index="tx_appointments.appointment_no_longer_available">The appointment is no longer available. It may have been cancelled or deleted by someone after you visited the page.</label>
 			<label index="tx_appointments.appointment_property_deleted">The appointment is missing some property values. Someone might have deleted these manually after you visited the page.</label>
-			<label index="tx_appointments_list.timeslot_not_allowed">The timeslot you picked is no longer available, possibly because you&apos;ve waited too long. Please choose a different timeslot.</label>
+			<label index="tx_appointments_list.timeslot_not_allowed">The timeslot you picked is no longer available, possibly because you&apos;ve waited too long.</label>
 			<label index="tx_appointments_list.warn_unload">You have not yet finished creating an appointment. Your action could result in losing all unsaved data, unless you stay on the page and - when ready - finish creating the appointment first, using the button &apos;$1&apos; below the form.</label>
 			<label index="tx_appointments_list.appointment_new">New appointment</label>
 			<label index="tx_appointments_list.appointment_list">Back to list</label>
@@ -29,7 +29,7 @@
 			<label index="tx_appointments_list.submit_new">Create appointment</label>
 			<label index="tx_appointments_list.submit_update">Save appointment</label>
 			<label index="tx_appointments_list.submit_free">Free timeslot</label>
-			<label index="tx_appointments_list.validation_errors">Some fields were not filled in correctly:</label>
+			<label index="tx_appointments_list.validation_errors">There is a problem with some fields:</label>
 			<label index="tx_appointments_list.yes">Yes</label>
 			<label index="tx_appointments_list.no">No</label>
 			<label index="tx_appointments_list.appointment_create_success">Your appointment was created.</label>
@@ -62,8 +62,9 @@
 			<label index="tx_appointments_list.email_error">Notification by email failed because of an error. Please notify the site-administrator!</label>
 			<label index="tx_appointments_list.csh">Help</label>
 			
-			<label index="tx_appointments_list.time_validation_error">This field adds to the appointment-duration. Please review if changing it is an option to resolve the time-conflict.</label>
-			<label index="error.appointment.beginTime.407501337">If you have no other option, you might have to renew the appointment with another timeslot.</label>
+			<label index="error.formFieldValue.value.4075013371337">This field adds to the appointment-duration. Please review if changing it is an option to resolve the time-conflict.</label>
+			<label index="error.appointment.beginTime.4075013371337">If you have no other option, you might have to renew the appointment with another timeslot.</label>
+			<label index="error.appointment.beginTime.407501337">Please choose a different date/time.</label>
 			<label index="error.address.firstName.1221560718">Should not be empty.</label>
 			<label index="error.address.lastName.1221560718">Should not be empty.</label>
 			<label index="error.address.birthday.1238087674">Should be a valid date in &apos;dd-mm-yyyy&apos; format, e.g. 24-12-1951</label>
@@ -175,7 +176,7 @@
 			<label index="tx_appointments.no_types">Geen afspraaktypen gevonden of geassocieerd met deze agenda, kijk s.v.p. de relevante records na.</label>
 			<label index="tx_appointments.appointment_no_longer_available">De afspraak is niet meer beschikbaar. Het is mogelijk geannuleerd of verwijderd door iemand nadat u de pagina bezocht.</label>
 			<label index="tx_appointments.appointment_property_deleted">De afspraak mist enkele formulier gegevens. Het is mogelijk dat iemand deze handmatig heeft verwijderd nadat u de pagina bezocht.</label>
-			<label index="tx_appointments_list.timeslot_not_allowed">Het door u gekozen tijdstip is niet (meer) beschikbaar, mogelijk omdat u te lang heeft gewacht. Kies opnieuw een tijdstip, s.v.p.</label>
+			<label index="tx_appointments_list.timeslot_not_allowed">Het door u gekozen tijdstip is niet (meer) beschikbaar, mogelijk omdat u te lang heeft gewacht.</label>
 			<label index="tx_appointments_list.warn_unload">U zit midden in het maken van een afspraak. Uw actie kan tot gevolg hebben dat alle nog niet opgeslagen gegevens verloren gaan, tenzij u op de pagina blijft en de afspraak – indien gereed – eerst definitief vast legt met de knop &apos;$1&apos; onderaan het formulier.</label>
 			<label index="tx_appointments_list.appointment_new">Nieuwe afspraak</label>
 			<label index="tx_appointments_list.appointment_list">Terug naar lijst</label>
@@ -194,7 +195,7 @@
 			<label index="tx_appointments_list.submit_new">Afspraak aanmaken</label>
 			<label index="tx_appointments_list.submit_update">Afspraak opslaan</label>
 			<label index="tx_appointments_list.submit_free">Vrijgeven</label>
-			<label index="tx_appointments_list.validation_errors">Sommige velden zijn niet correct ingevuld:</label>
+			<label index="tx_appointments_list.validation_errors">Er is een probleem met de volgende velden:</label>
 			<label index="tx_appointments_list.yes">Ja</label>
 			<label index="tx_appointments_list.no">Nee</label>
 			<label index="tx_appointments_list.appointment_create_success">Uw afspraak is aangemaakt.</label>
@@ -227,8 +228,9 @@
 			<label index="tx_appointments_list.email_error">Berichtgeving middels e-mail is mislukt vanwege een fout. Het is misschien verstandig de website-beheerder hiervan op de hoogte te brengen!</label>
 			<label index="tx_appointments_list.csh">Toelichting</label>
 			
-			<label index="tx_appointments_list.time_validation_error">Dit veld draagt bij aan de afspraakduur. Mogelijk lost u het tijdsconflict op als u een verandering in dit veld doorvoert.</label>
-			<label index="error.appointment.beginTime.407501337">Als u geen andere opties heeft, kunt het tijdsconflict verhelpen door de afspraak met een ander tijdstip te vernieuwen.</label>
+			<label index="error.formFieldValue.value.4075013371337">Dit veld draagt bij aan de afspraakduur. Mogelijk lost u het tijdsconflict op als u een verandering in dit veld doorvoert.</label>
+			<label index="error.appointment.beginTime.4075013371337">Als u geen andere opties heeft, kunt het tijdsconflict verhelpen door de afspraak met een ander tijdstip te vernieuwen.</label>
+			<label index="error.appointment.beginTime.407501337">Kies opnieuw een datum/tijdstip s.v.p.</label>
 			<label index="error.address.firstName.1221560718">Mag niet leeg zijn.</label>
 			<label index="error.address.lastName.1221560718">Mag niet leeg zijn.</label>
 			<label index="error.address.birthday.1238087674">Dient een geldige datum van het formaat &apos;dd-mm-jjjj&apos; te zijn, bijv. 24-12-1951</label>

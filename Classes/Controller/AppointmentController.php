@@ -303,7 +303,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function createAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
-		$this->calculateTimes($appointment); //times can be influenced by formfields
+		$timeFields = $this->calculateTimes($appointment); //times can be influenced by formfields
 		#@FIXME _ there is no check whether timeslotisallowed, which is good for the firstavailabletime, but what about maxPerDays and all that?
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
 		//this is necessary in case another appointment is created or edited before this one is saved.
@@ -314,7 +314,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$this->appointmentRepository->update($appointment, FALSE); //not resetting the storage object just yet because this one still has a chance regaining his prematurely ended reservation
 
 			$this->processOverlapInfo($overlap,$appointment);
-			$this->failTimeValidation('new2');
+			$this->failTimeValidation('new2',4075013371337,$timeFields);
 		} else {
 			#@SHOULD remove when TYPO3 version dependency is raised
 			if (version_compare(TYPO3_branch, '4.7', '<') && $appointment->getAddress() !== NULL) {
@@ -516,9 +516,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * Calculates the time-properties of an appointments, and sets them.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment of which to calculate the time properties
-	 * @return void
+	 * @return array Contains the uids of the addtime fields
 	 */
 	protected function calculateTimes(Tx_Appointments_Domain_Model_Appointment $appointment) {
+		$timeFields = array();
 		$timestamp = $appointment->getBeginTime()->getTimestamp();
 		$type = $appointment->getType();
 
@@ -533,6 +534,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		foreach($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
 			if ($formField->getFunction() === Tx_Appointments_Domain_Model_FormField::FUNCTION_ADDTIME) {
+				$timeFields[] = $formField->getUid();
 				$fieldType = $formField->getFieldType();
 				$value = $formFieldValue->getValue();
 				switch ($fieldType) {
@@ -547,8 +549,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				}
 			}
 		}
-		$appointment->setEndTime(new DateTime(strftime("%Y-%m-%d %H:%M:%S",$timestamp)));
+		$appointment->setEndTime(new DateTime(strftime("%Y-%m-%d %H:%M:%S",$timestamp))); #@FIXME dateTime clones?
 		$appointment->setEndReserved(new DateTime(strftime("%Y-%m-%d %H:%M:%S",$timestamp+$reserveBlock)));
+
+		return $timeFields;
 	}
 
 	/**
@@ -728,23 +732,42 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * It then forwards to requested $action.
 	 *
 	 * @param string $action The action to forward to
+	 * @param integer $errorCode The errorcode
+	 * @param array $timeFields Contains formfield uids of time-related formfields
 	 * @return void
 	 */
-	protected function failTimeValidation($action = 'new1') {
-		$errorMsg = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.time_validation_error', $this->extensionName);
+	protected function failTimeValidation($action = 'new1', $errorCode = 407501337, array $timeFields = NULL) { #@TODO _kunnen we dit aanroepen samen met andere validation errors? dus pre validation de errors toevoegen?
+		$errors = array();
+		$errorMsg = 'Time-related validation error.';
+
+		//marks all the time-related formfieldvalues
+		if ($timeFields !== NULL && !empty($timeFields)) {
+			$propertyError = new Tx_Extbase_Validation_PropertyError('formFieldValues');
+			$storageError = new Tx_Appointments_Validation_StorageError('formFieldValue');
+			foreach ($timeFields as $uid) {
+				$subPropertyError = new Tx_Extbase_Validation_PropertyError('value');
+				$subPropertyError->addErrors(array(
+					new Tx_Extbase_Validation_Error($errorMsg,$errorCode)
+				));
+				$storageError->addErrors($uid, array($subPropertyError));
+			}
+			$propertyError->addErrors(array($storageError));
+			$errors[] = $propertyError;
+		}
 
 		//this marks the beginTime fields (date / time), and adds the validation error message to it
-		$propertyError = new Tx_Extbase_Validation_PropertyError('beginTime'); #@TODO __add other time related fields
+		$propertyError = new Tx_Extbase_Validation_PropertyError('beginTime');
 		$propertyError->addErrors(array(
-			new Tx_Extbase_Validation_Error($errorMsg,407501337)
+			new Tx_Extbase_Validation_Error($errorMsg,$errorCode)
 		));
+		$errors[] = $propertyError;
 
-		//this adds the validation error to the appointment property, which identifies with a form's objectName
-		$error = new Tx_Extbase_Validation_PropertyError('appointment');
-		$error->addErrors(array($propertyError));
+		//this adds the validation errors to the appointment argument, which identifies with a form's objectName
+		$argumentError = new Tx_Extbase_MVC_Controller_ArgumentError('appointment');
+		$argumentError->addErrors($errors);
 
 		//set the errors within the request, which survives the forward()
-		$this->request->setErrors(array($error));
+		$this->request->setErrors(array($argumentError));
 		$this->forward($action);
 	}
 
