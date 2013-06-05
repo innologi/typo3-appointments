@@ -489,7 +489,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	}
 
 	/**
-	 * Returns the defaultDuration
+	 * Returns the defaultDuration in minutes
 	 *
 	 * @return integer $defaultDuration
 	 */
@@ -498,7 +498,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	}
 
 	/**
-	 * Sets the defaultDuration
+	 * Sets the defaultDuration in minutes
 	 *
 	 * @param integer $defaultDuration
 	 * @return void
