@@ -20,7 +20,7 @@
 		<fieldset>
 			<label>
 				<f:translate key="tx_appointments_list.label_date_slot" />
-				<br />
+				<br /> <!-- [4.5 ONLY] Although dateSlots and timeSlots only have the relevant values now, we still need the value attribute set, or else the Select VH tries to retrieve the optionValueField (key) as property from beginTime -->
 				<f:form.select id="appointments-select-date" property="beginTime" options="{dateSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Ymd')}" class="select" disabled="disabled" />
 			</label>
 			
@@ -35,7 +35,7 @@
 			<label>
 				<f:translate key="tx_appointments_list.label_time_slot" />
 				<br />
-				<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" class="select" disabled="disabled" />
+				<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'YmdHis')}" class="select" disabled="disabled" />
 			</label>
 			&larr;
 				

@@ -34,8 +34,10 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 
 	//constants
 	const DATESLOT_KEY_FORMAT = 'Ymd';
+	//if I change these, I should remember to also change the value formats @ templates, or else we get in trouble in at least editAction
 	const TIMESLOT_KEY_FORMAT = 'YmdHis';
 	const TIMESLOT_KEY_FORMAT_ALT = '%Y%m%d%H%M%S';
+	#@SHOULD once the TYPO3 dependency is raised, I should see if the template values are still required, and if so, if I can reach these constants from within the template
 
 	/**
 	 * Extension name
