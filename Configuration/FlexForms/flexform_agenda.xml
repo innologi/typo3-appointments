@@ -146,7 +146,7 @@
 				</config>
 			</TCEforms>
 		</settings.agendaWeeksAfterCurrent>
-		<settings.appointmentTypeList>
+		<!-- <settings.appointmentTypeList>
 			<TCEforms>
 				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_appointmentTypeList</label>
 				<config>
@@ -154,7 +154,7 @@
 					<items type="array">
 						<numIndex index="0" type="array">
 							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_tsDefault</numIndex>
-							<numIndex index="1">--TYPOSCRIPT--</numIndex>
+							<numIndex index="1">__TYPOSCRIPT__</numIndex> //should be dashes
 						</numIndex>
 						<numIndex index="1" type="array">
 							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_select_all_types</numIndex>
@@ -162,20 +162,20 @@
 						</numIndex>
 						<numIndex index="2" type="array">
 							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_div_types</numIndex>
-							<numIndex index="1">--div--</numIndex>
+							<numIndex index="1">__div__</numIndex>
 						</numIndex>
 					</items>
 					<foreign_table>tx_appointments_domain_model_type</foreign_table>
 					<foreign_table_where>ORDER BY tx_appointments_domain_model_type.name</foreign_table_where>
 					<allowNonIdValues>1</allowNonIdValues>
-					<exclusiveKeys>--TYPOSCRIPT--,</exclusiveKeys>
+					<exclusiveKeys>__TYPOSCRIPT__,</exclusiveKeys>
 					<size>5</size>
 					<maxitems>999</maxitems>
 					<autoSizeMax>20</autoSizeMax>
 					<multiple>0</multiple>
 				</config>
 			</TCEforms>
-		</settings.appointmentTypeList>
+		</settings.appointmentTypeList> -->
 		<settings.allowCreate>
 			<TCEforms>
 				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_allowCreate</label>

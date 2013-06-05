@@ -19,7 +19,6 @@
 			<label index="tx_appointments_constants_layoutRootPath">Path to template layouts (FE)</label>
 			<label index="tx_appointments_constants_storagePid">Default storage PID</label>
 			<label index="tx_appointments_constants_agendaUid">Agenda UID</label>
-			<label index="tx_appointments_constants_appointmentTypeList">Appointment Types: Comma separated list of UIDs</label>
 			<label index="tx_appointments_constants_allowCreate">Agenda New Appointment Buttons: If enabled, adds new appointment buttons to the agenda view</label>
 			<label index="tx_appointments_constants_agendaBack">Agenda Navigation Back: The number of navigation units to allow backwards from the initial display</label>
 			<label index="tx_appointments_constants_agendaForward">Agenda Navigation Forward: The number of navigation units to allow forward from the initial display</label>
@@ -36,6 +35,11 @@
 			<label index="tx_appointments_constants_js_warnOnLeave">Set Warning On Page-Leave: If Javascript included: adds a warning message to the new-appointment forms to warn you for losing given input, which is shown when the page is refreshed or left, giving the option to 'Leave' or 'Stay' on the page, while informing the user of possible consequences.</label>
 			<label index="tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod">Allow Auto-Refresh With WarnOnLeave: When using page.meta.REFRESH or a REFRESH header (i.e. for automatic logout purposes), warnOnLeave might prevent it. Setting this to the appropriate method will respect that method when applied if warnOnLeave is enabled.</label>
 			
+			<label index="tx_appointments_constants_appointmentTypeList">Appointment Types: Comma separated list of UIDs</label>
+			<label index="tx_appointments_flexform_appointmentTypeList">Appointment Types</label>
+			<label index="tx_appointments_flexform_select_all_types">All types (selects none)</label>
+			<label index="tx_appointments_flexform_div_types">__Types:__</label>
+			
 			<label index="tx_appointments_extconf_emailFrom">Default sending email address: overrides the default email address used for emails sent by this extension. (optional)</label>
 			<label index="tx_appointments_extconf_emailName">Default email name: overrides the default name used for the sending email address. (optional)</label>
 			<label index="tx_appointments_extconf_debug">Debug: If enabled, provides some extra frontend debugging messages. Should not be enabled on production.</label>
@@ -47,9 +51,6 @@
 			<label index="tx_appointments_flexform_tsDefault">defined by TypoScript</label>
 			<label index="tx_appointments_flexform_agendaUid">Agenda</label>
 			<label index="tx_appointments_flexform_div_agendas">Agendas</label>
-			<label index="tx_appointments_flexform_appointmentTypeList">Appointment Types</label>
-			<label index="tx_appointments_flexform_select_all_types">All types (selects none)</label>
-			<label index="tx_appointments_flexform_div_types">__Types:__</label>
 			<label index="tx_appointments_flexform_div_userGroups">__User Groups:__</label>
 			<label index="tx_appointments_flexform_suGroup">Superuser group</label>
 			<label index="tx_appointments_flexform_allowCreate">New Appointment Buttons</label>
@@ -75,7 +76,6 @@
 			<label index="tx_appointments_constants_layoutRootPath">Pad naar template layouts (FE)</label>
 			<label index="tx_appointments_constants_storagePid">Standaard Opslag PID</label>
 			<label index="tx_appointments_constants_agendaUid">Agenda UID</label>
-			<label index="tx_appointments_constants_appointmentTypeList">Afspraak Typen: Komma-gescheiden lijst van UID&apos;s</label>
 			<label index="tx_appointments_constants_allowCreate">Agenda Nieuwe Afspraak Knoppen: Voegt nieuwe afspraak knoppen toe aan de agenda weergave</label>
 			<label index="tx_appointments_constants_agendaBack">Agenda Navigatie Terug: De hoeveelheid navigatie eenheden terug waarnaar genavigeerd kan worden</label>
 			<label index="tx_appointments_constants_agendaForward">Agenda Navigatie Vooruit: De hoeveelheid navigatie eenheden vooruit waarnaar genavigeerd kan worden</label>
@@ -92,6 +92,11 @@
 			<label index="tx_appointments_constants_js_warnOnLeave">Waarschuwing Pagina Verlaten: Indien Javascript ingeschakeld: toont een waarschuwingsbericht bij het verlaten of vernieuwen van de pagina voor het verliezen van ingevulde gegevens bij een nieuwe-afspraak formulier en geeft hierbij de keuze op de pagina te blijven of deze te 'verlaten', met nadruk op de mogelijke gevolgen.</label>
 			<label index="tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod">Sta Auto-Refresh Toe Bij WarnOnLeave: Wanneer uw website page.meta.REFRESH of een REFRESH header gebruikt (bijv. voor automatisch uitloggen), dan zou warnOnLeave dat kunnen voorkomen. Hier kunt u aangeven om de toegepaste methode te respecteren indien warnOnLeave is ingeschakeld.</label>
 			
+			<label index="tx_appointments_constants_appointmentTypeList">Afspraak Typen: Komma-gescheiden lijst van UID&apos;s</label>
+			<label index="tx_appointments_flexform_appointmentTypeList">Afspraak Typen</label>
+			<label index="tx_appointments_flexform_select_all_types">Alle typen (selecteert geen)</label>
+			<label index="tx_appointments_flexform_div_types">__Typen:__</label>
+			
 			<label index="tx_appointments_extconf_emailFrom">Standaard email adres: Het standaard email adres dat gebruikt wordt bij de door deze extensie verstuurde emails.</label>
 			<label index="tx_appointments_extconf_emailName">Standaard email naam: De standaard naam dat gebruikt wordt bij de door deze extensie verstuurde emails. (niet noodzakelijk)</label>
 						
@@ -102,9 +107,6 @@
 			<label index="tx_appointments_flexform_tsDefault">Gedefinieerd in TypoScript</label>
 			<label index="tx_appointments_flexform_agendaUid">Agenda</label>
 			<label index="tx_appointments_flexform_div_agendas">Agenda&apos;s</label>
-			<label index="tx_appointments_flexform_appointmentTypeList">Afspraak Typen</label>
-			<label index="tx_appointments_flexform_select_all_types">Alle typen (selecteert geen)</label>
-			<label index="tx_appointments_flexform_div_types">__Typen:__</label>
 			<label index="tx_appointments_flexform_div_userGroups">__Gebruikersgroepen:__</label>
 			<label index="tx_appointments_flexform_suGroup">Superuser groep</label>
 			<label index="tx_appointments_flexform_allowCreate">Nieuwe Afspraak Knoppen</label>
