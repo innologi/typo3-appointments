@@ -97,20 +97,34 @@ $TCA['tx_appointments_domain_model_formfieldvalue'] = array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfieldvalue.value',
 			'config' => array(
-				'type' => 'text', #@TODO make this depend on formfield field type!
+				'type' => 'text', #@SHOULD make this somehow depend on formfield field type? eval as well
 				'cols' => 40,
 				'rows' => 15,
-				'eval' => 'trim' #@TODO make this depend on formfield validation types!
+				'eval' => 'trim'
 			),
 		),
-		'form_field' => array( #@TODO afhankelijk maken van appointment->type? (filter? [6.0])
+		'form_field' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfieldvalue.form_field',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'tx_appointments_domain_model_formfield',
 				'foreign_table_where' => '
-					AND tx_appointments_domain_model_formfield.hidden=0',
+					AND tx_appointments_domain_model_formfield.hidden=0
+					AND tx_appointments_domain_model_formfield.type=COALESCE((
+						SELECT a.type
+						FROM tx_appointments_domain_model_appointment a,tx_appointments_domain_model_formfieldvalue ffv
+						WHERE a.uid=ffv.appointment AND ffv.uid=###THIS_UID###
+					),(
+						SELECT type
+						FROM tx_appointments_domain_model_appointment
+						WHERE uid=###THIS_UID###
+					))
+					GROUP BY tx_appointments_domain_model_formfield.uid',
+					//note COALESCE(): because appointment.formfieldvalues has 'foreign_unique' set, it already
+					//retrieves this fields' values from the appointment context, where THIS_UID is the appointment UID
+					//which will very often result in NULL from the first subquery, which then triggers the second
+					//subquery so we at least get relevant results, otherwise we wouldn't be allowed to add any from TCA!
 				'minitems' => 0,
 				'maxitems' => 1,
 			),
