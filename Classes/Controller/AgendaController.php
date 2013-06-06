@@ -198,7 +198,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		$currentDate = strftime('%d-%m-%Y');
 		$holidayArray = $agenda->getHolidayArray();
 		$appointments = $this->appointmentRepository->rearrangeAppointmentArray(
-				$this->appointmentRepository->findBetween($agenda, $start, $end, $showTypes)
+				$this->appointmentRepository->findBetween($agenda, $start, $end, $showTypes, 1)
 		);
 		while ($start->getTimestamp() < $endTime) {
 			$week = new Tx_Extbase_Persistence_ObjectStorage();

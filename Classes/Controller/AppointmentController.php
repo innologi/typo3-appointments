@@ -382,7 +382,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		#@TODO betekent calculateTimes nu niet dat hij altijd als modified wordt geregistreerd?
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
 		//this is necessary in case another appointment is created or edited before this one is saved
-		if (($overlap = $this->crossAppointments($appointment)) !== FALSE) { #@FIXME _if exclusiveAvailable appointments are set somewhere around here, an edit can't be done anymore, so.. exclusive should go two ways?
+		if (($overlap = $this->crossAppointments($appointment)) !== FALSE) {
 			//an appointment was found that makes the current one's times not possible
 			$this->processOverlapInfo($overlap,$appointment);
 			$this->failTimeValidation('edit',4075013371337,$timeFields);
