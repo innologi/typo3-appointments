@@ -377,16 +377,15 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function updateAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
-		$this->calculateTimes($appointment); //times can be influenced by formfields
+		$timeFields = $this->calculateTimes($appointment); //times can be influenced by formfields
 
 		#@TODO betekent calculateTimes nu niet dat hij altijd als modified wordt geregistreerd?
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
 		//this is necessary in case another appointment is created or edited before this one is saved
-		if ($this->crossAppointments($appointment)) {
+		if (($overlap = $this->crossAppointments($appointment)) !== FALSE) { #@FIXME _if exclusiveAvailable appointments are set somewhere around here, an edit can't be done anymore, so.. exclusive should go two ways?
 			//an appointment was found that makes the current one's times not possible
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_crosstime', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
-			$this->forward('edit'); #@TODO __mark time & add-time fields?
+			$this->processOverlapInfo($overlap,$appointment);
+			$this->failTimeValidation('edit',4075013371337,$timeFields);
 		} else {
 			$this->appointmentRepository->update($appointment);
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
