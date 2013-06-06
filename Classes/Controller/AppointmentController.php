@@ -519,14 +519,15 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	protected function calculateTimes(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$timeFields = array();
-		$timestamp = $appointment->getBeginTime()->getTimestamp();
+		$dateTime = clone $appointment->getBeginTime();
 		$type = $appointment->getType();
+		$unit = ' minutes';
 
-		$reserveBlock = $type->getBetweenMinutes() * 60;
-		$appointment->setBeginReserved(new DateTime(strftime("%Y-%m-%d %H:%M:%S",$timestamp-$reserveBlock)));
+		$reserveBlock = $type->getBetweenMinutes();
+		$beginReserved = clone $dateTime;
+		$appointment->setBeginReserved($beginReserved->modify('-'.$reserveBlock.$unit));
 
-		$defaultDuration = $type->getDefaultDuration() * 60;
-		$timestamp += $defaultDuration;
+		$dateTime->modify('+'.$type->getDefaultDuration().$unit);
 
 		//some formfields can set extra time
 		$formFieldValues = $appointment->getFormFieldValues();
@@ -539,7 +540,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				switch ($fieldType) {
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE:
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL:
-						$timestamp += intval($value) * 60; #@FIXME _test: wat als deze in de min is?
+						$dateTime->modify('+'.intval($value).$unit); #@FIXME _test: wat als deze in de min is?
 						break;
 					case Tx_Appointments_Domain_Model_FormField::TYPE_SELECT:
 						#@TODO moet mogelijk zijn met de timeAdd optie
@@ -548,8 +549,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				}
 			}
 		}
-		$appointment->setEndTime(new DateTime(strftime("%Y-%m-%d %H:%M:%S",$timestamp))); #@FIXME dateTime clones?
-		$appointment->setEndReserved(new DateTime(strftime("%Y-%m-%d %H:%M:%S",$timestamp+$reserveBlock)));
+		$appointment->setEndTime(clone $dateTime);
+		$appointment->setEndReserved($dateTime->modify('+'.$reserveBlock.$unit));
 
 		return $timeFields;
 	}
