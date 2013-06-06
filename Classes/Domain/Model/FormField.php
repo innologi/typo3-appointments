@@ -43,6 +43,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	const VALIDATE_EMAIL_ADDRESS = 7;
 	const VALIDATE_FLOAT = 8;
 	const VALIDATE_NUMBER = 9;
+	const VALIDATE_NATURALNUMBER = 10;
 	const FUNCTION_INFORMATIONAL = 1;
 	const FUNCTION_ENABLEFIELD = 2;
 	const FUNCTION_ADDTIME = 3;

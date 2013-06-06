@@ -540,7 +540,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				switch ($fieldType) {
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE:
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL:
-						$dateTime->modify('+'.intval($value).$unit); #@FIXME _test: wat als deze in de min is?
+						$dateTime->modify('+'.intval($value).$unit); #@SHOULD _add a validator-choice with a customizable max?
 						break;
 					case Tx_Appointments_Domain_Model_FormField::TYPE_SELECT:
 						#@TODO moet mogelijk zijn met de timeAdd optie

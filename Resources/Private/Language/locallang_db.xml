@@ -107,6 +107,7 @@
 			<label index="tx_appointments_domain_model_formfield.validation_types.number">Number</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.string">String</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.text">Text</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.naturalnumber">Natural Number</label>
 			<label index="tx_appointments_domain_model_formfield.field_type">Field Type</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.boolean">Checkbox</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.select">Selection Box</label>
@@ -238,6 +239,7 @@
 			<label index="tx_appointments_domain_model_formfield.validation_types.number">Nummer</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.string">Tekenreeks</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.text">Tekst</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.naturalnumber">Natuurlijk Getal</label>
 			<label index="tx_appointments_domain_model_formfield.field_type">Veld Type</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.boolean">Vinkje</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.select">Selectie</label>

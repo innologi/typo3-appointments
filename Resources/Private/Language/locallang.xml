@@ -77,6 +77,7 @@
 			<label index="error.formFieldValue.value.1221559976">Should be a valid email address.</label>
 			<label index="error.formFieldValue.value.1221560288">Should be a number or divisional.</label>
 			<label index="error.formFieldValue.value.1221563685">Should be a number.</label>
+			<label index="error.formFieldValue.value.1221561046">Should be a (whole) number of 0 or higher.</label>
 			
 			<label index="tx_appointments_list.day_s1">Mo</label>
 			<label index="tx_appointments_list.day_s2">Tu</label>
@@ -243,6 +244,7 @@
 			<label index="error.formFieldValue.value.1221559976">Dient een geldig email-adres te zijn.</label>
 			<label index="error.formFieldValue.value.1221560288">Dient een getal of breuk te zijn.</label>
 			<label index="error.formFieldValue.value.1221563685">Dient een nummer te zijn.</label>
+			<label index="error.formFieldValue.value.1221561046">Dient een (heel) getal van 0 of hoger te zijn.</label>
 			
 			<label index="tx_appointments_list.day_s1">Ma</label>
 			<label index="tx_appointments_list.day_s2">Di</label>

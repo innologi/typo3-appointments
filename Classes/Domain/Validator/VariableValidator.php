@@ -89,6 +89,10 @@ class Tx_Appointments_Domain_Validator_VariableValidator extends Tx_Appointments
 					case Tx_Appointments_Domain_Model_FormField::VALIDATE_TEXT:
 						$validator = $validatorResolver->createValidator('Text');
 						break;
+					case Tx_Appointments_Domain_Model_FormField::VALIDATE_NATURALNUMBER:
+						//without options, it sets startRange = 0 and endRange = PHP_INT_MAX
+						$validator = $validatorResolver->createValidator('NumberRange');
+						break;
 				}
 				$validatorConjunction->addValidator($validator);
 			}

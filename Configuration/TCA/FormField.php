@@ -138,6 +138,7 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 								array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.number',Tx_Appointments_Domain_Model_FormField::VALIDATE_NUMBER),
 								#array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.string',Tx_Appointments_Domain_Model_FormField::VALIDATE_STRING),
 								#array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.text',Tx_Appointments_Domain_Model_FormField::VALIDATE_TEXT),
+								array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.naturalnumber',Tx_Appointments_Domain_Model_FormField::VALIDATE_NATURALNUMBER),
 						),
 						'size' => 7,
 						'maxitems' => 99,

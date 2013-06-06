@@ -33,7 +33,7 @@
 				
 				If the last example is combined with a &quot;Not Empty&quot; Validation Type, the user becomes required to choose either yes or no before he is able to save the appointment, because the first label shown has an empty value.
 			</label>
-			<label index="function.description">The function sets whether the field has a special meaning. If you choose to let it add time, it is highly recommended to add the &lt;strong&gt;Integer&lt;/strong&gt; Validation Type!</label>
+			<label index="function.description">The function sets whether the field has a special meaning. If you choose to let it add time, it is highly recommended to add the &lt;strong&gt;Natural Number&lt;/strong&gt; Validation Type!</label>
 			<label index="time_add.description">The amount of time to add</label>
 			<label index="enable_field.description">The field this one enables</label>
 		</languageKey>
@@ -64,7 +64,7 @@
 				
 				Als het laatste voorbeeld gecombineerd is met een &quot;Vereist&quot; Validatie Type, dan is de gebruiker vereist om de ja of nee keuze te selecteren alvorens hij de afspraak kan opslaan, omdat de eerste label een lege waarde heeft.
 			</label>
-			<label index="function.description">De functie bepaalt of het veld een speciale betekenis heeft. Indien de keuze valt op het toevoegen van tijd, dan wordt sterk aanbevolen het &lt;strong&gt;Heel Getal&lt;/strong&gt; Validatie Type te kiezen!</label>
+			<label index="function.description">De functie bepaalt of het veld een speciale betekenis heeft. Indien de keuze valt op het toevoegen van tijd, dan wordt sterk aanbevolen het &lt;strong&gt;Natuurlijk Getal&lt;/strong&gt; Validatie Type te kiezen!</label>
 			<label index="time_add.description">De hoeveelheid tijd om toe te voegen</label>
 			<label index="enable_field.description">Het veld dat door deze wordt geactiveerd</label>
 		</languageKey>
