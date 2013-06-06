@@ -89,13 +89,6 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 	protected $agenda;
 
 	/**
-	 * An array containing the relevant typeUIDs
-	 *
-	 * @var array
-	 */
-	#protected $typeUidArray; #@FIXME _cleanup
-
-	/**
 	 * Indicates if user needs to be logged in
 	 *
 	 * Can be overridden by extending domain controllers
@@ -217,7 +210,7 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 		$this->view->assign('superUser', $superUser);
 
-		#$this->typeUidArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1); #@FIXME _need to reuse this as showTypes/allowTypes or something
+		#$this->typeUidArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1); #@TODO _need to reuse this as showTypes/allowTypes or something
 		#$types = empty($this->typeUidArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($this->typeUidArray,$superUser);
 		$types = $superUser ? $this->agenda->getTypes()->toArray() : $this->typeRepository->findIn($this->agenda->getTypes()->toArray())->toArray();
 		if (!empty($types)) {
