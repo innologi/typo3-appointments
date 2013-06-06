@@ -286,7 +286,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @return array Resulting multidimensional array
 	 */
 	public function rearrangeAppointmentArray($array, $perHours = 24) {
-		//timeblock hours, includes 24 for structural purposes
+		//timeblock hours, includes 24 for structural purposes because of the $hour < $h check
 		$hours = array();
 		for ($i = 0; $i <= 24; $i += $perHours) {
 			$hours[] = $i;
