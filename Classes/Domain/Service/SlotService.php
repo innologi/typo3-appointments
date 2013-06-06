@@ -962,24 +962,30 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function resetStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
-		$types = $agenda->getTypes();
-		foreach ($types as $type) { #@FIXME _currently also resets those with exclusive availability, those could be an exception here, which proves the $type arg useful again
-			$typeUid = $type->getUid();
-			$key = $this->getCacheKey($type, $agenda);
+		//if the current type is exclusive, we only need to reset that one
+		$isExclusive = $type->getExclusiveAvailability();
+		$types = $isExclusive ? array($type) : $agenda->getTypes();
 
-			$id = 'dateSlotStorage';
-			$cacheContent = $this->getCache($key,$id);
-			if (isset($cacheContent)) {
-				$this->setCache($key,$id,NULL);
-			}
-			$id = 'singleDateSlotStorage';
-			$cacheContent = $this->getCache($key,$id);
-			if (isset($cacheContent)) {
-				$this->setCache($key,$id,NULL);
-			}
+		foreach ($types as $type) {
+			//if the current type wasn't exclusive, only reset those that aren't exclusive either
+			if ($isExclusive || !$type->getExclusiveAvailability()) {
+				$typeUid = $type->getUid();
+				$key = $this->getCacheKey($type, $agenda);
 
-			unset($this->dateSlots[$typeUid]);
-			unset($this->singleDateSlots[$typeUid]);
+				$id = 'dateSlotStorage';
+				$cacheContent = $this->getCache($key,$id);
+				if (isset($cacheContent)) {
+					$this->setCache($key,$id,NULL);
+				}
+				$id = 'singleDateSlotStorage';
+				$cacheContent = $this->getCache($key,$id);
+				if (isset($cacheContent)) {
+					$this->setCache($key,$id,NULL);
+				}
+
+				unset($this->dateSlots[$typeUid]);
+				unset($this->singleDateSlots[$typeUid]);
+			}
 		}
 
 		#@SHOULD imagine a different approach to building and caching storageObjects:
