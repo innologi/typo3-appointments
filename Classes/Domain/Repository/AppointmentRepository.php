@@ -378,7 +378,6 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 */
 	public function remove($object) {
 		parent::remove($object);
-		#$object->setFormFieldValues?? #@FIXME try this
 		$this->slotService->resetStorageObject($object->getType(), $object->getAgenda());
 	}
 }

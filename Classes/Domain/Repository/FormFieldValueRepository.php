@@ -34,20 +34,24 @@
 class Tx_Appointments_Domain_Repository_FormFieldValueRepository extends Tx_Extbase_Persistence_Repository {
 
 	/**
-	 * Finds all orphaned formfieldvalues (where appointment.deleted=1 or appointment is NULL)
+	 * Finds all orphaned formfieldvalues (where appointment is NULL)
+	 *
+	 * It doesn't get formfieldvalues of appointments with the deleted=1 mark, because when undeleting the appointment
+	 * the relation of the formfieldvalues is not taken into account. [4.5] Leaving them be, except when they have no more
+	 * valid relation, at least keeps them intact when undeleting their appointment. They're hidden in TCA anyway.
 	 *
 	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
 	public function findOrphaned() {
 		$query = $this->createQuery();
 		#$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		#$result = $query->matching( //doesn't work, probably because deleted is not in TCA. either way, wouldn't know how to get any with NULL parent either
+		#$result = $query->matching( //doesn't work, probably because deleted is not in TCA. either way, wouldn't know how to get any with NULL either
 		#		$query->equals('appointment.deleted', 1)
 		#)->execute()->toArray();
 		$result = $query->statement(
 				'SELECT `ffv`.*
 				FROM `tx_appointments_domain_model_formfieldvalue` `ffv` LEFT JOIN (`tx_appointments_domain_model_appointment` `a`) ON (`ffv`.`appointment`=`a`.`uid`)
-				WHERE `ffv`.`deleted`=0 AND (`a`.`deleted`=1 OR `a`.`uid` IS NULL)'
+				WHERE `ffv`.`deleted`=0 AND `a`.`uid` IS NULL'
 		)->execute();
 
 		return $result;
