@@ -43,6 +43,11 @@
 			
 			<label index="tx_appointments_extconf_emailFrom">Default sending email address: overrides the default email address used for emails sent by this extension. (optional)</label>
 			<label index="tx_appointments_extconf_emailName">Default email name: overrides the default name used for the sending email address. (optional)</label>
+			
+			<label index="tx_appointments_task_cleanup.name">Clean Up Appointment Records</label>
+			<label index="tx_appointments_task_cleanup.description">Marks appointment records whose creation was never completed as deleted when expired for a certain amount of time.</label>
+			<label index="tx_appointments_task_label.age">Seconds Expired</label>
+			<label index="tx_appointments_task_noAge">You need to supply a positive amount of seconds-expired. (e.g. 3600)</label>
 						
 			<label index="tx_appointments_flexform_sheet_sDEF">Settings</label>
 			<label index="tx_appointments_flexform_switchableControllerActions">Agenda View</label>
@@ -100,6 +105,11 @@
 			
 			<label index="tx_appointments_extconf_emailFrom">Standaard email adres: Het standaard email adres dat gebruikt wordt bij de door deze extensie verstuurde emails. (optioneel)</label>
 			<label index="tx_appointments_extconf_emailName">Standaard email naam: De standaard naam dat gebruikt wordt bij de door deze extensie verstuurde emails. (optioneel)</label>
+			
+			<label index="tx_appointments_task_cleanup.name">Opschonen Afspraak Records</label>
+			<label index="tx_appointments_task_cleanup.description">Markeert onafgemaakte afspraak-records als verwijderd, wanneer het aantal seconden verlopen is bereikt.</label>
+			<label index="tx_appointments_task_label.age">Seconden Verlopen</label>
+			<label index="tx_appointments_task_noAge">U dient een positief aantal seconden-verlopen op te geven. (bijv. 3600)</label>
 						
 			<label index="tx_appointments_flexform_sheet_sDEF">Instellingen</label>
 			<label index="tx_appointments_flexform_switchableControllerActions">Agenda Weergave</label>

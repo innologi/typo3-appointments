@@ -401,7 +401,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Returns the formFieldValues
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue> $formFieldValues
+	 * @return Tx_Extbase_Persistence_ObjectStorage $formFieldValues
 	 */
 	public function getFormFieldValues() {
 		return $this->formFieldValues;

@@ -24,7 +24,11 @@ $pluginSignature = $pluginSignatureStart . 'list';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
 t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_list.xml');
 t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.list', 'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_list.xml');
+
+t3lib_extMgm::addLLrefForTCAdescr('tx_appointments_csh_task_clean_up', 'EXT:appointments/Resources/Private/Language/locallang_csh_task_clean_up.xml');
+
 #@SHOULD is there a native datepicker [6.1]?
+#@TODO _document address-problems in 4.5: no cascade remove from FE
 #@SHOULD add icon for sysfolder <http://buzz.typo3.org/people/steffen-kamper/article/new-icons-for-my-pages/>
 #@SHOULD add plugin preview <http://buzz.typo3.org/people/steffen-kamper/article/render-custom-preview-from-extension/>
 #@SHOULD see if utilizing errorAction (forward()?) for time-related errors is an option
@@ -45,6 +49,10 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 //{v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}
 //with:
 //{appointment.type.hoursMutable -> v:math.product(b:3600) -> v:math.sum(b:appointment.crdate)}
+
+#@TODO _am I even using the persistence stuff correctly? the link below mentions everything as part of plugin, not config.extbase:
+//<http://docs.typo3.org/typo3cms/ExtbaseFluidBook/b-ExtbaseReference/Index.html>
+#@TODO _the above link also mentions something about recordType use in a different chapter, that might be of use for address..
 
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Appointment Scheduler');
 
@@ -162,7 +170,9 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 	),
 );
 
-#t3lib_div::loadTCA('tt_address');
+#if (version_compare(TYPO3_branch, '6.1', '<')) {
+#	t3lib_div::loadTCA('tt_address');
+#}
 #@SHOULD make it set a type as soon as IRRE supports it
 #if (!isset($TCA['tt_address']['ctrl']['type'])) {
 #	$TCA['tt_address']['ctrl']['type'] = 'tx_extbase_type';

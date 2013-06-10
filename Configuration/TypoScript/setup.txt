@@ -141,6 +141,8 @@ plugin.tx_appointments {
 	}
 }
 
+module.tx_appointments.persistence < plugin.tx_appointments.persistence
+
 [globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJquery}] && [globalVar = LIT:0 < {$plugin.tx_appointments.js.toFooter}] 
 page.includeJSFooterlibs.appointments_jQuery < plugin.tx_appointments.jslib.jQuery
 

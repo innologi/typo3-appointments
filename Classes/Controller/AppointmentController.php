@@ -257,7 +257,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 						$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timerrefresh', $this->extensionName);
 						$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
 					}
-					$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED); #@TODO __cleanup task for expired records?
+					$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED);
 				}
 
 				$this->appointmentRepository->update($appointment);

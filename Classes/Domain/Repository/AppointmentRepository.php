@@ -270,6 +270,26 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		return $result;
 	}
 
+	/**
+	 * Finds all appointments that have been expired for at least $age amount of seconds, anywhere.
+	 *
+	 * @param integer $age Number of seconds the appointment needs to have been expired at least
+	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
+	 */
+	public function findExpiredByAge($age = 3600) {
+		$query = $this->createQuery();
+		$query->getQuerySettings()->setRespectStoragePage(FALSE);
+		$result = $query->matching(
+				$query->logicalAnd( array(
+						$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::EXPIRED),
+						$query->lessThanOrEqual('tstamp', time() - $age),
+					)
+				)
+		)->execute();
+
+		return $result;
+	}
+
 
 	//***************************
 	// Query Result Manipulation
@@ -358,6 +378,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 */
 	public function remove($object) {
 		parent::remove($object);
+		#$object->setFormFieldValues?? #@FIXME try this
 		$this->slotService->resetStorageObject($object->getType(), $object->getAgenda());
 	}
 }
