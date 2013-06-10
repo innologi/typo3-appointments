@@ -42,26 +42,14 @@ class Tx_Appointments_MVC_Controller_ErrorOnDebugController extends Tx_Extbase_M
 	 *
 	 * @return string|boolean The flash message or FALSE if no flash message should be set
 	 */
-	/**
-	 * A template method for displaying custom error flash messages, or to
-	 * display no flash message at all on errors. Override this to customize
-	 * the flash message in your action controller.
-	 *
-	 * @return string|boolean The flash message or FALSE if no flash message should be set
-	 */
-	protected function getErrorFlashMessage() {
-		global $TYPO3_CONF_VARS;
-		$extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][strtolower($this->extensionName)]);
-		return isset($extConf['debug']) && $extConf['debug'] ? parent::getErrorFlashMessage() : FALSE; #@TODO can't we make it rely on a TYPO3 general debug var? (global displayErrors?)
-	}
-	/*protected function getErrorFlashMessage() {
+	protected function getErrorFlashMessage() { #@TODO document this in manual
 		global $TYPO3_CONF_VARS;
 		if (isset($TYPO3_CONF_VARS['FE']['debug']) && $TYPO3_CONF_VARS['FE']['debug']) {
 			return parent::getErrorFlashMessage();
 		} else {
 			return FALSE;
 		}
-	}*/
+	}
 
 }
 ?>

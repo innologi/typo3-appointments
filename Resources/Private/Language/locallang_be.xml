@@ -43,7 +43,6 @@
 			
 			<label index="tx_appointments_extconf_emailFrom">Default sending email address: overrides the default email address used for emails sent by this extension. (optional)</label>
 			<label index="tx_appointments_extconf_emailName">Default email name: overrides the default name used for the sending email address. (optional)</label>
-			<label index="tx_appointments_extconf_debug">Debug: If enabled, provides some extra frontend debugging messages. Should not be enabled on production.</label>
 						
 			<label index="tx_appointments_flexform_sheet_sDEF">Settings</label>
 			<label index="tx_appointments_flexform_switchableControllerActions">Agenda View</label>
@@ -99,8 +98,8 @@
 			<label index="tx_appointments_flexform_select_all_types">Alle typen (selecteert geen)</label>
 			<label index="tx_appointments_flexform_div_types">__Typen:__</label>
 			
-			<label index="tx_appointments_extconf_emailFrom">Standaard email adres: Het standaard email adres dat gebruikt wordt bij de door deze extensie verstuurde emails.</label>
-			<label index="tx_appointments_extconf_emailName">Standaard email naam: De standaard naam dat gebruikt wordt bij de door deze extensie verstuurde emails. (niet noodzakelijk)</label>
+			<label index="tx_appointments_extconf_emailFrom">Standaard email adres: Het standaard email adres dat gebruikt wordt bij de door deze extensie verstuurde emails. (optioneel)</label>
+			<label index="tx_appointments_extconf_emailName">Standaard email naam: De standaard naam dat gebruikt wordt bij de door deze extensie verstuurde emails. (optioneel)</label>
 						
 			<label index="tx_appointments_flexform_sheet_sDEF">Instellingen</label>
 			<label index="tx_appointments_flexform_switchableControllerActions">Agenda Weergave</label>

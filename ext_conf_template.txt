@@ -3,6 +3,3 @@ email_from =
 
   # cat=basic//b; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_extconf_emailName
 email_name = 
-
-  # cat=basic/enable/c; type=boolean; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_extconf_debug
-debug = 
