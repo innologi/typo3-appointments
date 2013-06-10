@@ -1,32 +1,11 @@
-config.tx_extbase {
-	persistence.classes {
-		Tx_Appointments_Domain_Model_Appointment {
-			mapping.columns {
-				crdate.mapOnProperty = crdate
-			}
-		}
-		Tx_Appointments_Domain_Model_Address {
-			mapping.columns {
-				tx_appointments_social_security_number.mapOnProperty = socialSecurityNumber
-				tx_appointments_creation_progress.mapOnProperty = creation_progress
-			}
-		}
-		Tx_Appointments_Domain_Model_FormField {
-			mapping.columns {
-				sorting.mapOnProperty = sorting
-			}
-		}
-		Tx_Appointments_Domain_Model_FrontendUser.mapping.tableName = fe_users
-		Tx_Appointments_Domain_Model_FrontendUserGroup.mapping.tableName = fe_groups
-	} 
-	
+#config.tx_extbase {
 	# this override method is global and fails once when cache is cleared (4.7.8), so I cannot depend on it
 	#objects {
 		#Tx_Extbase_Validation_ValidatorResolver {
 		#	className = Tx_Appointments_Validation_VariableValidatorResolver
 		#}
 	#}
-}
+#}
 
 plugin.tx_appointments {
 	view {
@@ -37,11 +16,34 @@ plugin.tx_appointments {
 	persistence {
 		storagePid = {$plugin.tx_appointments.persistence.storagePid}
 		classes {
+			Tx_Appointments_Domain_Model_Appointment {
+				mapping.columns {
+					crdate.mapOnProperty = crdate
+				}
+			}
+			Tx_Appointments_Domain_Model_FormField {
+				mapping.columns {
+					sorting.mapOnProperty = sorting
+				}
+			}
+			Tx_Appointments_Domain_Model_Address {
+				mapping.columns {
+					tx_appointments_social_security_number.mapOnProperty = socialSecurityNumber
+					tx_appointments_creation_progress.mapOnProperty = creation_progress
+				}
+			}
+		
 			Tx_Appointments_Domain_Model_Address {
 				mapping {
 					tableName = tt_address
 					recordType = Tx_Appointments_Domain_Model_Address
 				}
+			}
+			Tx_Appointments_Domain_Model_FrontendUser {
+				mapping.tableName = fe_users
+			}
+			Tx_Appointments_Domain_Model_FrontendUserGroup {
+				mapping.tableName = fe_groups
 			}
 		}
 	}

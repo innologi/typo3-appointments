@@ -50,7 +50,6 @@ t3lib_extMgm::addLLrefForTCAdescr('tx_appointments_csh_task_clean_up', 'EXT:appo
 //with:
 //{appointment.type.hoursMutable -> v:math.product(b:3600) -> v:math.sum(b:appointment.crdate)}
 
-#@TODO _am I even using the persistence stuff correctly? the link below mentions everything as part of plugin, not config.extbase:
 //<http://docs.typo3.org/typo3cms/ExtbaseFluidBook/b-ExtbaseReference/Index.html>
 #@TODO _the above link also mentions something about recordType use in a different chapter, that might be of use for address..
 
