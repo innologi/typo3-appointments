@@ -273,6 +273,8 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	/**
 	 * Finds all appointments that have been expired for at least $age amount of seconds, anywhere.
 	 *
+	 * Because of enableFields, doesn't match any appointments that are hidden AND expired..
+	 *
 	 * @param integer $age Number of seconds the appointment needs to have been expired at least
 	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
