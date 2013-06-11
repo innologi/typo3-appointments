@@ -56,7 +56,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 * @param integer $weeksModifier Modifies the displayed weeks
 	 * @return void
 	 */
-	public function showWeeksAction($weeksModifier = 0) { #@TODO wait, why does he get an integerValidation in actionController, but do values get set to string? What's happening here?
+	public function showWeeksAction($weeksModifier = 0) {
 		$this->showGeneral('createAgendaWeeks','weeks',$weeksModifier);
 	}
 

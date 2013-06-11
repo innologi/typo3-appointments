@@ -8,7 +8,7 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, creation_progress, begin_time, end_time, begin_reserved, end_reserved, notes, notes_su, type, form_field_values, address, fe_user, agenda',
 	),
-	'types' => array( #@TODO kunnen we creation_progress field laten bepalen wat we zien?
+	'types' => array(
 		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, agenda, type,
 				--palette--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.palette.times;times,
 				notes, notes_su, fe_user,
@@ -106,8 +106,9 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 				),
 			),
 		),
-		'creation_progress' => array(
+		'creation_progress' => array( #@TODO gebruik de displayCond en een user function misschien, om tekstueel toe te lichten wat de status is?
 			'exclude' => 1,
+			#'displayCond' => 'FIELD:creation_progress:>:0',
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.creation_progress',
 			'config' => array(
 				'type' => 'none',
@@ -216,7 +217,7 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.address',
 			'config' => array(
 				'type' => 'inline',
-				'foreign_table' => 'tt_address', #@TODO foreign_types? [4.7]
+				'foreign_table' => 'tt_address', #@TODO foreign_types? [4.7] or proper implementation of an extbase type?
 				'minitems' => 0,
 				'maxitems' => 1,
 				'appearance' => array(
