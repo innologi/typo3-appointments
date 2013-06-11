@@ -34,7 +34,6 @@ t3lib_extMgm::addLLrefForTCAdescr('tx_appointments_csh_task_clean_up', 'EXT:appo
 #@SHOULD see if utilizing errorAction (forward()?) for time-related errors is an option
 #@TODO __expand warnunload to expire the appointment on leave page NOT REALLY AN OPTION? Should create a link to last unfinished appointment instead
 #@TODO __make messages dismissable
-#@TODO __add icons to messages
 #@TODO __make * = required only visible when there are required fields
 #@TODO __add validation options to Address
 #@FIXME do Manual
