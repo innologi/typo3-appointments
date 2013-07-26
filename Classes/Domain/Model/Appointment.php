@@ -483,7 +483,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @param mixed $property Defined by reference because we're replacing the original reference
 	 */
-	protected function noLazy(&$property) {
+	protected function noLazy(&$property) { #@TODO when is this really necessary?
 		if (is_object($property) && $property instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
 			$property = $property->_loadRealInstance();
 		}

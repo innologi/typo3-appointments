@@ -96,7 +96,7 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	 * @return string
 	 */
 	public function getIndex() {
-		return $this->index;
+		return $this->index; #@TODO cleanup
 	}
 
 }

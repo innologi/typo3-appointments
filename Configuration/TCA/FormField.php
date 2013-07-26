@@ -6,7 +6,7 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_appointments_domain_model_formfield'] = array(
 	'ctrl' => $TCA['tx_appointments_domain_model_formfield']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, label, csh, field_type, validation_types, choices, function'/*, time_add, enable_field'*/, #@TODO wat ga je hier uiteindelijk mee doen?
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, label, csh, field_type, validation_types, choices, function'/*, time_add, enable_field'*/, #@TODO will you ever finish this?
 	),
 	'types' => array(
 		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, label, csh, field_type, choices, function, validation_types'./*, time_add, enable_field*/',--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,starttime, endtime'),
@@ -180,7 +180,7 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 				'type' => 'select',
 				'items' => array(
 					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.info',Tx_Appointments_Domain_Model_FormField::FUNCTION_INFORMATIONAL),
-					//array('Selection Box',Tx_Appointments_Domain_Model_FormField::FUNCTION_ENABLEFIELD), #@TODO wat ga je hier mee doen?
+					//array('Selection Box',Tx_Appointments_Domain_Model_FormField::FUNCTION_ENABLEFIELD), #@TODO will you ever finish this?
 					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.addtime',Tx_Appointments_Domain_Model_FormField::FUNCTION_ADDTIME)
 				),
 				'size' => 1,
