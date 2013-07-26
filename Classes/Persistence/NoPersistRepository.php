@@ -62,7 +62,7 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Tx_Extbase_Persist
 	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
 	 */
 	public function add($object) {
-		throw Tx_Appointments_MVC_Exception_NoPersistRepository();
+		throw new Tx_Appointments_MVC_Exception_NoPersistRepository();
 	}
 
 	/**
@@ -74,7 +74,7 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Tx_Extbase_Persist
 	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
 	 */
 	public function remove($object) {
-		throw Tx_Appointments_MVC_Exception_NoPersistRepository();
+		throw new Tx_Appointments_MVC_Exception_NoPersistRepository();
 	}
 
 	/**
@@ -86,7 +86,7 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Tx_Extbase_Persist
 	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
 	 */
 	public function update($modifiedObject) {
-		throw Tx_Appointments_MVC_Exception_NoPersistRepository();
+		throw new Tx_Appointments_MVC_Exception_NoPersistRepository();
 	}
 
 	/**
@@ -99,7 +99,7 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Tx_Extbase_Persist
 	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
 	 */
 	public function replace($existingObject, $newObject) {
-		throw Tx_Appointments_MVC_Exception_NoPersistRepository();
+		throw new Tx_Appointments_MVC_Exception_NoPersistRepository();
 	}
 }
 ?>
