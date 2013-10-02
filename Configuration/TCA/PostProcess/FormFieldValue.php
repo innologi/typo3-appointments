@@ -142,8 +142,4 @@ class Tx_Appointments_Configuration_TCA_PostProcess_FormFieldValue {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tt_address/class.tx_ttaddress_compat.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tt_address/class.tx_ttaddress_compat.php']);
-}
-
 ?>
