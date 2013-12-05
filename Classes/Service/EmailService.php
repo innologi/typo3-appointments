@@ -244,17 +244,17 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 					$body = $agenda->getEmailText();
 			}
 
-			$feUser = $appointment->getFeUser();
 			$address = $appointment->getAddress();
 			$type = $appointment->getType();
-			if (!is_object($type) || !is_object($feUser)
+			if (!is_object($type)
 					|| ( !is_object($address) && !$type->getAddressDisable() )
 			) {
 				throw new Tx_Appointments_MVC_Exception_PropertyDeleted('One or more object-properties of ' . get_class($appointment) . ':' . $appointment->getUid() . ' are not available and might have been deleted.');
 			}
 
 			//replaces variables
-			$body = str_replace('###USER###',$feUser->getName(),$body);
+			$feUser = $appointment->getFeUser();
+			$body = str_replace('###USER###', ($feUser === NULL ? '' : $feUser->getName()), $body);
 			$body = str_replace('###AGENDA###',$appointment->getAgenda()->getName(),$body);
 			$body = str_replace('###TYPE###',$appointment->getType()->getName(),$body);
 			$body = str_replace('###DATE###',$appointment->getBeginTime()->format('d-m-Y'),$body);
@@ -408,13 +408,13 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 						)
 				)
 		); #@TODO do more Outlook testing on description here
-
+		$feUser = $appointment->getFeUser();
 		$markerArray = array(
 				'###START###' => strftime('%Y%m%dT%H%M%S', $start),
 				'###END###' => strftime('%Y%m%dT%H%M%S', $end),
 				'###TSTAMP###' => strftime('%Y%m%dT%H%M%S'),
 				'###FROM###' => is_array($sender) ? key($sender) : $sender,
-				'###FROMCN###' => $appointment->getFeUser()->getName(),
+				'###FROMCN###' => ($feUser !== NULL ? $feUser->getName() : (is_array($sender) ? current($sender) : $sender)),
 				'###UID###' => $id,
 				'###OWNERAPPTID###' => $id,
 				'###DESCRIPTION###' => $description,
@@ -512,7 +512,12 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		$agenda = $appointment->getAgenda();
 
 		if ($this->isActionAllowed($action, $agenda->getEmailOwnerTypes())) {
-			$recipientArray[] = $appointment->getFeUser();
+			$feUser = $appointment->getFeUser();
+			if ($feUser !== NULL) {
+				$recipientArray[] = $feUser;
+			} else {
+				// @FIX ____check if there is some kind of email-designated field?
+			}
 		}
 
 		if ($this->isActionAllowed($action, $agenda->getEmailTypes())) {

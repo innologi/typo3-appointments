@@ -150,7 +150,6 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * User who created this appointment
 	 *
 	 * @var Tx_Appointments_Domain_Model_FrontendUser
-	 * @validate NotEmpty
 	 * @lazy
 	 */
 	protected $feUser;

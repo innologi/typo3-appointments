@@ -28,14 +28,17 @@
 		</td>
 	</tr>
 	
-	<tr>
-		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_appointment.fe_user" />
-		</td>
-		<td>
-			{appointment.feUser.name}
-		</td>
-	</tr>
+	<f:if condition="{appointment.feUser}">
+		<tr>
+			<td scope="row">
+				<f:translate key="tx_appointments_domain_model_appointment.fe_user" />
+			</td>
+			<td>
+				{appointment.feUser.name}
+			</td>
+		</tr>
+	</f:if>
+	
 	<tr>
 		<td colspan="2">&nbsp;</td>
 	</tr>

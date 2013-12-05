@@ -34,6 +34,13 @@
 class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_MVC_Controller_AppointmentsActionController {
 
 	/**
+	 * Indicates if user needs to be logged in to access action methods
+	 *
+	 * @var boolean
+	 */
+	protected $requireLogin = FALSE; #@LOW be configurable?
+
+	/**
 	 * @var Tx_Appointments_Service_EmailService
 	 */
 	protected $emailService;
@@ -57,6 +64,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function listAction() {
+		// list (currently) has no use without login
+		if ($this->feUser === FALSE) {
+			// @FIX ____there is no way to add appointments without agenda plugin now, and "things like Return to List are inconsistent this way"
+			$this->forward('none');
+		}
+
 		//turns out getting the user id is not enough: not all fe_users are of the correct record_type
 		$types = $this->getTypes(); //we need to include types in case a type was hidden or deleted, or we get all sorts of errors
 		$appointments = $this->appointmentRepository->findPersonalList($this->agenda,$types,$this->feUser,new DateTime());
@@ -78,18 +91,22 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function showAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
-		//check if current user is member of the superuser group
-		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
-		$showMore = TRUE;
-		if ($superUser) { //we're not using vhs viewhelpers for this, because we need to set $showMore anyway and a viewhelper-alternative is overkill
-			//su can edit any appointment that hasn't started yet
-			$endTime = $appointment->getBeginReserved()->getTimestamp();
-		} elseif ($this->feUser->getUid() == $appointment->getFeUser()->getUid()) { //check if current user is the owner of the appointment
-			//non-su can edit his own appointment if hoursMutable hasn't passed yet
-			$endTime = $appointment->getType()->getHoursMutable() * 3600 + $appointment->getCrdate();
-		} else { //if not su nor owner, limit rights
-			$showMore = FALSE;
-			$endTime = 0;
+		// limited rights by default
+		$showMore = FALSE;
+		$endTime = 0;
+
+		if ($this->feUser) {
+			//check if current user is member of the superuser group
+			$superUser = $this->userService->isInGroup($this->settings['suGroup']);
+			if ($superUser) { //we're not using vhs viewhelpers for this, because we need to set $showMore anyway and a viewhelper-alternative is overkill
+				//su can edit any appointment that hasn't started yet
+				$endTime = $appointment->getBeginReserved()->getTimestamp();
+				$showMore = TRUE;
+			} elseif ($this->feUser->getUid() == $appointment->getFeUser()->getUid()) { //check if current user is the owner of the appointment
+				//non-su can edit his own appointment if hoursMutable hasn't passed yet
+				$endTime = $appointment->getType()->getHoursMutable() * 3600 + $appointment->getCrdate();
+				$showMore = TRUE;
+			}
 		}
 		$mutable = time() < $endTime;
 
@@ -228,7 +245,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	public function processNewAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$arguments = array();
 		$appointment->setAgenda($this->agenda);
-		$appointment->setFeUser($this->feUser);
+		if ($this->feUser) {
+			$appointment->setFeUser($this->feUser);
+		} else {
+			// @LOW ____option to refer to login or saving as user?
+		}
 
 
 		if ($this->slotService->isTimeSlotAllowed($appointment)) {
@@ -304,7 +325,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function createAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$timeFields = $this->calculateTimes($appointment); //times can be influenced by formfields
-		#@FIX _ there is no check whether timeslotisallowed, which is good for the firstavailabletime, but what about maxPerDays and all that?
+		#@FIX _there is no check whether timeslotisallowed, which is good for the firstavailabletime, but what about maxPerDays and all that?
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
 		//this is necessary in case another appointment is created or edited before this one is saved.
 		//isTimeSlotAllowed() does not suffice by itself, because of formfields that add time and can cause overlap
