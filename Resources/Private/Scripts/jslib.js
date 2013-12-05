@@ -141,7 +141,7 @@ jQuery(document).ready(function() {
 	//***************
 	
 	//enable jQuery UI datepicker
-	jQuery('.tx-appointments .datepicker').datepicker({
+	jQuery('.tx-appointments form .datepicker').datepicker({
 		showOn: 'focus', //focus|button|both
 		dateFormat: 'dd-mm-yy',
 		changeMonth: true, //select box month
@@ -159,7 +159,7 @@ jQuery(document).ready(function() {
 	});
 	
 	//sets max of datepicker to today if the field has class 'max-today'
-	jQuery('.tx-appointments .datepicker.max-today').datepicker('option','maxDate','0');
+	jQuery('.tx-appointments form .datepicker.max-today').datepicker('option','maxDate','0');
 	
 	
 	//*****************************
@@ -289,7 +289,7 @@ jQuery(document).ready(function() {
 		var storage = window['sessionStorage'];
 		//retrieve all ids of session-marked form elements
 		var fields = jQuery('.tx-appointments form .session').map(function(index) {
-		    return this.id;
+			return this.id;
 		}).get();
 		
 		for (var i in fields) {
@@ -354,4 +354,89 @@ jQuery(document).ready(function() {
 		//us to lose the session even when someone decides to stay on the page.
 	}
 
+	
+	//**********************************************
+	// Enable Field detection & add change triggers
+	//**********************************************
+
+	//set events on enablers as configured by fields that are to be enabled
+	var fieldEnablers = {};
+	jQuery('.tx-appointments form .enablefield').each(function(i, elem) {
+		var classes = jQuery(elem).attr('class');
+		var evalPos = classes.indexOf('eval-f') + 6;
+		var evalParts = classes.slice(evalPos).split('-');
+		var id = evalParts[0];
+		// the split here ensures correct value regardless if more classes follow
+		var desiredValue = evalParts[1].split(' ')[0].toLowerCase();
+		
+		var enablerObj = null;
+		// check if the enabler was already processed
+		if (fieldEnablers[id] !== undefined) {
+			enablerObj = jQuery(fieldEnablers[id]);
+		} else {
+			// new enabler
+			enablerObj = jQuery('.tx-appointments form #appointments-formField-' + id);
+			if (enablerObj[0]) {
+				// sets as processed, so it doesn't again for multiple fields
+				fieldEnablers[id] = enablerObj[0];
+				// data store which will contain all fields it "enables"
+				enablerObj.data('enable-fields',{});
+				// add event
+				enablerObj.change(function() {
+					var newValue = jQuery(this).val().toLowerCase();
+					// get fields to check from data store
+					var fields = jQuery(this).data('enable-fields')
+					for (var m in fields) {
+						checkEnableField(fields[m], newValue);
+					}
+				});
+			}
+		};
+		
+		// if the enabler exists, add this field to its data store
+		if (enablerObj[0]) {
+			var fields = enablerObj.data('enable-fields');
+			fields[i] = {
+				element: elem,
+				enableValue: desiredValue,
+				required: getRequiredElements(elem)
+			};
+			enablerObj.data('enable-fields', fields);
+		}
+	});
+	
+	// retrieve elements set with 'required' attribute
+	function getRequiredElements(elem) {
+		var required = [];
+		if (jQuery(elem).attr('required') === 'required') {
+			required.push(elem);
+		} else {
+			/*
+			 * if the current element doesn't have any set, then perhaps it is a wrapper
+			 * CONTAINING elements that possibly have a required attribute set
+			 */
+			jQuery(elem).find('[required="required"]').each(function(i, reqElem) {
+				required.push(reqElem);
+			});
+		}
+		return required;
+	}
+	
+	// checks if a field{element,enableValue,required} should be shown or hidden
+	function checkEnableField(field, currentValue) {
+		var elemObj = jQuery(field.element);
+		if (currentValue === field.enableValue) {
+			jQuery(field.required).attr('required','required');
+			elemObj.show();
+		} else {
+			elemObj.hide();
+			jQuery(field.required).removeAttr('required');
+		}
+	}
+	
+	// initial check, should be AFTER sessionStorage calls!
+	for (var i in fieldEnablers) {
+		jQuery(fieldEnablers[i]).change();
+	}
+	
 });

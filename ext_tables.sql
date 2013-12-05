@@ -202,8 +202,8 @@ CREATE TABLE tx_appointments_domain_model_formfield (
 	field_type int(11) DEFAULT '0' NOT NULL,
 	choices text NOT NULL,
 	function int(11) DEFAULT '0' NOT NULL,
-	time_add text NOT NULL,
 	enable_field int(11) unsigned DEFAULT '0',
+	enable_value varchar(255) DEFAULT '' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,

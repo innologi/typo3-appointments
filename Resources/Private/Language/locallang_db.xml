@@ -6,7 +6,6 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-            
 			<label index="tx_appointments_domain_model_appointment">Appointment</label>
 			<label index="tx_appointments_domain_model_appointment.creation_progress">Creation Progress</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time">Appointment Time</label>
@@ -21,7 +20,7 @@
 			<label index="tx_appointments_domain_model_appointment.fe_user">User</label>
 			<label index="tx_appointments_domain_model_appointment.agenda">Agenda</label>
 			<label index="tx_appointments_domain_model_appointment.palette.times">Times</label>
-			
+
 			<label index="tx_appointments_domain_model_agenda">Agenda</label>
 			<label index="tx_appointments_domain_model_agenda.name">Name</label>
 			<label index="tx_appointments_domain_model_agenda.holidays">Holidays</label>
@@ -117,8 +116,11 @@
 			<label index="tx_appointments_domain_model_formfield.function">Function</label>
 			<label index="tx_appointments_domain_model_formfield.function.info">Informational</label>
 			<label index="tx_appointments_domain_model_formfield.function.addtime">Adds user-specified minutes</label>
-			<label index="tx_appointments_domain_model_formfield.time_add">Time Add</label>
-			<label index="tx_appointments_domain_model_formfield.enable_field">Enable Field</label>
+			<label index="tx_appointments_domain_model_formfield.enable_field">Condition Field</label>
+			<label index="tx_appointments_domain_model_formfield.enable_field.default">Always Enabled</label>
+			<label index="tx_appointments_domain_model_formfield.enable_value">Enable On Value</label>
+			<label index="tx_appointments_domain_model_formfield.palette.enable_field">Conditions Enabling Field</label>
+			<label index="tx_appointments_domain_model_formfield.div.enable_field">Field:</label>
 
 			<label index="tx_appointments_domain_model_address">Address</label>
 			<label index="tx_appointments_domain_model_address.first_name">First Name</label>
@@ -133,13 +135,12 @@
 			<label index="tt_address.tx_extbase_type.Tx_Appointments_Address">Appointment Scheduler Address</label>
 			<label index="tx_appointments_domain_model_address.social_security_number">Social Security Number</label>
 			<label index="tx_appointments_domain_model_address.creation_progress">Creation Progress</label>
-			
+
 			<label index="tx_appointments_domain_model_formfieldvalue">Form Field Value</label>
 			<label index="tx_appointments_domain_model_formfieldvalue.value">Value</label>
 			<label index="tx_appointments_domain_model_formfieldvalue.form_field">Form Field</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
-            
 			<label index="tx_appointments_domain_model_appointment">Afspraak</label>
 			<label index="tx_appointments_domain_model_appointment.creation_progress">Vordering Aanmaak</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time">Begintijd</label>
@@ -154,7 +155,7 @@
 			<label index="tx_appointments_domain_model_appointment.fe_user">Gebruiker</label>
 			<label index="tx_appointments_domain_model_appointment.agenda">Agenda</label>
 			<label index="tx_appointments_domain_model_appointment.palette.times">Tijden</label>
-			
+
 			<label index="tx_appointments_domain_model_agenda">Agenda</label>
 			<label index="tx_appointments_domain_model_agenda.name">Naam</label>
 			<label index="tx_appointments_domain_model_agenda.holidays">Feestdagen</label>
@@ -249,8 +250,11 @@
 			<label index="tx_appointments_domain_model_formfield.function">Functie</label>
 			<label index="tx_appointments_domain_model_formfield.function.info">Informatief</label>
 			<label index="tx_appointments_domain_model_formfield.function.addtime">Telt minuten bij afspraak op</label>
-			<label index="tx_appointments_domain_model_formfield.time_add">Tijd Optellen</label>
-			<label index="tx_appointments_domain_model_formfield.enable_field">Veld Activeren</label>
+			<label index="tx_appointments_domain_model_formfield.enable_field">Conditie Veld</label>
+			<label index="tx_appointments_domain_model_formfield.enable_field.default">Altijd geactiveerd</label>
+			<label index="tx_appointments_domain_model_formfield.enable_value">Conditie Waarde</label>
+			<label index="tx_appointments_domain_model_formfield.palette.enable_field">Condities Veld Activatie</label>
+			<label index="tx_appointments_domain_model_formfield.div.enable_field">Veld:</label>
 
 			<label index="tx_appointments_domain_model_address">Adres</label>
 			<label index="tx_appointments_domain_model_address.first_name">Voornaam</label>
@@ -265,7 +269,7 @@
 			<label index="tt_address.tx_extbase_type.Tx_Appointments_Address">Afspraken Planner Adres</label>
 			<label index="tx_appointments_domain_model_address.social_security_number">BSN</label>
 			<label index="tx_appointments_domain_model_address.creation_progress">Vordering Aanmaak</label>
-			
+
 			<label index="tx_appointments_domain_model_formfieldvalue">Formulier Veld Waarde</label>
 			<label index="tx_appointments_domain_model_formfieldvalue.value">Waarde</label>
 			<label index="tx_appointments_domain_model_formfieldvalue.form_field">Formulier Veld</label>

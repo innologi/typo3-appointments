@@ -45,7 +45,6 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	const VALIDATE_NUMBER = 9;
 	const VALIDATE_NATURALNUMBER = 10;
 	const FUNCTION_INFORMATIONAL = 1;
-	const FUNCTION_ENABLEFIELD = 2;
 	const FUNCTION_ADDTIME = 3;
 	const TYPE_BOOLEAN = 1;
 	const TYPE_SELECT = 2;
@@ -131,19 +130,19 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	protected $function;
 
 	/**
-	 * The amount of time to add
-	 *
-	 * @var string
-	 */
-	protected $timeAdd;
-
-	/**
 	 * The field this one enables
 	 *
 	 * @var Tx_Appointments_Domain_Model_FormField
 	 * @lazy
 	 */
 	protected $enableField;
+
+	/**
+	 * The enableField value that enables this field
+	 *
+	 * @var string
+	 */
+	protected $enableValue;
 
 	/**
 	 * Sorting priority in its type
@@ -356,30 +355,11 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	}
 
 	/**
-	 * Returns the timeAdd
-	 *
-	 * @return string $timeAdd
-	 */
-	public function getTimeAdd() {
-		return $this->timeAdd;
-	}
-
-	/**
-	 * Sets the timeAdd
-	 *
-	 * @param string $timeAdd
-	 * @return void
-	 */
-	public function setTimeAdd($timeAdd) {
-		$this->timeAdd = $timeAdd;
-	}
-
-	/**
 	 * Returns the enableField
 	 *
 	 * @return Tx_Appointments_Domain_Model_FormField $enableField
 	 */
-	public function getEnableField() { #@TODO really, really REALLY reconsider this one please
+	public function getEnableField() {
 		return $this->enableField;
 	}
 
@@ -391,6 +371,25 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 */
 	public function setEnableField(Tx_Appointments_Domain_Model_FormField $enableField) {
 		$this->enableField = $enableField;
+	}
+
+	/**
+	 * Returns the enableFieldValue
+	 *
+	 * @return string $enableValue
+	 */
+	public function getEnableValue() {
+		return $this->enableValue;
+	}
+
+	/**
+	 * Sets the enableFieldValue
+	 *
+	 * @param string $enableValue
+	 * @return void
+	 */
+	public function setEnableValue($enableValue) {
+		$this->enableValue = $enableValue;
 	}
 
 	/**

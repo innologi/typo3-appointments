@@ -45,6 +45,7 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appoint
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @throws Tx_Appointments_MVC_Exception_PropertyDeleted
 	 */
 	public function isValid($value) {
 		$valid = FALSE;
@@ -53,17 +54,59 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appoint
 		if ($value instanceof Tx_Extbase_Persistence_ObjectStorage) {
 			$validator = $this->objectManager->get('Tx_Appointments_Validation_VariableValidatorResolver')->createValidator('Tx_Appointments_Domain_Validator_ObjectPropertiesValidator',$this->options);
 			$valid = TRUE;
-			foreach ($value as $obj) {
-				if (!$validator->isValid($obj)) {
-					$valid = FALSE;
+			// registers values referred to by delayed objects
+			$valueRegister = array();
+			/*
+			 * add a second pass for objects that need to be checked
+			 * AFTER everything else has had their values registered
+			 */
+			$delayedObjects = array();
+			$values = array($value, &$delayedObjects);
+			foreach ($values as $value) {
 
-					if (!isset($storageError)) {
-						$propertyName = str_replace('Tx_Appointments_Domain_Model_','',get_class($obj));
-						$propertyName[0] = strtolower($propertyName[0]);
-						$storageError = new Tx_Appointments_Validation_StorageError($propertyName);
+				foreach ($value as $obj) {
+					// formfieldvalue special treatment for enable_field
+					if ($obj instanceof Tx_Appointments_Domain_Model_FormFieldValue) {
+						$uidObj = $obj->getFormField();
+						if ($uidObj === NULL) {
+							throw new Tx_Appointments_MVC_Exception_PropertyDeleted();
+						}
+						/*
+						 * if the formfield is enabled by another, we'll need to exclude
+						 * or delay its validation depending on the conditions
+						 */
+						if (($enableField = $uidObj->getEnableField()) !== NULL) {
+							$enablerUid = $enableField->getUid();
+							// if the field on which we depend hasn't passed, save this one for the second run
+							if (!isset($valueRegister[$enablerUid])) {
+								$delayedObjects[] = $obj;
+								continue;
+							}
+
+							$valueRegister[$uidObj->getUid()] = $obj->getValue();
+							// if the field isn't enabled, let it skip validation
+							if ($valueRegister[$enablerUid] !== strtolower($uidObj->getEnableValue())) {
+								continue;
+							}
+						} else {
+							$valueRegister[$uidObj->getUid()] = strtolower($obj->getValue());
+						}
+					} else {
+						$uidObj = &$obj;
 					}
 
-					$storageError->addErrors($obj->getFormField()->getUid(), $validator->getErrors()); #@LOW "getFormField" should be variable
+					// start the actual validation
+					if (!$validator->isValid($obj)) {
+						$valid = FALSE;
+
+						if (!isset($storageError)) {
+							$propertyName = str_replace('Tx_Appointments_Domain_Model_','',get_class($obj));
+							$propertyName[0] = strtolower($propertyName[0]);
+							$storageError = new Tx_Appointments_Validation_StorageError($propertyName);
+						}
+
+						$storageError->addErrors($uidObj->getUid(), $validator->getErrors());
+					}
 				}
 			}
 			$this->errors[] = $storageError;
