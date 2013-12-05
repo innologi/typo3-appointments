@@ -113,7 +113,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	public function new1Action(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL) {
 		//find types
 		$types = $this->getTypes();
-		#@SHOULD in a seperate action that forwards/redirects or not.. consider the extra overhead, it's probably not worth it
+		#@LOW in a seperate action that forwards/redirects or not.. consider the extra overhead, it's probably not worth it
 		if (isset($dateFirst[0])) { //overrides in case an appointment-date is picked through agenda
 			//removes types that can't produce timeslots on the dateFirst date
 			$beginTime = new DateTime();
@@ -265,7 +265,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 
 			if ($timerStart) {
-				$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']); #@SHOULD is 0 supported everywhere? it should be, but I think I left a <1 check somewhere. Also timer messages should react to 0
+				$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']); #@LOW is 0 supported everywhere? it should be, but I think I left a <1 check somewhere. Also timer messages should react to 0
 				//message for a new timeslot
 				$flashMessage = str_replace('$1', $freeSlotInMinutes,
 						Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timerstart', $this->extensionName)
@@ -304,7 +304,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function createAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$timeFields = $this->calculateTimes($appointment); //times can be influenced by formfields
-		#@FIXME _ there is no check whether timeslotisallowed, which is good for the firstavailabletime, but what about maxPerDays and all that?
+		#@FIX _ there is no check whether timeslotisallowed, which is good for the firstavailabletime, but what about maxPerDays and all that?
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
 		//this is necessary in case another appointment is created or edited before this one is saved.
 		//isTimeSlotAllowed() does not suffice by itself, because of formfields that add time and can cause overlap
@@ -316,7 +316,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$this->processOverlapInfo($overlap,$appointment);
 			$this->failTimeValidation('new2',4075013371337,$timeFields);
 		} else {
-			#@SHOULD remove when TYPO3 version dependency is raised
+			#@LOW remove when TYPO3 version dependency is raised
 			if (version_compare(TYPO3_branch, '4.7', '<') && $appointment->getAddress() !== NULL) {
 				$appointment->getAddress()->setName(); //otherwise, it isn't set until show
 			}
@@ -356,7 +356,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 		//if the date was changed, reflect it on the form but don't persist it yet
 		if ($changedDate !== NULL) {
-			$appointment->setBeginTime(new DateTime($changedDate)); #@SHOULD couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
+			$appointment->setBeginTime(new DateTime($changedDate)); #@LOW couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
 			$appointment->_memorizeCleanState('beginTime'); //makes sure it isn't persisted automatically
 		}
 		$dateSlots = $this->slotService->getDateSlotsIncludingCurrent($appointment,TRUE);
@@ -540,7 +540,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				switch ($fieldType) {
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE:
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL:
-						$dateTime->modify('+'.intval($value).$unit); #@SHOULD _add a validator-choice with a customizable max?
+						$dateTime->modify('+'.intval($value).$unit); #@LOW _add a validator-choice with a customizable max?
 						break;
 					case Tx_Appointments_Domain_Model_FormField::TYPE_SELECT:
 						#@TODO moet mogelijk zijn met de timeAdd optie
@@ -642,7 +642,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				}
 			}
 
-			#@SHOULD _consider adding the appointment(s) that is conflicting to the overlapArray, so we have more details for the overlapInfo
+			#@LOW _consider adding the appointment(s) that is conflicting to the overlapArray, so we have more details for the overlapInfo
 			$overlapArray = array(
 					#'changeTimeSlot' => FALSE //indicates whether we're absolutely sure the user NEEDS to change the timeslot
 			);
@@ -655,7 +655,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			if (isset($endTimeDiff[0])) { //do the same for endTime
 				rsort($endTimeDiff);
 				$overlapArray['end'] = $endTimeDiff[0];
-				#@SHOULD clean up? forcing a new1 action can make the original time disappear if it was no longer available, which might confuse the user
+				#@LOW clean up? forcing a new1 action can make the original time disappear if it was no longer available, which might confuse the user
 				#if (!$overlapArray['changeTimeSlot']) { //if not yet TRUE, let it depend on whether the diff is larger than time added by (formfields)
 				#	$appointmentTime = ($endTime - $beginTime);
 				#	$appointmentTimeVariable = $appointmentTime - ($appointment->getType()->getDefaultDuration() * 60);

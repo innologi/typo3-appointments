@@ -66,14 +66,14 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 *
 	 * @var string
 	 */
-	protected $gender; #@SHOULD validate StringLength(minimum=1, maximum=1) but GEMHMK doesn't want to
+	protected $gender; #@LOW validate StringLength(minimum=1, maximum=1) but GEMHMK doesn't want to
 
 	/**
 	 * Birthday
 	 *
 	 * @var DateTime
 	 */
-	protected $birthday; #@SHOULD is property-value in formField template still necessary?
+	protected $birthday; #@LOW is property-value in formField template still necessary?
 
 	/**
 	 * Email
@@ -89,14 +89,14 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	 *
 	 * @var string
 	 */
-	protected $address; #@SHOULD regex validator? but GEMHMK doesn't want to
+	protected $address; #@LOW regex validator? but GEMHMK doesn't want to
 
 	/**
 	 * Zip code
 	 *
 	 * @var string
 	 */
-	protected $zip; #@SHOULD validate RegularExpression(regularExpression=/[0-9]{4}[A-Z]{2}/) but GEMHMK doesn't want to
+	protected $zip; #@LOW validate RegularExpression(regularExpression=/[0-9]{4}[A-Z]{2}/) but GEMHMK doesn't want to
 
 	/**
 	 * City

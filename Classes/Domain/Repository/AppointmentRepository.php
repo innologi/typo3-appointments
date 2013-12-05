@@ -93,7 +93,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		return $result;
 	}
 
-	#@SHOULD no longer used, clean up? maybe check EVERYTHING again, because there have been a lot of efficiency-changes
+	#@LOW no longer used, clean up? maybe check EVERYTHING again, because there have been a lot of efficiency-changes
 	/**
 	 * Returns all objects of this repository belonging to the specified day. No expired appointments.
 	 *

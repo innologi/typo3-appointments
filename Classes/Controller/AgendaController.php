@@ -38,7 +38,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 *
 	 * @var boolean
 	 */
-	protected $requireLogin = FALSE; #@SHOULD be configurable?
+	protected $requireLogin = FALSE; #@LOW be configurable?
 
 	/**
 	 * action show month

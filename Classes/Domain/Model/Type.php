@@ -53,7 +53,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * @var boolean
 	 */
 	protected $exclusiveAvailability = FALSE;
-	#@SHOULD imagine a different approach to type-binding:
+	#@LOW imagine a different approach to type-binding:
 	/*
 	 * - set sub-types inline in agenda record
 	 * - sub-type consists of type record, name, and agenda-specific settings like:

@@ -3,7 +3,7 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-$appointments_type_configStartTime = array( #@SHOULD add custom regex eval e.g. /([0-1]{1}[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9{1}/, see manual TCA->input->eval on how
+$appointments_type_configStartTime = array( #@LOW add custom regex eval e.g. /([0-1]{1}[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9{1}/, see manual TCA->input->eval on how
 	'type' => 'input',
 	'size' => 4,
 	'max' => 5,
@@ -218,7 +218,7 @@ $TCA['tx_appointments_domain_model_type'] = array(
 		),
 		'start_time_monday' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type.start_time', #@SHOULD can't differentiate between these fields in advanced TCA editing, because of same label
+			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type.start_time', #@LOW can't differentiate between these fields in advanced TCA editing, because of same label
 			'config' => $appointments_type_configStartTime,
 		),
 		'start_time_tuesday' => array(

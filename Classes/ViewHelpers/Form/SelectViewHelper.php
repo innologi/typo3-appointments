@@ -109,7 +109,7 @@ class Tx_Appointments_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHel
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
 	 * @see Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper::getErrorsForProperty()
 	 */
-	public function getErrorsForProperty() { #@SHOULD put somewhere else and call it from these VHs
+	public function getErrorsForProperty() { #@LOW put somewhere else and call it from these VHs
 		if (!$this->isObjectAccessorMode()) {
 			return array();
 		}

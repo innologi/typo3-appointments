@@ -134,8 +134,8 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @validate Tx_Appointments_Domain_Validator_ObjectStorageValidator(containsVariable=1)
 	 * @lazy
 	 */
-	protected $formFieldValues; #@SHOULD create an extbase feature suggestion and patch to remedy the objectstorage behaviour with instanceof checks
-	#@SHOULD test and see if making this an array would resolve the fluid issue of directly addressing an object (e.g. formFieldValues.189.value or formFieldValues._189.value)
+	protected $formFieldValues; #@LOW create an extbase feature suggestion and patch to remedy the objectstorage behaviour with instanceof checks
+	#@LOW test and see if making this an array would resolve the fluid issue of directly addressing an object (e.g. formFieldValues.189.value or formFieldValues._189.value)
 
 	/**
 	 * Name and address information
@@ -198,7 +198,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 		return $this->crdate;
 	}
 
-	#@SHOULD make these chainable?
+	#@LOW make these chainable?
 	/**
 	 * Returns the creationProgress flag
 	 *

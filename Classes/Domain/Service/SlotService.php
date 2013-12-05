@@ -37,7 +37,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	//if I change these, I should remember to also change the value formats @ templates, or else we get in trouble in at least editAction
 	const TIMESLOT_KEY_FORMAT = 'YmdHis';
 	const TIMESLOT_KEY_FORMAT_ALT = '%Y%m%d%H%M%S';
-	#@SHOULD once the TYPO3 dependency is raised, I should see if the template values are still required, and if so, if I can reach these constants from within the template
+	#@LOW once the TYPO3 dependency is raised, I should see if the template values are still required, and if so, if I can reach these constants from within the template
 
 	/**
 	 * Extension name
@@ -189,7 +189,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		}
 		$agenda = $appointment->getAgenda();
 
-		$this->clearExpiredAppointmentTimeSlots($agenda); #@SHOULD probably inefficient @ every type with limitTypes :/
+		$this->clearExpiredAppointmentTimeSlots($agenda); #@LOW probably inefficient @ every type with limitTypes :/
 		$dateSlotStorage = $this->buildSingleStorageObject($type,$agenda,clone $appointment->getBeginTime(),$appointment,$disregardConditions);
 
 		#@TODO finish this alternative that could alter a cached dateSlotStorage instead
@@ -356,7 +356,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda domain model object instance
 	 * @return Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_DateSlot>
 	 */
-	protected function alterStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) { #@FIXME test this one
+	protected function alterStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) { #@FIX test this one
 		$typeUid = $type->getUid();
 		$dateSlotStorage = $this->dateSlots[$typeUid];
 		$firstAvailableTimestamp = $this->getFirstAvailableTime($type, $agenda)->getTimestamp();
@@ -514,7 +514,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 				$maxAmount = $type->$func();
 				if ($maxAmount > 0) {
 					//we don't want $dateTime adjusted, so we clone several instances from here on
-					$startDateTime = new DateTime($currentDate); //don't clone the first, because $dateTime might have a different time #@SHOULD does that really matter?
+					$startDateTime = new DateTime($currentDate); //don't clone the first, because $dateTime might have a different time #@LOW does that really matter?
 					$endDateTime = clone $startDateTime;
 					$endDateTime->modify('+1 day');
 						//used for interval-logic later on, but convenient to create here due to endDateTime's current state
@@ -572,7 +572,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 						$timestamp = $dateTime->getTimestamp();
 						$func = 'getStopTime'.$day;
 						$stopTime = $type->$func();
-						if (!isset($stopTime[0])) { #@SHOULD remove these checks as soon as TCA regexp eval is added
+						if (!isset($stopTime[0])) { #@LOW remove these checks as soon as TCA regexp eval is added
 							$stopTime = '23:59';
 						}
 						$stopTimestamp = strtotime($stopTime,$timestamp);
@@ -897,7 +897,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 */
 	protected function getStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		$id = 'dateSlotStorage';
-		$key = $this->getCacheKey($type, $agenda); #@SHOULD utilize configurable cache-key minutes??
+		$key = $this->getCacheKey($type, $agenda); #@LOW utilize configurable cache-key minutes??
 		$data = $this->getStorageObjectFromCache($key, $id, $type, $agenda);
 		if ($data === FALSE) {
 			//not cached so begin building
@@ -988,7 +988,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 			}
 		}
 
-		#@SHOULD imagine a different approach to building and caching storageObjects:
+		#@LOW imagine a different approach to building and caching storageObjects:
 		/*
 		 * - create a week worth of slots for a type, and cache it with an identifier that changes only when the type record is changed
 		 * - retrieve the cache, then create a new storage with it, according to firstAvailableTime and maxDaysForward

@@ -25,7 +25,7 @@ $TCA['tx_appointments_domain_model_agenda'] = array(
 						email_address, email_text,
 				--div--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.div.calendar_invite,calendar_invite_types, calendar_invite_address, calendar_invite_text,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,starttime, endtime'
-		), #@SHOULD de div, palette, types item labels verplaatsen naar locallang_be?
+		), #@LOW de div, palette, types item labels verplaatsen naar locallang_be?
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -129,7 +129,7 @@ $TCA['tx_appointments_domain_model_agenda'] = array(
 				'type' => 'text',
 				'cols' => 40,
 				'rows' => 15,
-				'eval' => 'nospace' #@SHOULD custom regexp validation
+				'eval' => 'nospace' #@LOW custom regexp validation
 			),
 		),
 		'types' => array(

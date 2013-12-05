@@ -198,7 +198,7 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_appointments_domain_model_formfieldvalue',
 				'foreign_field' => 'appointment',
-				'foreign_unique' => 'form_field', #@SHOULD there seems to be a bug that will show the first item, regardless if it is in use
+				'foreign_unique' => 'form_field', #@LOW there seems to be a bug that will show the first item, regardless if it is in use
 					//NOTE: extbase supports propertypaths here for showing but NOT updating (FE only, 4.7.8), create an extbase patch?
 				'foreign_sortby' => 'sorting',
 				'maxitems' => 9999,

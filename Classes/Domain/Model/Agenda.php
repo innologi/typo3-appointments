@@ -62,7 +62,7 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	 * @lazy
 	 */
 	protected $types;
-	#@FIXME _perhaps we do need different storages for the types, or subTypes .. storing their status in the type themselves and relying on TYPO3's clipboard to make copy's and create the same appointment types with a different name and status is way redundant and not flexible
+	#@FIX _perhaps we do need different storages for the types, or subTypes .. storing their status in the type themselves and relying on TYPO3's clipboard to make copy's and create the same appointment types with a different name and status is way redundant and not flexible
 	#@TODO _type needs a setting that says whether other appointments of which ones count towards their max
 	/**
 	 * Email types

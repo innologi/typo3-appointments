@@ -82,7 +82,7 @@ class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Appointments_P
 	 * @param array $types Contains type uid's to filter by
 	 * @return Tx_Appointments_Domain_Model_Type The type
 	 */
-	public function findBySmallestBlockedHours(array $types) { #@SHOULD no longer used, clean up?
+	public function findBySmallestBlockedHours(array $types) { #@LOW no longer used, clean up?
 		$query = $this->createQuery();
 		$result = $query->matching(
 				$query->in('uid', $types)

@@ -79,7 +79,7 @@ class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Appoi
 					if (isset($settings[$selectField][0])) {
 						$fields = t3lib_div::trimExplode(';',$settings[$selectField],1);
 						foreach ($fields as $field) {
-							#@SHOULD make this work as overrule-setting, not overwrite
+							#@LOW make this work as overrule-setting, not overwrite
 							$settings[$field] = isset($tsSettings[$field]) ? $tsSettings[$field] : '';
 						}
 					}

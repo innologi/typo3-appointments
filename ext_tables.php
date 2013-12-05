@@ -27,24 +27,24 @@ t3lib_extMgm::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.l
 
 t3lib_extMgm::addLLrefForTCAdescr('tx_appointments_csh_task_clean_up', 'EXT:appointments/Resources/Private/Language/locallang_csh_task_clean_up.xml');
 
-#@SHOULD is there a native datepicker [6.1]?
+#@LOW is there a native datepicker [6.1]?
 #@TODO _document address-problems in 4.5: no cascade remove from FE
-#@SHOULD add icon for sysfolder <http://buzz.typo3.org/people/steffen-kamper/article/new-icons-for-my-pages/>
-#@SHOULD add plugin preview <http://buzz.typo3.org/people/steffen-kamper/article/render-custom-preview-from-extension/>
-#@SHOULD see if utilizing errorAction (forward()?) for time-related errors is an option
+#@LOW add icon for sysfolder <http://buzz.typo3.org/people/steffen-kamper/article/new-icons-for-my-pages/>
+#@LOW add plugin preview <http://buzz.typo3.org/people/steffen-kamper/article/render-custom-preview-from-extension/>
+#@LOW see if utilizing errorAction (forward()?) for time-related errors is an option
 #@TODO __expand warnunload to expire the appointment on leave page NOT REALLY AN OPTION? Should create a link to last unfinished appointment instead
 #@TODO __make messages dismissable
 #@TODO __make * = required only visible when there are required fields
 #@TODO __add validation options to Address
-#@FIXME do Manual
-#@SHOULD look at / replace Resources/Public/Icons
-#@SHOULD unittesting?
+#@FIX do Manual
+#@LOW look at / replace Resources/Public/Icons
+#@LOW unittesting?
 #@TODO currently, month and day names are taken from locallang. I should see if the php locale can be changed to the typo3 locale in order to rely on strftime and/or f:format.date
-#@SHOULD look into localization:
+#@LOW look into localization:
 //Tx_Extbase_Utility_Localization::translate($key, $extensionName, $arguments=NULL)
 //$arguments
 //Allows you to specify an array of arguments passed to the function vsprintf. Allows you to fill wildcards in localized strings with values.
-#@SHOULD replace the following in the appointment list template once required TYPO3 version is upped to 4.7 or higher:
+#@LOW replace the following in the appointment list template once required TYPO3 version is upped to 4.7 or higher:
 //{v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}
 //with:
 //{appointment.type.hoursMutable -> v:math.product(b:3600) -> v:math.sum(b:appointment.crdate)}
@@ -171,7 +171,7 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 #if (version_compare(TYPO3_branch, '6.1', '<')) {
 #	t3lib_div::loadTCA('tt_address');
 #}
-#@SHOULD make it set a type as soon as IRRE supports it
+#@LOW make it set a type as soon as IRRE supports it
 #if (!isset($TCA['tt_address']['ctrl']['type'])) {
 #	$TCA['tt_address']['ctrl']['type'] = 'tx_extbase_type';
 #}

@@ -63,7 +63,7 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appoint
 						$storageError = new Tx_Appointments_Validation_StorageError($propertyName);
 					}
 
-					$storageError->addErrors($obj->getFormField()->getUid(), $validator->getErrors()); #@SHOULD "getFormField" should be variable
+					$storageError->addErrors($obj->getFormField()->getUid(), $validator->getErrors()); #@LOW "getFormField" should be variable
 				}
 			}
 			$this->errors[] = $storageError;

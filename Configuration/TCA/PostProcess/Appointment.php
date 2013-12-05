@@ -38,7 +38,7 @@
  *
  */
 class Tx_Appointments_Configuration_TCA_PostProcess_Appointment {
-	#@SHOULD what about email/calendar? that would be a good use of these hooks
+	#@LOW what about email/calendar? that would be a good use of these hooks
    	/**
 	 * Automatically corrects time properties based on begin_time.
 	 *
@@ -64,13 +64,13 @@ class Tx_Appointments_Configuration_TCA_PostProcess_Appointment {
 				$appointment = $propertyArray;
 			}
 
-			#@SHOULD postprocess of type is required as well
-			#@SHOULD postprocess of formfield is required as well
+			#@LOW postprocess of type is required as well
+			#@LOW postprocess of formfield is required as well
 			$type = $this->getRecord('tx_appointments_domain_model_type',$appointment['type']);
 			$reserveBlock = $type['between_minutes'] * 60;
 			$defaultDuration = $type['default_duration'] * 60;
 
-			#@SHOULD do check here on whether time is allowed?
+			#@LOW do check here on whether time is allowed?
 
 			$propertyArray['begin_reserved'] = $appointment['begin_time'] - $reserveBlock;
 			$propertyArray['end_time'] = $appointment['begin_time'] + $defaultDuration;

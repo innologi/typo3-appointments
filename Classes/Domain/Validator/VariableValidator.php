@@ -52,7 +52,7 @@ class Tx_Appointments_Domain_Validator_VariableValidator extends Tx_Appointments
 				$validationType = intval($validationType);
 				#@TODO currently tells FE the field is required if ANY of these is selected, but alphanum, string and text don't require it to be, so they're disabled in TCA. Fix this as soon as extbase is consistent @ its Validators.
 				switch ($validationType) {
-					case Tx_Appointments_Domain_Model_FormField::VALIDATE_ALPHANUMERIC: #@SHOULD move these outside of formfield and into the validator to lose the formfield dependence
+					case Tx_Appointments_Domain_Model_FormField::VALIDATE_ALPHANUMERIC: #@LOW move these outside of formfield and into the validator to lose the formfield dependence
 						$validator = $validatorResolver->createValidator('Alphanumeric');
 						break;
 					case Tx_Appointments_Domain_Model_FormField::VALIDATE_DATE_TIME:
@@ -103,7 +103,7 @@ class Tx_Appointments_Domain_Validator_VariableValidator extends Tx_Appointments
 			$this->errors = array_merge($this->errors,$validatorConjunction->getErrors());
 		}
 
-		#@SHOULD throw exception when option isn't set, instead of just returning FALSE
+		#@LOW throw exception when option isn't set, instead of just returning FALSE
 
 		return FALSE;
 	}

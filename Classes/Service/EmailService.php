@@ -32,7 +32,7 @@
  */
 class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 
-	#@SHOULD rebuild service and separate content / implementation somewhat more
+	#@LOW rebuild service and separate content / implementation somewhat more
 	/**
 	 * Extension name
 	 *

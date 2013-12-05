@@ -68,7 +68,7 @@ class Tx_Appointments_Configuration_TCA_PostProcess_FormFieldValue {
 				} else {
 					$ffVal = $propertyArray;
 					$oldFormField = $ffVal['form_field'];
-					#@SHOULD has no appointment id, kinda useless until it does huh?
+					#@LOW has no appointment id, kinda useless until it does huh?
 				}
 
 				$table = 'tx_appointments_domain_model_formfield';
@@ -108,7 +108,7 @@ class Tx_Appointments_Configuration_TCA_PostProcess_FormFieldValue {
 					$this->updateRecord($table,$ffVal['appointment'],$updateValues);
 				}
 			}
-			#@SHOULD a delete doesn't come by here.. find out how to catch that one
+			#@LOW a delete doesn't come by here.. find out how to catch that one
 		}
 	}
 
