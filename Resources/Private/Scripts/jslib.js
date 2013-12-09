@@ -297,8 +297,8 @@ jQuery(document).ready(function() {
 			if (storage.getItem(id)) { //checks if there is a session value for the id
 				var elemObj = jQuery('.tx-appointments form #' + id);
 				var val = storage.getItem(id);
-				//checkboxes work differently from all other fields
-				if (elemObj.hasClass('checkbox')) {
+				//checkboxes/radio work differently from all other fields
+				if (elemObj.hasClass('checkbox') || elemObj.hasClass('radio')) {
 					//note that val retrieved from sessionStorage is of type string, NOT boolean!
 					if (val == 'true') {
 						elemObj.prop('checked', true);
@@ -330,8 +330,21 @@ jQuery(document).ready(function() {
 		jQuery('.tx-appointments form .select.session').change(function() {
 			storeValueInSession(this);
 		});
+		// we look at checked instead of value @ radio / checkboxes
+		jQuery('.tx-appointments form .radio.session').change(function() {
+			sessionStorage.setItem(
+				this.id,
+				this.checked
+			);
+			// radio only triggers onchange if enabled, but enabling one disables others
+			jQuery(this).siblings('.radio.session[name="' + jQuery(this).attr('name') + '"]').each(function(i, radio) {
+				sessionStorage.setItem(
+					radio.id,
+					radio.checked
+				);
+			});
+		});
 		jQuery('.tx-appointments form .checkbox.session').change(function() {
-			//we look at checked instead of value @ checkboxes
 			sessionStorage.setItem(
 				this.id,
 				this.checked
@@ -365,37 +378,39 @@ jQuery(document).ready(function() {
 		var classes = jQuery(elem).attr('class');
 		var evalPos = classes.indexOf('eval-f') + 6;
 		var evalParts = classes.slice(evalPos).split('-');
-		var id = evalParts[0];
+		var uid = evalParts[0];
 		// the split here ensures correct value regardless if more classes follow
 		var desiredValue = evalParts[1].split(' ')[0].toLowerCase();
 		
 		var enablerObj = null;
 		// check if the enabler was already processed
-		if (fieldEnablers[id] !== undefined) {
-			enablerObj = jQuery(fieldEnablers[id]);
+		if (fieldEnablers[uid] !== undefined) {
+			enablerObj = fieldEnablers[uid];
 		} else {
 			// new enabler
-			enablerObj = jQuery('.tx-appointments form #appointments-formField-' + id);
+			var enablerObj = jQuery('.tx-appointments form .formfield-id-' + uid);
 			if (enablerObj[0]) {
 				// sets as processed, so it doesn't again for multiple fields
-				fieldEnablers[id] = enablerObj[0];
+				fieldEnablers[uid] = enablerObj;
 				// data store which will contain all fields it "enables"
 				enablerObj.data('enable-fields',{});
 				// add event
-				enablerObj.change(function() {
-					var newValue = jQuery(this).val().toLowerCase();
-					// get fields to check from data store
-					var fields = jQuery(this).data('enable-fields')
-					for (var m in fields) {
-						checkEnableField(fields[m], newValue);
-					}
-				});
+				if (enablerObj.hasClass('radio')) {
+					enablerObj.change(function() {
+						runChecks(this, this.checked);
+					});
+				} else {
+					enablerObj.change(function() {
+						runChecks(this, true);
+					});
+				}
 			}
 		};
 		
 		// if the enabler exists, add this field to its data store
 		if (enablerObj[0]) {
-			var fields = enablerObj.data('enable-fields');
+			// get data from the first object
+			var fields = jQuery(enablerObj[0]).data('enable-fields');
 			fields[i] = {
 				element: elem,
 				enableValue: desiredValue,
@@ -423,9 +438,9 @@ jQuery(document).ready(function() {
 	}
 	
 	// checks if a field{element,enableValue,required} should be shown or hidden
-	function checkEnableField(field, currentValue) {
+	function checkEnableField(field, currentValue, active) {
 		var elemObj = jQuery(field.element);
-		if (currentValue === field.enableValue) {
+		if (active && currentValue === field.enableValue) {
 			jQuery(field.required).attr('required','required');
 			elemObj.show();
 		} else {
@@ -434,9 +449,39 @@ jQuery(document).ready(function() {
 		}
 	}
 	
+	function runChecks(elem, active) {
+		var newValue = jQuery(elem).val().toLowerCase();
+		// get fields to check from data store
+		var fields = jQuery(elem).data('enable-fields');
+		for (var m in fields) {
+			checkEnableField(fields[m], newValue, active);
+		}
+	}
+	
 	// initial check, should be AFTER sessionStorage calls!
 	for (var i in fieldEnablers) {
-		jQuery(fieldEnablers[i]).change();
+		/*
+		 * unfortunately, radio needs a special init because normally
+		 * ALL buttons would get called and pass their checked-state
+		 * to ALL fields. This way, only the last would influence the
+		 * outcome.
+		 */
+		if (fieldEnablers[i].hasClass('radio')) {
+			var checked = false;
+			fieldEnablers[i].each(function(l, enabler) {
+				if (this.checked) {
+					runChecks(enabler, true);
+					checked = true;
+					// break loop
+					return false;
+				}
+			});
+			if (!checked) {
+				runChecks(fieldEnablers[i][0], false);
+			}
+		} else {
+			fieldEnablers[i].change();
+		}
 	}
 	
 });

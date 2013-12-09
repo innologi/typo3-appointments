@@ -1,7 +1,7 @@
 {namespace v=Tx_Vhs_ViewHelpers}
 {namespace a=Tx_Appointments_ViewHelpers}
 <f:if condition="{formField}">
-	<div class="formField-wrap{f:if(condition:formField.enableField,then:' enablefield eval-f{formField.enableField.uid}-{formField.enableValue}')}">
+	<div class="formfield-wrap{f:if(condition:formField.enableField,then:' enablefield eval-f{formField.enableField.uid}-{formField.enableValue}')}">
 		<label>
 			{formField.label}
 			
@@ -17,11 +17,11 @@
 			<v:switch value="{formField.fieldType}">
 				<v:case case="1" break="TRUE"> <!-- Boolean / Checkbox -->
 					<f:form.checkbox
-						id="appointments-formField-{formField.uid}"
+						id="appointments-formfield-{formField.uid}"
 						property="formFieldValues.{formField.uid}.value"
 						value="1"
 						checked="{formFieldValue.value} == 1"
-						class="checkbox session"
+						class="formfield-id-{formField.uid} checkbox session"
 					/>
 				</v:case>
 				<v:case case="2" break="TRUE">  <!-- Select -->
@@ -30,11 +30,11 @@
 					</f:if>
 					<br />
 					<a:form.select
-						id="appointments-formField-{formField.uid}"
+						id="appointments-formfield-{formField.uid}"
 						property="formFieldValues.{formField.uid}.value"
 						options="{formField.choicesForSelect}"
 						value="{formFieldValue.value}"
-						class="select session"
+						class="formfield-id-{formField.uid} select session"
 					/>
 				</v:case>
 				<v:case case="3" break="TRUE"> <!-- Textsmall / Input -->
@@ -43,26 +43,41 @@
 					</f:if>
 					<br />
 					<a:form.textfield
-						id="appointments-formField-{formField.uid}"
+						id="appointments-formfield-{formField.uid}"
 						property="formFieldValues.{formField.uid}.value"
 						value="{formFieldValue.value}"
-						class="textinput{f:if(condition:formField.isDate,then:' datepicker')} session"
+						class="formfield-id-{formField.uid} textinput{f:if(condition:formField.isDate,then:' datepicker')} session"
 						required="{f:if(condition:formField.validationTypes,then:1)}"
 						placeholder="{f:if(condition:formField.isDate,then:'dd-mm-jjjj')}"
 					/>
 				</v:case>
-				<v:case case="4"> <!-- Textlarge / Textarea -->
+				<v:case case="4" break="TRUE"> <!-- Textlarge / Textarea -->
 					<f:if condition="{formField.validationTypes}">
 						<span class="required">*</span>
 					</f:if>
 					<br />
 					<a:form.textarea
-						id="appointments-formField-{formField.uid}"
+						id="appointments-formfield-{formField.uid}"
 						property="formFieldValues.{formField.uid}.value"
 						value="{formFieldValue.value}"
 						cols="40" rows="15"
-						class="session"
+						class="formfield-id-{formField.uid} session"
 					/>
+				</v:case>
+				<v:case case="5">  <!-- Radio -->
+					<f:if condition="{formField.validationTypes}">
+						<span class="required">*</span>
+					</f:if>
+					<f:for each="{formField.choicesForSelect}" as="choiceValue" key="choiceKey" iteration="choiceIterator">
+						<a:form.radio
+							id="appointments-formfield-{formField.uid}-{choiceIterator.index}"
+							property="formFieldValues.{formField.uid}.value"
+							value="{choiceKey}"
+							checked="{0:formFieldValue.value} == {0:choiceKey}"
+							class="formfield-id-{formField.uid} radio session"
+						/>
+						{choiceValue}
+					</f:for>
 				</v:case>
 			</v:switch>
 		</label>

@@ -50,6 +50,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	const TYPE_SELECT = 2;
 	const TYPE_TEXTSMALL = 3;
 	const TYPE_TEXTLARGE = 4;
+	const TYPE_RADIO = 5;
 
 	/**
 	 * Field title

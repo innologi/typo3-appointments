@@ -159,10 +159,11 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-						array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.boolean',Tx_Appointments_Domain_Model_FormField::TYPE_BOOLEAN),
-						array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.select',Tx_Appointments_Domain_Model_FormField::TYPE_SELECT),
-						array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.textsmall',Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL),
-						array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.textlarge',Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE)
+					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.boolean',Tx_Appointments_Domain_Model_FormField::TYPE_BOOLEAN),
+					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.radio',Tx_Appointments_Domain_Model_FormField::TYPE_RADIO),
+					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.select',Tx_Appointments_Domain_Model_FormField::TYPE_SELECT),
+					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.textsmall',Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL),
+					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.textlarge',Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE)
 				),
 				'size' => 1,
 				'maxitems' => 1,
@@ -171,7 +172,7 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 		),
 		'choices' => array(
 			'exclude' => 0,
-			'displayCond' => 'FIELD:field_type:=:'.Tx_Appointments_Domain_Model_FormField::TYPE_SELECT,
+			'displayCond' => 'FIELD:field_type:IN:'.Tx_Appointments_Domain_Model_FormField::TYPE_SELECT . ',' . Tx_Appointments_Domain_Model_FormField::TYPE_RADIO,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.choices',
 			'config' => array(
 				'type' => 'text',
@@ -214,7 +215,7 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 				'foreign_table_where' => '
 					AND tx_appointments_domain_model_formfield.uid <> ###THIS_UID###
 					AND tx_appointments_domain_model_formfield.type = ###REC_FIELD_type###
-					AND tx_appointments_domain_model_formfield.field_type IN(' . Tx_Appointments_Domain_Model_FormField::TYPE_SELECT . ')
+					AND tx_appointments_domain_model_formfield.field_type IN(' . Tx_Appointments_Domain_Model_FormField::TYPE_SELECT . ',' . Tx_Appointments_Domain_Model_FormField::TYPE_RADIO . ')
 					AND tx_appointments_domain_model_formfield.enable_field = 0
 					AND 0=(
 						SELECT COUNT(*)

@@ -563,8 +563,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL:
 						$dateTime->modify('+'.intval($value).$unit); #@LOW _add a validator-choice with a customizable max?
 						break;
+					case Tx_Appointments_Domain_Model_FormField::TYPE_RADIO:
 					case Tx_Appointments_Domain_Model_FormField::TYPE_SELECT:
-						#@TODO moet mogelijk zijn met de timeAdd optie
 					case Tx_Appointments_Domain_Model_FormField::TYPE_BOOLEAN:
 						#@TODO moet mogelijk zijn met de timeAdd optie
 				}

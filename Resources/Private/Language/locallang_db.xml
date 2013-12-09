@@ -109,6 +109,7 @@
 			<label index="tx_appointments_domain_model_formfield.validation_types.naturalnumber">Natural Number</label>
 			<label index="tx_appointments_domain_model_formfield.field_type">Field Type</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.boolean">Checkbox</label>
+			<label index="tx_appointments_domain_model_formfield.field_type.radio">Radio Button</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.select">Selection Box</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.textsmall">Small Textfield</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.textlarge">Large Textarea</label>
@@ -243,6 +244,7 @@
 			<label index="tx_appointments_domain_model_formfield.validation_types.naturalnumber">Natuurlijk Getal</label>
 			<label index="tx_appointments_domain_model_formfield.field_type">Veld Type</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.boolean">Vinkje</label>
+			<label index="tx_appointments_domain_model_formfield.field_type.radio">Keuzerondje</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.select">Selectie</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.textsmall">Klein Tekstveld</label>
 			<label index="tx_appointments_domain_model_formfield.field_type.textlarge">Groot Tekstveld</label>
