@@ -20,9 +20,7 @@
 				<v:case case="5"> <!-- Radio -->
 				</v:case>
 				<v:case case="2" break="TRUE"> <!-- Select -->
-					<v:iterator.contains haystack="{formField.choices}" needle="{formFieldValue.value}" >
-						{formFieldValue.value}
-					</v:iterator.contains>
+					<v:iterator.extract key="{formFieldValue.value}" content="{formField.choicesArray}" recursive="FALSE"/>
 				</v:case>
 				<v:case case="3"> <!-- Textsmall / Input -->
 				</v:case>

@@ -121,7 +121,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 * @var array
 	 * @transient
 	 */
-	protected $choicesForSelect = NULL;
+	protected $choicesArray = NULL;
 
 	/**
 	 * Field function: informational, enables other field, add time
@@ -290,7 +290,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	/**
 	 * Sets the choices
 	 *
-	 * Also sets choicesForSelect
+	 * Also sets choicesArray
 	 *
 	 * @param string $choices
 	 * @return void
@@ -304,11 +304,11 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 *
 	 * @return array
 	 */
-	public function getChoicesForSelect() {
-		if ($this->choicesForSelect === NULL) {
-			$this->setChoicesForSelect($this->choices);
+	public function getChoicesArray() {
+		if ($this->choicesArray === NULL) {
+			$this->setChoicesArray($this->choices);
 		}
-		return $this->choicesForSelect;
+		return $this->choicesArray;
 	}
 
 	/**
@@ -319,7 +319,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 * @param string $choices
 	 * @return void
 	 */
-	protected function setChoicesForSelect($choices) {
+	protected function setChoicesArray($choices) {
 		$choices = str_replace("\r\n","\n",$choices);
 		$keyArray = array();
 		$valueArray = t3lib_div::trimExplode("\n", $choices, 1);
@@ -332,8 +332,9 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 				$choice = $parts[1];
 			}
 		}
-		$valueArray = array_combine($keyArray,$valueArray); //makes keys and values same, which simplifies the view
-		$this->choicesForSelect = $valueArray;
+		// combines keys and values, simplifying the view
+		$valueArray = array_combine($keyArray,$valueArray);
+		$this->choicesArray = $valueArray;
 	}
 
 	/**

@@ -32,7 +32,7 @@
 					<a:form.select
 						id="appointments-formfield-{formField.uid}"
 						property="formFieldValues.{formField.uid}.value"
-						options="{formField.choicesForSelect}"
+						options="{formField.choicesArray}"
 						value="{formFieldValue.value}"
 						class="formfield-id-{formField.uid} select session"
 					/>
@@ -68,7 +68,7 @@
 					<f:if condition="{formField.validationTypes}">
 						<span class="required">*</span>
 					</f:if>
-					<f:for each="{formField.choicesForSelect}" as="choiceValue" key="choiceKey" iteration="choiceIterator">
+					<f:for each="{formField.choicesArray}" as="choiceValue" key="choiceKey" iteration="choiceIterator">
 						<a:form.radio
 							id="appointments-formfield-{formField.uid}-{choiceIterator.index}"
 							property="formFieldValues.{formField.uid}.value"
