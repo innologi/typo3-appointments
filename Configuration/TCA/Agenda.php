@@ -16,7 +16,7 @@ $appointments_agenda_checkboxes = array(
 $TCA['tx_appointments_domain_model_agenda'] = array(
 	'ctrl' => $TCA['tx_appointments_domain_model_agenda']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, holidays, types, email_address, email_text, email_types, email_owner_types, calendar_invite_address, calendar_invite_text, calendar_invite_types',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, holidays, types, email_address, email_text, email_types, email_owner_types, email_field_types, calendar_invite_address, calendar_invite_text, calendar_invite_types',
 	),
 	'types' => array(
 		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, types, holidays,
@@ -30,7 +30,7 @@ $TCA['tx_appointments_domain_model_agenda'] = array(
 	'palettes' => array(
 		'1' => array('showitem' => ''),
 		'email_types' => array(
-				'showitem' => 'email_types, email_owner_types',
+				'showitem' => 'email_types, email_owner_types, email_field_types',
 				'canNotCollapse' => 1
 		)
 	),
@@ -248,6 +248,11 @@ $TCA['tx_appointments_domain_model_agenda'] = array(
 				'exclude' => 0,
 				'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.email_owner_types',
 				'config' => $appointments_agenda_checkboxes
+		),
+		'email_field_types' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.email_field_types',
+			'config' => $appointments_agenda_checkboxes
 		),
 		'calendar_invite_types' => array(
 				'exclude' => 0,

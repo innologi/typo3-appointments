@@ -30,6 +30,7 @@
 			<label index="tx_appointments_domain_model_agenda.calendar_invite_address">Calendar Invite Address</label>
 			<label index="tx_appointments_domain_model_agenda.calendar_invite_text">Calendar Invite Description</label>
 			<label index="tx_appointments_domain_model_agenda.email_owner_types">To User On:</label>
+			<label index="tx_appointments_domain_model_agenda.email_field_types">To User-Provided Addresses On:</label>
 			<label index="tx_appointments_domain_model_agenda.email_types">To Configured Addresses On:</label>
 			<label index="tx_appointments_domain_model_agenda.calendar_invite_types">Send Calendar Invitation/Update On:</label>
 			<label index="tx_appointments_domain_model_agenda.types.create">created appointments</label>
@@ -117,6 +118,7 @@
 			<label index="tx_appointments_domain_model_formfield.function">Function</label>
 			<label index="tx_appointments_domain_model_formfield.function.info">Informational</label>
 			<label index="tx_appointments_domain_model_formfield.function.addtime">Adds user-specified minutes</label>
+			<label index="tx_appointments_domain_model_formfield.function.email">Email confirmation</label>
 			<label index="tx_appointments_domain_model_formfield.enable_field">Condition Field</label>
 			<label index="tx_appointments_domain_model_formfield.enable_field.default">Always Enabled</label>
 			<label index="tx_appointments_domain_model_formfield.enable_value">Enable On Value</label>
@@ -167,6 +169,7 @@
 			<label index="tx_appointments_domain_model_agenda.calendar_invite_address">Kalender Uitnodiging Adres</label>
 			<label index="tx_appointments_domain_model_agenda.calendar_invite_text">Kalender Uitnodiging Omschrijving</label>
 			<label index="tx_appointments_domain_model_agenda.email_owner_types">Naar Gebruiker Bij:</label>
+			<label index="tx_appointments_domain_model_agenda.email_field_types">Naar Door Gebruiker-Opgegeven Adressen Bij:</label>
 			<label index="tx_appointments_domain_model_agenda.email_types">Naar Ingestelde Adressen Bij:</label>
 			<label index="tx_appointments_domain_model_agenda.calendar_invite_types">Stuur Kalender Uitnodiging/Wijziging Bij:</label>
 			<label index="tx_appointments_domain_model_agenda.types.create">aangemaakte afspraken</label>
@@ -253,6 +256,7 @@
 			<label index="tx_appointments_domain_model_formfield.function">Functie</label>
 			<label index="tx_appointments_domain_model_formfield.function.info">Informatief</label>
 			<label index="tx_appointments_domain_model_formfield.function.addtime">Telt minuten bij afspraak op</label>
+			<label index="tx_appointments_domain_model_formfield.function.email">E-mail bevestiging</label>
 			<label index="tx_appointments_domain_model_formfield.enable_field">Conditie Veld</label>
 			<label index="tx_appointments_domain_model_formfield.enable_field.default">Altijd geactiveerd</label>
 			<label index="tx_appointments_domain_model_formfield.enable_value">Conditie Waarde</label>

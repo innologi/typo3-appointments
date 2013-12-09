@@ -31,7 +31,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_AbstractEntity implements Tx_Appointments_Domain_Model_EmailContainerInterface {
 
 	/**
 	 * First Name

@@ -189,7 +189,8 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 				'type' => 'select',
 				'items' => array(
 					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.info',Tx_Appointments_Domain_Model_FormField::FUNCTION_INFORMATIONAL),
-					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.addtime',Tx_Appointments_Domain_Model_FormField::FUNCTION_ADDTIME)
+					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.addtime',Tx_Appointments_Domain_Model_FormField::FUNCTION_ADDTIME),
+					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.email',Tx_Appointments_Domain_Model_FormField::FUNCTION_EMAIL)
 				),
 				'size' => 1,
 				'maxitems' => 1

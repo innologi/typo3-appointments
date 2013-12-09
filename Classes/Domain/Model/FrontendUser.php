@@ -38,7 +38,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_FrontendUser {
+class Tx_Appointments_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_FrontendUser implements Tx_Appointments_Domain_Model_EmailContainerInterface{
 
 	/**
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FrontendUserGroup>

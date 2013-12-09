@@ -79,6 +79,13 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	protected $emailOwnerTypes;
 
 	/**
+	 * Email field types
+	 *
+	 * @var integer
+	 */
+	protected $emailFieldTypes;
+
+	/**
 	 * Calendar Invite types
 	 *
 	 * @var integer
@@ -276,6 +283,25 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	 */
 	public function setEmailOwnerTypes($emailOwnerTypes) {
 		$this->emailOwnerTypes = $emailOwnerTypes;
+	}
+
+	/**
+	 * Returns the email Field types
+	 *
+	 * @return integer $emailFieldTypes
+	 */
+	public function getEmailFieldTypes() {
+		return $this->emailFieldTypes;
+	}
+
+	/**
+	 * Sets the email Field types
+	 *
+	 * @param integer $emailFieldTypes
+	 * @return void
+	 */
+	public function setEmailFieldTypes($emailFieldTypes) {
+		$this->emailFieldTypes = $emailFieldTypes;
 	}
 
 	/**

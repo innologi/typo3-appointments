@@ -138,6 +138,14 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	#@LOW test and see if making this an array would resolve the fluid issue of directly addressing an object (e.g. formFieldValues.189.value or formFieldValues._189.value)
 
 	/**
+	 * FormFieldValues that are set as sending-email-address
+	 *
+	 * @transient
+	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
+	 */
+	protected $emailFormFieldValues;
+
+	/**
 	 * Name and address information
 	 *
 	 * @var Tx_Appointments_Domain_Model_Address
@@ -414,6 +422,40 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 */
 	public function setFormFieldValues(Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
 		$this->formFieldValues = $formFieldValues;
+	}
+
+	/**
+	 * Returns the emailFormFieldValues
+	 *
+	 * @return Tx_Extbase_Persistence_ObjectStorage $emailFormFieldValues
+	 */
+	public function getEmailFormFieldValues() {
+		if ($this->emailFormFieldValues === NULL) {
+			$this->setEmailFormFieldValues($this->formFieldValues);
+		}
+		return $this->emailFormFieldValues;
+	}
+
+	/**
+	 * Sets the emailFormFieldValues, filtered from $formFieldValues
+	 *
+	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue> $formFieldValues
+	 * @return void
+	 */
+	public function setEmailFormFieldValues(Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
+		$this->emailFormFieldValues = new Tx_Extbase_Persistence_ObjectStorage();
+		foreach ($formFieldValues as $formFieldValue) {
+			$formField = $formFieldValue->getFormField();
+			if ($formField->getFunction() === Tx_Appointments_Domain_Model_FormField::FUNCTION_EMAIL) {
+				$fieldType = $formField->getFieldType();
+				if (
+					$fieldType === Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE
+					|| $fieldType === Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL
+				) {
+					$this->emailFormFieldValues->attach($formFieldValue);
+				}
+			}
+		}
 	}
 
 	/**

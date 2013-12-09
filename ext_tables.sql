@@ -63,6 +63,7 @@ CREATE TABLE tx_appointments_domain_model_agenda (
 	email_address int(11) unsigned DEFAULT '0' NOT NULL,
 	email_text text NOT NULL,
 	email_types tinyint(4) unsigned DEFAULT '0' NOT NULL,
+	email_field_types tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	email_owner_types tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	calendar_invite_address int(11) unsigned DEFAULT '0' NOT NULL,
 	calendar_invite_text text NOT NULL,

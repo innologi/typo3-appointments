@@ -319,16 +319,18 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	/**
 	 * Returns email recipients array.
 	 *
-	 * @param array $emailAddresses Contains objects supporting getEmail() method
+	 * @param array $emailAddresses Contains objects of Tx_Appointments_Domain_Model_EmailContainerInterface interface
 	 * @return array Consists of email addresses
 	 */
 	protected function getRecipientEmailArray($emailAddresses) {
 		$emailArray = array();
 
 		foreach ($emailAddresses as $address) {
-			$email = $address->getEmail();
-			if (isset($email[0]) && t3lib_div::validEmail($email)) {
-				$emailArray[] = $email;
+			if ($address instanceof Tx_Appointments_Domain_Model_EmailContainerInterface) {
+				$email = $address->getEmail();
+				if (isset($email[0]) && t3lib_div::validEmail($email)) {
+					$emailArray[] = $email;
+				}
 			}
 		}
 
@@ -516,15 +518,25 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			if ($feUser !== NULL) {
 				$recipientArray[] = $feUser;
 			} else {
-				// @FIX ____check if there is some kind of email-designated field?
+				// @TODO ____check if there is some kind of email-designated field?
 			}
 		}
 
 		if ($this->isActionAllowed($action, $agenda->getEmailTypes())) {
 			$recipientArray = array_merge(
-					$recipientArray, //array(FeUser)
-					$agenda->getEmailAddress()->toArray() //array(Address)
+				$recipientArray, //array(FeUser)
+				$agenda->getEmailAddress()->toArray() //array(Address)
 			);
+		}
+
+		if ($this->isActionAllowed($action, $agenda->getEmailFieldTypes())) {
+			$emailFormFieldValues = $appointment->getEmailFormFieldValues();
+			foreach ($emailFormFieldValues as $formFieldValue) {
+				// @TODO replace "new" calls for DI support
+				$emailObj = new Tx_Appointments_Domain_Model_SimpleEmailContainer();
+				$emailObj->setEmail($formFieldValue->getValue());
+				$recipientArray[] = $emailObj;
+			}
 		}
 
 		return $recipientArray;
