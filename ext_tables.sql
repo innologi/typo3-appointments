@@ -154,6 +154,7 @@ CREATE TABLE tx_appointments_domain_model_type (
 	address_enable_birthday tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	address_enable_address tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	address_enable_security tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	address_enable_email tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,

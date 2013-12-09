@@ -58,3 +58,14 @@
 		</td>
 	</tr>
 </f:if>
+
+<f:if condition="{type.addressEnableEmail}">
+	<tr>
+		<td scope="row">
+			<f:translate key="tx_appointments_domain_model_address.email" />
+		</td>
+		<td>
+			{address.email}
+		</td>
+	</tr>
+</f:if>

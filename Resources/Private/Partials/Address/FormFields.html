@@ -72,3 +72,12 @@
 	<br />
 	<br />
 </f:if>
+
+<f:if condition="{type.addressEnableEmail}">
+	<label>
+		<f:translate key="tx_appointments_domain_model_address.email" /><br />
+		<f:form.textfield property="address.email" id="appointments-address-email" class="textinput session" />
+	</label>
+	<br />
+	<br />
+</f:if>

@@ -166,6 +166,7 @@
 			<label index="tx_appointments_domain_model_address.zip.placeholder">1000AD</label>
 			<label index="tx_appointments_domain_model_address.city">City</label>
 			<label index="tx_appointments_domain_model_address.social_security_number">Social Security Number</label>
+			<label index="tx_appointments_domain_model_address.email">Emailaddress</label>
 			
 			<label index="tx_appointments_domain_model_agenda_month.month_back">Previous month</label>
 			<label index="tx_appointments_domain_model_agenda_month.month_forward">Next month</label>
@@ -333,6 +334,7 @@
 			<label index="tx_appointments_domain_model_address.zip.placeholder">1000AD</label>
 			<label index="tx_appointments_domain_model_address.city">Woonplaats</label>
 			<label index="tx_appointments_domain_model_address.social_security_number">BSN</label>
+			<label index="tx_appointments_domain_model_address.email">E-mailadres</label>
 			
 			<label index="tx_appointments_domain_model_agenda_month.month_back">Vorige maand</label>
 			<label index="tx_appointments_domain_model_agenda_month.month_forward">Volgende maand</label>

@@ -133,6 +133,7 @@
 			<label index="tx_appointments_domain_model_address.address">Address</label>
 			<label index="tx_appointments_domain_model_address.zip">Zip</label>
 			<label index="tx_appointments_domain_model_address.city">City</label>
+			<label index="tx_appointments_domain_model_address.email">Emailaddress</label>
 			<label index="tt_address.tx_extbase_type.Tx_Appointments_Address">Appointment Scheduler Address</label>
 			<label index="tx_appointments_domain_model_address.social_security_number">Social Security Number</label>
 			<label index="tx_appointments_domain_model_address.creation_progress">Creation Progress</label>
@@ -268,6 +269,7 @@
 			<label index="tx_appointments_domain_model_address.address">Adres</label>
 			<label index="tx_appointments_domain_model_address.zip">Postcode</label>
 			<label index="tx_appointments_domain_model_address.city">Plaats</label>
+			<label index="tx_appointments_domain_model_address.email">E-mailadres</label>
 			<label index="tt_address.tx_extbase_type.Tx_Appointments_Address">Afspraken Planner Adres</label>
 			<label index="tx_appointments_domain_model_address.social_security_number">BSN</label>
 			<label index="tx_appointments_domain_model_address.creation_progress">Vordering Aanmaak</label>

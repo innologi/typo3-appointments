@@ -78,7 +78,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	/**
 	 * Email
 	 *
-	 * Not used by appointment.address, but it is used by emailService for agenda-set email-addresses.
+	 * Also used by emailService where applicable.
 	 *
 	 * @var string
 	 */

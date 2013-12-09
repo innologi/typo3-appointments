@@ -395,6 +395,13 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	protected $addressEnableSecurity;
 
 	/**
+	 * If set, enables Email Address field
+	 *
+	 * @var boolean
+	 */
+	protected $addressEnableEmail;
+
+	/**
 	 * Form Fields for this Type
 	 *
 	 * Lazy although a clone is modified in new/edit cases, after which count() will prove useless.
@@ -1331,6 +1338,25 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 */
 	public function setAddressEnableSecurity($addressEnableSecurity) {
 		$this->addressEnableSecurity = $addressEnableSecurity;
+	}
+
+	/**
+	 * Returns addressEnableEmail
+	 *
+	 * @return boolean $addressEnableEmail
+	 */
+	public function getAddressEnableEmail() {
+		return $this->addressEnableEmail;
+	}
+
+	/**
+	 * Sets addressEnableEmail
+	 *
+	 * @param boolean $addressEnableEmail
+	 * @return void
+	 */
+	public function setAddressEnableEmail($addressEnableEmail) {
+		$this->addressEnableEmail = $addressEnableEmail;
 	}
 
 	/**
