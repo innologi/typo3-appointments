@@ -15,7 +15,7 @@
 			<label index="field_type.description">The field type determines its appearance and input method</label>
 			<label index="choices.description">Selection choices, one per line. You may define values that differ from their labels, if desired. See details for the different approaches.</label>
 			<label index="choices.details">
-				The choices represent value/label combinations for a select box. You may explicitly define values and labels, separated by a pipe character: |
+				The choices represent value/label combinations for your chosen type of field. You may explicitly define values and labels, separated by a pipe character: |
 
 				value1|label1
 				value2|label2
@@ -33,7 +33,14 @@
 				
 				If the last example is combined with a &quot;Not Empty&quot; Validation Type, the user becomes required to choose either yes or no before he is able to save the appointment, because the first label shown has an empty value.
 			</label>
-			<label index="function.description">The function sets whether the field has a special meaning. If you choose to let it add time, it is highly recommended to add the &lt;strong&gt;Natural Number&lt;/strong&gt; Validation Type!</label>
+			<label index="function.description">The function sets whether the field has a special meaning. See details for the different choices.</label>
+			<label index="function.details">
+				The field can have functionality in addition to being of informative use.
+				
+				If you choose to let it add time, its value will be interpreted as a number that will add to the appointment duration. If chosen, it is highly recommended to add the &lt;strong&gt;Natural Number&lt;/strong&gt; Validation Type!
+				
+				If you choose Email confirmation, its value will be interpreted as an email address to which confirmations could be sent, according to agenda configuration. (if disabled in agenda, the field will remain informative) The &lt;strong&gt;Email Address&lt;/strong&gt; Validation Type is recommended for this choice!
+			</label>
 			<label index="enable_field.description">The condition-field that enables the current field if the given value matches</label>
 			<label index="enable_value.description">The condition-value is case-insensitive</label>
 		</languageKey>
@@ -64,7 +71,14 @@
 				
 				Als het laatste voorbeeld gecombineerd is met een &quot;Vereist&quot; Validatie Type, dan is de gebruiker vereist om de ja of nee keuze te selecteren alvorens hij de afspraak kan opslaan, omdat de eerste label een lege waarde heeft.
 			</label>
-			<label index="function.description">De functie bepaalt of het veld een speciale betekenis heeft. Indien de keuze valt op het toevoegen van tijd, dan wordt sterk aanbevolen het &lt;strong&gt;Natuurlijk Getal&lt;/strong&gt; Validatie Type te kiezen!</label>
+			<label index="function.description">De functie bepaalt of het veld een speciale betekenis heeft. Zie details voor verdere toelichting en aanbevelingen.</label>
+			<label index="function.details">
+				Een veld kan voorzien worden van extra functionaliteit, buiten zijn aanvankelijk informatieve waarde.
+				
+				Indien de keuze valt op het toevoegen van tijd, dan wordt invoer van dit veld geïnterpreteerd als een getal dat bij de tijdsduur van de afspraak wordt opgeteld. Het wordt daarom sterk aanbevolen deze keuze met het &lt;strong&gt;Natuurlijk Getal&lt;/strong&gt; Validatie Type te combineren!
+				
+				In geval van E-mail bevestiging wordt invulling van het veld geïnterpreteerd als een e-mail adres waarnaar bevestigingen gestuurd kunnen worden (mits ingesteld in de agenda!). Het wordt daarom sterk aanbevolen deze keuze met het &lt;strong&gt;E-mail Adres&lt;/strong&gt; Validatie te combineren!
+			</label>
 			<label index="enable_field.description">Het conditie-veld dat bij de opgegeven waarde het huidige veld activeert</label>
 			<label index="enable_value.description">De conditie-waarde is hoofdletterongevoelig</label>
 		</languageKey>

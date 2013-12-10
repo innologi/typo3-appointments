@@ -30,6 +30,7 @@
 			<label index="calendar_invite_text.description">Calendar invitation description, which is shown in the invitation. See detail helptext of &apos;Email Body Text&apos; for supported variables.</label>
 			<label index="email_types.description">Determines when to send the configured confirmation email to the configured addresses</label>
 			<label index="email_owner_types.description">Determines when to send the configured confirmation email to the frontend user</label>
+			<label index="email_field_types.description">Determines when to send the configured confirmation email to email addresses provided by the user in "Email confirmation" fields.</label>
 			<label index="calendar_invite_types.description">Determines when to send the configured calendar invitation to the configured addresses</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
@@ -56,6 +57,7 @@
 			<label index="calendar_invite_text.description">Kalender uitnodiging omschrijving, getoond in de uitnodiging. Zie de detail helptekst van &apos;E-mail Tekst&apos; voor de ondersteunde variabelen.</label>
 			<label index="email_types.description">Bepaalt wanneer een bevestigingsmail verstuurd moet worden naar de ingestelde adressen</label>
 			<label index="email_owner_types.description">Bepaalt wanneer een bevestigingsmail verstuurd moet worden naar de frontend gebruiker</label>
+			<label index="email_field_types.description">Bepaalt wanneer een bevestigingsmail verstuurd moet worden naar de e-mail addressen ingevuld door de gebruiker in "E-mail bevestiging" velden.</label>
 			<label index="calendar_invite_types.description">Bepaalt wanneer een kalender uitnodiging verstuurd moet worden naar de ingestelde adressen</label>
 		</languageKey>
 	</data>

@@ -238,7 +238,7 @@
 			<label index="tx_appointments_domain_model_formfield.validation_types">Validatie Types</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.alphanum">Alphanumeriek</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.datetime">Datum</label>
-			<label index="tx_appointments_domain_model_formfield.validation_types.email">Email Adres</label>
+			<label index="tx_appointments_domain_model_formfield.validation_types.email">E-mail Adres</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.float">Breuk</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.integer">Heel Getal</label>
 			<label index="tx_appointments_domain_model_formfield.validation_types.notempty">Vereist</label>
