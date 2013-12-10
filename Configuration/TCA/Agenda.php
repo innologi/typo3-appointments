@@ -236,7 +236,7 @@ $TCA['tx_appointments_domain_model_agenda'] = array(
 				'cols' => 40,
 				'rows' => 15,
 				'eval' => 'trim',
-				'default' => "Address:\n###ADDRESS###\n\n>Notes:\n###NOTES###"
+				'default' => "Address:\n###ADDRESS###\n\nNotes:\n###NOTES###"
 			),
 		),
 		'email_types' => array(
