@@ -5,6 +5,7 @@
 
 <f:link.action action="new1" addQueryString="TRUE" class="button_new"><f:translate key="tx_appointments_list.appointment_new" /></f:link.action>
 
+<f:if condition="{appointments}">
 <table class="appointmentList" summary="{f:translate(key:'tx_appointments_list.summary_list')}">
 	<caption><f:translate key="tx_appointments_list.caption_list" /></caption>
 	<tr>
@@ -33,4 +34,5 @@
 		</tr>
 	</f:for>
 </table>
+</f:if>
 </f:section>

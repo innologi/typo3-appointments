@@ -64,21 +64,18 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	public function listAction() {
-		// list (currently) has no use without login
-		if ($this->feUser === FALSE) {
-			// @FIX ____there is no way to add appointments without agenda plugin now, and "things like Return to List are inconsistent this way"
-			$this->forward('none');
+		if ($this->feUser !== FALSE) {
+			$types = $this->getTypes(); //we need to include types in case a type was hidden or deleted, or we get all sorts of errors
+			$appointments = $this->appointmentRepository->findPersonalList($this->agenda,$types,$this->feUser,new DateTime());
+			//users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet
+			//a superuser can ALWAYS mutate, so 'now = 0' fixes that
+			$now = $this->userService->isInGroup($this->settings['suGroup']) ? 0 : time();
+			$this->view->assign('now', $now);
+		} else {
+			#@TODO still, this is not really a LIST view now, is it? Can provide consistent naming?
+			$appointments = array();
 		}
-
-		//turns out getting the user id is not enough: not all fe_users are of the correct record_type
-		$types = $this->getTypes(); //we need to include types in case a type was hidden or deleted, or we get all sorts of errors
-		$appointments = $this->appointmentRepository->findPersonalList($this->agenda,$types,$this->feUser,new DateTime());
 		$this->view->assign('appointments', $appointments); #@TODO _can we create an undo link for cancelling? consider the consequences for the emailactions
-
-		//users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet
-		//a superuser can ALWAYS mutate, so 'now = 0' fixes that
-		$now = $this->userService->isInGroup($this->settings['suGroup']) ? 0 : time();
-		$this->view->assign('now', $now);
 	}
 
 	/**
