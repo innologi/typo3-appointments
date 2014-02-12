@@ -382,7 +382,7 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 		border:1px solid #f00 !important;
 	}
 	
-	.tx-appointments .formField-wrap {
+	.tx-appointments .formfield-wrap {
 		margin-bottom:10px;
 	}
 	

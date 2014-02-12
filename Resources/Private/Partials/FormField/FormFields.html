@@ -68,6 +68,7 @@
 					<f:if condition="{formField.validationTypes}">
 						<span class="required">*</span>
 					</f:if>
+					<br />
 					<f:for each="{formField.choicesArray}" as="choiceValue" key="choiceKey" iteration="choiceIterator">
 						<a:form.radio
 							id="appointments-formfield-{formField.uid}-{choiceIterator.index}"
