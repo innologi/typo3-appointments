@@ -73,6 +73,7 @@
 			<label index="error.address.city.1221560718">Should not be empty.</label>
 			<label index="error.formFieldValue.value.1221560494">Should be a (whole) number.</label>
 			<label index="error.formFieldValue.value.1221560718">Should not be empty.</label>
+			<label index="error.formFieldValue.value.1221560910">Please make a choice.</label>
 			<label index="error.formFieldValue.value.1238087674">Should be a valid date in &apos;dd-mm-yyyy&apos; format, e.g. 24-12-1951</label>
 			<label index="error.formFieldValue.value.1221559976">Should be a valid email address.</label>
 			<label index="error.formFieldValue.value.1221560288">Should be a number or divisional.</label>
@@ -241,6 +242,7 @@
 			<label index="error.address.city.1221560718">Mag niet leeg zijn.</label>
 			<label index="error.formFieldValue.value.1221560494">Dient een (heel) getal te zijn.</label>
 			<label index="error.formFieldValue.value.1221560718">Mag niet leeg zijn.</label>
+			<label index="error.formFieldValue.value.1221560910">Maak een keuze s.v.p.</label>
 			<label index="error.formFieldValue.value.1238087674">Dient een geldige datum van het formaat &apos;dd-mm-jjjj&apos; te zijn, bijv. 24-12-1951</label>
 			<label index="error.formFieldValue.value.1221559976">Dient een geldig email-adres te zijn.</label>
 			<label index="error.formFieldValue.value.1221560288">Dient een getal of breuk te zijn.</label>
