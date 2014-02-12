@@ -42,6 +42,8 @@
 						<span class="required">*</span>
 					</f:if>
 					<br />
+					<!-- @FIX __XSS issues @ class, should check EVERYTHING before TER -->
+					<!-- @TODO use data attributes instead, once I can go HTML5-only -->
 					<a:form.textfield
 						id="appointments-formfield-{formField.uid}"
 						property="formFieldValues.{formField.uid}.value"

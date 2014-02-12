@@ -3,6 +3,7 @@
  * -----
  * jQuery dependent.
  * Yes, I know of $.
+ * @TODO zie main.js van assumburg
  * Yes, I know of noConflict().
  * -----
  * @author Frenck Lutke <http://frencklutke.nl/>
@@ -12,6 +13,7 @@ jQuery(document).ready(function() {
 	
 	//general vars
 	var scriptStartTime = new Date().getTime() / 1000;
+	// @TODO var formELem = $('.tx-appointments form'); ?
 	
 	
 	//*********************
@@ -74,6 +76,7 @@ jQuery(document).ready(function() {
 					});
 				} 
 				
+				// @TODO warning: TypeError: anonymous function does not always return a value
 				//set the actual onbeforeunload event
 				window.onbeforeunload = function() {
 					//before calling the message, check if respect REFRESH needs to disable it
@@ -396,6 +399,7 @@ jQuery(document).ready(function() {
 				enablerObj.data('enable-fields',{});
 				// add event
 				if (enablerObj.hasClass('radio')) {
+					// @TODO _____this limits to select, radio, and.. ? note that checkbox should only influence its own field. Perhaps if we can get that to work, we can apply the same logic to radio!
 					enablerObj.change(function() {
 						runChecks(this, this.checked);
 					});

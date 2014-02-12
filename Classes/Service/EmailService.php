@@ -328,6 +328,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		foreach ($emailAddresses as $address) {
 			if ($address instanceof Tx_Appointments_Domain_Model_EmailContainerInterface) {
 				$email = $address->getEmail();
+				// @LOW log erroneous email addresses?
 				if (isset($email[0]) && t3lib_div::validEmail($email)) {
 					$emailArray[] = $email;
 				}

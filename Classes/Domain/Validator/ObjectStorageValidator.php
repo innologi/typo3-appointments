@@ -79,6 +79,7 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appoint
 							$enablerUid = $enableField->getUid();
 							// if the field on which we depend hasn't passed, save this one for the second run
 							if (!isset($valueRegister[$enablerUid])) {
+								// @LOW does not work in all cases with multi-layer enable fields, as it would require a third pass. So thats disabled in TCA
 								$delayedObjects[] = $obj;
 								continue;
 							}

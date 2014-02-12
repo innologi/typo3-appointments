@@ -28,6 +28,7 @@
 		<td>
 			<f:for each="{m: '{f:translate(key: \'tx_appointments_domain_model_address.gender.m\')}', f: '{f:translate(key: \'tx_appointments_domain_model_address.gender.f\')}'}" as="gender" key="index">
 				<f:if condition="{index} == {address.gender}">
+					<!-- @TODO ___replace with vhs construct? see formfield -->
 					{gender}
 				</f:if>
 			</f:for>

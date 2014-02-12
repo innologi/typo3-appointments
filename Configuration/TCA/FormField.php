@@ -213,6 +213,7 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 				 * other fields, or ANY field if current one is set as enable_field
 				 * for another field.
 				 */
+				// @LOW Add support for all field types, eventually
 				'foreign_table_where' => '
 					AND tx_appointments_domain_model_formfield.uid <> ###THIS_UID###
 					AND tx_appointments_domain_model_formfield.type = ###REC_FIELD_type###

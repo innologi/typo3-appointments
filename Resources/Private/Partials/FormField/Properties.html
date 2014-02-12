@@ -3,7 +3,9 @@
 <f:if condition="{formField}">
 	<tr>
 		<td scope="row">
+			<!-- @FIX _____what if an enableField wasnt enabled? -->
 			{formField.label}
+			<!-- @LOW allow enablers not to be shown if so desired? -->
 		</td>
 		<td>
 			<v:switch value="{formField.fieldType}">
