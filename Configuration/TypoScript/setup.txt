@@ -138,8 +138,8 @@ plugin.tx_appointments {
 		selectFields = agendaNavOverride
 	}
 	features {
-		# need to test this when I'm allowed to drop pre-6.2 support
-		#rewrittenPropertyMapper = 1
+		# @TODO support before TYPO3 6.3 release
+		rewrittenPropertyMapper = 0
 	}
 }
 
