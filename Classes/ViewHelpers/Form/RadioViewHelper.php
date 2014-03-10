@@ -114,7 +114,8 @@ class Tx_Appointments_ViewHelpers_Form_RadioViewHelper extends Tx_Fluid_ViewHelp
 			return array();
 		}
 		$errors = $this->controllerContext->getRequest()->getErrors();
-		$formObjectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
+		$formClass = version_compare(TYPO3_branch, '6.0', '>=') ? 'TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper' : 'Tx_Fluid_ViewHelpers_FormViewHelper';
+		$formObjectName = $this->viewHelperVariableContainer->get($formClass, 'formObjectName');
 		// <!-- CHANGE
 			$propertyName = t3lib_div::trimExplode('.',$this->arguments['property'],1);
 		// CHANGE -->
