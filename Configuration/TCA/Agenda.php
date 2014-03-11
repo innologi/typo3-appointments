@@ -127,7 +127,7 @@ $TCA['tx_appointments_domain_model_agenda'] = array(
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.holidays',
 			'config' => array(
 				'type' => 'text',
-				'cols' => 40,
+				'cols' => 10,
 				'rows' => 15,
 				'eval' => 'nospace' #@LOW custom regexp validation
 			),
@@ -185,12 +185,12 @@ $TCA['tx_appointments_domain_model_agenda'] = array(
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.email_text',
 			'config' => array(
 				'type' => 'text',
-				'cols' => 40,
+				'cols' => 48,
 				'rows' => 15,
 				'eval' => 'trim',
 				'default' => 'User: ###USER###<br />Agenda: ###AGENDA###<br />Type: ###TYPE###<br />Time: ###DATE###, ###START_TIME### - ###END_TIME###<br /><br />Address:<br />###ADDRESS###<br /><br />Notes:<br />###NOTES###'
 			),
-			'defaultExtras' => 'richtext[*]'
+			'defaultExtras' => 'richtext[]'
 		),
 		'calendar_invite_address' => array(
 			'exclude' => 0,
@@ -233,7 +233,7 @@ $TCA['tx_appointments_domain_model_agenda'] = array(
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.calendar_invite_text',
 			'config' => array(
 				'type' => 'text',
-				'cols' => 40,
+				'cols' => 48,
 				'rows' => 15,
 				'eval' => 'trim',
 				'default' => "Address:\n###ADDRESS###\n\nNotes:\n###NOTES###"

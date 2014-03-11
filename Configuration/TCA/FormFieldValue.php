@@ -98,8 +98,8 @@ $TCA['tx_appointments_domain_model_formfieldvalue'] = array(
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfieldvalue.value',
 			'config' => array(
 				'type' => 'text', #@LOW make this somehow depend on formfield field type? eval as well
-				'cols' => 40,
-				'rows' => 15,
+				'cols' => 48,
+				'rows' => 3,
 				'eval' => 'trim'
 			),
 		),

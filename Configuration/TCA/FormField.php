@@ -115,8 +115,8 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.label',
 			'config' => array(
 				'type' => 'text',
-				'cols' => 40,
-				'rows' => 15,
+				'cols' => 48,
+				'rows' => 2,
 				'eval' => 'trim,required'
 			),
 		),
@@ -125,8 +125,8 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.csh',
 			'config' => array(
 				'type' => 'text',
-				'cols' => 40,
-				'rows' => 15,
+				'cols' => 48,
+				'rows' => 5,
 				'eval' => 'trim'
 			),
 		),
@@ -176,8 +176,8 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.choices',
 			'config' => array(
 				'type' => 'text',
-				'cols' => 40,
-				'rows' => 15,
+				'cols' => 48,
+				'rows' => 5,
 				'eval' => 'trim'
 			),
 		),

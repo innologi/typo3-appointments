@@ -166,20 +166,20 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.notes',
 			'config' => array(
 				'type' => 'text',
-				'cols' => 40,
-				'rows' => 15,
+				'cols' => 48,
+				'rows' => 6,
 				'eval' => 'trim'
 			),
 		),
 		'notes_su' => array(
-				'exclude' => 0,
-				'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.notes_su',
-				'config' => array(
-						'type' => 'text',
-						'cols' => 40,
-						'rows' => 15,
-						'eval' => 'trim'
-				),
+			'exclude' => 0,
+			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.notes_su',
+			'config' => array(
+				'type' => 'text',
+				'cols' => 48,
+				'rows' => 6,
+				'eval' => 'trim'
+			),
 		),
 		'type' => array(
 			'exclude' => 0,
