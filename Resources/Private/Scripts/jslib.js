@@ -391,7 +391,7 @@ jQuery(document).ready(function() {
 			enablerObj = fieldEnablers[uid];
 		} else {
 			// new enabler
-			var enablerObj = jQuery('.tx-appointments form .formfield-id-' + uid);
+			enablerObj = jQuery('.tx-appointments form .formfield-id-' + uid);
 			if (enablerObj[0]) {
 				// sets as processed, so it doesn't again for multiple fields
 				fieldEnablers[uid] = enablerObj;
