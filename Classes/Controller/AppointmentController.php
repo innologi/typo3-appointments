@@ -106,11 +106,13 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			}
 		}
 		$mutable = time() < $endTime;
+		$sanitizedFormFieldValues = $this->sanitizeFormFieldValues($appointment->getFormFieldValues()->toArray());
 
 		$this->view->assign('showMore', $showMore);
 		$this->view->assign('mutable', $mutable); //edit / delete
 		$this->view->assign('superUser', $superUser);
 		$this->view->assign('appointment', $appointment);
+		$this->view->assign('formFieldValues', $sanitizedFormFieldValues);
 	}
 
 	/**
@@ -826,6 +828,52 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				Tx_Extbase_Utility_Localization::translate('tx_appointments_list.crosstime_title',$this->extensionName),
 				t3lib_FlashMessage::ERROR
 		);
+	}
+
+	/**
+	 * Sanitizes the formfieldvalues by checking if:
+	 * - its formfield even exists, to prevent errors @ view
+	 * - if there is an enabler, that it matches the assigned value
+	 *
+	 * @param array $formFieldValues Original formfieldvalues
+	 * @return array Sanitized formfieldvalues
+	 */
+	protected function sanitizeFormFieldValues(array $formFieldValues) {
+		$sanitized = array();
+		$enable = array();
+		$indexMap = array();
+
+		foreach ($formFieldValues as $index => $value) {
+			$formField = $value->getFormField();
+			// dont add incomplete formfields
+			if ($formField !== NULL) {
+				$enableField = $formField->getEnableField();
+				if ($enableField !== NULL) {
+					// register enabler-data
+					$enable[$index] = array(
+						'id' => $enableField->getUid(),
+						'value' => $formField->getEnableValue()
+					);
+				}
+				$sanitized[$index] = $value;
+				$indexMap[$formField->getUid()] = $index;
+			}
+		}
+
+		foreach ($enable as $index => $enableData) {
+			$id = $enableData['id'];
+			if (isset($indexMap[$id])) {
+				$enablerIndex = $indexMap[$id];
+				$enabler = $sanitized[$enablerIndex];
+				$enablerValue = $enabler->getValue();
+				if ($enablerValue === $enableData['value']) {
+					continue;
+				}
+			}
+			unset($sanitized[$index]);
+		}
+
+		return $sanitized;
 	}
 
 }

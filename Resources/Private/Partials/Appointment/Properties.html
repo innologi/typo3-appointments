@@ -43,13 +43,13 @@
 		<td colspan="2">&nbsp;</td>
 	</tr>
 	
-	<f:if condition="{appointment.formFieldValues}">
+	<f:if condition="{formFieldValues}">
 		<tr>
 			<th colspan="2" scope="col">
 				<f:translate key="tx_appointments_domain_model_appointment.form_field_values" />
 			</th>
 		</tr>
-		<f:for each="{appointment.formFieldValues}" as="value">
+		<f:for each="{formFieldValues}" as="value">
 			<f:render partial="FormField/Properties" arguments="{formFieldValue : value, formField : value.formField}" />
 		</f:for>
 		<tr>
