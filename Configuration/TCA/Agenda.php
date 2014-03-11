@@ -138,6 +138,7 @@ $TCA['tx_appointments_domain_model_agenda'] = array(
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'tx_appointments_domain_model_type',
+				'foreign_sortby' => 'sorting',
 				'size' => 10,
 				'autoSizeMax' => 30,
 				'maxitems' => 9999,
