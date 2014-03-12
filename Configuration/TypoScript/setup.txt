@@ -123,6 +123,7 @@ plugin.tx_appointments {
 		shiftSlotPerInterval = {$plugin.tx_appointments.settings.shiftSlotPerInterval}
 		suGroup = {$plugin.tx_appointments.settings.suGroup}
 		redirectAfterSave = {$plugin.tx_appointments.settings.redirectAfterSave}
+		allowResume = {$plugin.tx_appointments.settings.allowResume}
 	}
 	tsOverride {
 		checkFields = agendaUid,appointmentTypeList,suGroup,allowCreate
@@ -442,10 +443,10 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 		color:#d00;
 	}
 	
-	.tx-appointments #disabledForm {
+	.tx-appointments .appointment-form.disabled {
 		display:none;
 	}
-	.tx-appointments #disabledForm.visible {
+	.tx-appointments .appointment-form.disabled.visible {
 		display:block;
 		opacity:0.5;
 	}
@@ -456,6 +457,7 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments .typo3-messages {
 		overflow:hidden;
 	}
+	
 	.tx-appointments .typo3-message,
 	.tx-appointments .validation-errors {
 		margin:8px 0;
@@ -470,10 +472,11 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments .validation-errors {
 		display:inline-block;
 	}
+	.tx-appointments .typo3-message ul.links,
 	.tx-appointments ul.validation-error-messages {
 		list-style-type:square;
 	}
-		
+	
 	.tx-appointments .typo3-message .message-header,
 	.tx-appointments .validation-errors .validation-fieldname {
 		font-weight:bold;

@@ -66,16 +66,22 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	public function listAction() {
 		if ($this->feUser !== FALSE) {
 			$types = $this->getTypes(); //we need to include types in case a type was hidden or deleted, or we get all sorts of errors
-			$appointments = $this->appointmentRepository->findPersonalList($this->agenda,$types,$this->feUser,new DateTime());
+			$appointments = $this->appointmentRepository->findPersonalList($this->agenda, $types, $this->feUser, FALSE, new DateTime());
+			#@LOW enable through flexform?
+			$unfinishedAppointments = $this->settings['allowResume'] ?
+				$this->appointmentRepository->findPersonalList(
+					$this->agenda, $types, $this->feUser, TRUE, new DateTime()
+				) : array();
 			//users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet
 			//a superuser can ALWAYS mutate, so 'now = 0' fixes that
 			$now = $this->userService->isInGroup($this->settings['suGroup']) ? 0 : time();
 			$this->view->assign('now', $now);
 		} else {
-			#@TODO still, this is not really a LIST view now, is it? Can provide consistent naming?
 			$appointments = array();
+			$unfinishedAppointments = array();
 		}
 		$this->view->assign('appointments', $appointments); #@TODO _can we create an undo link for cancelling? consider the consequences for the emailactions
+		$this->view->assign('unfinishedAppointments', $unfinishedAppointments);
 	}
 
 	/**
@@ -582,16 +588,15 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @return void
 	 */
 	protected function addTimerMessage(Tx_Appointments_Domain_Model_Appointment $appointment) {
-		//calculate remaining seconds
-		$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']);
-		$remainingSeconds = $freeSlotInMinutes * 60; //default number of seconds remaining before timeslot is freed
-		$secondsBusy = time() - $appointment->getCrdate();
-		$remainingSeconds = $remainingSeconds - $secondsBusy;
+		//get remaining seconds
+		$remainingSeconds = Tx_Appointments_Utility_GeneralUtility::getTimerRemainingSeconds(
+			$appointment, (int) $this->settings['freeSlotInMinutes']
+		);
 
 		//when the appointment was flagged 'expired' in the current pagehit, (e.g. page refresh)
 		//this $appointment reference might not yet be up to date, so we have to check
-		//$remainingSeconds < 0 for those specific cases
-		if ($remainingSeconds < 0 && $appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::UNFINISHED) {
+		//$remainingSeconds === 0 for those specific cases
+		if ($remainingSeconds === 0 && $appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::UNFINISHED) {
 			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
 			$appointment->_memorizePropertyCleanState('creationProgress'); //if we don't register EXPIRED as clean state, setting it to unfinished later won't be recognized by persistence!
 		}
@@ -600,7 +605,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		if ($appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::UNFINISHED) {
 			$flashMessage = str_replace(
 					'$1',
-					'<span class="reservation-timer">' . floor($remainingSeconds/60) . ':' . date('s',$remainingSeconds) . '</span>',
+					'<span class="reservation-timer">' . Tx_Appointments_Utility_GeneralUtility::getAppointmentTimer($appointment) . '</span>',
 					Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timer', $this->extensionName)
 			);
 			$flashHeader = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timer_header', $this->extensionName);

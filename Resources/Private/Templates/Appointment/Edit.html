@@ -19,7 +19,7 @@
 </div>
 
 <f:if condition="{dateSlots}">
-	<f:form enctype="multipart/form-data" method="post" action="edit" arguments="{appointment : appointment}" id="dateForm">
+	<f:form enctype="multipart/form-data" method="post" action="edit" arguments="{appointment : appointment}">
 		<fieldset>
 			<label>
 				<f:translate key="tx_appointments_list.label_date_slot" />
@@ -34,7 +34,7 @@
 	</f:form>
 </f:if>
 	
-<f:form action="update" id="appointmentForm" name="appointment" object="{appointment}">
+<f:form action="update" id="appointment-form-{appointment.uid}" class="appointment-form" name="appointment" object="{appointment}">
 	<f:if condition="{timeSlots}">
 		<fieldset>
 			<label>

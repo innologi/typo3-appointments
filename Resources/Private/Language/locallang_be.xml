@@ -28,6 +28,7 @@
 			<label index="tx_appointments_constants_shiftSlotPerInterval">Shift Time-slots Per Interval: Normally, the available timeslots shift on a daily basis at midnight, but enabling this option will shift them every X amount of minutes, where X is the relevant Appointment Type's interval</label>
 			<label index="tx_appointments_constants_suGroup">Super User Group UID</label>
 			<label index="tx_appointments_constants_redirectAfterSave">Redirect After Saving Appointment: Set the action to redirect to when an appointment is saved</label>
+			<label index="tx_appointments_constants_allowResume">Allow Resuming Appointment Creation: Enables the "unfinished"-list on the listAction, allowing to resume broken-off creation-processes</label>
 			<label index="tx_appointments_constants_js_includeJquery">Enable jQuery inclusion: Will include the jQuery library through the configured CDN. If for some reason there already is a jQuery library present, you can disable appointments' here to prevent conflicts.</label>
 			<label index="tx_appointments_constants_js_includeJqueryUI">Enable jQuery UI scripts inclusion: Will include a custom jQuery UI library for: Datepicker. You can disable it in case it is already present through other means or you're using a different datepicker in your templates.</label>
 			<label index="tx_appointments_constants_js_includeJS">Enable Javascript inclusion: Will include appointments Javascript. Most is jQuery dependent, so make sure to have jQuery enabled through this extension or another way.</label>
@@ -90,6 +91,7 @@
 			<label index="tx_appointments_constants_shiftSlotPerInterval">Schuif Tijdssloten Per Interval: De beschikbare tijddsloten worden normaal dagelijks op middernacht verschoven, maar als u deze optie inschakelt verschuiven ze elke X aantal minuten, waar X het interval is van de relevante Afspraak Type</label>
 			<label index="tx_appointments_constants_suGroup">Super User Groep UID</label>
 			<label index="tx_appointments_constants_redirectAfterSave">Redirect Na Opslaan Afspraak: Dit bepaalt de actie na het opslaan van een afspraak</label>
+			<label index="tx_appointments_constants_allowResume">Hervatten Aanmaak-Proces Toestaan: Activeert de "hervat"-lijst in de listAction, die het mogelijk maakt afgebroken aanmaak-processen te hervatten</label>
 			<label index="tx_appointments_constants_js_includeJquery">jQuery inschakelen: Voegt het jQuery script toe aan de website vanaf het ingestelde CDN. U kunt deze uitschakelen indien al aanwezig via andere methoden.</label>
 			<label index="tx_appointments_constants_js_includeJqueryUI">jQuery UI inschakelen: Voegt een aangepaste jQuery UI script toe voor: de Datepicker. U kunt deze uitschakelen indien al aanwezig via andere methoden, of wanneer u een andere datepicker benut in uw templates.</label>
 			<label index="tx_appointments_constants_js_includeJS">Javascript Functionaliteit inschakelen: Toegevoegde (niet-noodzakelijke) functionaliteit welke de gebruikservaring verbetert en de Afspraken Planner gebruiksvriendelijker maakt. Het meeste is jQuery-afhankelijk.</label>

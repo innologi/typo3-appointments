@@ -72,5 +72,7 @@ return array(
 	'tx_appointments_viewhelpers_form_textfieldviewhelper' => $extensionClassesPath . 'ViewHelpers/Form/TextfieldViewHelper.php',
 	'tx_appointments_viewhelpers_format_camelcaseviewhelper' => $extensionClassesPath . 'ViewHelpers/Format/CamelCaseViewHelper.php',
 	'tx_appointments_viewhelpers_format_lowercaseviewhelper' => $extensionClassesPath . 'ViewHelpers/Format/LowerCaseViewHelper.php',
+	'tx_appointments_viewhelpers_isexpiredviewhelper' => $extensionClassesPath . 'ViewHelpers/IsExpiredViewHelper.php',
+	'tx_appointments_viewhelpers_timerviewhelper' => $extensionClassesPath . 'ViewHelpers/TimerViewHelper.php',
 );
 ?>

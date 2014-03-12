@@ -169,39 +169,35 @@ jQuery(document).ready(function() {
 	// Reservation Timer Countdown
 	//*****************************
 	
-	var timerElem = jQuery('.tx-appointments span.reservation-timer');
-	var timerSeconds = 0;
-	var timerRemaining = 0;
-	var flashStart = 60;
-	var flashSet = false;
-	var counter = null;
-	
 	//countdown timer-html-setter function
-	function reservationTimer() {
+	function reservationTimer(timer) {
 		//timerSeconds--; //this isn't representative if an alert or warnunload box comes along
 		var currentTime = new Date().getTime() / 1000;
 		var secondsSinceStart = Math.round(currentTime - scriptStartTime);
-		timerRemaining = timerSeconds - secondsSinceStart;
+		timer.remaining = timer.seconds - secondsSinceStart;
 		
-		if (!flashSet && timerRemaining <= flashStart) {
-			timerElem.addClass('flash'); //starts flashing (or marking) the timer according to class css
-			flashSet = true;
-		} else if (timerRemaining < 1) {
-			clearInterval(counter); //stop counter
-			replaceTimerMessage();
-			replaceTimeSlotButton();
-			return;
+		if (!timer.flashSet && timer.remaining <= timer.flashStart) {
+			jQuery(timer.element).addClass('flash'); //starts flashing (or marking) the timer according to class css
+			timer.flashSet = true;
+		} else if (timer.remaining < 1) {
+			clearInterval(timer.counter); //stop counter
+			if (replaceTimerMessage(timer)) {
+				replaceTimeSlotButton();
+				return;
+			} else {
+				// @TODO finish this
+			}
 		}
 		
-		var displayMin = Math.floor(timerRemaining / 60);
-		var displaySec = '0' + (timerRemaining % 60); //remainder of seconds by modulus
+		var displayMin = Math.floor(timer.remaining / 60);
+		var displaySec = '0' + (timer.remaining % 60); //remainder of seconds by modulus
 		//set new inner html
-		timerElem.html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
+		jQuery(timer.element).html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
 	}
 	
 	//replace timer message
-	function replaceTimerMessage() {
-		var body = timerElem.parent('.tx-appointments .typo3-message .message-body');
+	function replaceTimerMessage(timer) {
+		var body = jQuery(timer.element).parent('.tx-appointments .typo3-message.message-information .message-body');
 		if (body[0]) {
 			var head = body.prev('.tx-appointments .typo3-message .message-header');
 			var container = body.parent('.tx-appointments .typo3-message');
@@ -212,8 +208,10 @@ jQuery(document).ready(function() {
 				//replace box class
 				container.addClass('message-warning');
 				container.removeClass('message-information');
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	//replace timeslot button
@@ -225,20 +223,29 @@ jQuery(document).ready(function() {
 		}
 	}
 	
-	//start timer countdown if a timer exists
-	if (timerElem[0]) {
+	// start timer countdown for each timer
+	jQuery('.tx-appointments span.reservation-timer').each(function() {
+		var timer = {
+			seconds: 0,
+			remaining: 0,
+			flashStart: 60,
+			flashSet: false,
+			counter: null,
+			element: this
+		};
+		
 		//calculate timer variables
-		var timerVal = timerElem.html();
+		var timerVal = jQuery(this).html();
 		var splitAt = timerVal.indexOf(':',0);
 		var minutes = parseInt(timerVal.substring(0, splitAt),10);
-		timerSeconds = (minutes * 60) + parseInt(timerVal.substring(splitAt+1),10);
-		if (timerSeconds <= flashStart) {
-			timerElem.addClass('flash');
-			flashSet = true;
+		timer.seconds = (minutes * 60) + parseInt(timerVal.substring(splitAt+1),10);
+		if (timer.seconds <= timer.flashStart) {
+			jQuery(this).addClass('flash');
+			timer.flashSet = true;
 		}
 		//run every second (in milliseconds)
-		counter = setInterval(reservationTimer, 1000);
-	}
+		timer.counter = setInterval(reservationTimer, 1000, timer);
+	});
 
 	
 	//***********************
@@ -262,8 +269,8 @@ jQuery(document).ready(function() {
 	// The "Disabled" Form
 	//*********************
 
-	jQuery('.tx-appointments #disabledForm :input').prop('disabled', true);
-	jQuery('.tx-appointments #disabledForm').addClass('visible');
+	jQuery('.tx-appointments .appointment-form.disabled :input').prop('disabled', true);
+	jQuery('.tx-appointments .appointment-form.disabled').addClass('visible');
 
 
 	//**********************
@@ -280,26 +287,26 @@ jQuery(document).ready(function() {
 	}
 	
 	//default storage function
-	function storeValueInSession(e) {
+	function storeValueInSession(e, fId) {
 		sessionStorage.setItem(
-			e.id,
+			fId + '_' + e.id,
 			e.value
 		);
 	}
 	
 	//populates the form fields from session values
-	function getFormStorage() {
-		var storage = window['sessionStorage'];
+	function getFormStorage(form) {
 		//retrieve all ids of session-marked form elements
-		var fields = jQuery('.tx-appointments form .session').map(function(index) {
+		var fields = jQuery('.session', form).map(function(index) {
 			return this.id;
 		}).get();
 		
 		for (var i in fields) {
 			var id = fields[i];
-			if (storage.getItem(id)) { //checks if there is a session value for the id
-				var elemObj = jQuery('.tx-appointments form #' + id);
-				var val = storage.getItem(id);
+			var sId = form.id + '_' + id;
+			if (sessionStorage.getItem(sId)) { //checks if there is a session value for the id
+				var elemObj = jQuery('#' + id, form);
+				var val = sessionStorage.getItem(sId);
 				//checkboxes/radio work differently from all other fields
 				if (elemObj.hasClass('checkbox') || elemObj.hasClass('radio')) {
 					//note that val retrieved from sessionStorage is of type string, NOT boolean!
@@ -317,57 +324,62 @@ jQuery(document).ready(function() {
 
 	//run appropriate functions if supported
 	if (isStorageSupported()) {
-		getFormStorage();
+		//var storage = window['sessionStorage'];
+		jQuery('.tx-appointments form.session').each(function() {
+			var formId = this.id;
+			getFormStorage(this);
 
-		//add storage events
-		jQuery('.tx-appointments form textarea.session').keyup(function() {
-			storeValueInSession(this);
-		});
-		jQuery('.tx-appointments form .textinput.session').keyup(function() {
-			storeValueInSession(this);
-		});
-		//usage of datepicker can happen without keyup events
-		jQuery('.tx-appointments form .datepicker.session').change(function() {
-			storeValueInSession(this);
-		});
-		jQuery('.tx-appointments form .select.session').change(function() {
-			storeValueInSession(this);
-		});
-		// we look at checked instead of value @ radio / checkboxes
-		jQuery('.tx-appointments form .radio.session').change(function() {
-			sessionStorage.setItem(
-				this.id,
-				this.checked
-			);
-			// radio only triggers onchange if enabled, but enabling one disables others
-			jQuery(this).siblings('.radio.session[name="' + jQuery(this).attr('name') + '"]').each(function(i, radio) {
+			//add storage events
+			jQuery('textarea.session', this).keyup(function() {
+				storeValueInSession(this, formId);
+			});
+			jQuery('.textinput.session', this).keyup(function() {
+				storeValueInSession(this, formId);
+			});
+			//usage of datepicker can happen without keyup events
+			jQuery('.datepicker.session', this).change(function() {
+				storeValueInSession(this, formId);
+			});
+			jQuery('.select.session', this).change(function() {
+				storeValueInSession(this, formId);
+			});
+			// we look at checked instead of value @ radio / checkboxes
+			jQuery('.radio.session', this).change(function() {
 				sessionStorage.setItem(
-					radio.id,
-					radio.checked
+					formId + '_' + this.id,
+					this.checked
+				);
+				// radio only triggers onchange if enabled, but enabling one disables others
+				jQuery(this).siblings('.radio.session[name="' + jQuery(this).attr('name') + '"]').each(function(i, radio) {
+					sessionStorage.setItem(
+						formId + '_' + radio.id,
+						radio.checked
+					);
+				});
+			});
+			jQuery('.checkbox.session', this).change(function() {
+				sessionStorage.setItem(
+					formId + '_' + this.id,
+					this.checked
 				);
 			});
+			
+			// DISABLED BECAUSE OF CHANGES FOR RESUMING APPOINTMENT-CREATION
+			//clicking the new and edit links should all clear the session (also works on tab/enter).
+			/*jQuery('.tx-appointments .button_new').click(function() {
+				sessionStorage.clear();
+			});
+			jQuery('.tx-appointments .button_new_datefirst').click(function() {
+				sessionStorage.clear();
+			});
+			jQuery('.tx-appointments .button_edit').click(function() {
+				sessionStorage.clear();
+			});*/
+			//doing it on form submit can cause us to lose values if a validation error won't save anything,
+			//or even worse, a user can stop halfway, and start a new appointment, without checking if everything
+			//is in order because the form was filled with previous values. doing it on the back button can cause
+			//us to lose the session even when someone decides to stay on the page.
 		});
-		jQuery('.tx-appointments form .checkbox.session').change(function() {
-			sessionStorage.setItem(
-				this.id,
-				this.checked
-			);
-		});
-		
-		//clicking the new and edit back links should all clear the session (also works on tab/enter).
-		jQuery('.tx-appointments .button_new').click(function() {
-			sessionStorage.clear();
-		});
-		jQuery('.tx-appointments .button_new_datefirst').click(function() {
-			sessionStorage.clear();
-		});
-		jQuery('.tx-appointments .button_edit').click(function() {
-			sessionStorage.clear();
-		});
-		//doing it on form submit can cause us to lose values if a validation error won't save anything,
-		//or even worse, a user can stop halfway, and start a new appointment, without checking if everything
-		//is in order because the form was filled with previous values. doing it on the back button can cause
-		//us to lose the session even when someone decides to stay on the page.
 	}
 
 	

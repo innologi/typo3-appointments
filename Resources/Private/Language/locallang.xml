@@ -12,7 +12,13 @@
 			<label index="tx_appointments.appointment_no_longer_available">The appointment is no longer available. It may have been cancelled or deleted by someone after you visited the page.</label>
 			<label index="tx_appointments.appointment_property_deleted">The appointment is missing some property values. Someone might have deleted these manually after you visited the page.</label>
 			<label index="tx_appointments_list.timeslot_not_allowed">The timeslot you picked is no longer available, possibly because you&apos;ve waited too long.</label>
+			<label index="tx_appointments_list.free_state">not reserved</label>
+			<label index="tx_appointments_list.minutes_remaining">min remaining</label>
 			<label index="tx_appointments_list.warn_unload">You have not yet finished creating an appointment. Your action could result in losing all unsaved data, unless you stay on the page and - when ready - finish creating the appointment first, using the button &apos;$1&apos; below the form.</label>
+			<label index="tx_appointments_list.unfinished_header">Unsaved appointments</label>
+			<label index="tx_appointments_list.unfinished_body">You can temporarily resume the creation of appointments, or free all timeslots used by them. Previously entered data will be kept at least as long as your browser hasn't closed.</label>
+			<label index="tx_appointments_list.unfinished_warning">ATTENTION: Your browser does not fully support this functionality, or has no javascript-support. Previously entered data is not guaranteed to be restored.</label>
+			<label index="tx_appointments_list.unfinished_session_incomplete">Previously entered data for this appointment is likely incomplete!</label>
 			<label index="tx_appointments_list.appointment_new">New appointment</label>
 			<label index="tx_appointments_list.appointment_list">Back to list</label>
 			<label index="tx_appointments_list.appointment_edit">Edit</label>
@@ -180,7 +186,13 @@
 			<label index="tx_appointments.appointment_no_longer_available">De afspraak is niet meer beschikbaar. Het is mogelijk geannuleerd of verwijderd door iemand nadat u de pagina bezocht.</label>
 			<label index="tx_appointments.appointment_property_deleted">De afspraak mist enkele formulier gegevens. Het is mogelijk dat iemand deze handmatig heeft verwijderd nadat u de pagina bezocht.</label>
 			<label index="tx_appointments_list.timeslot_not_allowed">Het door u gekozen tijdstip is niet (meer) beschikbaar, mogelijk omdat u te lang heeft gewacht.</label>
+			<label index="tx_appointments_list.free_state">vrijgegeven</label>
+			<label index="tx_appointments_list.minutes_remaining">min resterend</label>
 			<label index="tx_appointments_list.warn_unload">U zit midden in het maken van een afspraak. Uw actie kan tot gevolg hebben dat alle nog niet opgeslagen gegevens verloren gaan, tenzij u op de pagina blijft en de afspraak – indien gereed – eerst definitief vast legt met de knop &apos;$1&apos; onderaan het formulier.</label>
+			<label index="tx_appointments_list.unfinished_header">Niet opgeslagen afspraken hervatten</label>
+			<label index="tx_appointments_list.unfinished_body">U kunt een afgebroken aanmaak-proces tijdelijk hervatten, of alle nog gebruikte tijdstippen vrijgeven. De ingevulde data wordt onthouden zolang uw browser in de tussentijd niet is afgesloten.</label>
+			<label index="tx_appointments_list.unfinished_warning">LET OP: Uw browser is te oud voor deze functionaliteit, of heeft geen javascript ondersteuning. Het is hierdoor niet mogelijk de volledigheid van ingevulde data te garanderen.</label>
+			<label index="tx_appointments_list.unfinished_session_incomplete">De data van dit aanmaak-proces is mogelijk niet (meer) volledig!</label>
 			<label index="tx_appointments_list.appointment_new">Nieuwe afspraak</label>
 			<label index="tx_appointments_list.appointment_list">Terug naar lijst</label>
 			<label index="tx_appointments_list.appointment_edit">Wijzig</label>

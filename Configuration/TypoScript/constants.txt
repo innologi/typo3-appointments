@@ -24,6 +24,8 @@ plugin.tx_appointments {
 		shiftSlotPerInterval = 0
 		# cat=plugin.tx_appointments/a_extconf/070; type=options[show,list]; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_redirectAfterSave
 		redirectAfterSave = show
+		# cat=plugin.tx_appointments/a_extconf/080; type=boolean; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_allowResume
+		allowResume = 1
 		# cat=plugin.tx_appointments/c_plugins/010; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaUid
 		agendaUid = 
 		# cat=plugin.tx_appointments/c_plugins/030; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_suGroup

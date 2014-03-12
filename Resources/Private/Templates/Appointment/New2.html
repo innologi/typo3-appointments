@@ -10,7 +10,7 @@
 </div>
 
 <f:if condition="{types}">
-	<f:form enctype="multipart/form-data" method="post" action="simpleProcessNew" id="typeForm" object="{appointment}" objectName="appointment" class="allowUnload">
+	<f:form enctype="multipart/form-data" method="post" action="simpleProcessNew" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
 			<f:render partial="Appointment/FormFieldType" arguments="{appointment : appointment, types : types, dateSlots : dateSlots, step : 2}" />
 		</fieldset>
@@ -18,7 +18,7 @@
 </f:if>
 
 <f:if condition="{dateSlots}">
-	<f:form enctype="multipart/form-data" method="post" action="free" id="dateForm" object="{appointment}" objectName="appointment">
+	<f:form enctype="multipart/form-data" method="post" action="free" object="{appointment}" objectName="appointment">
 		<fieldset>
 			<label>
 				<f:translate key="tx_appointments_list.label_date_slot" />
@@ -32,7 +32,7 @@
 </f:if>
 	
 <f:if condition="{timeSlots}">
-	<f:form enctype="multipart/form-data" method="post" action="free" id="timeForm" object="{appointment}" objectName="appointment" class="allowUnload">
+	<f:form enctype="multipart/form-data" method="post" action="free" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
 			<label>
 				<f:translate key="tx_appointments_list.label_time_slot" />
@@ -49,7 +49,7 @@
 	</f:form>
 </f:if>
 
-<f:form enctype="multipart/form-data" method="post" action="create" id="appointmentForm" object="{appointment}" objectName="appointment" class="warnUnload allowUnload">
+<f:form enctype="multipart/form-data" method="post" action="create" id="appointment-form-{appointment.uid}" object="{appointment}" objectName="appointment" class="appointment-form warnUnload allowUnload session">
 	<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, superUser : superUser}" />
 		
 	<fieldset>

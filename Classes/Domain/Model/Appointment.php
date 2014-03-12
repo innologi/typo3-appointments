@@ -53,12 +53,12 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	protected $creationProgress = self::UNFINISHED;
 
 	/**
-	 * Indicated if the original beginTime was changed
+	 * Remaining seconds on chosen timeslot
 	 *
-	 * @var boolean
+	 * @var integer
 	 * @transient
 	 */
-	protected $changedTime = FALSE;
+	protected $remainingSeconds = NULL;
 
 	/**
 	 * Start time
@@ -233,22 +233,22 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	}
 
 	/**
-	 * Returns changedTime
+	 * Returns remainingSeconds
 	 *
-	 * @return boolean $changedTime
+	 * @return integer $remainingSeconds
 	 */
-	public function getChangedTime() {
-		return $this->changedTime;
+	public function getRemainingSeconds() {
+		return $this->remainingSeconds;
 	}
 
 	/**
-	 * Sets changedTime
+	 * Sets remainingSeconds
 	 *
-	 * @param boolean $changedTime
+	 * @param integer $remainingSeconds
 	 * @return void
 	 */
-	public function setChangedTime($changedTime) {
-		$this->changedTime = $changedTime;
+	public function setRemainingSeconds($remainingSeconds) {
+		$this->remainingSeconds = $remainingSeconds;
 	}
 
 	/**
