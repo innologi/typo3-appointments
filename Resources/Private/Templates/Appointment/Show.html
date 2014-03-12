@@ -1,15 +1,15 @@
 <f:layout name="Default" />
 
 <f:section name="main">
-<h3><f:translate key="tx_appointments_list.appointment_show_header" /></h3>
 
-<f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
-<f:if condition="{mutable}">
-	<f:link.action action="edit" arguments="{appointment : appointment}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action>
-	<f:link.action action="delete" arguments="{appointment : appointment}" class="button_delete"><f:translate key="tx_appointments_list.appointment_delete" /></f:link.action>
-</f:if>
-<br />
-<br />
+<div class="header">
+	<h3><f:translate key="tx_appointments_list.appointment_show_header" /></h3>
+	<f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
+	<f:if condition="{mutable}">
+		<f:link.action action="edit" arguments="{appointment : appointment}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action>
+		<f:link.action action="delete" arguments="{appointment : appointment}" class="button_delete"><f:translate key="tx_appointments_list.appointment_delete" /></f:link.action>
+	</f:if>
+</div>
 
 <f:render partial="Appointment/Properties" arguments="{appointment:appointment, formFieldValues:formFieldValues, superUser:superUser, showMore:showMore}" />
 

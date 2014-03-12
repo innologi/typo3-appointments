@@ -3,9 +3,12 @@
 
 <f:section name="main">
 
-<f:link.action action="new1" addQueryString="TRUE" class="button_new"><f:translate key="tx_appointments_list.appointment_new" /></f:link.action>
+<div class="header">
+	<f:link.action action="new1" addQueryString="TRUE" class="button_new"><f:translate key="tx_appointments_list.appointment_new" /></f:link.action>
+</div>
 
 <f:if condition="{appointments}">
+<!-- @TODO UL for default template, with labelless edit/delete buttons -->
 <table class="appointmentList" summary="{f:translate(key:'tx_appointments_list.summary_list')}">
 	<caption><f:translate key="tx_appointments_list.caption_list" /></caption>
 	<tr>
@@ -22,6 +25,7 @@
 					{appointment.type.name}
 				</f:link.action>
 			</td>
+			<!-- @TODO I REALLY dont like this in view, review possibilities to do this via transient property assigned in controller -->
 			<f:if condition="{now} < {v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}">
 				<f:then>
 					<td><f:link.action action="edit" arguments="{appointment : appointment}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action></td>

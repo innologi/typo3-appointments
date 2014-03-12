@@ -3,6 +3,7 @@
 		<div class="dayBar">
 			<f:if condition="{date.allowCreate}">
 				<f:then>
+					<!-- @TODO monthShort is a representation choice.. just make it a month property and get the string from locallang HERE -->
 					<f:link.action controller="Appointment" arguments="{dateFirst : date.timestamp}" action="new1" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]'}" class="button_new_datefirst">
 						{date.dayNumber} {date.monthShort}
 					</f:link.action>
@@ -12,12 +13,19 @@
 				</f:else>
 			</f:if>
 		</div>
-		<f:for each="{date.appointments}" as="appointment">
-			<f:link.action controller="Appointment" action="show" arguments="{appointment : appointment}" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[dateFirst]'}" class="link_appointment">
-				<f:format.date format="H:i">{appointment.beginTime}</f:format.date>
-				{appointment.type.name}
-			</f:link.action>
-			<br />
-		</f:for>
+		<!-- @TODO add title to all links -->
+		<!-- @LOW use crop VH? (not available in 4.5) -->
+		<f:if condition="{date.appointments">
+			<ul>
+				<f:for each="{date.appointments}" as="appointment">
+					<li>
+						<f:link.action controller="Appointment" action="show" arguments="{appointment : appointment}" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[dateFirst]'}" class="link_appointment">
+							<f:format.date format="H:i">{appointment.beginTime}</f:format.date>
+							{appointment.type.name}
+						</f:link.action>
+					</li>
+				</f:for>
+			</ul>
+		</f:if>
 	</td>
 </f:for>

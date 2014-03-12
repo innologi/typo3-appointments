@@ -1,14 +1,12 @@
 <f:form.errors>
-<br />
-<br />
-<div class="validation">
-	<div class="validation-errors">
-		<div class="validation-header"><f:translate key="tx_appointments_list.validation_errors" /></div>
-		<ul class="validation-error-messages">
-			<f:for each="{error.errors}" as="err">
-				<f:render partial="FormErrorsDetail" arguments="{entity: 'appointment', error: err, formFields: formFields}" />
-			</f:for>
-		</ul>
+	<div class="validation">
+		<div class="validation-errors">
+			<div class="validation-header"><f:translate key="tx_appointments_list.validation_errors" /></div>
+			<ul class="validation-error-messages">
+				<f:for each="{error.errors}" as="err">
+					<f:render partial="FormErrorsDetail" arguments="{entity: 'appointment', error: err, formFields: formFields}" />
+				</f:for>
+			</ul>
+		</div>
 	</div>
-</div>
 </f:form.errors>

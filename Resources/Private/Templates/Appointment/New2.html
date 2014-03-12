@@ -1,12 +1,14 @@
 <f:layout name="Default" />
+
 <f:section name="main">
-<h3><f:translate key="tx_appointments_list.appointment_new" /></h3>
 
-<f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[dateFirst]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
+<div class="header">
+	<h3><f:translate key="tx_appointments_list.appointment_new" /></h3>
+	<f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[dateFirst]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
+	<f:render partial="FormErrors" arguments="{formFields : appointment.type.formFields}" />
+	<p><span class="required">*</span> = <f:translate key="tx_appointments_list.required" /></p>
+</div>
 
-<f:render partial="FormErrors" arguments="{formFields : appointment.type.formFields}" />
-
-<br />
 <f:if condition="{types}">
 	<f:form enctype="multipart/form-data" method="post" action="simpleProcessNew" id="typeForm" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
@@ -47,9 +49,6 @@
 	</f:form>
 </f:if>
 
-<br />
-<br />
-<span class="required">*</span> = <f:translate key="tx_appointments_list.required" />
 <f:form enctype="multipart/form-data" method="post" action="create" id="appointmentForm" object="{appointment}" objectName="appointment" class="warnUnload allowUnload">
 	<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, superUser : superUser}" />
 		

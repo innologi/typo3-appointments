@@ -173,6 +173,10 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 		font-family:helvetica,arial,sans-serif;
 	}
 	
+	.tx-appointments p {
+		margin:10px 0;
+	}
+	
 	.tx-appointments table caption {
 		display:none;
 	}
@@ -180,6 +184,11 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments table {
 		border-collapse:separate;
 		border-spacing:5px;
+	}
+	
+	.tx-appointments .header,
+	.tx-appointments .single-appointment {
+		margin-bottom:15px;
 	}
 
 	.tx-appointments table th {
@@ -216,7 +225,7 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	/* Agenda */
 	
 	.tx-appointments .agendaBar {
-		border:2px solid #ddd;
+		border:1px solid #eee;
 		text-align:center;
 		font-size:1.3em;
 		position:relative;
@@ -294,6 +303,12 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 		font-weight:bold;
 		padding-right:3px;
 		text-transform:lowercase;
+	}
+	
+	.tx-appointments .agendaDay > ul {
+		list-style-type:none;
+		line-height:1.2em;
+		margin:3px 0 0 !important;
 	}
 	
 	.tx-appointments .agendaShow .link_appointment {
@@ -416,7 +431,7 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments fieldset {
 		border:0;
 		padding:0;
-		margin:10px 0 0;
+		margin-bottom:10px;
 	}
 	.tx-appointments .required {
 		color:#f00;
