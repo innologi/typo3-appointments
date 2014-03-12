@@ -36,8 +36,9 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	/**
 	 * value
 	 *
+	 * Validated by the FormFieldValueValidator
+	 *
 	 * @var string
-	 * @validate Tx_Appointments_Domain_Validator_VariableValidator(validationTypes=$formField::validationTypes)
 	 */
 	protected $value;
 

@@ -52,7 +52,7 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appoint
 		$storageError = NULL;
 
 		if ($value instanceof Tx_Extbase_Persistence_ObjectStorage) {
-			$validator = $this->objectManager->get('Tx_Appointments_Validation_VariableValidatorResolver')->createValidator('Tx_Appointments_Domain_Validator_ObjectPropertiesValidator',$this->options);
+			$validator = $this->objectManager->get('Tx_Appointments_Validation_ValidatorResolver')->createValidator('Tx_Appointments_Domain_Validator_ObjectPropertiesValidator', $this->options);
 			$valid = TRUE;
 			// registers values referred to by delayed objects
 			$valueRegister = array();
@@ -63,7 +63,7 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appoint
 			$delayedObjects = array();
 			$values = array($value, &$delayedObjects);
 			foreach ($values as $value) {
-
+				#@TODO wait, doesn't this do some of the stuff I added in sanitizeFormFieldValues()?
 				foreach ($value as $obj) {
 					// formfieldvalue special treatment for enable_field
 					if ($obj instanceof Tx_Appointments_Domain_Model_FormFieldValue) {

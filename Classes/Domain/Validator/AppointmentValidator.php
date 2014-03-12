@@ -69,7 +69,6 @@ class Tx_Appointments_Domain_Validator_AppointmentValidator extends Tx_Appointme
 		}
 		return $valid;
 	}
-	#@TODO __can we do formfieldvalue.value the same way? Rather not use the variableValidator hacks if not necessary..
 
 }
 ?>

@@ -1,12 +1,3 @@
-#config.tx_extbase {
-	# this DI override method is global and fails once when cache is cleared (4.7.8), so I cannot depend on it
-	#objects {
-		#Tx_Extbase_Validation_ValidatorResolver {
-		#	className = Tx_Appointments_Validation_VariableValidatorResolver
-		#}
-	#}
-#}
-
 plugin.tx_appointments {
 	view {
 		templateRootPath = {$plugin.tx_appointments.view.templateRootPath}

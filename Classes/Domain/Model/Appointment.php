@@ -111,7 +111,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @lazy
 	 */
 	protected $type;
-
+	#@LOW should see if this is still the case in 6.2, once we raise dependency version
 	/**
 	 * Form field values associated with this appointment
 	 *
@@ -131,7 +131,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * 2. Can be lazy, because the objectStorage is ONLY manipulated by form.
 	 *
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
-	 * @validate Tx_Appointments_Domain_Validator_ObjectStorageValidator(containsVariable=1)
+	 * @validate Tx_Appointments_Domain_Validator_ObjectStorageValidator(clearErrors=1)
 	 * @lazy
 	 */
 	protected $formFieldValues; #@LOW create an extbase feature suggestion and patch to remedy the objectstorage behaviour with instanceof checks

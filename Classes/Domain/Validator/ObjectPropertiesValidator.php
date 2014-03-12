@@ -50,17 +50,17 @@ class Tx_Appointments_Domain_Validator_ObjectPropertiesValidator extends Tx_Appo
 			throw new Tx_Appointments_MVC_Exception_PropertyDeleted();
 		}
 
-		$validatorResolver = $this->objectManager->get('Tx_Appointments_Validation_VariableValidatorResolver');
-		//these help us to resolve variable option values
-		$validatorResolver->setClassInstance($value);
-		$noStorage = isset($this->options['containsVariable']);
+		#@TODO if this isn't solved by the rewrittenPropertyMapper (which I think it is, looking at validate()), consider using DI to overwrite the conjunction class instead to add an error-clearing method
+		$validatorResolver = $this->objectManager->get('Tx_Appointments_Validation_ValidatorResolver'); //the original resolver creates a single instance of the conjunction which accumulates errors, so we use our own
+		$dontStore = isset($this->options['clearErrors']); //TRUE enables the workaround that prevents multiple same-class instances to accumulate their siblings errors
 
-		$validator = $validatorResolver->getBaseValidatorConjunction(get_class($value),$noStorage);
+		$validator = $validatorResolver->getBaseValidatorConjunction(get_class($value), $dontStore);
 		if ($validator->isValid($value)) {
 			return TRUE;
 		}
 
-		$this->errors = array_merge($this->errors,$validator->getErrors());
+		// the validator will be created only once, which means errors start piling up from different objects if we don't empty the array
+		$this->errors = $validator->getErrors();
 		return FALSE;
 	}
 
