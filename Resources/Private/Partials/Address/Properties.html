@@ -1,3 +1,4 @@
+{namespace v=Tx_Vhs_ViewHelpers}
 <f:if condition="{type.addressEnableName}">
 	<tr>
 		<td scope="row">
@@ -26,13 +27,8 @@
 			<f:translate key="tx_appointments_domain_model_address.gender" />
 		</td>
 		<td>
-			<f:for each="{m: '{f:translate(key: \'tx_appointments_domain_model_address.gender.m\')}', f: '{f:translate(key: \'tx_appointments_domain_model_address.gender.f\')}'}" as="gender" key="index">
-				<f:if condition="{index} == {address.gender}">
-					<!-- @TODO ___replace with vhs construct? see formfield -->
-					{gender}
-				</f:if>
-			</f:for>
-			
+			<!-- @TODO lose the vhs dependency by creating a simple VH that simply gets an array value by key? would be a speed up. Also do this for formfield -->
+			<v:iterator.extract key="{address.gender}" content="{m: '{f:translate(key: \'tx_appointments_domain_model_address.gender.m\')}', f: '{f:translate(key: \'tx_appointments_domain_model_address.gender.f\')}'}" recursive="FALSE"/>
 		</td>
 	</tr>
 </f:if>
