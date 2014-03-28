@@ -91,6 +91,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to show
 	 * @dontvalidate $appointment
+	 * @ignorevalidation $appointment
 	 * @return void
 	 */
 	public function showAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
@@ -130,6 +131,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @param string $dateFirst The timestamp that should be set before a type was already chosen
 	 * @dontvalidate $appointment
+	 * @ignorevalidation $appointment
 	 * @return void
 	 */
 	public function new1Action(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL) {
@@ -190,6 +192,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @dontvalidate $appointment
+	 * @ignorevalidation $appointment
 	 * @return void
 	 */
 	public function new2Action(Tx_Appointments_Domain_Model_Appointment $appointment) {
@@ -226,6 +229,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @dontvalidate $appointment
+	 * @ignorevalidation $appointment
 	 * @return void
 	 */
 	public function simpleProcessNewAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
@@ -245,6 +249,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @dontvalidate $appointment
+	 * @ignorevalidation $appointment
 	 * @return void
 	 */
 	public function processNewAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
@@ -369,6 +374,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to edit
 	 * @param string $changedDate Changed date
 	 * @dontvalidate $appointment
+	 * @ignorevalidation $appointment
 	 * @return void
 	 */
 	public function editAction(Tx_Appointments_Domain_Model_Appointment $appointment, $changedDate = NULL) {
@@ -430,6 +436,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to delete
 	 * @dontvalidate $appointment
+	 * @ignorevalidation $appointment
 	 * @return void
 	 */
 	public function deleteAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
@@ -449,6 +456,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment's time to free up
 	 * @dontvalidate $appointment
+	 * @ignorevalidation $appointment
 	 * @return void
 	 */
 	public function freeAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
