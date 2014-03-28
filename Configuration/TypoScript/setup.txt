@@ -221,6 +221,9 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	.tx-appointments .appointmentList .link_appointment {
 		font-size:0.9em;
 	}
+	.tx-appointments .links .time-unreserved {
+		text-decoration:line-through;
+	}
 	
 	
 	/* Agenda */

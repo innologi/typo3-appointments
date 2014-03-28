@@ -12,7 +12,7 @@
 						<f:if condition="{a:isExpired(appointment:appointment,timerMinutes:settings.freeSlotInMinutes)}">
 							<f:then>
 								<f:link.action action="new1" arguments="{appointment : appointment}" addQueryString="TRUE" class="link_appointment">
-									<span style="text-decoration:line-through;"><f:format.date format="d-m-Y, H:i">{appointment.beginTime}</f:format.date></span>:
+									<span class="time-unreserved"><f:format.date format="d-m-Y, H:i">{appointment.beginTime}</f:format.date></span>:
 									{appointment.type.name}
 								</f:link.action>(<f:translate key="tx_appointments_list.free_state" />)
 							</f:then>
