@@ -48,16 +48,27 @@ class Tx_Appointments_ViewHelpers_Form_TextfieldViewHelper extends Tx_Fluid_View
 	 *
 	 * @param boolean $required If the field is required or not
 	 * @param string $type The field type, e.g. "text", "email", "url" etc.
-	 * @param string $placeholder A string used as a placeholder for the value to enter
+	 * @param string $realPlaceholder A string used as a placeholder for the value to enter
 	 * @return string
 	 * @see Tx_Fluid_ViewHelpers_Form_TextfieldViewHelper::render()
 	 */
-	public function render($required = NULL, $type = 'text', $placeholder = NULL) {
+	public function render($required = NULL, $type = 'text', $realPlaceholder = NULL) {
 		$required = ($required === TRUE) ? 'required' : NULL;
-		if (!isset($placeholder[0])) {
-			$placeholder = NULL;
+
+		if (version_compare(TYPO3_branch, '6.2', '<')) {
+			if (!isset($realPlaceholder[0])) {
+				$realPlaceholder = NULL;
+			}
+			return parent::render($required, $type, $realPlaceholder);
 		}
-		return parent::render($required,$type,$placeholder);
+
+		if (isset($realPlaceholder[0])) {
+			if ($this->tag->hasAttribute('placeholder')) {
+				$this->tag->removeAttribute('placeholder');
+			}
+			$this->tag->addAttribute('placeholder', $realPlaceholder);
+		}
+		return parent::render($required,$type);
 	}
 
 	/**

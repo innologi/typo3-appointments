@@ -50,7 +50,7 @@
 						value="{formFieldValue.value}"
 						class="formfield-id-{formField.uid} textinput{f:if(condition:formField.isDate,then:' datepicker')} session"
 						required="{f:if(condition:formField.validationTypes,then:1)}"
-						placeholder="{f:if(condition:formField.isDate,then:'dd-mm-jjjj')}"
+						realPlaceholder="{f:if(condition:formField.isDate,then:'dd-mm-jjjj')}"
 					/>
 				</v:case>
 				<v:case case="4" break="TRUE"> <!-- Textlarge / Textarea -->
