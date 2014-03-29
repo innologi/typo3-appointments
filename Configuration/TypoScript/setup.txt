@@ -141,6 +141,10 @@ plugin.tx_appointments {
 		TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface {
 			className = Innologi\Appointments\Persistence\PersistenceManagerInterface
 		}
+		# extbase 6.2+ bugfix for rewrittenPropertyMapper=0
+		TYPO3\CMS\Extbase\Validation\ValidatorResolver {
+			className = Tx_Appointments_Validation_ValidatorResolver
+		}
 	}
 }
 
