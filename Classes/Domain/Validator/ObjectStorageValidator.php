@@ -110,7 +110,9 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appoint
 					}
 				}
 			}
-			$this->errors[] = $storageError;
+			if (!$valid) {
+				$this->errors[] = $storageError;
+			}
 		}
 		return $valid;
 	}
