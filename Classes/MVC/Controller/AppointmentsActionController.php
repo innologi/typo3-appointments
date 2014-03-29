@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2014 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -256,6 +256,7 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_NOTICE);
 
 			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
+			#@TODO deprecated, see add() for replacement
 			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
 			$this->redirect('list');
 		}
@@ -285,6 +286,48 @@ class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_App
 				}
 			}
 			$this->redirect($redirectTo,NULL,NULL,$arguments);
+		}
+	}
+
+	/**
+	 * Adds the needed validators to the Arguments:
+	 *
+	 * - Validators checking the data type from the @param annotation
+	 * - Custom validators specified with validate annotations.
+	 * - Model-based validators (validate annotations in the model)
+	 * - Custom model validator classes
+	 *
+	 * This override works around the 6.2-bug where it no longer supports
+	 * dontvalidate for the deprecatedPropertyMapper when a matching
+	 * Domain Model validator is present.
+	 *
+	 * @return void
+	 */
+	protected function initializeActionMethodValidators() {
+		if (version_compare(TYPO3_branch, '6.2', '<')) {
+			parent::initializeActionMethodValidators();
+		} else {
+			// @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
+
+			$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
+			$dontValidateAnnotations = array();
+
+			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
+			if (isset($methodTagsValues['dontvalidate'])) {
+				$dontValidateAnnotations = $methodTagsValues['dontvalidate'];
+			}
+
+			foreach ($this->arguments as $argument) {
+				$validator = $parameterValidators[$argument->getName()];
+				if (array_search('$' . $argument->getName(), $dontValidateAnnotations) === FALSE) {
+					$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
+					if ($baseValidatorConjunction !== NULL) {
+						$validator->addValidator($baseValidatorConjunction);
+					}
+					// moved this INSIDE the if, instead of outside
+					$argument->setValidator($validator);
+				}
+			}
 		}
 	}
 
