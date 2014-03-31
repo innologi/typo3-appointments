@@ -41,7 +41,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_MVC_Controller_AppointmentsActionController extends Tx_Appointments_MVC_Controller_SettingsOverrideController {
+class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MVC_Controller_SettingsOverrideController {
 
 	/**
 	 * agendaRepository

@@ -31,7 +31,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_MVC_Controller_AppointmentsActionController {
+class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_MVC_Controller_ActionController {
 
 	/**
 	 * Indicates if user needs to be logged in to access action methods

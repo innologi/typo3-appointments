@@ -50,7 +50,7 @@ return array(
 	'tx_appointments_domain_validator_objectpropertiesvalidator' => $extensionClassesPath . 'Domain/Validator/ObjectPropertiesValidator.php',
 	'tx_appointments_domain_validator_objectstoragevalidator' => $extensionClassesPath . 'Domain/Validator/ObjectStorageValidator.php',
 	'tx_appointments_hooks_iconworks' => $extensionClassesPath . 'Hooks/Tx_Appointments_Hooks_Iconworks.php',
-	'tx_appointments_mvc_controller_appointmentsactioncontroller' => $extensionClassesPath . 'MVC/Controller/AppointmentsActionController.php',
+	'tx_appointments_mvc_controller_actioncontroller' => $extensionClassesPath . 'MVC/Controller/ActionController.php',
 	'tx_appointments_mvc_controller_errorondebugcontroller' => $extensionClassesPath . 'MVC/Controller/ErrorOnDebugController.php',
 	'tx_appointments_mvc_controller_settingsoverridecontroller' => $extensionClassesPath . 'MVC/Controller/SettingsOverrideController.php',
 	'tx_appointments_mvc_exception_nopersistrepository' => $extensionClassesPath . 'MVC/Exception/NoPersistRepository.php',
