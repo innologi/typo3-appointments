@@ -3,3 +3,7 @@ email_from =
 
   # cat=basic//b; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_extconf_emailName
 email_name = 
+
+# @TODO move labels to llang
+  # cat=basic//c; type=options[Maximum=5,Strong (+javascript)=4,Strong (+referrer)=3,Strong (less caching)=2,Basic=1,Disabled=0]; label=CSRF Protection Level: Cross-Site Request Forgery can be prevented or at least mitigated through a number of techniques mostly centering around tokens. The general recommendation is to keep the protection level at Maximum, unless you can't commit to a JS- or Referrer-dependency and are willing to sacrifice a layer of security by dropping to "Strong". If you can't commit to either, you can still get a the same level of security with the trade-off of less caching. If that doesn't suffice either, you can drop the level to Basic, effectively trading-in a token-per-request for a token-per-session. If you're confident you don't need CSRF-protection, you can disable it altogether.
+csrf_protection_level = 5
