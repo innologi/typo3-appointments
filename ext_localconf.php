@@ -15,6 +15,15 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
+// one csrf protection level prevents caching of some views
+$noCache = '';
+if (isset($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY])) {
+	$extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY]);
+	if (isset($extConf['csrf_protection_level'])) {
+		$noCache = ((int)$extConf['csrf_protection_level']) === Tx_Appointments_Service_AbstractCsrfProtectService::STRONG_UNCACHED ? ', list, show' : '';
+	}
+}
+
 Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'List',
@@ -24,7 +33,7 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	),
 	// non-cacheable actions
 	array(
-		'Appointment' => 'create, update, delete, edit, new1, new2, processNew, simpleProcessNew, free',
+		'Appointment' => 'create, update, delete, edit, new1, new2, processNew, simpleProcessNew, free' . $noCache,
 	)
 );
 
