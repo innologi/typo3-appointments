@@ -53,6 +53,7 @@ return array(
 	'tx_appointments_mvc_controller_actioncontroller' => $extensionClassesPath . 'MVC/Controller/ActionController.php',
 	'tx_appointments_mvc_controller_errorondebugcontroller' => $extensionClassesPath . 'MVC/Controller/ErrorOnDebugController.php',
 	'tx_appointments_mvc_controller_settingsoverridecontroller' => $extensionClassesPath . 'MVC/Controller/SettingsOverrideController.php',
+	'tx_appointments_mvc_controller_csrfprotectcontroller' => $extensionClassesPath . 'MVC/Controller/CsrfProtectController.php',
 	'tx_appointments_mvc_exception_nopersistrepository' => $extensionClassesPath . 'MVC/Exception/NoPersistRepository.php',
 	'tx_appointments_mvc_exception_propertydeleted' => $extensionClassesPath . 'MVC/Exception/PropertyDeleted.php',
 	'tx_appointments_persistence_keyobjectstorage' => $extensionClassesPath . 'Persistence/KeyObjectStorage.php',
@@ -60,6 +61,9 @@ return array(
 	'tx_appointments_persistence_nopersistrepository' => $extensionClassesPath . 'Persistence/NoPersistRepository.php',
 	'tx_appointments_service_emailservice' => $extensionClassesPath . 'Service/EmailService.php',
 	'tx_appointments_service_userservice' => $extensionClassesPath . 'Service/UserService.php',
+	'tx_appointments_service_csrfprotectservice' => $extensionClassesPath . 'Service/CsrfProtectService.php',
+	'tx_appointments_service_csrfprotectserviceinterface' => $extensionClassesPath . 'Service/CsrfProtectServiceInterface.php',
+	'tx_appointments_service_abstractcsrfprotectservice' => $extensionClassesPath . 'Service/AbstractCsrfProtectService.php',
 	'tx_appointments_task_cleanuptask' => $extensionClassesPath . 'Task/CleanUpTask.php',
 	'tx_appointments_task_cleanuptaskadditionalfieldprovider' => $extensionClassesPath . 'Task/CleanUpTaskAdditionalFieldProvider.php',
 	'tx_appointments_task_cleanuptasklogic' => $extensionClassesPath . 'Task/CleanUpTaskLogic.php',
@@ -74,5 +78,7 @@ return array(
 	'tx_appointments_viewhelpers_format_lowercaseviewhelper' => $extensionClassesPath . 'ViewHelpers/Format/LowerCaseViewHelper.php',
 	'tx_appointments_viewhelpers_isexpiredviewhelper' => $extensionClassesPath . 'ViewHelpers/IsExpiredViewHelper.php',
 	'tx_appointments_viewhelpers_timerviewhelper' => $extensionClassesPath . 'ViewHelpers/TimerViewHelper.php',
+	'tx_appointments_viewhelpers_formviewhelper' => $extensionClassesPath . 'ViewHelpers/FormViewHelper.php',
+	'tx_appointments_viewhelpers_link_actionviewhelper' => $extensionClassesPath . 'ViewHelpers/Link/ActionViewHelper.php',
 );
 ?>
