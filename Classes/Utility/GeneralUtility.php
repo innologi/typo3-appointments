@@ -73,5 +73,66 @@ class Tx_Appointments_Utility_GeneralUtility {
 		return $timer;
 	}
 
+	/**
+	 * Strips designated GET parameters from any URL
+	 * and returns the result.
+	 *
+	 * Parameters are considered case-insensitive.
+	 *
+	 * @param string $url
+	 * @param array $parameters
+	 * @return string
+	 */
+	public static function stripGetParameters($url, array $parameters) {
+		foreach ($parameters as $parameter) {
+			$pos = strpos(strtolower($url), strtolower($parameter . '='));
+			if ($pos !== FALSE) {
+				$endPos = strpos($url, '&', $pos);
+				if ($endPos === FALSE) {
+					$start = $pos - 1;
+					$url = substr_replace($url, '', $start);
+				} else {
+					$start = $pos;
+					$length = ($endPos - $pos ) + 1;
+					$url = substr_replace($url, '', $start, $length);
+				}
+			}
+		}
+		return $url;
+	}
+
+	/**
+	 * Wraps a GET parameter with the expected extension plugin prefix
+	 * and returns the result.
+	 *
+	 * @param string $parameter
+	 * @param string $extensionKey
+	 * @param string $pluginName
+	 * @return string
+	 */
+	public static function wrapGetParameter($parameter, $extensionKey, $pluginName) {
+		// e.g. tx_appointments_list[$parameter]
+		$parameter = 'tx_' . $extensionKey . '_' . $pluginName . '[' . $parameter . ']';
+		return strtolower($parameter);
+	}
+
+	/**
+	 * Splits any URL by its parameters, sorts the resulting
+	 * array and then returns it.
+	 *
+	 * @param string $url
+	 * @return array
+	 */
+	public static function splitUrlAndSortInArray($url) {
+		$parts = explode('?', $url);
+		// more than 1 element?
+		if (isset($parts[1])) {
+			$parameters = explode('&', array_pop($parts));
+			$parts = array_merge($parts, $parameters);
+			sort($parts);
+		}
+		return $parts;
+	}
+
 }
 ?>
