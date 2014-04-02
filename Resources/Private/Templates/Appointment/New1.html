@@ -1,3 +1,4 @@
+{namespace a=Tx_Appointments_ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="main">
@@ -35,7 +36,7 @@
 </f:if>
 	
 <f:if condition="{timeSlots}">
-	<f:form enctype="multipart/form-data" method="post" action="processNew" object="{appointment}" objectName="appointment" class="allowUnload">
+	<a:form enctype="multipart/form-data" method="post" action="processNew" object="{appointment}" objectName="appointment" class="allowUnload" syncToken="TRUE" absolute="TRUE">
 		<fieldset>
 			<f:form.hidden property="type" />
 			
@@ -49,7 +50,7 @@
 			<f:form.submit id="appointments-submit-time" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
 			<f:render partial="Appointment/FormFieldTimeCsh" arguments="{step : 1}" />
 		</fieldset>
-	</f:form>
+	</a:form>
 </f:if>
 
 <f:if condition="{appointment.uid}">

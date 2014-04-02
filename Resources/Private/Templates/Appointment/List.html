@@ -1,3 +1,4 @@
+{namespace a=Tx_Appointments_ViewHelpers}
 {namespace v=Tx_Vhs_ViewHelpers}
 <f:layout name="Default" />
 
@@ -32,7 +33,7 @@
 			<f:if condition="{now} < {v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}">
 				<f:then>
 					<td><f:link.action action="edit" arguments="{appointment : appointment}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action></td>
-					<td><f:link.action action="delete" arguments="{appointment : appointment}" class="button_delete"><f:translate key="tx_appointments_list.appointment_delete" /></f:link.action></td>
+					<td><a:link.action action="delete" arguments="{appointment : appointment}" class="button_delete" syncToken="TRUE"><f:translate key="tx_appointments_list.appointment_delete" /></a:link.action></td>
 				</f:then>
 				<f:else>
 					<td colspan="2">&nbsp;</td>

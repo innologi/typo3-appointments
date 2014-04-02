@@ -1,3 +1,4 @@
+{namespace a=Tx_Appointments_ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="main">
@@ -34,7 +35,7 @@
 	</f:form>
 </f:if>
 	
-<f:form action="update" id="appointment-form-{appointment.uid}" class="appointment-form" name="appointment" object="{appointment}">
+<a:form action="update" id="appointment-form-{appointment.uid}" class="appointment-form" name="appointment" object="{appointment}" syncToken="TRUE" absolute="TRUE">
 	<f:if condition="{timeSlots}">
 		<fieldset>
 			<label>
@@ -50,5 +51,5 @@
 	<fieldset>
 		<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_update')}" class="submit next" />
 	</fieldset>
-</f:form>
+</a:form>
 </f:section>
