@@ -41,7 +41,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MVC_Controller_SettingsOverrideController {
+class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MVC_Controller_CsrfProtectController {
 
 	/**
 	 * agendaRepository
@@ -157,6 +157,8 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 	 * @return void
 	 */
 	protected function initializeAction() {
+		parent::initializeAction();
+
 		if ($this->actionMethodName !== 'noneAction') {
 			$errors = array();
 
@@ -330,6 +332,5 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 			}
 		}
 	}
-
 }
 ?>

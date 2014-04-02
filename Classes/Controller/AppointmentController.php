@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2014 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -250,6 +250,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
 	 * @dontvalidate $appointment
 	 * @ignorevalidation $appointment
+	 * @verifycsrftoken
 	 * @return void
 	 */
 	public function processNewAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
@@ -331,6 +332,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * fix that, but for now the cleanup task will prevent excessive time-differences over firstAvailableTime.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to create
+	 * @verifycsrftoken
 	 * @return void
 	 */
 	public function createAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
@@ -401,11 +403,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('formFieldValues', $formFieldValues);
 		$this->view->assign('superUser', $superUser);
 	}
-
+	#@FIX ________verify ownership/SU on edit/delete
 	/**
 	 * action update
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to update
+	 * @verifycsrftoken
 	 * @return void
 	 */
 	public function updateAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
@@ -437,6 +440,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to delete
 	 * @dontvalidate $appointment
 	 * @ignorevalidation $appointment
+	 * @verifycsrftoken
 	 * @return void
 	 */
 	public function deleteAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
