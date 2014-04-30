@@ -34,6 +34,13 @@
 abstract class Tx_Appointments_Validation_Validator_PreppedAbstractValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
 
 	/**
+	 * @var array
+	 */
+	protected $supportedOptions = array(
+		'clearErrors' => FALSE
+	);
+
+	/**
 	 * @var $objectManager Tx_Extbase_Object_ObjectManager
 	 */
 	protected $objectManager;

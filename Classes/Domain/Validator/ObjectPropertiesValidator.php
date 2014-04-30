@@ -52,7 +52,7 @@ class Tx_Appointments_Domain_Validator_ObjectPropertiesValidator extends Tx_Appo
 
 		#@TODO if this isn't solved by the rewrittenPropertyMapper (which I think it is, looking at validate()), consider using DI to overwrite the conjunction class instead to add an error-clearing method
 		$validatorResolver = $this->objectManager->get('Tx_Appointments_Validation_ValidatorResolver'); //the original resolver creates a single instance of the conjunction which accumulates errors, so we use our own
-		$dontStore = isset($this->options['clearErrors']); //TRUE enables the workaround that prevents multiple same-class instances to accumulate their siblings errors
+		$dontStore = (bool)$this->options['clearErrors']; //TRUE enables the workaround that prevents multiple same-class instances to accumulate their siblings errors
 
 		$validator = $validatorResolver->getBaseValidatorConjunction(get_class($value), $dontStore);
 		if ($validator->isValid($value)) {
