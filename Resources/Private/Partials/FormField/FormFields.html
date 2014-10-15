@@ -7,10 +7,10 @@
 			
 			<f:if condition="{formFieldValue.uid}">
 				<f:then>
-					<f:form.hidden property="formFieldValues.{formField.uid}.__identity" value="{formFieldValue.uid}" />
+					<f:form.hidden property="formFieldValues.i{formField.uid}.__identity" value="{formFieldValue.uid}" />
 				</f:then>
 				<f:else>
-					<f:form.hidden property="formFieldValues.{formField.uid}.formField" value="{formField}" />
+					<f:form.hidden property="formFieldValues.i{formField.uid}.formField" value="{formField}" />
 				</f:else>
 			</f:if>
 		
@@ -18,7 +18,7 @@
 				<v:case case="1" break="TRUE"> <!-- Boolean / Checkbox -->
 					<f:form.checkbox
 						id="appointments-formfield-{formField.uid}"
-						property="formFieldValues.{formField.uid}.value"
+						property="formFieldValues.i{formField.uid}.value"
 						value="1"
 						checked="{formFieldValue.value} == 1"
 						class="formfield-id-{formField.uid} checkbox session"
@@ -31,7 +31,7 @@
 					<br />
 					<a:form.select
 						id="appointments-formfield-{formField.uid}"
-						property="formFieldValues.{formField.uid}.value"
+						property="formFieldValues.i{formField.uid}.value"
 						options="{formField.choicesArray}"
 						value="{formFieldValue.value}"
 						class="formfield-id-{formField.uid} select session"
@@ -46,7 +46,7 @@
 					<!-- @TODO use data attributes instead, once I can go HTML5-only -->
 					<a:form.textfield
 						id="appointments-formfield-{formField.uid}"
-						property="formFieldValues.{formField.uid}.value"
+						property="formFieldValues.i{formField.uid}.value"
 						value="{formFieldValue.value}"
 						class="formfield-id-{formField.uid} textinput{f:if(condition:formField.isDate,then:' datepicker')} session"
 						required="{f:if(condition:formField.validationTypes,then:1)}"
@@ -60,7 +60,7 @@
 					<br />
 					<a:form.textarea
 						id="appointments-formfield-{formField.uid}"
-						property="formFieldValues.{formField.uid}.value"
+						property="formFieldValues.i{formField.uid}.value"
 						value="{formFieldValue.value}"
 						cols="40" rows="15"
 						class="formfield-id-{formField.uid} session"
@@ -74,7 +74,7 @@
 					<f:for each="{formField.choicesArray}" as="choiceValue" key="choiceKey" iteration="choiceIterator">
 						<a:form.radio
 							id="appointments-formfield-{formField.uid}-{choiceIterator.index}"
-							property="formFieldValues.{formField.uid}.value"
+							property="formFieldValues.i{formField.uid}.value"
 							value="{choiceKey}"
 							checked="{0:formFieldValue.value} == {0:choiceKey}"
 							class="formfield-id-{formField.uid} radio session"
