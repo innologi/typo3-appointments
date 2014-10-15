@@ -96,14 +96,14 @@ class Tx_Appointments_Service_CsrfProtectService extends Tx_Appointments_Service
 	 * @return string
 	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getPrivateHashFromSession()
 	 */
-	protected function getPrivateHashFromSession($generatedByReferrer) {
+	protected function getPrivateHashFromSession($generatedByReferrer = FALSE) {
 		// false hash will always produce invalid outcome
 		$privateHash = FALSE;
 		$sessionKey = $this->request->getControllerExtensionKey() . $this->sessionKey;
 		$sessionData = $GLOBALS['TSFE']->fe_user->getKey('ses', $sessionKey);
 		$hashSource = $this->getHashSource($generatedByReferrer);
 		if (isset($sessionData['__h'][$hashSource])) {
-			$privateHash = base64_decode($sessionData['__h'][$hashSource]);
+			$privateHash = base64_decode($sessionData['__h'][$hashSource], TRUE);
 		}
 		return $privateHash;
 	}
@@ -112,11 +112,10 @@ class Tx_Appointments_Service_CsrfProtectService extends Tx_Appointments_Service
 	 * Puts private hash in session, and optionally persists the session data.
 	 *
 	 * @param string $privateHash
-	 * @param boolean $persistSessionData
 	 * @return void
 	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::putPrivateHashInSession()
 	 */
-	protected function putPrivateHashInSession($privateHash, $persistSessionData = FALSE) {
+	protected function putPrivateHashInSession($privateHash) {
 		$sessionKey = $this->request->getControllerExtensionKey() . $this->sessionKey;
 		$sessionData = $GLOBALS['TSFE']->fe_user->getKey('ses', $sessionKey);
 		$hashSource = $this->getHashSource();
@@ -131,10 +130,9 @@ class Tx_Appointments_Service_CsrfProtectService extends Tx_Appointments_Service
 			);
 		}
 		$GLOBALS['TSFE']->fe_user->setKey('ses', $sessionKey, $sessionData);
-
-		if ($persistSessionData) {
-			$GLOBALS['TSFE']->fe_user->storeSessionData();
-		}
+		// if we don't, retrieval will favor another database stored session
+		#@TODO _______isnt this just the case because the AJAX request cant seem to access the PHP session? google it, maybe there is a better solution
+		$GLOBALS['TSFE']->fe_user->storeSessionData();
 	}
 
 

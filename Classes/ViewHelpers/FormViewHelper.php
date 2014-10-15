@@ -81,16 +81,17 @@ class Tx_Appointments_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		$result = parent::renderHiddenReferrerFields();
 
 		if (isset($this->arguments['syncToken']) && ((bool)$this->arguments['syncToken']) === TRUE && $this->csrfProtectService->isEnabled()) {
+			$tokenUri = htmlspecialchars_decode($this->tag->getAttribute('action'));
+
 			if ($this->csrfProtectService->hasJsDependency()) {
-				$this->csrfProtectService->provideJsClass($this->tag);
+				$this->csrfProtectService->provideTagArguments($this->tag, $tokenUri);
 			} else {
 				// @LOW check if adding it to arguments instead would suffice
 				$result .= '<input type="hidden" name="' . $this->prefixFieldName(
 					$this->csrfProtectService->getTokenKey()
 				) . '" value="' . htmlspecialchars(
 					$this->csrfProtectService->generateToken(
-						$this->controllerContext->getRequest(),
-						htmlspecialchars_decode($this->tag->getAttribute('action'))
+						$this->controllerContext->getRequest(), $tokenUri
 					)
 				) . '" />';
 			}

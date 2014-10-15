@@ -87,27 +87,27 @@ class Tx_Appointments_ViewHelpers_Link_ActionViewHelper extends Tx_Fluid_ViewHel
 	 */
 	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $format = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array(), $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array(), $addQueryStringMethod = NULL) {
 		if (isset($this->arguments['syncToken']) && $this->arguments['syncToken'] === TRUE && $this->csrfProtectService->isEnabled()) {
-			if ($this->csrfProtectService->hasJsDependency()) {
-				$this->csrfProtectService->provideJsClass($this->tag);
-			} else {
-				// we have to build a variation of the URI that is
-				// absolute and without a cHash, for use as tokenUri
-				$uriBuilder = $this->controllerContext->getUriBuilder();
-				$tokenUri = $uriBuilder->reset()
-					->setTargetPageUid($pageUid)
-					->setTargetPageType($pageType)
-					->setNoCache($noCache)
-					->setUseCacheHash(FALSE)
-					->setSection($section)
-					->setFormat($format)
-					->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
-					->setArguments($additionalParams)
-					->setCreateAbsoluteUri(TRUE)
-					->setAddQueryString($addQueryString)
-					->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
-					->setAddQueryStringMethod($addQueryStringMethod)
-					->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
+			// we have to build a variation of the URI that is
+			// absolute and without a cHash, for use as tokenUri
+			$uriBuilder = $this->controllerContext->getUriBuilder();
+			$tokenUri = $uriBuilder->reset()
+				->setTargetPageUid($pageUid)
+				->setTargetPageType($pageType)
+				->setNoCache($noCache)
+				->setUseCacheHash(FALSE)
+				->setSection($section)
+				->setFormat($format)
+				->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
+				->setArguments($additionalParams)
+				->setCreateAbsoluteUri(TRUE)
+				->setAddQueryString($addQueryString)
+				->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
+				->setAddQueryStringMethod($addQueryStringMethod)
+				->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
 
+			if ($this->csrfProtectService->hasJsDependency()) {
+				$this->csrfProtectService->provideTagArguments($this->tag, $tokenUri);
+			} else {
 				$arguments[$this->csrfProtectService->getTokenKey()] = htmlspecialchars(
 					$this->csrfProtectService->generateToken(
 						$this->controllerContext->getRequest(), $tokenUri

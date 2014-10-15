@@ -8,41 +8,45 @@
  * -----
  * @author Frenck Lutke <http://frencklutke.nl/>
  */
-
 jQuery(document).ready(function() {
-	
+
 	//general vars
 	var scriptStartTime = new Date().getTime() / 1000;
 	// @TODO var formELem = $('.tx-appointments form'); ?
-	
-	
+
+
 	//*********************
 	// delete confirmation
 	//*********************
-	
+
 	var confirmDeleteMessage = "###DELETE_CONFIRM###";
-	
+
 	//click function performs a confirm, if TRUE/OK continues button functionality
-	jQuery('.tx-appointments .button_delete').click(function() {
-		return confirm(confirmDeleteMessage);
+	jQuery('.tx-appointments .button_delete').click(function(event) {
+		if(confirm(confirmDeleteMessage)) {
+			return true;
+		} else {
+			event.stopImmediatePropagation();
+			return false;
+		};
 	});
-	
-	
+
+
 	//****************
 	// unload warning
 	//****************
-	
+
 	var warnUnloadEnabled = "###WARN_ON_LEAVE###";
 	var warnUnloadText = "###WARN_UNLOAD###";
 	//respect REFRESH vars
 	var secondsUntilRefresh = null;
 	var respectMethod = null;
-	
+
 	//gets (int)seconds from a REFRESH string
 	function getRefreshSeconds(refreshString) {
-		return parseInt(refreshString.substring(0, refreshString.indexOf(';',0)),10); 
+		return parseInt(refreshString.substring(0, refreshString.indexOf(';',0)),10);
 	}
-	
+
 	//checks if the amount of REFRESH seconds have passed, to see if warnUnload needs to be disabled
 	function haveRefreshSecondsPassed() {
 		var currentTime = new Date().getTime() / 1000;
@@ -51,11 +55,11 @@ jQuery(document).ready(function() {
 			warnUnloadText = ''; //disable message
 		}
 	}
-	
+
 	//run through the warnUnload script
 	if (warnUnloadEnabled == '1') { //if warnUnload-enabled in TypoScript
 		var warnUnloadElem = jQuery('.tx-appointments form.warnUnload');
-		if (warnUnloadElem[0]) { //if a warnUnload element is available 
+		if (warnUnloadElem[0]) { //if a warnUnload element is available
 			if (warnUnloadText.length) { //if warnUnloadText is empty, there's no sense in continuing
 				//set exception-button text in warnUnloadText
 				warnUnloadText = warnUnloadText.replace('$1',"###WARN_UNLOAD_S1###");
@@ -74,8 +78,8 @@ jQuery(document).ready(function() {
 							secondsUntilRefresh = getRefreshSeconds(refreshHeader);
 						}
 					});
-				} 
-				
+				}
+
 				// @TODO warning: TypeError: anonymous function does not always return a value
 				//set the actual onbeforeunload event
 				window.onbeforeunload = function() {
@@ -83,26 +87,26 @@ jQuery(document).ready(function() {
 					if (secondsUntilRefresh != null) {
 						haveRefreshSecondsPassed(); //disables warnUnload if REFRESH seconds passed
 					}
-					
+
 					//calls message if not disabled
 					if (warnUnloadText.length) {
 						return warnUnloadText;
 					}
 				};
-				
+
 				//exceptions to warnUnload event
 				jQuery('.tx-appointments .allowUnload').on('submit', function() {
-						warnUnloadText = ''; //disable message 
+						warnUnloadText = ''; //disable message
 				});
 			}
 		}
 	}
-	
-	
+
+
 	//**********
 	// tooltips
 	//**********
-	
+
 	//hovering over the csh element will replace the normal tooltip with ours
 	jQuery('.tx-appointments .csh').hover(
 		function() {
@@ -116,9 +120,9 @@ jQuery(document).ready(function() {
 				} else {
 					appear = false;
 				}
-				
+
 			}
-			
+
 			if (appear) {
 				//removes the actual tooltip
 				jQuery(this).prop('title', ''); //need to use prop() because removeAttr() doesn't work well in IE (7,8,9)
@@ -137,12 +141,12 @@ jQuery(document).ready(function() {
 			}
 		}
 	);
-	
-	
+
+
 	//***************
 	// UI Datepicker
 	//***************
-	
+
 	//enable jQuery UI datepicker
 	jQuery('.tx-appointments form .datepicker').datepicker({
 		showOn: 'focus', //focus|button|both
@@ -160,22 +164,22 @@ jQuery(document).ready(function() {
 		dayNamesMin: ["###DAY7###","###DAY1###","###DAY2###","###DAY3###","###DAY4###","###DAY5###","###DAY6###"],
 		monthNamesShort: ["###MON1###","###MON2###","###MON3###","###MON4###","###MON5###","###MON6###","###MON7###","###MON8###","###MON9###","###MON10###","###MON11###","###MON12###"]
 	});
-	
+
 	//sets max of datepicker to today if the field has class 'max-today'
 	jQuery('.tx-appointments form .datepicker.max-today').datepicker('option','maxDate','0');
-	
-	
+
+
 	//*****************************
 	// Reservation Timer Countdown
 	//*****************************
-	
+
 	//countdown timer-html-setter function
 	function reservationTimer(timer) {
 		//timerSeconds--; //this isn't representative if an alert or warnunload box comes along
 		var currentTime = new Date().getTime() / 1000;
 		var secondsSinceStart = Math.round(currentTime - scriptStartTime);
 		timer.remaining = timer.seconds - secondsSinceStart;
-		
+
 		if (!timer.flashSet && timer.remaining <= timer.flashStart) {
 			jQuery(timer.element).addClass('flash'); //starts flashing (or marking) the timer according to class css
 			timer.flashSet = true;
@@ -188,13 +192,13 @@ jQuery(document).ready(function() {
 				// @TODO finish this
 			}
 		}
-		
+
 		var displayMin = Math.floor(timer.remaining / 60);
 		var displaySec = '0' + (timer.remaining % 60); //remainder of seconds by modulus
 		//set new inner html
 		jQuery(timer.element).html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
 	}
-	
+
 	//replace timer message
 	function replaceTimerMessage(timer) {
 		var body = jQuery(timer.element).parent('.tx-appointments .typo3-message.message-information .message-body');
@@ -213,7 +217,7 @@ jQuery(document).ready(function() {
 		}
 		return false;
 	}
-	
+
 	//replace timeslot button
 	function replaceTimeSlotButton() {
 		var freeTimeButton = jQuery('.tx-appointments form #appointments-submit-time');
@@ -222,7 +226,7 @@ jQuery(document).ready(function() {
 			freeTimeButton.addClass('attention');
 		}
 	}
-	
+
 	// start timer countdown for each timer
 	jQuery('.tx-appointments span.reservation-timer').each(function() {
 		var timer = {
@@ -233,7 +237,7 @@ jQuery(document).ready(function() {
 			counter: null,
 			element: this
 		};
-		
+
 		//calculate timer variables
 		var timerVal = jQuery(this).html();
 		var splitAt = timerVal.indexOf(':',0);
@@ -247,24 +251,24 @@ jQuery(document).ready(function() {
 		timer.counter = setInterval(reservationTimer, 1000, timer);
 	});
 
-	
+
 	//***********************
 	// Change submit buttons
 	//***********************
-	
+
 	jQuery('.tx-appointments form #appointments-select-type').change(function() {
 		jQuery('.tx-appointments form #appointments-submit-type').addClass('attention');
 	});
-	
+
 	jQuery('.tx-appointments form #appointments-select-date').change(function() {
 		jQuery('.tx-appointments form #appointments-submit-date').addClass('attention');
 	});
-	
+
 	jQuery('.tx-appointments form #appointments-select-time').change(function() {
 		jQuery('.tx-appointments form #appointments-submit-time').addClass('attention');
 	});
-	
-	
+
+
 	//*********************
 	// The "Disabled" Form
 	//*********************
@@ -276,7 +280,7 @@ jQuery(document).ready(function() {
 	//**********************
 	// Form session storage
 	//**********************
-	
+
 	//check support for session storage in user-agent
 	function isStorageSupported() {
 		try {
@@ -285,7 +289,7 @@ jQuery(document).ready(function() {
 			return false;
 		}
 	}
-	
+
 	//default storage function
 	function storeValueInSession(e, fId) {
 		sessionStorage.setItem(
@@ -293,14 +297,14 @@ jQuery(document).ready(function() {
 			e.value
 		);
 	}
-	
+
 	//populates the form fields from session values
 	function getFormStorage(form) {
 		//retrieve all ids of session-marked form elements
 		var fields = jQuery('.session', form).map(function(index) {
 			return this.id;
 		}).get();
-		
+
 		for (var i in fields) {
 			var id = fields[i];
 			var sId = form.id + '_' + id;
@@ -363,7 +367,7 @@ jQuery(document).ready(function() {
 					this.checked
 				);
 			});
-			
+
 			// DISABLED BECAUSE OF CHANGES FOR RESUMING APPOINTMENT-CREATION
 			//clicking the new and edit links should all clear the session (also works on tab/enter).
 			/*jQuery('.tx-appointments .button_new').click(function() {
@@ -382,7 +386,7 @@ jQuery(document).ready(function() {
 		});
 	}
 
-	
+
 	//**********************************************
 	// Enable Field detection & add change triggers
 	//**********************************************
@@ -396,7 +400,7 @@ jQuery(document).ready(function() {
 		var uid = evalParts[0];
 		// the split here ensures correct value regardless if more classes follow
 		var desiredValue = evalParts[1].split(' ')[0].toLowerCase();
-		
+
 		var enablerObj = null;
 		// check if the enabler was already processed
 		if (fieldEnablers[uid] !== undefined) {
@@ -422,7 +426,7 @@ jQuery(document).ready(function() {
 				}
 			}
 		};
-		
+
 		// if the enabler exists, add this field to its data store
 		if (enablerObj[0]) {
 			// get data from the first object
@@ -435,7 +439,7 @@ jQuery(document).ready(function() {
 			enablerObj.data('enable-fields', fields);
 		}
 	});
-	
+
 	// retrieve elements set with 'required' attribute
 	function getRequiredElements(elem) {
 		var required = [];
@@ -452,7 +456,7 @@ jQuery(document).ready(function() {
 		}
 		return required;
 	}
-	
+
 	// checks if a field{element,enableValue,required} should be shown or hidden
 	function checkEnableField(field, currentValue, active) {
 		var elemObj = jQuery(field.element);
@@ -464,7 +468,7 @@ jQuery(document).ready(function() {
 			jQuery(field.required).removeAttr('required');
 		}
 	}
-	
+
 	function runChecks(elem, active) {
 		var newValue = jQuery(elem).val().toLowerCase();
 		// get fields to check from data store
@@ -473,7 +477,7 @@ jQuery(document).ready(function() {
 			checkEnableField(fields[m], newValue, active);
 		}
 	}
-	
+
 	// initial check, should be AFTER sessionStorage calls!
 	for (var i in fieldEnablers) {
 		/*
@@ -499,5 +503,67 @@ jQuery(document).ready(function() {
 			fieldEnablers[i].change();
 		}
 	}
-	
+
+
+	//**********************************************
+	// XHR CSRF-protection
+	//**********************************************
+
+	// @TODO read class through TS?
+	var csrfProtectA = jQuery('.tx-appointments a.csrf-protect'),
+	csrfProtectForm = jQuery('.tx-appointments form.csrf-protect');
+	if (csrfProtectA[0] || csrfProtectForm[0]) {
+		var submitButtons = jQuery(':submit', csrfProtectForm);
+		submitButtons.hide();
+		csrfProtectA.hide();
+
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', 'index.php?id=2130&type=12345678&tx_appointments_list[controller]=Appointment&tx_appointments_list[action]=forceNewPrivateHash', true);
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				csrfProtectA.click(function () {
+					processToken(jQuery(this).attr('href'), jQuery(this).attr('data-stoken'));
+					return false;
+				});
+				csrfProtectForm.submit(function () {
+					// replace/fill in token instead?
+					provideToken(jQuery(this).attr('data-stoken'));
+				});
+			}
+			submitButtons.show();
+			csrfProtectA.show();
+		};
+		xhr.send();
+	}
+
+	function processToken(url, tokenUri) {
+		// jQuery 1.11 doesnt support xhr2, 1.12+ might..
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', 'index.php?id=2130&type=12345678&tx_appointments_list[controller]=Appointment&tx_appointments_list[action]=generateToken&tx_appointments_list[encodedUrl]=' + tokenUri, true);
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				var token = this.getResponseHeader('typo3-appointments__stoken');
+				var xhr2 = new XMLHttpRequest();
+				xhr2.open('GET', url, true);
+				xhr2.responseType = 'document';
+				xhr2.setRequestHeader('typo3-appointments--stoken', token);
+				xhr2.onload = function(e) {
+					if (this.status == 200) {
+						history.pushState(null, this.response.title, this.response.URL);
+						//document.title = this.response.title;
+						document.open();
+						document.write(this.response.firstElementChild.outerHTML);
+						document.close();
+					} else {
+						alert('BOEM2');
+					}
+				};
+				xhr2.send();
+			} else {
+				alert('BOEM1');
+			}
+		};
+		xhr.send();
+	}
+
 });

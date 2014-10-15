@@ -45,18 +45,28 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	 *
 	 * @param Tx_Extbase_MVC_Web_Request $request
 	 * @param string $uri
+	 * @param boolean $useSessionHash
 	 * @return string
 	 */
-	public function generateToken(Tx_Extbase_MVC_Web_Request $request, $uri = '');
+	public function generateToken(Tx_Extbase_MVC_Web_Request $request, $uri = '', $useSessionHash = FALSE);
 
 	/**
-	 * Provides the csrf-class to a tag for identification
-	 * by the JavaScript library.
+	 * Force the creation of a new private hash.
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TagBuilder $tag
+	 * @param Tx_Extbase_MVC_Web_Request $request
 	 * @return void
 	 */
-	public function provideJsClass(Tx_Fluid_Core_ViewHelper_TagBuilder $tag);
+	public function forceNewPrivateHash(Tx_Extbase_MVC_Web_Request $request);
+
+	/**
+	 * Provides the csrf-class and encoded uri to a tag for
+	 * identification by the JavaScript library.
+	 *
+	 * @param Tx_Fluid_Core_ViewHelper_TagBuilder $tag
+	 * @param string $tokenUri
+	 * @return void
+	 */
+	public function provideTagArguments(Tx_Fluid_Core_ViewHelper_TagBuilder $tag, $tokenUri = '');
 
 	/**
 	 * Get token key-name.

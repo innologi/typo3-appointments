@@ -59,7 +59,7 @@ class Tx_Appointments_MVC_Controller_CsrfProtectController extends Tx_Appointmen
 		$csrfProtectService->setProtectionLevelByExtConf(strtolower($this->extensionName));
 		$this->csrfProtectService = $csrfProtectService;
 	}
-
+	#@FIX _______CSRF always fails in Chrome/Safari!
 	/**
 	 * Initializes the controller before invoking an action method.
 	 *
@@ -77,10 +77,35 @@ class Tx_Appointments_MVC_Controller_CsrfProtectController extends Tx_Appointmen
 				if (!$this->csrfProtectService->isRequestAllowed($this->request)) {
 					#@FIX ______probably need to throw exceptions in service, and catch here to produce nice flash messages
 					#@TODO _____relevancy!
-					throw new Exception('ARGH');
+					throw new Exception('Appointments: CSRF token error');
 				}
+				#die('<html><head><title>SUCCESS!</title></head><body><p>success!</p></body></html>');
 			}
 		}
+	}
+
+	/**
+	 *
+	 *
+	 * @param string $encodedUrl
+	 * @return void
+	 */
+	public function generateTokenAction($encodedUrl) {
+		$token = $this->csrfProtectService->generateToken($this->request, base64_decode($encodedUrl, TRUE), TRUE);
+		$this->response->setHeader('typo3-appointments__stoken', $token);
+		$this->response->sendHeaders();
+		exit;
+	}
+
+	/**
+	 *
+	 *
+	 * @param string $encodedUrl
+	 * @return void
+	 */
+	public function forceNewPrivateHashAction() {
+		$this->csrfProtectService->forceNewPrivateHash($this->request);
+		exit;
 	}
 
 }

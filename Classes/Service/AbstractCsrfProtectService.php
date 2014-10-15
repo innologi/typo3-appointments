@@ -135,27 +135,41 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 *
 	 * @param Tx_Extbase_MVC_Web_Request $request
 	 * @param string $uri
+	 * @param boolean $useSessionHash
 	 * @return string
 	 */
-	public function generateToken(Tx_Extbase_MVC_Web_Request $request, $uri = '') {
+	public function generateToken(Tx_Extbase_MVC_Web_Request $request, $uri = '', $useSessionHash = FALSE) {
 		$this->request = $request;
 
 		return $this->getToken(
 			$uri,
 			$this->getPrivateHash(
-				!$this->hasNewTokenPerRequest()
+				$useSessionHash || !$this->hasNewTokenPerRequest()
 			)
 		);
 	}
 
 	/**
-	 * Provides the csrf-class to a tag for identification
-	 * by the JavaScript library.
+	 * Force the creation of a new private hash.
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TagBuilder $tag
+	 * @param Tx_Extbase_MVC_Web_Request $request
 	 * @return void
 	 */
-	public function provideJsClass(Tx_Fluid_Core_ViewHelper_TagBuilder $tag) {
+	public function forceNewPrivateHash(Tx_Extbase_MVC_Web_Request $request) {
+		$this->request = $request;
+
+		$this->generateNewPrivateHash();
+	}
+
+	/**
+	 * Provides the csrf-class and encoded uri to a tag for
+	 * identification by the JavaScript library.
+	 *
+	 * @param Tx_Fluid_Core_ViewHelper_TagBuilder $tag
+	 * @param string $tokenUri
+	 * @return void
+	 */
+	public function provideTagArguments(Tx_Fluid_Core_ViewHelper_TagBuilder $tag, $tokenUri = '') {
 		$class = array();
 		if ($tag->hasAttribute('class')) {
 			$class = t3lib_div::trimExplode(' ', $tag->getAttribute('class'));
@@ -163,6 +177,10 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 
 		$class[] = $this->jsClass;
 		$tag->addAttribute('class', join(' ', $class));
+
+		if (isset($tokenUri[0])) {
+			$tag->addAttribute('data-stoken', base64_encode($tokenUri));
+		}
 	}
 
 
@@ -271,7 +289,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	protected function getTokenUri() {
 		return $this->request->getRequestURI();
 	}
-
+	#@TODO timelimit per hash?
 	/**
 	 * Retrieves private hash from session, or boolean false on failure.
 	 *
@@ -303,20 +321,28 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 					return $this->privateHash;
 				}
 			}
-			$this->privateHash = md5(uniqid(rand(), TRUE));
-			$this->putPrivateHashInSession($this->privateHash, $storedHash);
+			$this->generateNewPrivateHash();
 		}
 		return $this->privateHash;
+	}
+
+	/**
+	 * Generates a new private hash and stores it in the session
+	 *
+	 * @return void
+	 */
+	protected function generateNewPrivateHash() {
+		$this->privateHash = md5(uniqid(rand(), TRUE));
+		$this->putPrivateHashInSession($this->privateHash);
 	}
 
 	/**
 	 * Puts private hash in session, and optionally persists the session data.
 	 *
 	 * @param string $privateHash
-	 * @param boolean $persistSessionData
 	 * @return void
 	 */
-	protected function putPrivateHashInSession($privateHash, $persistSessionData = FALSE) {
+	protected function putPrivateHashInSession($privateHash) {
 		$hashSource = $this->getHashSource();
 
 		if (isset($_SESSION[$this->sessionKey]['__h'])) {
@@ -327,10 +353,6 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 					$hashSource => base64_encode($privateHash)
 				)
 			);
-		}
-
-		if ($persistSessionData) {
-			// open for implementation class
 		}
 	}
 
