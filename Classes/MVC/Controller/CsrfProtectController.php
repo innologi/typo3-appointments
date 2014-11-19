@@ -59,7 +59,7 @@ class Tx_Appointments_MVC_Controller_CsrfProtectController extends Tx_Appointmen
 		$csrfProtectService->setProtectionLevelByExtConf(strtolower($this->extensionName));
 		$this->csrfProtectService = $csrfProtectService;
 	}
-	#@FIX _______CSRF always fails in Chrome/Safari!
+
 	/**
 	 * Initializes the controller before invoking an action method.
 	 *

@@ -202,7 +202,8 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 			'HTTP_REFERER'
 		);
 
-		$baseUri = $this->request->getBaseURI();
+		// note that ORIGIN header is usually without ending slash, so we'll strip it from basUri as well
+		$baseUri = rtrim($this->request->getBaseURI(), '/');
 
 		foreach ($headers as $header) {
 			if (isset($_SERVER[$header])) {
