@@ -122,14 +122,6 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	public function hasHeaderDependency();
 
 	/**
-	 * Returns whether the service is set to depend
-	 * on cached attributes, notably the private hash.
-	 *
-	 * @return boolean
-	 */
-	public function hasCacheDependency();
-
-	/**
 	 * Returns whether the service is set to use a new token
 	 * per request, as opposed to per session.
 	 *
