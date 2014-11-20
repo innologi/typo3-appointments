@@ -100,7 +100,7 @@ class Tx_Appointments_Service_CsrfProtectService extends Tx_Appointments_Service
 		// false hash will always produce invalid outcome
 		$privateHash = FALSE;
 		$sessionKey = $this->request->getControllerExtensionKey() . $this->sessionKey;
-		$sessionData = $GLOBALS['TSFE']->fe_user->getKey('ses', $sessionKey);
+		$sessionData = $GLOBALS['TSFE']->fe_user->getKey('user', $sessionKey);
 		$hashSource = $this->getHashSource($generatedByReferrer);
 		if (isset($sessionData['__h'][$hashSource])) {
 			$privateHash = base64_decode($sessionData['__h'][$hashSource], TRUE);
@@ -109,7 +109,7 @@ class Tx_Appointments_Service_CsrfProtectService extends Tx_Appointments_Service
 	}
 
 	/**
-	 * Puts private hash in session, and optionally persists the session data.
+	 * Puts private hash in persisted(!) user session.
 	 *
 	 * @param string $privateHash
 	 * @return void
@@ -117,7 +117,7 @@ class Tx_Appointments_Service_CsrfProtectService extends Tx_Appointments_Service
 	 */
 	protected function putPrivateHashInSession($privateHash) {
 		$sessionKey = $this->request->getControllerExtensionKey() . $this->sessionKey;
-		$sessionData = $GLOBALS['TSFE']->fe_user->getKey('ses', $sessionKey);
+		$sessionData = $GLOBALS['TSFE']->fe_user->getKey('user', $sessionKey);
 		$hashSource = $this->getHashSource();
 
 		if (isset($sessionData['__h'])) {
@@ -129,7 +129,7 @@ class Tx_Appointments_Service_CsrfProtectService extends Tx_Appointments_Service
 				)
 			);
 		}
-		$GLOBALS['TSFE']->fe_user->setKey('ses', $sessionKey, $sessionData);
+		$GLOBALS['TSFE']->fe_user->setKey('user', $sessionKey, $sessionData);
 		// if we don't, retrieval will favor another database stored session
 		#@TODO _______isnt this just the case because the AJAX request cant seem to access the PHP session? google it, maybe there is a better solution
 		$GLOBALS['TSFE']->fe_user->storeSessionData();
