@@ -31,7 +31,7 @@
  * @author Frenck Lutke <frenck@innologi.nl>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Appointments_Service_CsrfProtectService extends Tx_Appointments_Service_AbstractCsrfProtectService implements t3lib_Singleton {
+class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Service_AbstractCsrfProtectService implements t3lib_Singleton {
 
 	/**
 	 * @var string

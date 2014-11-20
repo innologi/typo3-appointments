@@ -1,3 +1,9 @@
+config.tx_extbase.objects {
+	Tx_Appointments_Service_CsrfProtectServiceInterface {
+		className = Tx_Appointments_Service_Typo3CsrfProtectService
+	}
+}
+
 plugin.tx_appointments {
 	view {
 		templateRootPath = {$plugin.tx_appointments.view.templateRootPath}

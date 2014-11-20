@@ -48,15 +48,15 @@ class Tx_Appointments_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	protected $extensionKey = 'appointments';
 
 	/**
-	 * @var Tx_Appointments_Service_CsrfProtectService
+	 * @var Tx_Appointments_Service_CsrfProtectServiceInterface
 	 */
 	protected $csrfProtectService;
 
 	/**
-	 * @param Tx_Appointments_Service_CsrfProtectService $csrfProtectService
+	 * @param Tx_Appointments_Service_CsrfProtectServiceInterface $csrfProtectService
 	 * @return void
 	 */
-	public function injectCsrfProtectService(Tx_Appointments_Service_CsrfProtectService $csrfProtectService) {
+	public function injectCsrfProtectService(Tx_Appointments_Service_CsrfProtectServiceInterface $csrfProtectService) {
 		$csrfProtectService->setProtectionLevelByExtConf($this->extensionKey);
 		$this->csrfProtectService = $csrfProtectService;
 	}

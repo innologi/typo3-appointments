@@ -61,7 +61,7 @@ return array(
 	'tx_appointments_persistence_nopersistrepository' => $extensionClassesPath . 'Persistence/NoPersistRepository.php',
 	'tx_appointments_service_emailservice' => $extensionClassesPath . 'Service/EmailService.php',
 	'tx_appointments_service_userservice' => $extensionClassesPath . 'Service/UserService.php',
-	'tx_appointments_service_csrfprotectservice' => $extensionClassesPath . 'Service/CsrfProtectService.php',
+	'tx_appointments_service_typo3csrfprotectservice' => $extensionClassesPath . 'Service/Typo3CsrfProtectService.php',
 	'tx_appointments_service_csrfprotectserviceinterface' => $extensionClassesPath . 'Service/CsrfProtectServiceInterface.php',
 	'tx_appointments_service_abstractcsrfprotectservice' => $extensionClassesPath . 'Service/AbstractCsrfProtectService.php',
 	'tx_appointments_task_cleanuptask' => $extensionClassesPath . 'Task/CleanUpTask.php',

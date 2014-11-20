@@ -46,15 +46,15 @@ class Tx_Appointments_MVC_Controller_CsrfProtectController extends Tx_Appointmen
 	protected $enableCsrfProtect = TRUE;
 
 	/**
-	 * @var Tx_Appointments_Service_CsrfProtectService
+	 * @var Tx_Appointments_Service_CsrfProtectServiceInterface
 	 */
 	protected $csrfProtectService;
 
 	/**
-	 * @param Tx_Appointments_Service_CsrfProtectService $csrfProtectService
+	 * @param Tx_Appointments_Service_CsrfProtectServiceInterface $csrfProtectService
 	 * @return void
 	 */
-	public function injectCsrfProtectService(Tx_Appointments_Service_CsrfProtectService $csrfProtectService) {
+	public function injectCsrfProtectService(Tx_Appointments_Service_CsrfProtectServiceInterface $csrfProtectService) {
 		// note that strtolower wouldnt suffice in case of underscores in extension key
 		$csrfProtectService->setProtectionLevelByExtConf(strtolower($this->extensionName));
 		$this->csrfProtectService = $csrfProtectService;
