@@ -97,14 +97,11 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getPrivateHashFromSession()
 	 */
 	protected function getPrivateHashFromSession($generatedByReferrer = FALSE) {
-		// false hash will always produce invalid outcome
-		$privateHash = FALSE;
 		$sessionKey = $this->request->getControllerExtensionKey() . $this->sessionKey;
-		$sessionData = $GLOBALS['TSFE']->fe_user->getKey('user', $sessionKey);
-		$hashSource = $this->getHashSource($generatedByReferrer);
-		if (isset($sessionData['__h'][$hashSource])) {
-			$privateHash = base64_decode($sessionData['__h'][$hashSource], TRUE);
-		}
+		$privateHash = $this->getPrivateHashFromSessionImplementation(
+			$GLOBALS['TSFE']->fe_user->getKey('user', $sessionKey),
+			$this->getHashSource($generatedByReferrer)
+		);
 		return $privateHash;
 	}
 

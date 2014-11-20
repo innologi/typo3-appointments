@@ -299,15 +299,29 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 * @param boolean $generatedByReferrer
 	 * @return string
 	 */
-	 protected function getPrivateHashFromSession($generatedByReferrer = FALSE) {
-	 // false hash will always produce invalid outcome
-	 	$privateHash = FALSE;
-	 	$hashSource = $this->getHashSource($generatedByReferrer);
-	 	if (isset($_SESSION[$this->sessionKey]['__h'][$hashSource])) {
-	 	$privateHash = base64_decode($_SESSION[$this->sessionKey]['__h'][$hashSource]);
-	 	}
-	 	return $privateHash;
-	 }
+	protected function getPrivateHashFromSession($generatedByReferrer = FALSE) {
+		$privateHash = $this->getPrivateHashFromSessionImplementation(
+			$_SESSION[$this->sessionKey],
+			$this->getHashSource($generatedByReferrer)
+		);
+		return $privateHash;
+	}
+
+	/**
+	 * Retrieves private hash from session implementation, or boolean false on failure.
+	 *
+	 * @param array $sessionData Session data as retrieved by implementation
+	 * @param string $hashSource Source for private hash
+	 * @return string
+	 */
+	protected function getPrivateHashFromSessionImplementation(array $sessionData, $hashSource) {
+		// false hash will always produce invalid outcome
+		$privateHash = FALSE;
+		if (isset($sessionData['__h'][$hashSource])) {
+			$privateHash = base64_decode($sessionData['__h'][$hashSource]);
+		}
+		return $privateHash;
+	}
 
 	/**
 	 * Get private hash, or create new one if non-existent. Optionally,
