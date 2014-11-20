@@ -320,7 +320,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 		if ($this->privateHash === NULL) {
 			if ($storedHash) {
 				$this->privateHash = $this->getPrivateHashFromSession();
-				if ($this->pivateHash !== FALSE) {
+				if ($this->privateHash !== FALSE) {
 					return $this->privateHash;
 				}
 			}
