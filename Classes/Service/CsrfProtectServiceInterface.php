@@ -32,6 +32,29 @@
  */
 interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 
+	/*
+	 * These constants represent the methods of protection, each with its own trade-off.
+	 *
+	 * - The PLUS methods are all referrer-dependent
+	 * - The MAXIMUM methods are all JavaScript-dependent
+	 * - The STRONG methods all give up caching
+	 */
+
+	// no token
+	const DISABLED = 0;
+	// token per cache-session
+	const BASIC = 1;
+	// token per cache-session per page
+	const BASIC_PLUS = 2;
+	// token per request
+	const STRONG = 3;
+	// token per request per page
+	const STRONG_PLUS = 4;
+	// token per request
+	const MAXIMUM = 5;
+	// token per request per page
+	const MAXIMUM_PLUS = 6;
+
 	/**
 	 * Checks if the request is allowed after a CSRF-protect-validity-check.
 	 *
@@ -97,6 +120,14 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	 * @return boolean
 	 */
 	public function hasHeaderDependency();
+
+	/**
+	 * Returns whether the service is set to depend
+	 * on cached attributes, notably the private hash.
+	 *
+	 * @return boolean
+	 */
+	public function hasCacheDependency();
 
 	/**
 	 * Returns whether the service is set to use a new token

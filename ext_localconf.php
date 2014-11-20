@@ -15,12 +15,18 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
-// one csrf protection level prevents caching of some views
+// STRONG csrf protection levels prevent caching of some views
 $noCache = '';
 if (isset($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY])) {
 	$extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY]);
 	if (isset($extConf['csrf_protection_level'])) {
-		$noCache = ((int)$extConf['csrf_protection_level']) === Tx_Appointments_Service_AbstractCsrfProtectService::STRONG_UNCACHED ? ', list, show' : '';
+		$noCache = in_array(
+			(int)$extConf['csrf_protection_level'],
+			array(
+				Tx_Appointments_Service_CsrfProtectServiceInterface::STRONG,
+				Tx_Appointments_Service_CsrfProtectServiceInterface::STRONG_PLUS
+			)
+		) ? ', list, show' : '';
 	}
 }
 

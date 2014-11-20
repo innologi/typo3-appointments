@@ -32,28 +32,29 @@
  */
 abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_Appointments_Service_CsrfProtectServiceInterface {
 
-	const DISABLED = 0;
-	const BASIC = 1;
-	// in order for UNCACHED to work, the implementation needs to check for this value when it defines cached actions
-	const STRONG_UNCACHED = 2;
-	const STRONG_HEADER = 3;
-	const STRONG_JS = 4;
-	const MAXIMUM = 5;
-
 	/**
 	 * @var array
 	 */
 	protected $jsDependency = array(
-		self::STRONG_JS,
-		self::MAXIMUM
+		self::MAXIMUM,
+		self::MAXIMUM_PLUS
 	);
 
 	/**
 	 * @var array
 	 */
 	protected $headerDependency = array(
-		self::STRONG_HEADER,
-		self::MAXIMUM
+		self::BASIC_PLUS,
+		self::STRONG_PLUS,
+		self::MAXIMUM_PLUS
+	);
+
+	/**
+	 * @var array
+	 */
+	protected $persistedHash = array(
+		self::BASIC,
+		self::BASIC_PLUS
 	);
 
 	/**
@@ -83,7 +84,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 *
 	 * @var integer
 	 */
-	protected $protectionLevel = self::MAXIMUM;
+	protected $protectionLevel = self::MAXIMUM_PLUS;
 
 	/**
 	 * @var string
@@ -290,6 +291,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	protected function getTokenUri() {
 		return $this->request->getRequestURI();
 	}
+
 	#@TODO timelimit per hash?
 	/**
 	 * Retrieves private hash from session, or boolean false on failure.
@@ -297,15 +299,15 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 * @param boolean $generatedByReferrer
 	 * @return string
 	 */
-	protected function getPrivateHashFromSession($generatedByReferrer = FALSE) {
-		// false hash will always produce invalid outcome
-		$privateHash = FALSE;
-		$hashSource = $this->getHashSource($generatedByReferrer);
-		if (isset($_SESSION[$this->sessionKey]['__h'][$hashSource])) {
-			$privateHash = base64_decode($_SESSION[$this->sessionKey]['__h'][$hashSource]);
-		}
-		return $privateHash;
-	}
+	 protected function getPrivateHashFromSession($generatedByReferrer = FALSE) {
+	 // false hash will always produce invalid outcome
+	 	$privateHash = FALSE;
+	 	$hashSource = $this->getHashSource($generatedByReferrer);
+	 	if (isset($_SESSION[$this->sessionKey]['__h'][$hashSource])) {
+	 	$privateHash = base64_decode($_SESSION[$this->sessionKey]['__h'][$hashSource]);
+	 	}
+	 	return $privateHash;
+	 }
 
 	/**
 	 * Get private hash, or create new one if non-existent. Optionally,
@@ -437,7 +439,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 * @return boolean
 	 */
 	public function hasNewTokenPerRequest() {
-		return $this->protectionLevel !== self::BASIC;
+		return !in_array($this->protectionLevel, $this->persistedHash, TRUE);
 	}
 
 }
