@@ -39,6 +39,13 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	protected $extConfKey = 'csrf_protection_level';
 
 	/**
+	 * @var string
+	 */
+	protected $sessionDataType;
+
+
+
+	/**
 	 * Sets protection level.
 	 *
 	 * It has to be done from extConf instead of TS constant,
@@ -99,7 +106,7 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	protected function getPrivateHashFromSession($generatedByReferrer = FALSE) {
 		$sessionKey = $this->request->getControllerExtensionKey() . $this->sessionKey;
 		$privateHash = $this->getPrivateHashFromSessionImplementation(
-			$GLOBALS['TSFE']->fe_user->getKey('user', $sessionKey),
+			$GLOBALS['TSFE']->fe_user->getKey($this->getSessionDataType(), $sessionKey),
 			$this->getHashSource($generatedByReferrer)
 		);
 		return $privateHash;
@@ -113,8 +120,9 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::putPrivateHashInSession()
 	 */
 	protected function putPrivateHashInSession($privateHash) {
+		$sessionDataType = $this->getSessionDataType();
 		$sessionKey = $this->request->getControllerExtensionKey() . $this->sessionKey;
-		$sessionData = $GLOBALS['TSFE']->fe_user->getKey('user', $sessionKey);
+		$sessionData = $GLOBALS['TSFE']->fe_user->getKey($sessionDataType, $sessionKey);
 		$hashSource = $this->getHashSource();
 
 		if (isset($sessionData['__h'])) {
@@ -126,7 +134,7 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 				)
 			);
 		}
-		$GLOBALS['TSFE']->fe_user->setKey('user', $sessionKey, $sessionData);
+		$GLOBALS['TSFE']->fe_user->setKey($sessionDataType, $sessionKey, $sessionData);
 		// if we don't, retrieval will favor another database stored session
 		#@TODO _______isnt this just the case because the AJAX request cant seem to access the PHP session? google it, maybe there is a better solution
 		$GLOBALS['TSFE']->fe_user->storeSessionData();
@@ -158,6 +166,20 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 		}
 
 		return md5($sourceUri);
+	}
+
+	/**
+	 * Returns session data type which contains the private hash.
+	 *
+	 * Can be either 'ses' for token-per-request, or 'user' for token-per-session.
+	 *
+	 * @return string
+	 */
+	protected function getSessionDataType() {
+		if ($this->sessionDataType === NULL) {
+			$this->sessionDataType = $this->hasNewTokenPerRequest() ? 'ses' : 'user';
+		}
+		return $this->sessionDataType;
 	}
 }
 ?>
