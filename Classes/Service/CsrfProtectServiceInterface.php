@@ -35,6 +35,8 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	/*
 	 * These constants represent the methods of protection, each with its own trade-off.
 	 *
+	 * All tokens are per user and per uri.
+	 *
 	 * - The PLUS methods are all referrer-dependent
 	 * - The MAXIMUM methods are all JavaScript-dependent
 	 * - The STRONG methods all give up caching
@@ -42,9 +44,9 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 
 	// no token
 	const DISABLED = 0;
-	// token per cache-session
+	// token (permanent hash)
 	const BASIC = 1;
-	// token per cache-session per page
+	// token per cache per page
 	const BASIC_PLUS = 2;
 	// token per request
 	const STRONG = 3;
