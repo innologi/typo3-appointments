@@ -39,9 +39,201 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	protected $extConfKey = 'csrf_protection_level';
 
 	/**
+	 * The token key name. Note that it starts with double underscore,
+	 * which will make the Extbase propertyMapper regard it as an
+	 * internal argument to the request. This is important for knowing
+	 * how to retrieve it from $request.
+	 *
 	 * @var string
 	 */
-	protected $sessionDataType;
+	protected $tokenKey = '__stoken';
+
+	/**
+	 * @var Tx_Extbase_MVC_Web_Request
+	 */
+	protected $request;
+
+	/**
+	 * @var Tx_Extbase_Security_Cryptography_HashService
+	 */
+	protected $hashService;
+
+	/**
+	 * @param Tx_Extbase_Security_Cryptography_HashService $hashService
+	 * @return void
+	 */
+	public function injectHashService(Tx_Extbase_Security_Cryptography_HashService $hashService) {
+		$this->hashService = $hashService;
+	}
+
+
+
+
+	/**
+	 * Initializes class properties
+	 *
+	 * @return void
+	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::initialize()
+	 */
+	protected function initialize() {
+		$this->executionTime = (int)$GLOBALS['EXEC_TIME'];
+	}
+
+
+
+
+
+	/**
+	 * Provides the csrf-class and encoded uri to a tag for
+	 * identification by the JavaScript library.
+	 *
+	 * @param Tx_Fluid_Core_ViewHelper_TagBuilder $tag
+	 * @param string $tokenUri
+	 * @return void
+	 */
+	public function provideTagArguments(Tx_Fluid_Core_ViewHelper_TagBuilder $tag, $tokenUri = '') {
+		$class = array();
+		if ($tag->hasAttribute('class')) {
+			$class = t3lib_div::trimExplode(' ', $tag->getAttribute('class'));
+		}
+
+		$class[] = $this->jsClass;
+		$tag->addAttribute('class', join(' ', $class));
+
+		if (isset($tokenUri[0])) {
+			$tag->addAttribute('data-stoken', base64_encode($tokenUri));
+		}
+	}
+
+	/**
+	 * Retrieves URI to base token on.
+	 *
+	 * Strips cHash and token parameter from URI.
+	 *
+	 * @return string
+	 */
+	public function getTokenUri() {
+		$tokenUri = $this->getRequestUri();
+
+		if ($this->request->getMethod() === 'GET') {
+			$tokenUri = Tx_Appointments_Utility_GeneralUtility::stripGetParameters(
+				$tokenUri, array(
+					'chash',
+					urlencode(
+						Tx_Appointments_Utility_GeneralUtility::wrapGetParameter(
+							$this->getTokenKey(),
+							$this->request->getControllerExtensionKey(),
+							$this->request->getPluginName()
+						)
+					)
+				)
+			);
+		}
+		return $tokenUri;
+	}
+	#@TODO make these two abstract first? from SERVER array?
+	/**
+	 * Retrieves request uri.
+	 *
+	 * @return string
+	 */
+	public function getRequestUri() {
+		return $this->request->getRequestUri();
+	}
+
+	/**
+	 * Retrieves base uri.
+	 *
+	 * @return string
+	 */
+	public function getBaseUri() {
+		return $this->request->getBaseUri();
+	}
+
+	/**
+	 * Create token based on uri and a hash.
+	 *
+	 * @param string $uri
+	 * @param string $hash
+	 * @return string
+	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getToken()
+	 */
+	protected function getToken($uri, $hash) {
+		return $this->hashService->generateHmac(
+			base64_encode($uri) . $hash
+		);
+	}
+
+	/**
+	 * Returns request token. Checks for JS dependency
+	 * to determine the token's location.
+	 *
+	 * @return string
+	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getRequestToken()
+	 */
+	protected function getRequestToken() {
+		return $this->hasJsDependency()
+			? parent::getRequestToken()
+			: $this->request->getInternalArgument($this->tokenKey);
+	}
+
+	/**
+	 * Retrieve source for Private Hash. The source is either
+	 * a complete URI or the BaseURI, depending on if header
+	 * dependency is set.
+	 *
+	 * When a header dependency is set, we dont want the order of parameters
+	 * to cause a source-mismatch, considering the cache doesnt care either
+	 * and wouldnt allow us to generate and store a hash for any variation.
+	 * To remedy this, we split and sort the URI by parameters.
+	 *
+	 * @param boolean $fromReferrer
+	 * @return string
+	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getHashSource()
+	 */
+	protected function getHashSource($fromReferrer = FALSE) {
+		if ($this->hasHeaderDependency()) {
+			$sourceUri = $fromReferrer ? $this->getReferrer() : $this->getRequestUri();
+			$sourceUri = serialize(
+				Tx_Appointments_Utility_GeneralUtility::splitUrlAndSortInArray($sourceUri)
+			);
+		} else {
+			$sourceUri = $this->getBaseUri();
+		}
+
+		return md5($sourceUri);
+	}
+
+	/**
+	 * Returns the session data.
+	 *
+	 * @return array
+	 */
+	protected function getSessionData() {
+		$sessionData = $GLOBALS['TSFE']->fe_user->getKey(
+			$this->getSessionDataType(),
+			$this->sessionKey
+		);
+		return is_array($sessionData) ? $sessionData : array();
+	}
+
+	/**
+	 * Sets the session data.
+	 *
+	 * @return void
+	 */
+	protected function setSessionData(array $sessionData) {
+		$GLOBALS['TSFE']->fe_user->setKey(
+			$this->getSessionDataType(),
+			$this->sessionKey,
+			$sessionData
+		);
+		#@TODO _______isnt this just the case because the AJAX request cant seem to access the PHP session? google it, maybe there is a better solution
+		// if we don't, retrieval will favor another database stored session
+		$GLOBALS['TSFE']->fe_user->storeSessionData();
+	}
+
+
 
 
 
@@ -69,117 +261,15 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	}
 
 	/**
-	 * Retrieves URI to base token on.
-	 *
-	 * Strips cHash and token parameter from URI.
-	 *
-	 * @return string
-	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getTokenUri()
-	 */
-	protected function getTokenUri() {
-		$tokenUri = parent::getTokenUri();
-
-		if ($this->request->getMethod() === 'GET') {
-			$tokenUri = Tx_Appointments_Utility_GeneralUtility::stripGetParameters(
-				$tokenUri, array(
-					'chash',
-					urlencode(
-						Tx_Appointments_Utility_GeneralUtility::wrapGetParameter(
-							$this->getTokenKey(),
-							$this->request->getControllerExtensionKey(),
-							$this->request->getPluginName()
-						)
-					)
-				)
-			);
-		}
-		return $tokenUri;
-	}
-
-	/**
-	 * Retrieves private hash from session, or boolean false on failure.
-	 *
-	 * @param boolean $generatedByReferrer
-	 * @return string
-	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getPrivateHashFromSession()
-	 */
-	protected function getPrivateHashFromSession($generatedByReferrer = FALSE) {
-		$sessionKey = $this->request->getControllerExtensionKey() . $this->sessionKey;
-		$privateHash = $this->getPrivateHashFromSessionImplementation(
-			$GLOBALS['TSFE']->fe_user->getKey($this->getSessionDataType(), $sessionKey),
-			$this->getHashSource($generatedByReferrer)
-		);
-		return $privateHash;
-	}
-
-	/**
-	 * Puts private hash in persisted(!) user session.
-	 *
-	 * @param string $privateHash
-	 * @return void
-	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::putPrivateHashInSession()
-	 */
-	protected function putPrivateHashInSession($privateHash) {
-		$sessionDataType = $this->getSessionDataType();
-		$sessionKey = $this->request->getControllerExtensionKey() . $this->sessionKey;
-		$sessionData = $GLOBALS['TSFE']->fe_user->getKey($sessionDataType, $sessionKey);
-		$hashSource = $this->getHashSource();
-
-		if (isset($sessionData['__h'])) {
-			$sessionData['__h'][$hashSource] = base64_encode($privateHash);
-		} else {
-			$sessionData = array(
-				'__h' => array(
-					$hashSource => base64_encode($privateHash)
-				)
-			);
-		}
-		$GLOBALS['TSFE']->fe_user->setKey($sessionDataType, $sessionKey, $sessionData);
-		// if we don't, retrieval will favor another database stored session
-		#@TODO _______isnt this just the case because the AJAX request cant seem to access the PHP session? google it, maybe there is a better solution
-		$GLOBALS['TSFE']->fe_user->storeSessionData();
-	}
-
-
-	/**
-	 * Retrieve source for Private Hash. The source is either
-	 * a complete URI or the BaseURI, depending on if header
-	 * dependency is set.
-	 *
-	 * When a header dependency is set, we dont want the order of parameters
-	 * to cause a source-mismatch, considering the cache doesnt care either
-	 * and wouldnt allow us to generate and store a hash for any variation.
-	 * To remedy this, we split and sort the URI by parameters.
-	 *
-	 * @param boolean $fromReferrer
-	 * @return string
-	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getHashSource()
-	 */
-	protected function getHashSource($fromReferrer = FALSE) {
-		if ($this->hasHeaderDependency()) {
-			$sourceUri = $fromReferrer ? $this->getReferrer() : $this->request->getRequestURI();
-			$sourceUri = serialize(
-				Tx_Appointments_Utility_GeneralUtility::splitUrlAndSortInArray($sourceUri)
-			);
-		} else {
-			$sourceUri = $this->request->getBaseURI();
-		}
-
-		return md5($sourceUri);
-	}
-
-	/**
 	 * Returns session data type which contains the private hash.
 	 *
-	 * Can be either 'ses' for token-per-request, or 'user' for token-per-session.
+	 * Can be either 'ses' for token-per-request, or 'user' for token-per-cached-session.
 	 *
 	 * @return string
 	 */
 	protected function getSessionDataType() {
-		if ($this->sessionDataType === NULL) {
-			$this->sessionDataType = $this->hasNewTokenPerRequest() ? 'ses' : 'user';
-		}
-		return $this->sessionDataType;
+		return $this->hasNewTokenPerRequest() ? 'ses' : 'user';
 	}
+
 }
 ?>

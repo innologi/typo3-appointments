@@ -60,29 +60,32 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	/**
 	 * Checks if the request is allowed after a CSRF-protect-validity-check.
 	 *
-	 * @param Tx_Extbase_MVC_Web_Request $request
+	 * @param object $request
 	 * @return boolean
+	 * @api
 	 */
-	public function isRequestAllowed(Tx_Extbase_MVC_Web_Request $request);
+	public function isRequestAllowed($request);
 
 	/**
 	 * Generate and return a new token for the $uri.
 	 *
-	 * @param Tx_Extbase_MVC_Web_Request $request
+	 * @param object $request
 	 * @param string $uri
 	 * @param boolean $useSessionHash
 	 * @return string
+	 * @api
 	 */
-	public function generateToken(Tx_Extbase_MVC_Web_Request $request, $uri = '', $useSessionHash = FALSE);
+	public function generateToken($request, $uri = '', $useSessionHash = FALSE);
 
 	/**
 	 * Force the creation of a new private hash.
 	 *
-	 * @param Tx_Extbase_MVC_Web_Request $request
+	 * @param object $request
 	 * @return void
+	 * @api
 	 */
-	public function forceNewPrivateHash(Tx_Extbase_MVC_Web_Request $request);
-
+	public function forceNewPrivateHash($request);
+	# @LOW so is this api or not? and if so, what object is $tag going to be?
 	/**
 	 * Provides the csrf-class and encoded uri to a tag for
 	 * identification by the JavaScript library.
@@ -99,6 +102,27 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	 * @return string
 	 */
 	public function getTokenKey();
+
+	/**
+	 * Retrieves uri to base token on.
+	 *
+	 * @return string
+	 */
+	public function getTokenUri();
+
+	/**
+	 * Retrieves request uri.
+	 *
+	 * @return string
+	 */
+	public function getRequestUri();
+
+	/**
+	 * Retrieves base uri.
+	 *
+	 * @return string
+	 */
+	public function getBaseUri();
 
 	/**
 	 * Returns whether the service is enabled.

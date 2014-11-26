@@ -63,10 +63,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	protected $jsClass = 'csrf-protect';
 
 	/**
-	 * The token key name. Note that it starts with double underscore,
-	 * which will make the Extbase propertyMapper regard it as an
-	 * internal argument to the request. This is important for knowing
-	 * how to retrieve it from $request.
+	 * The token key name.
 	 *
 	 * @var string
 	 */
@@ -77,7 +74,20 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 *
 	 * @var string
 	 */
-	protected $sessionKey = '__stphcsrf';
+	protected $sessionKey = '__innologi_stphcsrf';
+
+	/**
+	 * Hash time to live, in minutes
+	 *
+	 * @var integer
+	 */
+	protected $hashTtl = 20;
+	#@TODO configurable ttl?
+
+	/**
+	 * @var int
+	 */
+	protected $executionTime;
 
 	/**
 	 * Set to max by default, but should be overruled by implementation.
@@ -92,21 +102,30 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	protected $privateHash;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_Request $request
+	 * @var object
 	 */
 	protected $request;
 
-	/**
-	 * @var Tx_Extbase_Security_Cryptography_HashService
-	 */
-	protected $hashService;
+
+
+
 
 	/**
-	 * @param Tx_Extbase_Security_Cryptography_HashService $hashService
+	 * Class constructor
+	 *
 	 * @return void
 	 */
-	public function injectHashService(Tx_Extbase_Security_Cryptography_HashService $hashService) {
-		$this->hashService = $hashService;
+	public function __construct() {
+		$this->initialize();
+	}
+
+	/**
+	 * Initializes class properties
+	 *
+	 * @return void
+	 */
+	protected function initialize() {
+		$this->executionTime = time();
 	}
 
 
@@ -116,10 +135,11 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	/**
 	 * Checks if the request is allowed after a validity-check.
 	 *
-	 * @param Tx_Extbase_MVC_Web_Request $request
+	 * @param object $request
 	 * @return boolean
+	 * @api
 	 */
-	public function isRequestAllowed(Tx_Extbase_MVC_Web_Request $request) {
+	public function isRequestAllowed($request) {
 		$this->request = $request;
 
 		if ($this->validateHeaders()) {
@@ -134,12 +154,13 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	/**
 	 * Generate and return a new token for the $uri.
 	 *
-	 * @param Tx_Extbase_MVC_Web_Request $request
+	 * @param object $request
 	 * @param string $uri
 	 * @param boolean $useSessionHash
 	 * @return string
+	 * @api
 	 */
-	public function generateToken(Tx_Extbase_MVC_Web_Request $request, $uri = '', $useSessionHash = FALSE) {
+	public function generateToken($request, $uri = '', $useSessionHash = FALSE) {
 		$this->request = $request;
 
 		return $this->getToken(
@@ -153,35 +174,14 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	/**
 	 * Force the creation of a new private hash.
 	 *
-	 * @param Tx_Extbase_MVC_Web_Request $request
+	 * @param object $request
 	 * @return void
+	 * @api
 	 */
-	public function forceNewPrivateHash(Tx_Extbase_MVC_Web_Request $request) {
+	public function forceNewPrivateHash($request) {
 		$this->request = $request;
-
+		#@FIX think about the structure applied here.. isn't this completely pointless?
 		$this->generateNewPrivateHash();
-	}
-
-	/**
-	 * Provides the csrf-class and encoded uri to a tag for
-	 * identification by the JavaScript library.
-	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TagBuilder $tag
-	 * @param string $tokenUri
-	 * @return void
-	 */
-	public function provideTagArguments(Tx_Fluid_Core_ViewHelper_TagBuilder $tag, $tokenUri = '') {
-		$class = array();
-		if ($tag->hasAttribute('class')) {
-			$class = t3lib_div::trimExplode(' ', $tag->getAttribute('class'));
-		}
-
-		$class[] = $this->jsClass;
-		$tag->addAttribute('class', join(' ', $class));
-
-		if (isset($tokenUri[0])) {
-			$tag->addAttribute('data-stoken', base64_encode($tokenUri));
-		}
 	}
 
 
@@ -203,8 +203,8 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 			'HTTP_REFERER'
 		);
 
-		// note that ORIGIN header is usually without ending slash, so we'll strip it from basUri as well
-		$baseUri = rtrim($this->request->getBaseURI(), '/');
+		// note that ORIGIN header is usually without trailing slash, so we'll strip it from basUri as well
+		$baseUri = rtrim($this->getBaseUri(), '/');
 
 		foreach ($headers as $header) {
 			if (isset($_SERVER[$header])) {
@@ -230,7 +230,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 
 		if ($this->hasJsDependency()) {
 			// resides in custom header
-			$tokenName = 'TYPO3_' . $this->request->getControllerExtensionKey() . $this->tokenKey;
+			$tokenName = 'Innologi' . $this->tokenKey;
 			$headerName = 'HTTP_' . strtoupper($tokenName);
 			if (isset($_SERVER[$headerName])) {
 				$requestToken = $_SERVER[$headerName];
@@ -239,10 +239,12 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 				#throw new Exception('NOJS!');
 			}
 		} else {
+			# @LOW what about a proper way of checking if this is a GET or a POST request?
 			// resides in request-argument
-			$requestToken = $this->request->getInternalArgument($this->tokenKey);
+			$requestToken = isset($_POST[$this->tokenKey]) ? $_POST[$this->tokenKey] : $_GET[$this->tokenKey];
 		}
 
+		# @LOW what about security?
 		return $requestToken;
 	}
 
@@ -273,26 +275,19 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	/**
 	 * Create token based on uri and a hash.
 	 *
+	 * Note that this function relies on an encryptionkey
+	 * whose source is implementation specific. The provided
+	 * key '123456' is of course not recommended for actual
+	 * use!
+	 *
 	 * @param string $uri
 	 * @param string $hash
 	 * @return string
 	 */
 	protected function getToken($uri, $hash) {
-		return $this->hashService->generateHmac(
-			base64_encode($uri) . $hash
-		);
+		return hash_hmac('sha1', base64_encode($uri) . $hash, '123456');
 	}
 
-	/**
-	 * Retrieves uri to base token on.
-	 *
-	 * @return string
-	 */
-	protected function getTokenUri() {
-		return $this->request->getRequestURI();
-	}
-
-	#@TODO timelimit per hash?
 	/**
 	 * Retrieves private hash from session, or boolean false on failure.
 	 *
@@ -300,26 +295,15 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 * @return string
 	 */
 	protected function getPrivateHashFromSession($generatedByReferrer = FALSE) {
-		$privateHash = $this->getPrivateHashFromSessionImplementation(
-			$_SESSION[$this->sessionKey],
-			$this->getHashSource($generatedByReferrer)
-		);
-		return $privateHash;
-	}
+		$sessionData = $this->getSessionData();
+		$hashSource = $this->getHashSource($generatedByReferrer);
 
-	/**
-	 * Retrieves private hash from session implementation, or boolean false on failure.
-	 *
-	 * @param array $sessionData Session data as retrieved by implementation
-	 * @param string $hashSource Source for private hash
-	 * @return string
-	 */
-	protected function getPrivateHashFromSessionImplementation(array $sessionData, $hashSource) {
 		// false hash will always produce invalid outcome
 		$privateHash = FALSE;
-		if (isset($sessionData['__h'][$hashSource])) {
-			$privateHash = base64_decode($sessionData['__h'][$hashSource]);
+		if (isset($sessionData[$hashSource]) && $this->isHashStillValid($sessionData[$hashSource])) {
+			$privateHash = base64_decode($sessionData[$hashSource]['hash']);
 		}
+
 		return $privateHash;
 	}
 
@@ -356,21 +340,27 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	/**
 	 * Puts private hash in session, and optionally persists the session data.
 	 *
+	 * STRUCTURE:
+	 *
+	 * session {
+	 *   hashSource {
+	 *     time = timestamp
+	 *     timedHashKey = base64 encoded private hash
+	 *   }
+	 * }
+	 *
 	 * @param string $privateHash
 	 * @return void
 	 */
 	protected function putPrivateHashInSession($privateHash) {
-		$hashSource = $this->getHashSource();
+		$data = array(
+			'time' => time(),
+			'hash' => base64_encode($privateHash),
+		);
 
-		if (isset($_SESSION[$this->sessionKey]['__h'])) {
-			$_SESSION[$this->sessionKey]['__h'][$hashSource] = base64_encode($privateHash);
-		} else {
-			$_SESSION[$this->sessionKey] = array(
-				'__h' => array(
-					$hashSource => base64_encode($privateHash)
-				)
-			);
-		}
+		$sessionData = $this->getSessionData();
+		$sessionData[$this->getHashSource()] = $data;
+		$this->setSessionData($sessionData);
 	}
 
 	/**
@@ -399,14 +389,59 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 */
 	protected function getHashSource($fromReferrer = FALSE) {
 		$sourceUri = $this->hasHeaderDependency() ?
-			($fromReferrer ? $this->getReferrer() : $this->request->getRequestURI()) :
-			$this->request->getBaseURI();
+			($fromReferrer ? $this->getReferrer() : $this->getRequestUri()) :
+			$this->getBaseUri();
 		return md5($sourceUri);
+	}
+
+	/**
+	 * Checks if the given hash is valid to use.
+	 *
+	 * Looks at $this->hashTtl to determine the allowed interval.
+	 * So if this is set to 20 minutes, and the hash was produced
+	 * at 1-1-2015 19:40:00, the hash would turn invalid at
+	 * 1-1-2015 20:00:00.
+	 *
+	 * The exception to this rule is when the token using this hash
+	 * is both not per-request and not header-dependent. This is
+	 * because a token not per-request is subjective to being cached,
+	 * while a token not header-dependent will rely on the same private
+	 * hash for every page. Consider with the above example, that when
+	 * the TTL has passed, a second (uncached) page will regenerate the
+	 * hash, while the first page keeps its now invalid tokens cached.
+	 *
+	 * Hence, the TTL check is ignored in the given situation.
+	 * Note however, that the session data is persisted in the given
+	 * situation, so a user will only ever receive 1 private hash..
+	 *
+	 * @param array $hash HashData as mapped to hashSource in session
+	 * @return boolean
+	 */
+	protected function isHashStillValid(array $hash) {
+		return (!$this->hasNewTokenPerRequest() && !$this->hasHeaderDependency())
+			|| (($this->executionTime - $hash['time']) < ($this->hashTtl * 60));
 	}
 
 
 
+	/**
+	 * Returns the session data.
+	 *
+	 * @return array
+	 */
+	protected function getSessionData() {
+		return isset($_SESSION[$this->sessionKey]) ? $_SESSION[$this->sessionKey] : array();
+	}
 
+	/**
+	 * Sets session data
+	 *
+	 * @param array $sessionData
+	 * @return void
+	 */
+	protected function setSessionData(array $sessionData) {
+		$_SESSION[$this->sessionKey] = $sessionData;
+	}
 
 	/**
 	 * Get token key-name.
