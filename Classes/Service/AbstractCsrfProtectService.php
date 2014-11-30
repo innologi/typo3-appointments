@@ -43,7 +43,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	/**
 	 * @var array
 	 */
-	protected $headerDependency = array(
+	protected $referrerDependency = array(
 		self::BASIC_PLUS,
 		self::STRONG_PLUS,
 		self::MAXIMUM_PLUS
@@ -67,6 +67,13 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 *
 	 * @var string
 	 */
+	protected $vendorPrefix = 'innologi';
+
+	/**
+	 * The token key name.
+	 *
+	 * @var string
+	 */
 	protected $tokenKey = '__stoken';
 
 	/**
@@ -74,14 +81,19 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 *
 	 * @var string
 	 */
-	protected $sessionKey = '__innologi_stphcsrf';
+	protected $sessionKey = 'innologi__stphcsrf';
 
 	/**
-	 * Hash time to live, in minutes
+	 * @var string
+	 */
+	protected $privateHashKey = 'hash';
+
+	/**
+	 * Session value Time-To-Live (TTL), in minutes
 	 *
 	 * @var integer
 	 */
-	protected $hashTtl = 20;
+	protected $sessionTtl = 20;
 	#@TODO configurable ttl?
 
 	/**
@@ -100,6 +112,11 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 * @var string
 	 */
 	protected $privateHash;
+
+	/**
+	 * @var string
+	 */
+	protected $tokenUri;
 
 	/**
 	 * @var object
@@ -136,19 +153,48 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 * Checks if the request is allowed after a validity-check.
 	 *
 	 * @param object $request
+	 * @param string $token
+	 * @param boolean $neverClearSession
 	 * @return boolean
 	 * @api
 	 */
-	public function isRequestAllowed($request) {
+	public function isRequestAllowed($request, $token = NULL, $neverClearSession = FALSE) {
 		$this->request = $request;
 
 		if ($this->validateHeaders()) {
-			$token = $this->getRequestToken();
+			if ($token === NULL) {
+				$this->getRequestToken();
+			}
 			if ($this->isTokenValid($token)) {
+				if (!$neverClearSession && $this->hasNewTokenPerRequest() && $this->hasJsDependency()) {
+					// clear session data, otherwise any follow-up request is allowed
+					$this->setSessionData(array());
+					// @LOW this is inconvenient when in simultaneous sessions, but why would we support that?
+				}
 				return TRUE;
 			}
 		}
+
 		return FALSE;
+	}
+
+	/**
+	 * Checks if the Ajax request is allowed after a CSRF-protect-validity-check.
+	 *
+	 * @param object $request
+	 * @return boolean
+	 * @api
+	 */
+	public function isAjaxRequestAllowed($request) {
+		$this->privateHashKey = 'ajaxHash';
+
+		// token resides in custom header
+		$token = $this->getHeader(
+			$this->getTokenHeaderKey()
+		);
+
+		// an ajax CSRF-protect request is followed by a normal request, so don't clear session
+		return $this->isRequestAllowed($request, $token, TRUE);
 	}
 
 	/**
@@ -156,32 +202,61 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 *
 	 * @param object $request
 	 * @param string $uri
-	 * @param boolean $useSessionHash
+	 * @param boolean $sessionHash
 	 * @return string
 	 * @api
 	 */
-	public function generateToken($request, $uri = '', $useSessionHash = FALSE) {
+	public function generateToken($request, $uri = '', $sessionHash = FALSE) {
 		$this->request = $request;
 
 		return $this->getToken(
 			$uri,
 			$this->getPrivateHash(
-				$useSessionHash || !$this->hasNewTokenPerRequest()
+				$sessionHash || !$this->hasNewTokenPerRequest()
 			)
 		);
 	}
 
 	/**
-	 * Force the creation of a new private hash.
+	 * Generates and returns 1st-step tokens of js-dependent protection.
 	 *
 	 * @param object $request
+	 * @param array $encodedUrls
+	 * @return array
+	 * @api
+	 */
+	public function generateAjaxTokens($request, array $encodedUrls) {
+		$tokens = array();
+
+		if (!empty($encodedUrls)) {
+			$this->privateHashKey = 'ajaxHash';
+			foreach ($encodedUrls as $encodedUrl) {
+				$tokens[] = $this->generateToken(
+					$request,
+					base64_decode($encodedUrl, TRUE)
+				);
+			}
+			// create a special hash for jsTokens, different from the original hash
+			$this->privateHashKey = 'hash';
+			$this->createAndStorePrivateHash();
+		}
+
+		return $tokens;
+	}
+
+	/**
+	 * Creates and stores a 2nd-step jsToken for js-dependent protection.
+	 *
+	 * @param object $request
+	 * @param string $uri
 	 * @return void
 	 * @api
 	 */
-	public function forceNewPrivateHash($request) {
-		$this->request = $request;
-		#@FIX think about the structure applied here.. isn't this completely pointless?
-		$this->generateNewPrivateHash();
+	public function createAndStoreJsToken($request, $uri) {
+		$this->putValueInSession(
+			'jsToken',
+			$this->generateToken($request, $uri, TRUE)
+		);
 	}
 
 
@@ -191,28 +266,27 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	/**
 	 * Validates headers. Will fail if header doesnt match,
 	 * but also if header does not exist or is empty if there is
-	 * a header depedency.
+	 * a referrer depedency.
 	 *
 	 * @return boolean
 	 */
 	protected function validateHeaders() {
-		$validReferrer = !$this->hasHeaderDependency();
+		$validReferrer = !$this->hasReferrerDependency();
 
 		$headers = array(
-			'HTTP_ORIGIN', // more reliable, apparently
-			'HTTP_REFERER'
+			'ORIGIN', // more reliable, apparently
+			'REFERER'
 		);
 
 		// note that ORIGIN header is usually without trailing slash, so we'll strip it from basUri as well
 		$baseUri = rtrim($this->getBaseUri(), '/');
 
 		foreach ($headers as $header) {
-			if (isset($_SERVER[$header])) {
-				$headerData = $_SERVER[$header];
-				if (isset($headerData[0]) && $headerData !== 'null') {
-					$validReferrer = strpos($headerData, $baseUri) === 0;
-					break;
-				}
+			$headerData = $this->getHeader($header);
+			if (isset($headerData[0]) && $headerData !== 'null') {
+				$validReferrer = strpos($headerData, $baseUri) === 0;
+				// @TODO what if we remove this break
+				break;
 			}
 		}
 
@@ -220,8 +294,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	}
 
 	/**
-	 * Returns request token. Checks for JS dependency
-	 * to determine the token's location.
+	 * Returns request token from the expected location.
 	 *
 	 * @return string
 	 */
@@ -229,15 +302,8 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 		$requestToken = '';
 
 		if ($this->hasJsDependency()) {
-			// resides in custom header
-			$tokenName = 'Innologi' . $this->tokenKey;
-			$headerName = 'HTTP_' . strtoupper($tokenName);
-			if (isset($_SERVER[$headerName])) {
-				$requestToken = $_SERVER[$headerName];
-			} else {
-				// @TODO _______relevancy!
-				#throw new Exception('NOJS!');
-			}
+			// resides in session
+			$requestToken = $this->getValueFromSession('jsToken', TRUE);
 		} else {
 			# @LOW what about a proper way of checking if this is a GET or a POST request?
 			// resides in request-argument
@@ -267,7 +333,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	protected function getExpectedToken() {
 		$token = $this->getToken(
 			$this->getTokenUri(),
-			$this->getPrivateHashFromSession(TRUE)
+			$this->getValueFromSession($this->privateHashKey, TRUE)
 		);
 		return $token;
 	}
@@ -289,25 +355,6 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	}
 
 	/**
-	 * Retrieves private hash from session, or boolean false on failure.
-	 *
-	 * @param boolean $generatedByReferrer
-	 * @return string
-	 */
-	protected function getPrivateHashFromSession($generatedByReferrer = FALSE) {
-		$sessionData = $this->getSessionData();
-		$hashSource = $this->getHashSource($generatedByReferrer);
-
-		// false hash will always produce invalid outcome
-		$privateHash = FALSE;
-		if (isset($sessionData[$hashSource]) && $this->isHashStillValid($sessionData[$hashSource])) {
-			$privateHash = base64_decode($sessionData[$hashSource]['hash']);
-		}
-
-		return $privateHash;
-	}
-
-	/**
 	 * Get private hash, or create new one if non-existent. Optionally,
 	 * you can let it search for an earlier-stored hash.
 	 *
@@ -317,112 +364,157 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	protected function getPrivateHash($storedHash = FALSE) {
 		if ($this->privateHash === NULL) {
 			if ($storedHash) {
-				$this->privateHash = $this->getPrivateHashFromSession();
+				$this->privateHash = $this->getValueFromSession($this->privateHashKey);
 				if ($this->privateHash !== FALSE) {
 					return $this->privateHash;
 				}
 			}
-			$this->generateNewPrivateHash();
+			$this->createAndStorePrivateHash();
 		}
 		return $this->privateHash;
 	}
 
 	/**
-	 * Generates a new private hash and stores it in the session
+	 * Creates and stores a private hash.
 	 *
 	 * @return void
 	 */
-	protected function generateNewPrivateHash() {
+	protected function createAndStorePrivateHash() {
 		$this->privateHash = md5(uniqid(rand(), TRUE));
-		$this->putPrivateHashInSession($this->privateHash);
-	}
-
-	/**
-	 * Puts private hash in session, and optionally persists the session data.
-	 *
-	 * STRUCTURE:
-	 *
-	 * session {
-	 *   hashSource {
-	 *     time = timestamp
-	 *     timedHashKey = base64 encoded private hash
-	 *   }
-	 * }
-	 *
-	 * @param string $privateHash
-	 * @return void
-	 */
-	protected function putPrivateHashInSession($privateHash) {
-		$data = array(
-			'time' => time(),
-			'hash' => base64_encode($privateHash),
-		);
-
-		$sessionData = $this->getSessionData();
-		$sessionData[$this->getHashSource()] = $data;
-		$this->setSessionData($sessionData);
-	}
-
-	/**
-	 * Retrieves referrer from header.
-	 *
-	 * @return string
-	 */
-	protected function getReferrer() {
-		$referrer = '';
-		$header = 'HTTP_REFERER';
-		if (isset($_SERVER[$header])) {
-			$referrer = $_SERVER[$header];
-		} else {
-			// @TODO ________ throw exception?
-		}
-		return $referrer;
+		$this->putValueInSession($this->privateHashKey, $this->privateHash);
 	}
 
 	/**
 	 * Retrieve source for Private Hash. The source is either
-	 * a complete URI or a BaseURI, depending on if header
+	 * a complete URI or a BaseURI, depending on if referrer
 	 * dependency is set.
 	 *
 	 * @param boolean $fromReferrer
 	 * @return string
 	 */
 	protected function getHashSource($fromReferrer = FALSE) {
-		$sourceUri = $this->hasHeaderDependency() ?
-			($fromReferrer ? $this->getReferrer() : $this->getRequestUri()) :
+		$sourceUri = $this->hasReferrerDependency() ?
+			($fromReferrer ? $this->getHeader('REFERER') : $this->getRequestUri()) :
 			$this->getBaseUri();
 		return md5($sourceUri);
 	}
 
+
+
+
 	/**
-	 * Checks if the given hash is valid to use.
+	 * Gets header keyname for token.
 	 *
-	 * Looks at $this->hashTtl to determine the allowed interval.
-	 * So if this is set to 20 minutes, and the hash was produced
-	 * at 1-1-2015 19:40:00, the hash would turn invalid at
-	 * 1-1-2015 20:00:00.
-	 *
-	 * The exception to this rule is when the token using this hash
-	 * is both not per-request and not header-dependent. This is
-	 * because a token not per-request is subjective to being cached,
-	 * while a token not header-dependent will rely on the same private
-	 * hash for every page. Consider with the above example, that when
-	 * the TTL has passed, a second (uncached) page will regenerate the
-	 * hash, while the first page keeps its now invalid tokens cached.
-	 *
-	 * Hence, the TTL check is ignored in the given situation.
-	 * Note however, that the session data is persisted in the given
-	 * situation, so a user will only ever receive 1 private hash..
-	 *
-	 * @param array $hash HashData as mapped to hashSource in session
-	 * @return boolean
+	 * @return string
+	 * @api
 	 */
-	protected function isHashStillValid(array $hash) {
-		return (!$this->hasNewTokenPerRequest() && !$this->hasHeaderDependency())
-			|| (($this->executionTime - $hash['time']) < ($this->hashTtl * 60));
+	public function getTokenHeaderKey() {
+		return $this->vendorPrefix . $this->tokenKey;
+	}
+
+	/**
+	 * Gets utoken from header.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getEncodedUrlFromHeader() {
+		return $this->getHeader($this->vendorPrefix . '__utoken');
+	}
+
+	/**
+	 * Gets HTTP header, e.g. REFERER
+	 *
+	 * @param string $header
+	 * @return string
+	 */
+	protected function getHeader($header) {
+		$header = 'HTTP_' . strtoupper($header);
+		return isset($_SERVER[$header]) ? $_SERVER[$header] : '';
 	}
 
 
+
+
+
+	/**
+	 * Puts value in session.
+	 *
+	 * STRUCTURE:
+	 *
+	 * session {
+	 *   hashSource {
+	 *     time = timestamp
+	 *     $key = base64 encoded value
+	 *   }
+	 * }
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @return void
+	 */
+	protected function putValueInSession($key, $value) {
+		$data = array(
+			'time' => time(),
+			$key => base64_encode($value),
+		);
+
+		$hashSource = $this->getHashSource();
+		$sessionData = $this->getSessionData();
+		// we allow merging, to allow different keys for different purposes to co-exist
+		$sessionData[$hashSource] = isset($sessionData[$hashSource])
+			? array_merge($sessionData[$hashSource], $data)
+			: $data;
+		$this->setSessionData($sessionData);
+	}
+
+	/**
+	 * Retrieves value from session, or boolean false on failure.
+	 *
+	 * @param string $key
+	 * @param boolean $generatedByReferrer
+	 * @return string
+	 */
+	protected function getValueFromSession($key, $generatedByReferrer = FALSE) {
+		$sessionData = $this->getSessionData();
+		$hashSource = $this->getHashSource($generatedByReferrer);
+
+		$value = FALSE;
+		if (isset($sessionData[$hashSource]) && $this->isSessionValueStillValid($sessionData[$hashSource])) {
+			$value = base64_decode($sessionData[$hashSource][$key]);
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Checks if the given session value is valid to use.
+	 *
+	 * Looks at $this->sessionTtl to determine the allowed lifetime.
+	 * So if this is set to 20 minutes, and the session value was produced
+	 * at 1-1-2015 19:40:00, the hash would turn invalid at
+	 * 1-1-2015 20:00:00.
+	 *
+	 * The exception to this rule is when the token using this session value
+	 * is both not per-request and not referrer-dependent. This is
+	 * because a token not per-request is subjective to being cached,
+	 * while a token not referrer-dependent will rely on the same private
+	 * hash for every page. Consider with the above example, that when
+	 * the TTL has passed, a second (uncached) page will regenerate the
+	 * session value, while the first page keeps its now invalid values cached.
+	 *
+	 * Hence, the TTL check is ignored in the given situation.
+	 * Note however, that the session data is persisted in the given
+	 * situation. If utilized for a private hash, the user would then
+	 * only ever receive 1 private hash..
+	 *
+	 * @param array $sessionValue Session Value as mapped to hashSource in session
+	 * @return boolean
+	 */
+	protected function isSessionValueStillValid(array $sessionValue) {
+		return (!$this->hasNewTokenPerRequest() && !$this->hasReferrerDependency())
+			|| (($this->executionTime - $sessionValue['time']) < ($this->sessionTtl * 60));
+	}
 
 	/**
 	 * Returns the session data.
@@ -443,10 +535,25 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 		$_SESSION[$this->sessionKey] = $sessionData;
 	}
 
+
+
+
+
+	/**
+	 * Sets token Uri
+	 * @param string $tokenUri
+	 * @return void
+	 * @api
+	 */
+	public function setTokenUri($tokenUri) {
+		$this->tokenUri = $tokenUri;
+	}
+
 	/**
 	 * Get token key-name.
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getTokenKey() {
 		return $this->tokenKey;
@@ -456,6 +563,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 * Returns whether the service is enabled.
 	 *
 	 * @return boolean
+	 * @api
 	 */
 	public function isEnabled() {
 		return $this->protectionLevel !== self::DISABLED;
@@ -466,6 +574,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 * on JavaScript mechanisms.
 	 *
 	 * @return boolean
+	 * @api
 	 */
 	public function hasJsDependency() {
 		return in_array($this->protectionLevel, $this->jsDependency, TRUE);
@@ -473,12 +582,13 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 
 	/**
 	 * Returns whether the service is set to depend
-	 * on the existence of e.g. a referrer header.
+	 * on the existence of a referrer header.
 	 *
 	 * @return boolean
+	 * @api
 	 */
-	public function hasHeaderDependency() {
-		return in_array($this->protectionLevel, $this->headerDependency, TRUE);
+	public function hasReferrerDependency() {
+		return in_array($this->protectionLevel, $this->referrerDependency, TRUE);
 	}
 
 	/**
@@ -486,6 +596,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 * per request, as opposed to per session.
 	 *
 	 * @return boolean
+	 * @api
 	 */
 	public function hasNewTokenPerRequest() {
 		return !in_array($this->protectionLevel, $this->persistedHash, TRUE);

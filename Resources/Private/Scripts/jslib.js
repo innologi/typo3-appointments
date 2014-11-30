@@ -510,59 +510,50 @@ jQuery(document).ready(function() {
 	//**********************************************
 
 	// @TODO read class through TS?
-	var csrfProtectA = jQuery('.tx-appointments a.csrf-protect'),
-	csrfProtectForm = jQuery('.tx-appointments form.csrf-protect');
-	if (csrfProtectA[0] || csrfProtectForm[0]) {
-		var submitButtons = jQuery(':submit', csrfProtectForm);
-		submitButtons.hide();
-		csrfProtectA.hide();
+	var $csrfProtectA = jQuery('.tx-appointments a.csrf-protect'),
+		$csrfProtectForm = jQuery('.tx-appointments form.csrf-protect');
+	if ($csrfProtectA[0] || $csrfProtectForm[0]) {
+		var $submitButtons = jQuery(':submit', $csrfProtectForm),
+			encodedUrls = [];
+		$submitButtons.hide();
+		$csrfProtectA.hide();
+		$csrfProtectA.each(function (i, a) {
+			encodedUrls.push(jQuery(a).attr('data-utoken'));
+		});
+		$csrfProtectForm.each(function (i, form) {
+			encodedUrls.push(jQuery(form).attr('data-utoken'));
+		});
 
 		var xhr = new XMLHttpRequest();
-		xhr.open('GET', 'index.php?id=2130&type=12345678&tx_appointments_list[controller]=Appointment&tx_appointments_list[action]=forceNewPrivateHash', true);
+		xhr.open('HEAD', 'index.php?id=2130&type=12345678&tx_appointments_list[controller]=Appointment&tx_appointments_list[action]=ajaxGenerateTokens', true);
+		xhr.setRequestHeader('innologi--utoken', encodedUrls);
 		xhr.onload = function(e) {
 			if (this.status == 200) {
-				csrfProtectA.click(function () {
-					processToken(jQuery(this).attr('href'), jQuery(this).attr('data-stoken'));
-					return false;
+				var tokens = xhr.getResponseHeader('innologi__stoken').split(','),
+					tokenCounter = 0;
+				$csrfProtectA.each(function (i, a) {
+					jQuery(a).attr('data-stoken', tokens[tokenCounter++]);
+					jQuery(a).click(function () {
+						verifyToken(
+							jQuery(this).attr('data-stoken'), jQuery(this).attr('data-utoken')
+						);
+					});
 				});
-				csrfProtectForm.submit(function () {
+				$csrfProtectForm.submit(function () {
 					// replace/fill in token instead?
 					provideToken(jQuery(this).attr('data-stoken'));
 				});
 			}
-			submitButtons.show();
-			csrfProtectA.show();
+			$submitButtons.show();
+			$csrfProtectA.show();
 		};
 		xhr.send();
 	}
 
-	function processToken(url, tokenUri) {
-		// jQuery 1.11 doesnt support xhr2, 1.12+ might..
+	function verifyToken(token, tokenUri) {
 		var xhr = new XMLHttpRequest();
-		xhr.open('GET', 'index.php?id=2130&type=12345678&tx_appointments_list[controller]=Appointment&tx_appointments_list[action]=generateToken&tx_appointments_list[encodedUrl]=' + tokenUri, true);
-		xhr.onload = function(e) {
-			if (this.status == 200) {
-				var token = this.getResponseHeader('typo3-appointments__stoken');
-				var xhr2 = new XMLHttpRequest();
-				xhr2.open('GET', url, true);
-				xhr2.responseType = 'document';
-				xhr2.setRequestHeader('typo3-appointments--stoken', token);
-				xhr2.onload = function(e) {
-					if (this.status == 200) {
-						history.pushState(null, this.response.title, this.response.URL);
-						//document.title = this.response.title;
-						document.open();
-						document.write(this.response.firstElementChild.outerHTML);
-						document.close();
-					} else {
-						alert('BOEM2');
-					}
-				};
-				xhr2.send();
-			} else {
-				alert('BOEM1');
-			}
-		};
+		xhr.open('HEAD', 'index.php?id=2130&type=12345678&tx_appointments_list[controller]=Appointment&tx_appointments_list[action]=ajaxVerifyToken&tx_appointments_list[encodedUrl]=' + tokenUri, false);
+		xhr.setRequestHeader('innologi--stoken', token);
 		xhr.send();
 	}
 

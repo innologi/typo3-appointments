@@ -61,30 +61,53 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	 * Checks if the request is allowed after a CSRF-protect-validity-check.
 	 *
 	 * @param object $request
+	 * @param string $token
+	 * @param boolean $neverClearSession
 	 * @return boolean
 	 * @api
 	 */
-	public function isRequestAllowed($request);
+	public function isRequestAllowed($request, $token = NULL, $neverClearSession = FALSE);
+
+	/**
+	 * Checks if the Ajax request is allowed after a CSRF-protect-validity-check.
+	 *
+	 * @param object $request
+	 * @return boolean
+	 * @api
+	 */
+	public function isAjaxRequestAllowed($request);
 
 	/**
 	 * Generate and return a new token for the $uri.
 	 *
 	 * @param object $request
 	 * @param string $uri
-	 * @param boolean $useSessionHash
+	 * @param boolean $sessionHash
 	 * @return string
 	 * @api
 	 */
-	public function generateToken($request, $uri = '', $useSessionHash = FALSE);
+	public function generateToken($request, $uri = '', $sessionHash = FALSE);
 
 	/**
-	 * Force the creation of a new private hash.
+	 * Generates and returns 1st-step tokens of js-dependent protection.
 	 *
 	 * @param object $request
+	 * @param array $encodedUrls
+	 * @return array
+	 * @api
+	 */
+	public function generateAjaxTokens($request, array $encodedUrls);
+
+	/**
+	 * Creates and stores a 2nd-step jsToken for js-dependent protection.
+	 *
+	 * @param object $request
+	 * @param string $uri
 	 * @return void
 	 * @api
 	 */
-	public function forceNewPrivateHash($request);
+	public function createAndStoreJsToken($request, $uri);
+
 	# @LOW so is this api or not? and if so, what object is $tag going to be?
 	/**
 	 * Provides the csrf-class and encoded uri to a tag for
@@ -94,12 +117,29 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	 * @param string $tokenUri
 	 * @return void
 	 */
-	public function provideTagArguments(Tx_Fluid_Core_ViewHelper_TagBuilder $tag, $tokenUri = '');
+	 public function provideTagArguments(Tx_Fluid_Core_ViewHelper_TagBuilder $tag, $tokenUri = '');
+
+	/**
+	 * Gets encodedUrl from header.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getEncodedUrlFromHeader();
+
+	/**
+	 * Gets header keyname for token.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getTokenHeaderKey();
 
 	/**
 	 * Get token key-name.
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getTokenKey();
 
@@ -107,13 +147,24 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	 * Retrieves uri to base token on.
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getTokenUri();
+
+	/**
+	 * Sets token uri.
+	 *
+	 * @param string $tokenUri
+	 * @return void
+	 * @api
+	 */
+	public function setTokenUri($tokenUri);
 
 	/**
 	 * Retrieves request uri.
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getRequestUri();
 
@@ -121,6 +172,7 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	 * Retrieves base uri.
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getBaseUri();
 
@@ -128,6 +180,7 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	 * Returns whether the service is enabled.
 	 *
 	 * @return boolean
+	 * @api
 	 */
 	public function isEnabled();
 
@@ -136,22 +189,25 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	 * on JavaScript mechanisms.
 	 *
 	 * @return boolean
+	 * @api
 	 */
 	public function hasJsDependency();
 
 	/**
 	 * Returns whether the service is set to depend
-	 * on the existence of e.g. a referrer header.
+	 * on the existence of a referrer header.
 	 *
 	 * @return boolean
+	 * @api
 	 */
-	public function hasHeaderDependency();
+	public function hasReferrerDependency();
 
 	/**
 	 * Returns whether the service is set to use a new token
 	 * per request, as opposed to per session.
 	 *
 	 * @return boolean
+	 * @api
 	 */
 	public function hasNewTokenPerRequest();
 

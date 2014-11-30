@@ -85,26 +85,35 @@ class Tx_Appointments_MVC_Controller_CsrfProtectController extends Tx_Appointmen
 	}
 
 	/**
-	 *
+	 * Verifies token and if passed, creates a valid jsToken via Ajax request
 	 *
 	 * @param string $encodedUrl
 	 * @return void
 	 */
-	public function generateTokenAction($encodedUrl) {
-		$token = $this->csrfProtectService->generateToken($this->request, base64_decode($encodedUrl, TRUE), TRUE);
-		$this->response->setHeader('typo3-appointments__stoken', $token);
-		$this->response->sendHeaders();
+	public function ajaxVerifyTokenAction($encodedUrl) {
+		$tokenUri = base64_decode($encodedUrl, TRUE);
+		$this->csrfProtectService->setTokenUri($tokenUri);
+
+		if ($this->csrfProtectService->isAjaxRequestAllowed($this->request)) {
+			$this->csrfProtectService->createAndStoreJsToken($this->request, $tokenUri);
+		}
 		exit;
 	}
 
 	/**
+	 * Generate Tokens via Ajax request
 	 *
-	 *
-	 * @param string $encodedUrl
 	 * @return void
 	 */
-	public function forceNewPrivateHashAction() {
-		$this->csrfProtectService->forceNewPrivateHash($this->request);
+	public function ajaxGenerateTokensAction() {
+		$this->response->setHeader(
+			$this->csrfProtectService->getTokenHeaderKey(),
+			join(',', $this->csrfProtectService->generateAjaxTokens(
+				$this->request,
+				explode(',', $this->csrfProtectService->getEncodedUrlFromHeader())
+			))
+		);
+		$this->response->sendHeaders();
 		exit;
 	}
 

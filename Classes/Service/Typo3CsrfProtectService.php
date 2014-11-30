@@ -101,7 +101,7 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 		$tag->addAttribute('class', join(' ', $class));
 
 		if (isset($tokenUri[0])) {
-			$tag->addAttribute('data-stoken', base64_encode($tokenUri));
+			$tag->addAttribute('data-utoken', base64_encode($tokenUri));
 		}
 	}
 
@@ -111,31 +111,35 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	 * Strips cHash and token parameter from URI.
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getTokenUri() {
-		$tokenUri = $this->getRequestUri();
+		if ($this->tokenUri === NULL) {
+			$this->tokenUri = $this->getRequestUri();
 
-		if ($this->request->getMethod() === 'GET') {
-			$tokenUri = Tx_Appointments_Utility_GeneralUtility::stripGetParameters(
-				$tokenUri, array(
-					'chash',
-					urlencode(
-						Tx_Appointments_Utility_GeneralUtility::wrapGetParameter(
-							$this->getTokenKey(),
-							$this->request->getControllerExtensionKey(),
-							$this->request->getPluginName()
+			if ($this->request->getMethod() === 'GET') {
+				$this->tokenUri = Tx_Appointments_Utility_GeneralUtility::stripGetParameters(
+					$this->tokenUri, array(
+						'chash',
+						urlencode(
+							Tx_Appointments_Utility_GeneralUtility::wrapGetParameter(
+								$this->getTokenKey(),
+								$this->request->getControllerExtensionKey(),
+								$this->request->getPluginName()
+							)
 						)
 					)
-				)
-			);
+				);
+			}
 		}
-		return $tokenUri;
+		return $this->tokenUri;
 	}
 	#@TODO make these two abstract first? from SERVER array?
 	/**
 	 * Retrieves request uri.
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getRequestUri() {
 		return $this->request->getRequestUri();
@@ -145,6 +149,7 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	 * Retrieves base uri.
 	 *
 	 * @return string
+	 * @api
 	 */
 	public function getBaseUri() {
 		return $this->request->getBaseUri();
@@ -179,10 +184,10 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 
 	/**
 	 * Retrieve source for Private Hash. The source is either
-	 * a complete URI or the BaseURI, depending on if header
+	 * a complete URI or the BaseURI, depending on if referrer
 	 * dependency is set.
 	 *
-	 * When a header dependency is set, we dont want the order of parameters
+	 * When a referrer dependency is set, we dont want the order of parameters
 	 * to cause a source-mismatch, considering the cache doesnt care either
 	 * and wouldnt allow us to generate and store a hash for any variation.
 	 * To remedy this, we split and sort the URI by parameters.
@@ -192,8 +197,8 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getHashSource()
 	 */
 	protected function getHashSource($fromReferrer = FALSE) {
-		if ($this->hasHeaderDependency()) {
-			$sourceUri = $fromReferrer ? $this->getReferrer() : $this->getRequestUri();
+		if ($this->hasReferrerDependency()) {
+			$sourceUri = $fromReferrer ? $this->getHeader('REFERER') : $this->getRequestUri();
 			$sourceUri = serialize(
 				Tx_Appointments_Utility_GeneralUtility::splitUrlAndSortInArray($sourceUri)
 			);

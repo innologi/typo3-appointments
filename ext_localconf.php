@@ -34,12 +34,12 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'List',
 	array(
-		'Appointment' => 'list, show, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free, none, generateToken, forceNewPrivateHash',
+		'Appointment' => 'list, show, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free, none, ajaxVerifyToken, ajaxGenerateTokens',
 
 	),
 	// non-cacheable actions
 	array(
-		'Appointment' => 'create, update, delete, edit, new1, new2, processNew, simpleProcessNew, free, generateToken, forceNewPrivateHash' . $noCache,
+		'Appointment' => 'create, update, delete, edit, new1, new2, processNew, simpleProcessNew, free, ajaxVerifyToken, ajaxGenerateTokens' . $noCache,
 	)
 );
 
