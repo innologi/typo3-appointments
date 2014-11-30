@@ -9,6 +9,7 @@
 			<label index="tx_appointments.login_error">You need to be logged-in with a valid user account.</label>
 			<label index="tx_appointments.no_agenda">No agenda set or found, please review plugin settings.</label>
 			<label index="tx_appointments.no_types">No appointment-types found or associated with this agenda, please review the related records.</label>
+			<label index="tx_appointments.csrf_invalid_request">The form or link has expired. Please try again.</label>
 			<label index="tx_appointments.appointment_no_longer_available">The appointment is no longer available. It may have been cancelled or deleted by someone after you visited the page.</label>
 			<label index="tx_appointments.appointment_property_deleted">The appointment is missing some property values. Someone might have deleted these manually after you visited the page.</label>
 			<label index="tx_appointments_list.timeslot_not_allowed">The timeslot you picked is no longer available, possibly because you&apos;ve waited too long.</label>
@@ -183,6 +184,7 @@
 			<label index="tx_appointments.login_error">U dient ingelogd te zijn met een geldig gebruikersaccount.</label>
 			<label index="tx_appointments.no_agenda">Geen agenda ingesteld of gevonden, ga de plugin instellingen na s.v.p.</label>
 			<label index="tx_appointments.no_types">Geen afspraaktypen gevonden of geassocieerd met deze agenda, kijk s.v.p. de relevante records na.</label>
+			<label index="tx_appointments.csrf_invalid_request">De geldigheid van het formulier of link is verlopen. Probeer het opnieuw s.v.p.</label>
 			<label index="tx_appointments.appointment_no_longer_available">De afspraak is niet meer beschikbaar. Het is mogelijk geannuleerd of verwijderd door iemand nadat u de pagina bezocht.</label>
 			<label index="tx_appointments.appointment_property_deleted">De afspraak mist enkele formulier gegevens. Het is mogelijk dat iemand deze handmatig heeft verwijderd nadat u de pagina bezocht.</label>
 			<label index="tx_appointments_list.timeslot_not_allowed">Het door u gekozen tijdstip is niet (meer) beschikbaar, mogelijk omdat u te lang heeft gewacht.</label>

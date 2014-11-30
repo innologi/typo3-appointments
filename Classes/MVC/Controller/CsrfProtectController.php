@@ -75,9 +75,19 @@ class Tx_Appointments_MVC_Controller_CsrfProtectController extends Tx_Appointmen
 			if (isset($methodTagsValues['verifycsrftoken'])) {
 				// is request not a potential CSRF-attempt?
 				if (!$this->csrfProtectService->isRequestAllowed($this->request)) {
-					#@FIX ______probably need to throw exceptions in service, and catch here to produce nice flash messages
-					#@TODO _____relevancy!
-					throw new Exception('Appointments: CSRF token error');
+					#@LOW consider throwing exceptions in service, and catching them here to produce relevant error messages
+					$flashMessage = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_appointments.csrf_invalid_request', $this->extensionName);
+					// necessary to use flash messages, but not built until after initializeAction()
+					$this->controllerContext = $this->buildControllerContext();
+					$this->addFlashMessage($flashMessage, '', t3lib_FlashMessage::ERROR);
+					if ($this->request->getInternalArgument('__referrer') !== NULL) {
+						// forms can use this to get back to the original form
+						$this->forward('error');
+					} else {
+						$this->clearCacheOnError();
+						// @LOW this should detect the default action I guess
+						$this->redirect('list');
+					}
 				}
 				#die('<html><head><title>SUCCESS!</title></head><body><p>success!</p></body></html>');
 			}
