@@ -163,7 +163,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 
 		if ($this->validateHeaders()) {
 			if ($token === NULL) {
-				$this->getRequestToken();
+				$token = $this->getRequestToken();
 			}
 			if ($this->isTokenValid($token)) {
 				if (!$neverClearSession && $this->hasNewTokenPerRequest() && $this->hasJsDependency()) {
