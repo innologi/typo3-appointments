@@ -93,7 +93,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 *
 	 * @var integer
 	 */
-	protected $sessionTtl = 20;
+	protected $sessionTtl = 30;
 	#@TODO configurable ttl?
 
 	/**
