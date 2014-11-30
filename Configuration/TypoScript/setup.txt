@@ -206,7 +206,8 @@ appointments_xhr {
 
 # default CSS
 plugin.tx_appointments._CSS_DEFAULT_STYLE (
-	.tx-appointments {
+	.tx-appointments,
+	.tx-appointments .one-button-form button {
 		font-family:helvetica,arial,sans-serif;
 	}
 	
@@ -241,15 +242,20 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 		margin:15px 0 10px;
 	}
 	
-	.tx-appointments a {
+	.tx-appointments a,
+	.tx-appointments .one-button-form button {
 		color:#66f;
 		text-decoration:none;
 	}
 	.tx-appointments a:hover,
 	.tx-appointments a:focus,
-	.tx-appointments a:active {
+	.tx-appointments a:active,
+	.tx-appointments .one-button-form button:hover,
+	.tx-appointments .one-button-form button:focus,
+	.tx-appointments .one-button-form button:active {
 		color:#f22;
 	}
+	
 	
 	
 	/* List */
@@ -427,6 +433,20 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	}
 	.tx-appointments .csh:before {
 		background-position:-306px -54px;
+	}
+	
+	.tx-appointments .one-button-form button {
+		border:0;
+		padding:0;
+		background-color:transparent;
+		cursor:pointer;
+	}
+	.tx-appointments .one-button-form fieldset {
+		margin-bottom:0;
+	}
+	.tx-appointments .one-button-form,
+	.tx-appointments .one-button-form fieldset {
+		display:inline-block;
 	}
 	
 	
