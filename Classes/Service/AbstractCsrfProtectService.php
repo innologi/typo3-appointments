@@ -194,7 +194,10 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 		);
 
 		// an ajax CSRF-protect request is followed by a normal request, so don't clear session
-		return $this->isRequestAllowed($request, $token, TRUE);
+		$allowed = $this->isRequestAllowed($request, $token, TRUE);
+		// reset privateHashKey
+		$this->privateHashKey = 'hash';
+		return $allowed;
 	}
 
 	/**
@@ -236,7 +239,7 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 					base64_decode($encodedUrl, TRUE)
 				);
 			}
-			// create a special hash for jsTokens, different from the original hash
+			// create a normal hash for jsTokens, different from the ajaxHash
 			$this->privateHashKey = 'hash';
 			$this->createAndStorePrivateHash();
 		}
