@@ -285,8 +285,6 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 			$headerData = $this->getHeader($header);
 			if (isset($headerData[0]) && $headerData !== 'null') {
 				$validReferrer = strpos($headerData, $baseUri) === 0;
-				// @TODO what if we remove this break
-				break;
 			}
 		}
 
