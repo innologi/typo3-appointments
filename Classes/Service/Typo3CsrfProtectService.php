@@ -198,7 +198,9 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	 */
 	protected function getHashSource($fromReferrer = FALSE) {
 		if ($this->hasReferrerDependency()) {
-			$sourceUri = $fromReferrer ? $this->getHeader('REFERER') : $this->getRequestUri();
+			$sourceUri = $fromReferrer || $this->hasJsDependency()
+				? $this->getHeader('REFERER')
+				: $this->getRequestUri();
 			$sourceUri = serialize(
 				Tx_Appointments_Utility_GeneralUtility::splitUrlAndSortInArray($sourceUri)
 			);

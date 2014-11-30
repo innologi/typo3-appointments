@@ -394,9 +394,11 @@ abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_
 	 * @return string
 	 */
 	protected function getHashSource($fromReferrer = FALSE) {
-		$sourceUri = $this->hasReferrerDependency() ?
-			($fromReferrer ? $this->getHeader('REFERER') : $this->getRequestUri()) :
-			$this->getBaseUri();
+		$sourceUri = $this->hasReferrerDependency()
+			? ($fromReferrer || $this->hasJsDependency()
+				? $this->getHeader('REFERER')
+				: $this->getRequestUri())
+			: $this->getBaseUri();
 		return md5($sourceUri);
 	}
 
