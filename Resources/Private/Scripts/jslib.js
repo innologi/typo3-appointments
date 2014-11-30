@@ -539,9 +539,13 @@ jQuery(document).ready(function() {
 						);
 					});
 				});
-				$csrfProtectForm.submit(function () {
-					// replace/fill in token instead?
-					provideToken(jQuery(this).attr('data-stoken'));
+				$csrfProtectForm.each(function (i, form) {
+					jQuery(form).attr('data-stoken', tokens[tokenCounter++]);
+					jQuery(form).submit(function () {
+						verifyToken(
+							jQuery(this).attr('data-stoken'), jQuery(this).attr('data-utoken')
+						);
+					});
 				});
 			}
 			$submitButtons.show();
