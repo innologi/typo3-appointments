@@ -532,24 +532,27 @@ jQuery(document).ready(function() {
 		xhr.setRequestHeader('innologi--utoken', encodedUrls);
 		xhr.onload = function(e) {
 			if (this.status == 200) {
-				var tokens = this.getResponseHeader('innologi__stoken').split(','),
+				var tokens = this.getResponseHeader('innologi__stoken'),
 					tokenCounter = 0;
-				$csrfProtectA.each(function (i, a) {
-					jQuery(a).attr('data-stoken', tokens[tokenCounter++]);
-					jQuery(a).click(function () {
-						verifyToken(
-							jQuery(this).attr('data-stoken'), jQuery(this).attr('data-utoken')
-						);
+				if (tokens !== null) {
+					tokens = tokens.split(',');
+					$csrfProtectA.each(function (i, a) {
+						jQuery(a).attr('data-stoken', tokens[tokenCounter++]);
+						jQuery(a).click(function () {
+							verifyToken(
+								jQuery(this).attr('data-stoken'), jQuery(this).attr('data-utoken')
+							);
+						});
 					});
-				});
-				$csrfProtectForm.each(function (i, form) {
-					jQuery(form).attr('data-stoken', tokens[tokenCounter++]);
-					jQuery(form).submit(function () {
-						verifyToken(
-							jQuery(this).attr('data-stoken'), jQuery(this).attr('data-utoken')
-						);
+					$csrfProtectForm.each(function (i, form) {
+						jQuery(form).attr('data-stoken', tokens[tokenCounter++]);
+						jQuery(form).submit(function () {
+							verifyToken(
+								jQuery(this).attr('data-stoken'), jQuery(this).attr('data-utoken')
+							);
+						});
 					});
-				});
+				}
 			}
 			$submitButtons.show();
 			$csrfProtectA.show();
