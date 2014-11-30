@@ -116,14 +116,17 @@ class Tx_Appointments_MVC_Controller_CsrfProtectController extends Tx_Appointmen
 	 * @return void
 	 */
 	public function ajaxGenerateTokensAction() {
-		$this->response->setHeader(
-			$this->csrfProtectService->getTokenHeaderKey(),
-			join(',', $this->csrfProtectService->generateAjaxTokens(
-				$this->request,
-				explode(',', $this->csrfProtectService->getEncodedUrlFromHeader())
-			))
-		);
-		$this->response->sendHeaders();
+		$encodedUrls = $this->csrfProtectService->getEncodedUrlFromHeader();
+		if (isset($encodedUrls[0])) {
+			$this->response->setHeader(
+				$this->csrfProtectService->getTokenHeaderKey(),
+				join(',', $this->csrfProtectService->generateAjaxTokens(
+					$this->request,
+					explode(',', $encodedUrls)
+				))
+			);
+			$this->response->sendHeaders();
+		}
 		exit;
 	}
 
