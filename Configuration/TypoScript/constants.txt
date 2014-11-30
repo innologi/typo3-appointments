@@ -18,6 +18,14 @@ plugin.tx_appointments {
 		storagePid = 
 	}
 	settings {
+		# @TODO llang
+		
+		# cat=plugin.tx_appointments/a_extconf/045; type=int+; label=XHR page type
+		type.xhr = 201411301983
+		
+		# @TODO remove this when eid is utilized, do so before TER release!
+		pages.xhr = 2130
+		
 		# cat=plugin.tx_appointments/a_extconf/050; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_freeSlotInMinutes
 		freeSlotInMinutes = 15
 		# cat=plugin.tx_appointments/a_extconf/060; type=boolean; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_shiftSlotPerInterval

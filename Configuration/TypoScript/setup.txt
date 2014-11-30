@@ -61,6 +61,10 @@ plugin.tx_appointments {
 		inlineJS.template = FILE
 		inlineJS.template.file = {$plugin.tx_appointments.js.libFile}
 		inlineJS.marks {
+			XHR_PAGETYPE = TEXT
+			XHR_PAGETYPE.value = {$plugin.tx_appointments.settings.type.xhr}
+			XHR_PAGEID = TEXT
+			XHR_PAGEID.value = {$plugin.tx_appointments.settings.pages.xhr}
 			WARN_ON_LEAVE = TEXT
 			WARN_ON_LEAVE.value = {$plugin.tx_appointments.js.warnOnLeave}
 			WARN_ON_LEAVE_RESPECT_REFRESH = TEXT
@@ -118,6 +122,9 @@ plugin.tx_appointments {
 		}
 	}
 	settings {
+		type {
+			xhr = {$plugin.tx_appointments.settings.type.xhr}
+		}
 		agendaUid = {$plugin.tx_appointments.settings.agendaUid}
 		allowCreate = {$plugin.tx_appointments.settings.allowCreate}
 		agendaBack = {$plugin.tx_appointments.settings.agendaBack}
@@ -135,7 +142,7 @@ plugin.tx_appointments {
 		selectFields = agendaNavOverride
 	}
 	features {
-		# @TODO support before TYPO3 6.3 release
+		# @TODO support before TYPO3 7.0 release
 		rewrittenPropertyMapper = 0
 	}
 	objects {
@@ -178,22 +185,23 @@ page.jsInline.198311210 < plugin.tx_appointments.jslib.inlineJS
 [global]
 
 # XHR pagetype, not using eid because of required extbase controller context
+# @TODO should probably consider eid though, not having to deal with pid bullshit etc.
 appointments_xhr = PAGE
 appointments_xhr {
-	// typeNum needs to be adjust.
-	typeNum = 12345678
+	typeNum = {$plugin.tx_appointments.settings.type.xhr}
 	config {
 		disableAllHeaderCode = 1
 		disablePrefixComment = 1
 		xhtml_cleaning = 0
 		admPanel = 0
+		debug = 0
 		no_cache = 1
-		#additionalHeaders = Content-type:application/json
 		metaCharset = utf-8
 	}
 	10 = COA_INT
-	#10 < tt_content.list.20.tx_appointments_list
 	10 < styles.content.get
+	// exclusively take list content, regardless of colPos
+	10.select.where = list_type = 'appointments_list'
 }
 
 # default CSS

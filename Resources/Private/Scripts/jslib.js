@@ -511,7 +511,9 @@ jQuery(document).ready(function() {
 
 	// @TODO read class through TS?
 	var $csrfProtectA = jQuery('.tx-appointments a.csrf-protect'),
-		$csrfProtectForm = jQuery('.tx-appointments form.csrf-protect');
+		$csrfProtectForm = jQuery('.tx-appointments form.csrf-protect'),
+		xhrPageType = '###XHR_PAGETYPE###',
+		xhrPageId = '###XHR_PAGEID###';
 	if ($csrfProtectA[0] || $csrfProtectForm[0]) {
 		var $submitButtons = jQuery(':submit', $csrfProtectForm),
 			encodedUrls = [];
@@ -525,11 +527,12 @@ jQuery(document).ready(function() {
 		});
 
 		var xhr = new XMLHttpRequest();
-		xhr.open('HEAD', 'index.php?id=2130&type=12345678&tx_appointments_list[controller]=Appointment&tx_appointments_list[action]=ajaxGenerateTokens', true);
+		xhr.open('HEAD', 'index.php?id=' + xhrPageId + '&type=' + xhrPageType + '&tx_appointments_list[controller]=Appointment&tx_appointments_list[action]=ajaxGenerateTokens', true);
+		// @TODO what if the header is too large? (e.g. default apache is 8kb)
 		xhr.setRequestHeader('innologi--utoken', encodedUrls);
 		xhr.onload = function(e) {
 			if (this.status == 200) {
-				var tokens = xhr.getResponseHeader('innologi__stoken').split(','),
+				var tokens = this.getResponseHeader('innologi__stoken').split(','),
 					tokenCounter = 0;
 				$csrfProtectA.each(function (i, a) {
 					jQuery(a).attr('data-stoken', tokens[tokenCounter++]);
@@ -556,7 +559,7 @@ jQuery(document).ready(function() {
 
 	function verifyToken(token, tokenUri) {
 		var xhr = new XMLHttpRequest();
-		xhr.open('HEAD', 'index.php?id=2130&type=12345678&tx_appointments_list[controller]=Appointment&tx_appointments_list[action]=ajaxVerifyToken&tx_appointments_list[encodedUrl]=' + tokenUri, false);
+		xhr.open('HEAD', 'index.php?id=' + xhrPageId + '&type=' + xhrPageType + '&tx_appointments_list[controller]=Appointment&tx_appointments_list[action]=ajaxVerifyToken&tx_appointments_list[encodedUrl]=' + tokenUri, false);
 		xhr.setRequestHeader('innologi--stoken', token);
 		xhr.send();
 	}
