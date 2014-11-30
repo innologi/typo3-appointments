@@ -36,6 +36,11 @@
  */
 class Tx_Appointments_MVC_Controller_CsrfProtectController extends Tx_Appointments_MVC_Controller_SettingsOverrideController {
 
+	// @LOW review public/protected in service
+	// @LOW pull apart service into different files?
+	// @LOW put the csrf protection lib into a separate lib ext?
+	// @LOW make implementation as easy as some TS (see streamovations_vp REST lib)
+
 	/**
 	 * Enables checking for the method-annotations
 	 *

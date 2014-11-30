@@ -517,6 +517,7 @@ jQuery(document).ready(function() {
 	if ($csrfProtectA[0] || $csrfProtectForm[0]) {
 		var $submitButtons = jQuery(':submit', $csrfProtectForm),
 			encodedUrls = [];
+		// @TODO I can see them disappearing on a slow server.. might want to have them hidden initially perhaps..
 		$submitButtons.hide();
 		$csrfProtectA.hide();
 		$csrfProtectA.each(function (i, a) {
