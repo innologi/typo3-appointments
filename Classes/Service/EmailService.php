@@ -408,8 +408,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		$sequence = 0;
 
 		//id unique to this appointment and domain
-		#@FIX SITE URL is inclusief http:// .. /
-		$id = 'typo3-'.$this->extensionName.'-a'.$appointment->getAgenda()->getUid().'-t'.$appointment->getType()->getUid().'-a'.$appointment->getUid() . '@' . t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$id = 'typo3-'.$this->extensionName.'-a'.$appointment->getAgenda()->getUid().'-t'.$appointment->getType()->getUid().'-a'.$appointment->getUid() . '@' . t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 
 		//escape certain chars and newlines for them to work as intended in a description
 		#@TODO should it be wrapped at 74 chars (or 63 for first line), each line after the first indented with 1 space?
