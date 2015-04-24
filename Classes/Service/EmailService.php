@@ -353,15 +353,24 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		$agenda = $appointment->getAgenda();
 		if ($this->isActionAllowed($action, $agenda->getCalendarInviteTypes())) {
 			$mail = $this->initializeMail();
+			$ics = $this->getCalendarActionBody($action,$appointment);
 
 			$mail->setSubject(
 					$this->getActionSubject($action,'calendar')
 			)->setFrom(
 					$this->getSender()
 			)->setBody(
-					$this->getCalendarActionBody($action,$appointment),
+					$ics,
 					'text/calendar'
 			);
+
+			// @LOW google does not connect updates and outlook.com does not provide calendar interactivity, so maybe consider further imitating Google, e.g.:
+			//$mail->addPart($description,'text/plain');
+			//$mail->addPart($description,'text/html');
+			//$mail->addPart($ics,'text/calendar');
+			// $ics serialization needed?
+			// example gist: https://gist.github.com/ptasker/7680134
+			//$mail->attach(\Swift_Attachment::newInstance($ics,'invite.ics','application/ics'));
 
 			$toArray = $this->getRecipientEmailArray(
 					$agenda->getCalendarInviteAddress()->toArray()
@@ -386,20 +395,24 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath'])
 			&& isset($extbaseFrameworkConfiguration['view']['templateRootPath'][0])
 		) {
-			$template = $extbaseFrameworkConfiguration['view']['templateRootPath'] . 'Calendar.html';
+			$template = $extbaseFrameworkConfiguration['view']['templateRootPath'] . 'invite.ics';
 		}
 
 		$body = $this->fileResource($template); #@TODO __run through the template and see if anything is in need of a change (the most obvious being timezone)
 
 		$start = $appointment->getBeginTime()->getTimestamp();
 		$end = $appointment->getEndTime()->getTimestamp();
+		// for use with gmdate for UTC time representation
+		$dateFormat = 'Ymd\THis\Z';
 		$sender = $this->getSender();
-		$sequence = 0; #@TODO __Gmail has never connected updates, Thunderbird doesn't any longer, and Outlook? Check and remedy this!
+		$sequence = 0;
 
 		//id unique to this appointment and domain
+		#@FIX SITE URL is inclusief http:// .. /
 		$id = 'typo3-'.$this->extensionName.'-a'.$appointment->getAgenda()->getUid().'-t'.$appointment->getType()->getUid().'-a'.$appointment->getUid() . '@' . t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 
 		//escape certain chars and newlines for them to work as intended in a description
+		#@TODO should it be wrapped at 74 chars (or 63 for first line), each line after the first indented with 1 space?
 		$description = str_replace("\r",'',
 				str_replace("\n","\\n",
 						str_replace(',','\,',
@@ -410,16 +423,16 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 								)
 						)
 				)
-		); #@TODO do more Outlook testing on description here
+		);
 		$feUser = $appointment->getFeUser();
 		$markerArray = array(
-				'###START###' => strftime('%Y%m%dT%H%M%S', $start),
-				'###END###' => strftime('%Y%m%dT%H%M%S', $end),
-				'###TSTAMP###' => strftime('%Y%m%dT%H%M%S'),
+				'###START###' => gmdate($dateFormat, $start),
+				'###END###' => gmdate($dateFormat, $end),
+				'###CRDATE###' => gmdate($dateFormat, $appointment->getCrdate()),
+				'###TSTAMP###' => gmdate($dateFormat),
 				'###FROM###' => is_array($sender) ? key($sender) : $sender,
 				'###FROMCN###' => ($feUser !== NULL ? $feUser->getName() : (is_array($sender) ? current($sender) : $sender)),
 				'###UID###' => $id,
-				'###OWNERAPPTID###' => $id,
 				'###DESCRIPTION###' => $description,
 				'###LOCATION###' => '',
 				'###SUBJECT###' => $appointment->getType()->getName()
@@ -429,23 +442,18 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		switch ($action) {
 			case 'update':
 				$sequence = time(); //makes sure it is always a higher sequence number than previous
+				// @LOW maybe doing this instead of +1 is what causes failed connecting of updates for google?
 			case 'create':
 				$markerArray2  = array(
 						'###METHOD###' => 'REQUEST',
-						'###PRIORITY###' => 5,
 						'###STATUS###' => 'CONFIRMED',
-						'###OUTLOOK_STATUS###' => 'BUSY',
-						'###OUTLOOK_IMPORTANCE###' => 1,
 						'###SEQUENCE###' => $sequence
 				);
 				break;
 			case 'delete':
 				$markerArray2 = array(
 					'###METHOD###' => 'CANCEL',
-					'###PRIORITY###' => 1,
 					'###STATUS###' => 'CANCELLED',
-					'###OUTLOOK_STATUS###' => 'FREE',
-					'###OUTLOOK_IMPORTANCE###' => 2,
 					'###SEQUENCE###' => time()
 				);
 		}
