@@ -398,7 +398,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			$template = $extbaseFrameworkConfiguration['view']['templateRootPath'] . 'invite.ics';
 		}
 
-		$body = $this->fileResource($template); #@TODO __run through the template and see if anything is in need of a change (the most obvious being timezone)
+		$body = $this->fileResource($template);
 
 		$start = $appointment->getBeginTime()->getTimestamp();
 		$end = $appointment->getEndTime()->getTimestamp();
