@@ -3,7 +3,7 @@
  * -----
  * jQuery dependent.
  * Yes, I know of $.
- * @TODO zie main.js van assumburg
+ * @TODO zie main.js assumburg
  * Yes, I know of noConflict().
  * -----
  * @author Frenck Lutke <http://frencklutke.nl/>

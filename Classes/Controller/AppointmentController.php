@@ -328,8 +328,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * Also, there is no isTimeSlotAllowed check here. So in theory, it is possible for one to have his
 	 * timeslot expire AND have firstAvailableTime passed, while keeping his session alive and not refreshing
-	 * his timeslot by submitting an invalid appointments over and over. If ever requested, we might need to
-	 * fix that, but for now the cleanup task will prevent excessive time-differences over firstAvailableTime.
+	 * his timeslot by submitting an invalid appointment over and over. We might need to fix that, but for
+	 * now the cleanup task will prevent excessive time-differences over firstAvailableTime.
 	 *
 	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to create
 	 * @verifycsrftoken
@@ -403,7 +403,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->view->assign('formFieldValues', $formFieldValues);
 		$this->view->assign('superUser', $superUser);
 	}
-	#@FIX ________verify ownership/SU on edit/delete
+	#@TODO ________verify ownership/SU on edit/delete
 	/**
 	 * action update
 	 *

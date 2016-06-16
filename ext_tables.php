@@ -41,12 +41,9 @@ t3lib_extMgm::addLLrefForTCAdescr('tx_appointments_csh_task_clean_up', 'EXT:appo
 #@TODO __add validation options to Address
 #@FIX do Manual
 #@LOW look at / replace Resources/Public/Icons
-#@LOW unittesting?
+#@LOW unittesting
 #@TODO currently, month and day names are taken from locallang. I should see if the php locale can be changed to the typo3 locale in order to rely on strftime and/or f:format.date
-#@LOW look into localization:
-//Tx_Extbase_Utility_Localization::translate($key, $extensionName, $arguments=NULL)
-//$arguments
-//Allows you to specify an array of arguments passed to the function vsprintf. Allows you to fill wildcards in localized strings with values.
+#@LOW use localization $arguments parameter
 #@LOW replace the following in the appointment list template once required TYPO3 version is upped to 4.7 or higher:
 //{v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}
 //with:
@@ -236,8 +233,6 @@ $TCA['tx_appointments_domain_model_formfieldvalue'] = array(
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_appointments_domain_model_formfieldvalue.gif'
 	),
 );
-
-## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
 
 //set overlay icons
 if (TYPO3_MODE === 'BE') {
