@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rockstarapps>
+    
+
+<file name="Resources/Private/Scripts/jslib.js">
+        <min>false</min>
+        <comp>false</comp>
+        <closureCompiler>true</closureCompiler>
+        <gZip>false</gZip>
+        <resolveImports>false</resolveImports>
+        <urlRewriting>false</urlRewriting>
+        <autoBuild>true</autoBuild>
+        <lineLength>-1</lineLength>
+        <autoTimestamps>false</autoTimestamps>
+        <removeLogs>true</removeLogs>
+        <oldFileNames>false</oldFileNames>
+        <dependencies>
+            <file>Resources/Private/Scripts/jslib.js</file>
+        </dependencies>
+        <properties/>
+    </file>
+</rockstarapps>

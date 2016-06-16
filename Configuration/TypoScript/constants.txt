@@ -63,7 +63,7 @@ plugin.tx_appointments {
 		
 		uiLibFile = EXT:appointments/Resources/Public/Scripts/jquery-ui-1.10.2.custom.min.js
 		uiCssFile = EXT:appointments/Resources/Public/Styles/smoothness/jquery-ui-1.10.2.custom.css
-		libFile = EXT:appointments/Resources/Private/Scripts/jslib.js
+		libFile = EXT:appointments/Resources/Private/Scripts/jslib.closure.js
 		
 		# cat=plugin.tx_appointments/b_javascript/050; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_warnOnLeave
 		warnOnLeave = 1
