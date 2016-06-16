@@ -26,7 +26,7 @@
 			<td>
 				<f:link.action action="show" arguments="{appointment : appointment}" addQueryString="TRUE" class="link_appointment">
 					<f:format.date format="d-m-Y, H:i">{appointment.beginTime}</f:format.date>:
-					{appointment.type.name}
+					<f:format.html>{appointment.type.name}</f:format.html>
 				</f:link.action>
 			</td>
 			<!-- @TODO I REALLY dont like this in view, review possibilities to do this via transient property assigned in controller -->

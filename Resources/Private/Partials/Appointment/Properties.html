@@ -6,7 +6,7 @@
 			<f:translate key="tx_appointments_domain_model_appointment.type" />
 		</td>
 		<td>
-			{appointment.type.name}
+			<f:format.html>{appointment.type.name}</f:format.html>
 		</td>
 	</tr>
 	<tr>
@@ -34,7 +34,7 @@
 				<f:translate key="tx_appointments_domain_model_appointment.fe_user" />
 			</td>
 			<td>
-				{appointment.feUser.name}
+				<f:format.html>{appointment.feUser.name}</f:format.html>
 			</td>
 		</tr>
 	</f:if>
@@ -86,7 +86,7 @@
 				<f:translate key="tx_appointments_domain_model_appointment.notes" />
 			</td>
 			<td>
-				{appointment.notes}
+				<f:format.html>{appointment.notes}</f:format.html>
 			</td>
 		</tr>
 	</f:if>
@@ -97,7 +97,7 @@
 				<f:translate key="tx_appointments_domain_model_appointment.notes_su" />
 			</td>
 			<td>
-				{appointment.notesSu}
+				<f:format.html>{appointment.notesSu}</f:format.html>
 			</td>
 		</tr>
 	</f:if>

@@ -13,13 +13,13 @@
 							<f:then>
 								<f:link.action action="new1" arguments="{appointment : appointment}" addQueryString="TRUE" class="link_appointment">
 									<span class="time-unreserved"><f:format.date format="d-m-Y, H:i">{appointment.beginTime}</f:format.date></span>:
-									{appointment.type.name}
+									<f:format.html>{appointment.type.name}</f:format.html>
 								</f:link.action>(<f:translate key="tx_appointments_list.free_state" />)
 							</f:then>
 							<f:else>
 								<f:link.action action="new2" arguments="{appointment : appointment}" addQueryString="TRUE" class="link_appointment">
 									<f:format.date format="d-m-Y, H:i">{appointment.beginTime}</f:format.date>:
-									{appointment.type.name}
+									<f:format.html>{appointment.type.name}</f:format.html>
 								</f:link.action>(<a:timer appointment="{appointment}" timerMinutes="{settings.freeSlotInMinutes}" format="minutes"/> <f:translate key="tx_appointments_list.minutes_remaining"/>)
 							</f:else>
 						</f:if>
