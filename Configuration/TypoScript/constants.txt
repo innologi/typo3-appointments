@@ -19,12 +19,12 @@ plugin.tx_appointments {
 	}
 	settings {
 		# @TODO llang
-		
 		# cat=plugin.tx_appointments/a_extconf/045; type=int+; label=XHR page type
 		type.xhr = 201411301983
 		
-		# @TODO remove this when eid is utilized, do so before TER release!
-		pages.xhr = 2130
+		# @TODO remove this when eid is utilized, preferably before TER release!
+		# cat=plugin.tx_appointments/a_extconf/046; type=int+; label=XHR page uid: For JS CSRF-security-levels to work, set this to a page you're running the extensions plugin(s) on!
+		pages.xhr = 
 		
 		# cat=plugin.tx_appointments/a_extconf/050; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_freeSlotInMinutes
 		freeSlotInMinutes = 15
@@ -68,6 +68,6 @@ plugin.tx_appointments {
 		# cat=plugin.tx_appointments/b_javascript/050; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_warnOnLeave
 		warnOnLeave = 1
 		# cat=plugin.tx_appointments/b_javascript/051; type=options[none,header,meta-tag]; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod
-		warnOnLeaveRespectRefreshMethod = none 
+		warnOnLeaveRespectRefreshMethod = none
 	}
 }
