@@ -4,7 +4,7 @@
 <f:if condition="{formField}">
 	<tr>
 		<td scope="row">
-			<f:format.html>{formField.label}</f:format.html>
+			{formField.label}
 			<!-- @LOW allow enablers not to be shown if so desired? -->
 		</td>
 		<td>
@@ -27,7 +27,7 @@
 				<v:case case="3"> <!-- Textsmall / Input -->
 				</v:case>
 				<v:case case="4"> <!-- Textlarge / Textarea -->
-					<f:format.html>{formFieldValue.value}</f:format.html>
+					{formFieldValue.value}
 				</v:case>
 			</v:switch>
 		</td>

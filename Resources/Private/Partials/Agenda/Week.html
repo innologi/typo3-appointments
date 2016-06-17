@@ -5,11 +5,11 @@
 				<f:then>
 					<!-- @TODO monthShort is a representation choice.. just make it a month property and get the string from locallang HERE -->
 					<f:link.action controller="Appointment" arguments="{dateFirst : date.timestamp}" action="new1" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]'}" class="button_new_datefirst">
-						<f:format.html>{date.dayNumber} {date.monthShort}</f:format.html>
+						{date.dayNumber} {date.monthShort}
 					</f:link.action>
 				</f:then>
 				<f:else>
-					<f:format.html>{date.dayNumber} {date.monthShort}</f:format.html>
+					{date.dayNumber} {date.monthShort}
 				</f:else>
 			</f:if>
 		</div>
@@ -21,7 +21,7 @@
 					<li>
 						<f:link.action controller="Appointment" action="show" arguments="{appointment : appointment}" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[dateFirst]'}" class="link_appointment">
 							<f:format.date format="H:i">{appointment.beginTime}</f:format.date>
-							<f:format.html>{appointment.type.name}</f:format.html>
+							{appointment.type.name}
 						</f:link.action>
 					</li>
 				</f:for>

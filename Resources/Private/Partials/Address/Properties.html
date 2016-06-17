@@ -4,9 +4,7 @@
 		<td scope="row">
 			<f:translate key="tx_appointments_domain_model_address.name" />
 		</td>
-		<td>
-			<f:format.html>{address.name}</f:format.html>
-		</td>
+		<td>{address.name}</td>
 	</tr>
 </f:if>
 
@@ -15,9 +13,7 @@
 		<td scope="row">
 			<f:translate key="tx_appointments_domain_model_address.social_security_number" />
 		</td>
-		<td>
-			<f:format.html>{address.socialSecurityNumber}</f:format.html>
-		</td>
+		<td>{address.socialSecurityNumber}</td>
 	</tr>
 </f:if>
 
@@ -48,10 +44,10 @@
 			<f:translate key="tx_appointments_domain_model_address" />
 		</td>
 		<td>
-			<f:format.html>{address.address}</f:format.html>
+			{address.address}
 			<br />
-			<f:format.html>{address.zip}
-			{address.city}</f:format.html>
+			{address.zip}
+			{address.city}
 		</td>
 	</tr>
 </f:if>
@@ -61,8 +57,6 @@
 		<td scope="row">
 			<f:translate key="tx_appointments_domain_model_address.email" />
 		</td>
-		<td>
-			<f:format.html>{address.email}</f:format.html>
-		</td>
+		<td>{address.email}</td>
 	</tr>
 </f:if>
