@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2014 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2014 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -27,7 +27,7 @@
  * Facilitates Cross-Site Request Forgery Protection control, abstract implementation.
  *
  * @package appointments
- * @author Frenck Lutke <frenck@innologi.nl>
+ * @author Frenck Lutke <typo3@innologi.nl>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_Appointments_Service_CsrfProtectServiceInterface {

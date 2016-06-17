@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2014 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2014 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -27,7 +27,7 @@
  * Interface for Cross-Site Request Forgery Protection service.
  *
  * @package appointments
- * @author Frenck Lutke <frenck@innologi.nl>
+ * @author Frenck Lutke <typo3@innologi.nl>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 interface Tx_Appointments_Service_CsrfProtectServiceInterface {

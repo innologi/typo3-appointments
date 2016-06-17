@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2014 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2014 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *

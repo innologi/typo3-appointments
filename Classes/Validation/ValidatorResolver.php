@@ -3,7 +3,7 @@
  *  Copyright notice
  *
  *	(c) 2010-2013 Extbase Team (http://forge.typo3.org/projects/typo3v4-mvc)
- *  (c) 2012-2014 Frenck Lutke <frenck@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2014 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *  Extbase is a backport of TYPO3 Flow. All credits go to the TYPO3 Flow team.
  *  All rights reserved
  *
