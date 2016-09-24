@@ -149,7 +149,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		if ($types !== NULL) {
 				$constraint[] = $query->in('type', $types);
 		} elseif (!$includeExclusive)  {
-				$constraint[] = $query->equals('type.exclusiveAvailability', 0);
+				$constraint[] = $query->equals('type.dontBlockTypes', 0);
 		}
 
 		if ($includeUnfinished) { //aka no expired appointments
@@ -238,7 +238,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 		if ($isExclusive) {
 			$constraint[] = $query->equals('type', $appointment->getType());
 		} elseif (!$includeExclusive) {
-			$constraint[] = $query->equals('type.exclusiveAvailability', 0);
+			$constraint[] = $query->equals('type.dontBlockTypes', 0);
 		}
 
 		$result = $query->matching(

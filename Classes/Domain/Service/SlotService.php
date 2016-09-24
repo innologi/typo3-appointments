@@ -963,12 +963,12 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	 */
 	public function resetStorageObject(Tx_Appointments_Domain_Model_Type $type, Tx_Appointments_Domain_Model_Agenda $agenda) {
 		//if the current type is exclusive, we only need to reset that one
-		$isExclusive = $type->getExclusiveAvailability();
+		$isExclusive = $type->getExclusiveAvailability() && $type->getDontBlockTypes();
 		$types = $isExclusive ? array($type) : $agenda->getTypes();
 
 		foreach ($types as $type) {
 			//if the current type wasn't exclusive, only reset those that aren't exclusive either
-			if ($isExclusive || !$type->getExclusiveAvailability()) {
+			if ($isExclusive || !$type->getExclusiveAvailability() ) {
 				$typeUid = $type->getUid();
 				$key = $this->getCacheKey($type, $agenda);
 

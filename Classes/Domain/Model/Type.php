@@ -87,6 +87,11 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 */
 
 	/**
+	 * @var boolean
+	 */
+	protected $dontBlockTypes = FALSE;
+
+	/**
 	 * Default duration
 	 *
 	 * @var integer
@@ -493,6 +498,25 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 */
 	public function setExclusiveAvailability($exclusiveAvailability) {
 		$this->exclusiveAvailability = $exclusiveAvailability;
+	}
+
+	/**
+	 * Returns dontblocktypes
+	 *
+	 * @return boolean
+	 */
+	public function getDontBlockTypes() {
+		return $this->dontBlockTypes;
+	}
+
+	/**
+	 * Sets dontblocktypes
+	 *
+	 * @param boolean $dontBlockTypes
+	 * @return void
+	 */
+	public function setDontBlockTypes($dontBlockTypes) {
+		$this->dontBlockTypes = $dontBlockTypes;
 	}
 
 	/**
