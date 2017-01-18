@@ -12,6 +12,7 @@
 			<label index="superuser_only.description">If enabled, only lets superusers create appointments of this type</label>
 			<label index="exclusive_availability.description">If enabled, will make this type&apos;s availability be affected exclusively by appointments of its own type, on the same agenda</label>
 			<label index="dont_block_types.description">If enabled, will make this type invisible to other types, on the same agenda</label>
+			<label index="dont_restrict_type_counts.description">If enabled, will make this type not count to other types maximum allowed appointments (per X days), on the same agenda</label>
 			<label index="default_duration.description">Number of minutes an appointment of this type takes, at minimum</label>
 			<label index="start_time_monday.description">Earliest possible time to make appointments on Mondays, ranging from 00:00 to 23:59</label>
 			<label index="start_time_tuesday.description">Earliest possible time to make appointments on Tuesdays, ranging from 00:00 to 23:59</label>
@@ -58,6 +59,7 @@
 			<label index="superuser_only.description">Door dit te activeren, kunnen alleen superusers afspraken van dit type aanmaken</label>
 			<label index="exclusive_availability.description">Door dit te activeren, zal de beschikbaarheid van dit type uitsluitend aangetast kunnen worden door afspraken van hetzelfde type, op dezelfde agenda</label>
 			<label index="dont_block_types.description">Door dit te activeren, zal dit type onzichtbaar zijn voor andere typen, op dezelfde agenda</label>
+			<label index="dont_restrict_type_counts.description">Door dit te activeren, zal dit type niet meetellen naar de maximale toegestane afspraken van andere typen (per X dagen), op dezelfde agenda</label>
 			<label index="default_duration.description">Hoeveelheid minuten een afspraak van dit type minimaal in beslag neemt</label>
 			<label index="start_time_monday.description">Vroegst mogelijke tijdstip om afspraken te plannen op Maandagen, van 00:00 tot 23:59</label>
 			<label index="start_time_tuesday.description">Vroegst mogelijke tijdstip om afspraken te plannen op Dinsdagen, van 00:00 tot 23:59</label>

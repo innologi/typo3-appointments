@@ -531,9 +531,12 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 					//if exclusive availability enabled, only include appointments of this type in the search
 					$types = $type->getExclusiveAvailability() ? array($type) : NULL;
 
-					$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, $types, 0, $excludeAppointment, 1);
+					$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, $types, 0, $excludeAppointment, 1, FALSE);
 					$appointmentsTotalAmount = count($appointments);
 					$appointments = $this->appointmentRepository->rearrangeAppointmentArray($appointments);
+					// @TODO this non-restricting stuff probably isn't necessary for appointments of exclusive availability
+					$appointmentsNonRestricting = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, $types, 0, $excludeAppointment, 1, TRUE);
+					$appointmentsNonRestricting = $this->appointmentRepository->rearrangeAppointmentArray($appointmentsNonRestricting);
 					$appointmentsCurrent = isset($appointments[$currentDate]) ? $appointments[$currentDate] : array();
 					$appointmentsCurrentAmount = count($appointmentsCurrent);
 					if ($appointmentsCurrentAmount < $maxAmount) {
@@ -550,7 +553,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 								if ($interval > 0) {
 									$startDateTime->modify("-$interval hours");
 									$endDateTime->modify("+$interval hours");
-									$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, $types, 0, $excludeAppointment, 1);
+									$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, $types, 0, $excludeAppointment, 1, FALSE);
 									$appointmentsTotalAmount = count($appointments);
 									$appointments = $this->appointmentRepository->rearrangeAppointmentArray($appointments, $interval);
 									if ($appointmentsTotalAmount >= $maxAmountPerVarDays //the totalAmount needs to be at least as much as the maxAmount for perVarDaysInterval to have any effect
@@ -581,6 +584,11 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 						}
 
 						if ($timestamp <= $stopTimestamp) {
+							if (isset($appointmentsNonRestricting[$currentDate])) {
+								$appointmentsCurrent = $appointmentsCurrent + $appointmentsNonRestricting[$currentDate];
+								ksort($appointmentsCurrent);
+							}
+
 							$dateSlot = $this->createDateSlot($dateTime);
 							$this->createTimeSlots($dateSlot, $type, $stopTimestamp, $appointmentsCurrent);
 							//it's possible that an amount of appointments lower than max can leave space for 0 timeSlots

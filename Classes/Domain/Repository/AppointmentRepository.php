@@ -135,9 +135,10 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @param boolean $includeExclusive Include exclusives, but only if $types === NULL
 	 * @param Tx_Appointments_Domain_Model_Appointment $excludeAppointment Appointment that is ignored in retrieving appointments
 	 * @param boolean $includeUnfinished On true, includes unfinished appointments
+	 * @param boolean $dontRestrictTypeCounts If set, sets the relevant type parameter as condition
 	 * @return array An array of objects, empty if no objects found
 	 */
-	public function findBetween(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $start, DateTime $end, array $types = NULL, $includeExclusive = FALSE, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL, $includeUnfinished = FALSE) {
+	public function findBetween(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $start, DateTime $end, array $types = NULL, $includeExclusive = FALSE, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL, $includeUnfinished = FALSE, $dontRestrictTypeCounts = NULL) {
 		$query = $this->createQuery();
 
 		$constraint = array(
@@ -150,6 +151,10 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 				$constraint[] = $query->in('type', $types);
 		} elseif (!$includeExclusive)  {
 				$constraint[] = $query->equals('type.dontBlockTypes', 0);
+		}
+
+		if ($dontRestrictTypeCounts !== NULL) {
+			$constraint[] = $query->equals('type.dontRestrictTypeCounts', (int) $dontRestrictTypeCounts);
 		}
 
 		if ($includeUnfinished) { //aka no expired appointments
@@ -331,7 +336,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 				}
 				$prevH = $h;
 			}
-			$resultArray[$resultArrayKey][] = $appointment;
+			$resultArray[$resultArrayKey][$beginTime->getTimestamp()] = $appointment;
 		}
 		return $resultArray;
 	}

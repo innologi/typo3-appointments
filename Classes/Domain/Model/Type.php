@@ -92,6 +92,11 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	protected $dontBlockTypes = FALSE;
 
 	/**
+	 * @var boolean
+	 */
+	protected $dontRestrictTypeCounts = FALSE;
+
+	/**
 	 * Default duration
 	 *
 	 * @var integer
@@ -517,6 +522,25 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 */
 	public function setDontBlockTypes($dontBlockTypes) {
 		$this->dontBlockTypes = $dontBlockTypes;
+	}
+
+	/**
+	 * Returns dontrestrictypecounts
+	 *
+	 * @return boolean
+	 */
+	public function getDontRestrictTypeCounts() {
+		return $this->dontRestrictTypeCounts;
+	}
+
+	/**
+	 * Sets dontrestricttypecounts
+	 *
+	 * @param boolean $dontRestrictTypeCounts
+	 * @return void
+	 */
+	public function setDontRestrictTypeCounts($dontRestrictTypeCounts) {
+		$this->dontRestrictTypeCounts = $dontRestrictTypeCounts;
 	}
 
 	/**
