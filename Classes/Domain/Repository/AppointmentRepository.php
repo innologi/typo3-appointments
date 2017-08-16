@@ -36,18 +36,10 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository
 
 	/**
 	 * @var Tx_Appointments_Domain_Service_SlotService
+	 * @inject
 	 */
 	protected $slotService;
 
-	/**
-	 * Injects the Slot Service
-	 *
-	 * @param Tx_Appointments_Domain_Service_SlotService $slotService
-	 * @return void
-	 */
-	public function injectSlotService(Tx_Appointments_Domain_Service_SlotService $slotService) {
-		$this->slotService = $slotService;
-	}
 
 
 	//************************

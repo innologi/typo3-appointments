@@ -52,6 +52,7 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 	 * agendaRepository
 	 *
 	 * @var Tx_Appointments_Domain_Repository_AgendaRepository
+	 * @inject
 	 */
 	protected $agendaRepository;
 
@@ -59,6 +60,7 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 	 * appointmentRepository
 	 *
 	 * @var Tx_Appointments_Domain_Repository_AppointmentRepository
+	 * @inject
 	 */
 	protected $appointmentRepository;
 
@@ -66,16 +68,19 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 	 * typeRepository
 	 *
 	 * @var Tx_Appointments_Domain_Repository_TypeRepository
+	 * @inject
 	 */
 	protected $typeRepository;
 
 	/**
 	 * @var Tx_Appointments_Service_UserService
+	 * @inject
 	 */
 	protected $userService;
 
 	/**
 	 * @var Tx_Appointments_Domain_Service_SlotService
+	 * @inject
 	 */
 	protected $slotService;
 
@@ -101,57 +106,6 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 	 * @var boolean
 	 */
 	protected $requireLogin = TRUE;
-
-	/**
-	 * injectAgendaRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_AgendaRepository $agendaRepository
-	 * @return void
-	 */
-	public function injectAgendaRepository(Tx_Appointments_Domain_Repository_AgendaRepository $agendaRepository) {
-		$this->agendaRepository = $agendaRepository;
-	}
-
-	/**
-	 * injectAppointmentRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_AppointmentRepository $appointmentRepository
-	 * @return void
-	 */
-	public function injectAppointmentRepository(Tx_Appointments_Domain_Repository_AppointmentRepository $appointmentRepository) {
-		$this->appointmentRepository = $appointmentRepository;
-	}
-
-	/**
-	 * injectTypeRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_TypeRepository $typeRepository
-	 * @return void
-	 */
-	public function injectTypeRepository(Tx_Appointments_Domain_Repository_TypeRepository $typeRepository) {
-		$this->typeRepository = $typeRepository;
-	}
-
-	/**
-	 * Injects the User Service
-	 *
-	 * @param Tx_Appointments_Service_UserService $userService
-	 * @return void
-	 */
-	public function injectUserService(Tx_Appointments_Service_UserService $userService) {
-		$this->userService = $userService;
-	}
-
-
-	/**
-	 * Injects the Slot Service
-	 *
-	 * @param Tx_Appointments_Domain_Service_SlotService $slotService
-	 * @return void
-	 */
-	public function injectSlotService(Tx_Appointments_Domain_Service_SlotService $slotService) {
-		$this->slotService = $slotService;
-	}
 
 	/**
 	 * Initializes the controller before invoking an action method.

@@ -82,18 +82,9 @@ class Tx_Appointments_Domain_Service_SlotService implements SingletonInterface {
 	 * appointmentRepository
 	 *
 	 * @var Tx_Appointments_Domain_Repository_AppointmentRepository
+	 * @inject
 	 */
 	protected $appointmentRepository;
-
-	/**
-	 * injectAppointmentRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_AppointmentRepository $appointmentRepository
-	 * @return void
-	 */
-	public function injectAppointmentRepository(Tx_Appointments_Domain_Repository_AppointmentRepository $appointmentRepository) {
-		$this->appointmentRepository = $appointmentRepository;
-	}
 
 	/**
 	 * Initializes slot service

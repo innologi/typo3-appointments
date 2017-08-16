@@ -50,6 +50,7 @@ class Tx_Appointments_Service_UserService implements SingletonInterface {
 	 * frontendUserRepository
 	 *
 	 * @var Tx_Appointments_Domain_Repository_FrontendUserRepository
+	 * @inject
 	 */
 	protected $frontendUserRepository;
 
@@ -57,28 +58,9 @@ class Tx_Appointments_Service_UserService implements SingletonInterface {
 	 * frontendUserGroupRepository
 	 *
 	 * @var Tx_Appointments_Domain_Repository_FrontendUserGroupRepository
+	 * @inject
 	 */
 	protected $frontendUserGroupRepository;
-
-	/**
-	 * injectFrontendUserRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_FrontendUserRepository $frontendUserRepository
-	 * @return void
-	 */
-	public function injectFrontendUserRepository(Tx_Appointments_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
-		$this->frontendUserRepository = $frontendUserRepository;
-	}
-
-	/**
-	 * injectFrontendUserGroupRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository
-	 * @return void
-	 */
-	public function injectFrontendUserGroupRepository(Tx_Appointments_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
-		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
-	}
 
 	/**
 	 * Returns current frontend user.
