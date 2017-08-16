@@ -23,7 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * FormFieldVlaue Domain Validator.
  *
@@ -62,9 +64,9 @@ class Tx_Appointments_Domain_Validator_FormFieldValueValidator extends Tx_Appoin
 	 * @return boolean TRUE if valid, FALSE if invalid
 	 */
 	protected function validateValue($value, Tx_Appointments_Domain_Model_FormField $formField) {
-		$validationTypes = t3lib_div::trimExplode(',', $formField->getValidationTypes(), TRUE);
-		$validatorResolver = $this->objectManager->get('Tx_Extbase_Validation_ValidatorResolver');
-		$validatorConjunction = $this->objectManager->get('Tx_Extbase_Validation_Validator_ConjunctionValidator');
+		$validationTypes = GeneralUtility::trimExplode(',', $formField->getValidationTypes(), TRUE);
+		$validatorResolver = $this->objectManager->get(ValidatorResolver::class);
+		$validatorConjunction = $this->objectManager->get(ConjunctionValidator::class);
 		$addNotEmpty = FALSE;
 
 		if (!empty($validationTypes)) {

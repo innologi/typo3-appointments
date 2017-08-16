@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * FormFieldValue Repository
  *
@@ -31,7 +31,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Repository_FormFieldValueRepository extends Tx_Extbase_Persistence_Repository {
+class Tx_Appointments_Domain_Repository_FormFieldValueRepository extends Repository {
 
 	/**
 	 * Finds all orphaned formfieldvalues (where appointment is NULL)
@@ -40,7 +40,7 @@ class Tx_Appointments_Domain_Repository_FormFieldValueRepository extends Tx_Extb
 	 * the relation of the formfieldvalues is not taken into account. [4.5] Leaving them be, except when they have no more
 	 * valid relation, at least keeps them intact when undeleting their appointment. They're hidden in TCA anyway.
 	 *
-	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
 	public function findOrphaned() {
 		$query = $this->createQuery();

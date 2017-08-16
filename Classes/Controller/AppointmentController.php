@@ -23,7 +23,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Validation\Error;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Appointment Controller
  *
@@ -150,8 +153,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			} else {
 				//no types available on chosen time, so no appointments either.
 				//the condition also functions as a check for a valid dateFirst
-				$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_no_types', $this->extensionName);
-				$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+				$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_create_no_types', $this->extensionName);
+				$this->flashMessageContainer->add($flashMessage, '', FlashMessage::ERROR);
 				//$appointment == NULL
 			}
 		}
@@ -286,8 +289,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 						$timerStart = TRUE;
 					} else {
 						//messages for the same timeslot again (refresh)
-						$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timerrefresh', $this->extensionName);
-						$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
+						$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_timerrefresh', $this->extensionName);
+						$this->flashMessageContainer->add($flashMessage, '', FlashMessage::INFO);
 					}
 					$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED);
 				}
@@ -300,14 +303,14 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 				$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']); #@LOW is 0 supported everywhere? it should be, but I think I left a <1 check somewhere. Also timer messages should react to 0
 				//message for a new timeslot
 				$flashMessage = str_replace('$1', $freeSlotInMinutes,
-						Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timerstart', $this->extensionName)
+					LocalizationUtility::translate('tx_appointments_list.appointment_timerstart', $this->extensionName)
 				);
-				$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
+				$this->flashMessageContainer->add($flashMessage, '', FlashMessage::INFO);
 			}
 		} else {
 			$action = 'new1'; //if a timeslot is not allowed, we'll need to force the user to pick a new one
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.timeslot_not_allowed', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+			$flashMessage = LocalizationUtility::translate('tx_appointments_list.timeslot_not_allowed', $this->extensionName);
+			$this->flashMessageContainer->add($flashMessage, '', FlashMessage::ERROR);
 
 			//not adding appointment as argument prevents a uriBuilder exception @ redirect() if appointment wasn't persisted yet..
 			if (!$appointment->_isNew()) { //.. but since we're not redirecting if this condition returns TRUE, there's no need for it here anyway
@@ -356,8 +359,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::FINISHED);
 			$this->appointmentRepository->update($appointment);
 
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_create_success', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
+			$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_create_success', $this->extensionName);
+			$this->flashMessageContainer->add($flashMessage, '', FlashMessage::OK);
 
 			$this->performMailingActions('create',$appointment);
 
@@ -423,8 +426,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$this->failTimeValidation('edit',4075013371337,$timeFields);
 		} else {
 			$this->appointmentRepository->update($appointment);
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
+			$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
+			$this->flashMessageContainer->add($flashMessage, '', FlashMessage::OK);
 
 			$this->performMailingActions('update',$appointment);
 
@@ -445,8 +448,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 */
 	public function deleteAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
 		$this->appointmentRepository->remove($appointment);
-		$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_delete_success', $this->extensionName);
-		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::OK);
+		$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_delete_success', $this->extensionName);
+		$this->flashMessageContainer->add($flashMessage, '', FlashMessage::OK);
 
 		$this->performMailingActions('delete',$appointment);
 
@@ -468,8 +471,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
 		$this->appointmentRepository->update($appointment);
 
-		$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_free_success', $this->extensionName);
-		$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::INFO);
+		$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_free_success', $this->extensionName);
+		$this->flashMessageContainer->add($flashMessage, '', FlashMessage::INFO);
 
 		$arguments = array(
 				'appointment' => $appointment
@@ -495,11 +498,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * Also, the explicit sorting values of FormFields are used here to re-arrange the FormFieldValues.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormField> $formFields
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue> $formFieldValues
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
+	 * @param ObjectStorage $formFields
+	 * @param ObjectStorage $formFieldValues
+	 * @return ObjectStorage
 	 */
-	protected function addMissingFormFields(Tx_Extbase_Persistence_ObjectStorage $formFields, Tx_Extbase_Persistence_ObjectStorage $formFieldValues) { #@TODO _can we once again check if this doesn't just readd everything? There were some artifacts last time I debugged this
+	protected function addMissingFormFields(ObjectStorage $formFields, ObjectStorage $formFieldValues) { #@TODO _can we once again check if this doesn't just readd everything? There were some artifacts last time I debugged this
 		$items = array();
 		$order = array();
 
@@ -525,7 +528,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 		$formFields = $formFields->toArray(); //formFields is lazy, a count on a lazy objectstorage will give the wrong number if a detach took place
 		if (count($formFields)) {
-			$newStorage = new Tx_Extbase_Persistence_ObjectStorage();
+			$newStorage = new ObjectStorage();
 
 			//formfieldvalues to add
 			foreach ($formFields as $formField) {
@@ -618,14 +621,14 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			$flashMessage = str_replace(
 					'$1',
 					'<span class="reservation-timer">' . Tx_Appointments_Utility_GeneralUtility::getAppointmentTimer($appointment) . '</span>',
-					Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timer', $this->extensionName)
+					LocalizationUtility::translate('tx_appointments_list.appointment_timer', $this->extensionName)
 			);
-			$flashHeader = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_timer_header', $this->extensionName);
-			$flashState = t3lib_FlashMessage::INFO;
+			$flashHeader = LocalizationUtility::translate('tx_appointments_list.appointment_timer_header', $this->extensionName);
+			$flashState = FlashMessage::INFO;
 		} else { //warn of expiration
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_expired', $this->extensionName);
-			$flashHeader = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.appointment_expired_header', $this->extensionName);
-			$flashState = t3lib_FlashMessage::WARNING;
+			$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_expired', $this->extensionName);
+			$flashHeader = LocalizationUtility::translate('tx_appointments_list.appointment_expired_header', $this->extensionName);
+			$flashState = FlashMessage::WARNING;
 			$this->view->assign('expired', 1); //for free-time button
 		}
 		$this->flashMessageContainer->add($flashMessage,$flashHeader,$flashState);
@@ -759,8 +762,8 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$this->emailService->setControllerContext($this->controllerContext); //can't be done @ injection because controllerContext won't be initialized yet
 
 		if (!$this->emailService->sendAction($action,$appointment)) {
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.email_error', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+			$flashMessage = LocalizationUtility::translate('tx_appointments_list.email_error', $this->extensionName);
+			$this->flashMessageContainer->add($flashMessage, '', FlashMessage::ERROR);
 		}
 	}
 
@@ -784,7 +787,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			foreach ($timeFields as $uid) {
 				$subPropertyError = new Tx_Extbase_Validation_PropertyError('value');
 				$subPropertyError->addErrors(array(
-					new Tx_Extbase_Validation_Error($errorMsg,$errorCode)
+					new Error($errorMsg,$errorCode)
 				));
 				$storageError->addErrors($uid, array($subPropertyError));
 			}
@@ -795,7 +798,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		//this marks the beginTime fields (date / time), and adds the validation error message to it
 		$propertyError = new Tx_Extbase_Validation_PropertyError('beginTime');
 		$propertyError->addErrors(array(
-			new Tx_Extbase_Validation_Error($errorMsg,$errorCode)
+			new Error($errorMsg,$errorCode)
 		));
 		$errors[] = $propertyError;
 
@@ -822,7 +825,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$messageParts = '';
 
 		if (isset($overlapInfo['begin'])) {
-			$messageParts .= Tx_Extbase_Utility_Localization::translate('tx_appointments_list.crosstime_begin',
+			$messageParts .= LocalizationUtility::translate('tx_appointments_list.crosstime_begin',
 					$this->extensionName,
 					array(
 							$appointment->getBeginTime()->format('H:i'),
@@ -831,7 +834,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			);
 		}
 		if (isset($overlapInfo['end'])) {
-			$messageParts .= Tx_Extbase_Utility_Localization::translate('tx_appointments_list.crosstime_end',
+			$messageParts .= LocalizationUtility::translate('tx_appointments_list.crosstime_end',
 					$this->extensionName,
 					array(
 							$appointment->getEndTime()->format('H:i'),
@@ -841,9 +844,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		}
 
 		$this->flashMessageContainer->add(
-				nl2br(Tx_Extbase_Utility_Localization::translate('tx_appointments_list.crosstime_info',$this->extensionName,array($messageParts))),
-				Tx_Extbase_Utility_Localization::translate('tx_appointments_list.crosstime_title',$this->extensionName),
-				t3lib_FlashMessage::ERROR
+			nl2br(LocalizationUtility::translate('tx_appointments_list.crosstime_info',$this->extensionName,array($messageParts))),
+			LocalizationUtility::translate('tx_appointments_list.crosstime_title',$this->extensionName),
+			FlashMessage::ERROR
 		);
 	}
 

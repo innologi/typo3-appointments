@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 /**
  * Interface for Cross-Site Request Forgery Protection service.
  *
@@ -113,11 +114,11 @@ interface Tx_Appointments_Service_CsrfProtectServiceInterface {
 	 * Provides the csrf-class and encoded uri to a tag for
 	 * identification by the JavaScript library.
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TagBuilder $tag
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tag
 	 * @param string $tokenUri
 	 * @return void
 	 */
-	 public function provideTagArguments(Tx_Fluid_Core_ViewHelper_TagBuilder $tag, $tokenUri = '');
+	 public function provideTagArguments(TagBuilder $tag, $tokenUri = '');
 
 	/**
 	 * Gets encodedUrl from header.

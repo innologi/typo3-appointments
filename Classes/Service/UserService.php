@@ -22,7 +22,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Core\SingletonInterface;
 /**
  * Facilitates user/group control.
  *
@@ -30,7 +30,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Service_UserService implements t3lib_Singleton {
+class Tx_Appointments_Service_UserService implements SingletonInterface {
 
 	/**
 	 * Logged in frontend user

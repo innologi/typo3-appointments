@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 /**
  * CSRF-Protect Controller
  *
@@ -84,7 +84,7 @@ class Tx_Appointments_MVC_Controller_CsrfProtectController extends Tx_Appointmen
 					$flashMessage = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_appointments.csrf_invalid_request', $this->extensionName);
 					// necessary to use flash messages, but not built until after initializeAction()
 					$this->controllerContext = $this->buildControllerContext();
-					$this->addFlashMessage($flashMessage, '', t3lib_FlashMessage::ERROR);
+					$this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
 					if ($this->request->getInternalArgument('__referrer') !== NULL) {
 						// forms can use this to get back to the original form
 						$this->forward('error');

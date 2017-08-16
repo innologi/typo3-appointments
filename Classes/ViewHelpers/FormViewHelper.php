@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
 *  Copyright notice
 *
@@ -22,7 +23,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
+use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 /**
  * Form ViewHelper
  *
@@ -40,7 +41,7 @@
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Appointments_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_FormViewHelper {
+class Tx_Appointments_ViewHelpers_FormViewHelper extends FormViewHelper {
 
 	/**
 	 * @var string

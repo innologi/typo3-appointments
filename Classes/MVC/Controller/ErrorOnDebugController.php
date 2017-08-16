@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 /**
  * Error On Debug Controller.
  *
@@ -33,7 +33,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_MVC_Controller_ErrorOnDebugController extends Tx_Extbase_MVC_Controller_ActionController {
+class Tx_Appointments_MVC_Controller_ErrorOnDebugController extends ActionController {
 
 	/**
 	 * A template method for displaying custom error flash messages, or to

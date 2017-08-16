@@ -23,7 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 /**
  * Appointment domain model
  *
@@ -31,7 +33,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_Appointments_Domain_Model_Appointment extends AbstractEntity {
 
 	//creation progress constants
 	const FINISHED = 0; //appointment finalized
@@ -130,7 +132,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * 2. Can be lazy, because the objectStorage is ONLY manipulated by form.
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
 	 * @validate Tx_Appointments_Domain_Validator_ObjectStorageValidator(clearErrors=1)
 	 * @lazy
 	 */
@@ -141,7 +143,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * FormFieldValues that are set as sending-email-address
 	 *
 	 * @transient
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
 	 */
 	protected $emailFormFieldValues;
 
@@ -182,7 +184,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	}
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
 	 *
 	 * @return void
 	 */
@@ -192,7 +194,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->formFieldValues = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->formFieldValues = new ObjectStorage();
 	}
 
 
@@ -408,7 +410,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Returns the formFieldValues
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage $formFieldValues
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $formFieldValues
 	 */
 	public function getFormFieldValues() {
 		return $this->formFieldValues;
@@ -417,17 +419,17 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the formFieldValues
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue> $formFieldValues
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $formFieldValues
 	 * @return void
 	 */
-	public function setFormFieldValues(Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
+	public function setFormFieldValues(ObjectStorage $formFieldValues) {
 		$this->formFieldValues = $formFieldValues;
 	}
 
 	/**
 	 * Returns the emailFormFieldValues
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage $emailFormFieldValues
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $emailFormFieldValues
 	 */
 	public function getEmailFormFieldValues() {
 		if ($this->emailFormFieldValues === NULL) {
@@ -439,11 +441,11 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the emailFormFieldValues, filtered from $formFieldValues
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue> $formFieldValues
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue> $formFieldValues
 	 * @return void
 	 */
-	public function setEmailFormFieldValues(Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
-		$this->emailFormFieldValues = new Tx_Extbase_Persistence_ObjectStorage();
+	public function setEmailFormFieldValues(ObjectStorage $formFieldValues) {
+		$this->emailFormFieldValues = new ObjectStorage();
 		foreach ($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
 			if ($formField->getFunction() === Tx_Appointments_Domain_Model_FormField::FUNCTION_EMAIL) {
@@ -525,7 +527,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @param mixed $property Defined by reference because we're replacing the original reference
 	 */
 	protected function noLazy(&$property) { #@TODO when is this really necessary?
-		if (is_object($property) && $property instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+		if (is_object($property) && $property instanceof LazyLoadingProxy) {
 			$property = $property->_loadRealInstance();
 		}
 	}

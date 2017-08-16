@@ -23,7 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Agenda domain model
  *
@@ -31,7 +33,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_Appointments_Domain_Model_Agenda extends AbstractEntity {
 
 	/**
 	 * Name of agenda
@@ -58,7 +60,7 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Types
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Type>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Type>
 	 * @lazy
 	 */
 	protected $types;
@@ -95,7 +97,7 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Emails a confirmation on every scheduled appointment to an address
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Address>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Address>
 	 * @lazy
 	 */
 	protected $emailAddress;
@@ -110,7 +112,7 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Emails a calendar invitation on every scheduled appointment to an address
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Address>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Address>
 	 * @lazy
 	 */
 	protected $calendarInviteAddress;
@@ -133,7 +135,7 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	}
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
 	 *
 	 * @return void
 	 */
@@ -143,9 +145,9 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->types = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->emailAddress = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->calendarInviteAddress = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->types = new ObjectStorage();
+		$this->emailAddress = new ObjectStorage();
+		$this->calendarInviteAddress = new ObjectStorage();
 	}
 
 	/**
@@ -205,7 +207,7 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	 */
 	public function setHolidayArray() {
 		$holidays = str_replace("\r\n","\n",$this->holidays);
-		$this->holidayArray = array_flip(t3lib_div::trimExplode("\n", $holidays, 1));
+		$this->holidayArray = array_flip(GeneralUtility::trimExplode("\n", $holidays, 1));
 	}
 
 	/**
@@ -231,7 +233,7 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Returns types
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Type> $types
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $types
 	 */
 	public function getTypes() {
 		return $this->types;
@@ -240,10 +242,10 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Sets types
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Type> $types
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $types
 	 * @return void
 	 */
-	public function setTypes(Tx_Extbase_Persistence_ObjectStorage $types) {
+	public function setTypes(ObjectStorage $types) {
 		$this->types = $types;
 	}
 
@@ -346,7 +348,7 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Returns the emailAddress
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Address> $emailAddress
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $emailAddress
 	 */
 	public function getEmailAddress() {
 		return $this->emailAddress;
@@ -355,10 +357,10 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Sets the emailAddress
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Address> $emailAddress
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $emailAddress
 	 * @return void
 	 */
-	public function setEmailAddress(Tx_Extbase_Persistence_ObjectStorage $emailAddress) {
+	public function setEmailAddress(ObjectStorage $emailAddress) {
 		$this->emailAddress = $emailAddress;
 	}
 
@@ -404,7 +406,7 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Returns the calendarInviteAddress
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Address> $calendarInviteAddress
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getCalendarInviteAddress() {
 		return $this->calendarInviteAddress;
@@ -413,10 +415,10 @@ class Tx_Appointments_Domain_Model_Agenda extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Sets the calendarInviteAddress
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Address> $calendarInviteAddress
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $calendarInviteAddress
 	 * @return void
 	 */
-	public function setCalendarInviteAddress(Tx_Extbase_Persistence_ObjectStorage $calendarInviteAddress) {
+	public function setCalendarInviteAddress(ObjectStorage $calendarInviteAddress) {
 		$this->calendarInviteAddress = $calendarInviteAddress;
 	}
 

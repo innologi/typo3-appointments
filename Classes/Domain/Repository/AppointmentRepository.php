@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 /**
  * Appointment Repository
  *
@@ -31,7 +32,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase_Persistence_Repository {
+class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository {
 
 	/**
 	 * @var Tx_Appointments_Domain_Service_SlotService
@@ -64,7 +65,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * @param DateTime $start Optional start time
 	 * @param DateTime $end Optional end time
 	 * @param boolean $descending If TRUE: sorts by begintime descending, if FALSE: ascending
-	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
 	public function findPersonalList(Tx_Appointments_Domain_Model_Agenda $agenda, array $types, Tx_Appointments_Domain_Model_FrontendUser $feUser, $unfinished = FALSE, DateTime $start = NULL, DateTime $end = NULL, $descending = FALSE) {
 		$query = $this->createQuery();
@@ -90,7 +91,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 				)
 		)->setOrderings(
 				array(
-						'beginTime' => $descending ? Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING : Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
+					'beginTime' => $descending ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING
 				)
 		)->execute();
 
@@ -103,7 +104,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 *
 	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda which the appointments belong to
 	 * @param DateTime $day Day to which appointments belong to
-	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
 	public function findByAgendaAndDay(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $day) {
 		$query = $this->createQuery();
@@ -119,7 +120,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 				)
 		)->setOrderings(
 				array(
-						'beginTime' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
+					'beginTime' => QueryInterface::ORDER_ASCENDING
 				)
 		)->execute();
 		return $result;
@@ -177,7 +178,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 				)
 		)->setOrderings(
 				array(
-						'beginTime' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
+					'beginTime' => QueryInterface::ORDER_ASCENDING
 				)
 		)->execute()->toArray();
 
@@ -285,7 +286,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Tx_Extbase
 	 * Because of enableFields, doesn't match any appointments that are hidden AND expired..
 	 *
 	 * @param integer $age Number of seconds the appointment needs to have been expired at least
-	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
 	public function findExpiredByAge($age = 3600) {
 		$query = $this->createQuery();

@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Agenda Date
  *
@@ -33,7 +34,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_Appointments_Domain_Model_Agenda_Date extends AbstractEntity {
 
 	/**
 	 * Classes for agenda use
@@ -87,7 +88,7 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_A
 	/**
 	 * Appointments
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Appointment>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Appointment>
 	 */
 	protected $appointments;
 
@@ -102,7 +103,7 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_A
 	}
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
 	 *
 	 * @return void
 	 */
@@ -112,7 +113,7 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_A
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->appointments = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->appointments = new ObjectStorage();
 	}
 
 	/**
@@ -287,7 +288,7 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_A
 	/**
 	 * Returns the appointments
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Appointment> $appointments
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Appointment> $appointments
 	 */
 	public function getAppointments() {
 		return $this->appointments;
@@ -296,10 +297,10 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the appointments
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_Appointment> $appointments
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Appointment> $appointments
 	 * @return void
 	 */
-	public function setAppointments(Tx_Extbase_Persistence_ObjectStorage $appointments) {
+	public function setAppointments(ObjectStorage $appointments) {
 		$this->appointments = $appointments;
 	}
 

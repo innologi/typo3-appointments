@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * FrontendUser, allows us to include fe_users of any recordType.
  *
@@ -38,10 +39,10 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_FrontendUser implements Tx_Appointments_Domain_Model_EmailContainerInterface{
+class Tx_Appointments_Domain_Model_FrontendUser extends FrontendUser implements Tx_Appointments_Domain_Model_EmailContainerInterface{
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FrontendUserGroup>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_FrontendUserGroup>
 	 */
 	protected $usergroup;
 
@@ -49,10 +50,10 @@ class Tx_Appointments_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_
 	 * Sets the usergroups. Keep in mind that the property is called "usergroup"
 	 * although it can hold several usergroups.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FrontendUserGroup> $usergroup An object storage containing the usergroups to add
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $usergroup An object storage containing the usergroups to add
 	 * @return void
 	 */
-	public function setUsergroup(Tx_Extbase_Persistence_ObjectStorage $usergroup) {
+	public function setUsergroup(ObjectStorage $usergroup) {
 		$this->usergroup = $usergroup;
 	}
 
@@ -81,7 +82,7 @@ class Tx_Appointments_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_
 	 * Returns the usergroups. Keep in mind that the property is called "usergroup"
 	 * although it can hold several usergroups.
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FrontendUserGroup> An object storage containing the usergroup
+	 * @return TYPO3\CMS\Extbase\Persistence\ObjectStorage An object storage containing the usergroup
 	 */
 	public function getUsergroup() {
 		return $this->usergroup;

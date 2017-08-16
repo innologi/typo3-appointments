@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Timer Viewhelper
  *
@@ -38,7 +38,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_ViewHelpers_TimerViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Appointments_ViewHelpers_TimerViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Render timer

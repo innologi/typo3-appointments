@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * FormField domain model
  *
@@ -31,7 +32,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_Appointments_Domain_Model_FormField extends AbstractEntity {
 
 	//constants
 	const VALIDATE_NOT_EMPTY = 1;
@@ -323,7 +324,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	protected function setChoicesArray($choices) {
 		$choices = str_replace("\r\n","\n",$choices);
 		$keyArray = array();
-		$valueArray = t3lib_div::trimExplode("\n", $choices, 1);
+		$valueArray = GeneralUtility::trimExplode("\n", $choices, 1);
 		foreach ($valueArray as $key=>&$choice) {
 			if (strpos($choice,'|') === FALSE) {
 				$keyArray[$key] = $choice;

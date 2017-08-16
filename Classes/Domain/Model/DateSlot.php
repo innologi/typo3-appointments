@@ -60,7 +60,7 @@ class Tx_Appointments_Domain_Model_DateSlot extends Tx_Appointments_Domain_Model
 	}
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
 	 *
 	 * @return void
 	 */

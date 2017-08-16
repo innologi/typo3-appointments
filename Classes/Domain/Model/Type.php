@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Type domain model
  *
@@ -31,7 +32,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_Appointments_Domain_Model_Type extends AbstractEntity {
 
 	/**
 	 * Name of type
@@ -417,7 +418,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Lazy although a clone is modified in new/edit cases, after which count() will prove useless.
 	 * To remedy that, we convert the modified clone toArray() once we need to count, so we can keep it lazy.
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormField>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_FormField>
 	 * @lazy
 	 * @cascade remove
 	 */
@@ -435,7 +436,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	}
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
 	 *
 	 * @return void
 	 */
@@ -445,7 +446,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->formFields = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->formFields = new ObjectStorage();
 	}
 
 	/**
@@ -1430,7 +1431,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Returns the formFields
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormField> $formFields
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $formFields
 	 */
 	public function getFormFields() {
 		return $this->formFields;
@@ -1439,10 +1440,10 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Sets the formFields
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormField> $formFields
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $formFields
 	 * @return void
 	 */
-	public function setFormField(Tx_Extbase_Persistence_ObjectStorage $formFields) {
+	public function setFormField(ObjectStorage $formFields) {
 		$this->formFields = $formFields;
 	}
 

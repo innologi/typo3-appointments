@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Modification of ObjectStorage. Instead of using hashes of objects as keys,
  * it takes the $key property of the objects as keys. This makes it possible
@@ -36,7 +36,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistence_ObjectStorage {
+class Tx_Appointments_Persistence_KeyObjectStorage extends ObjectStorage {
 
 	/**
 	 * Associates data to an object in the storage. offsetSet() is an alias of attach().
@@ -120,10 +120,10 @@ class Tx_Appointments_Persistence_KeyObjectStorage extends Tx_Extbase_Persistenc
 	 * Adds all objects-data pairs from a different storage in the current storage,
 	 * and then sorts all objects by key.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objectStorage
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage
 	 * @return void
 	 */
-	public function addAll(Tx_Extbase_Persistence_ObjectStorage $objectStorage) {
+	public function addAll(ObjectStorage $objectStorage) {
 		parent::addAll($objectStorage);
 
 		ksort($this->storage);

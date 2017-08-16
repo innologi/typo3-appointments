@@ -23,14 +23,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Validation\Error;
 /**
  * This object holds validation errors for an entire object storage.
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Appointments_Validation_StorageError extends Tx_Extbase_Validation_Error {
+class Tx_Appointments_Validation_StorageError extends Error {
 
 	/**
 	 * @var string The default (english) error message.

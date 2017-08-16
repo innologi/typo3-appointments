@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 /**
  * Type Repository
  *
@@ -38,7 +38,7 @@ class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Appointments_P
 	 *
 	 * @param array $typeArray Contains type uids
 	 * @param boolean $showSuperUserTypes Shows all types on TRUE or only the normal types on FALSE
-	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
 	public function findIn($typeArray, $showSuperUserTypes = FALSE) {
 		$query = $this->createQuery();
@@ -61,7 +61,7 @@ class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Appointments_P
 	 * Returns all objects of this repository.
 	 *
 	 * @param boolean $showSuperUserTypes Shows all types on TRUE or only the normal types on FALSE
-	 * @return Tx_Extbase_Persistence_QueryResultInterface|array
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
 	 *         all objects, will be empty if no objects are found, will be an array if raw query results are enabled
 	 */
 	public function findAll($showSuperUserTypes = FALSE) {
@@ -88,7 +88,7 @@ class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Appointments_P
 				$query->in('uid', $types)
 		)->setOrderings(
 				array(
-						'blocked_hours' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
+					'blocked_hours' => QueryInterface::ORDER_ASCENDING
 				)
 		)->setLimit(1)->execute();
 

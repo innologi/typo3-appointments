@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Settings Override Controller.
  *
@@ -48,14 +49,14 @@ class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Appoi
 	 *   selectFields: flexform field value contains field names which are taken from TypoScript
 	 * }
 	 *
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 
-		$settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
-		$ts = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
+		$ts = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
 		$extensionName = strtolower($this->extensionName);
 		if (isset($ts['plugin.']['tx_' . $extensionName . '.']['tsOverride.']) && isset($ts['plugin.']['tx_' . $extensionName . '.']['settings.'])) {
@@ -64,7 +65,7 @@ class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Appoi
 
 			//looks for TS values if flexform value === '--TYPOSCRIPT--'
 			if (isset($tsOverride['checkFields'])) {
-				$fields = t3lib_div::trimExplode(',',$tsOverride['checkFields'],1);
+				$fields = GeneralUtility::trimExplode(',',$tsOverride['checkFields'],1);
 				foreach ($fields as $field) {
 					if (isset($settings[$field]) && $settings[$field] === '--TYPOSCRIPT--') {
 						$settings[$field] = isset($tsSettings[$field]) ? $tsSettings[$field] : '';
@@ -74,10 +75,10 @@ class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Appoi
 
 			//looks for TS values for the specified fields, ignoring their flexform value
 			if (isset($tsOverride['selectFields'])) {
-				$selectFields = t3lib_div::trimExplode(',',$tsOverride['selectFields'],1);
+				$selectFields = GeneralUtility::trimExplode(',',$tsOverride['selectFields'],1);
 				foreach ($selectFields as $selectField) {
 					if (isset($settings[$selectField][0])) {
-						$fields = t3lib_div::trimExplode(';',$settings[$selectField],1);
+						$fields = GeneralUtility::trimExplode(';',$settings[$selectField],1);
 						foreach ($fields as $field) {
 							#@LOW make this work as overrule-setting, not overwrite
 							$settings[$field] = isset($tsSettings[$field]) ? $tsSettings[$field] : '';

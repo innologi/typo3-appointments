@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 /**
  * This repository prevents registration @ persistence manager.
  *
@@ -36,18 +37,18 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Persistence_NoPersistRepository extends Tx_Extbase_Persistence_Repository {
+class Tx_Appointments_Persistence_NoPersistRepository extends Repository {
 
 	/**
-	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 */
 	protected $persistenceManager; //for completeness' sake
 
 	/**
-	 * @param Tx_Extbase_Persistence_ManagerInterface $persistenceManager
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
 	 * @return void
 	 */
-	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
+	public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager) {
 		$this->persistenceManager = $persistenceManager;
 		//don't register this repository
 		#$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
@@ -58,7 +59,6 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Tx_Extbase_Persist
 	 *
 	 * @param object $object
 	 * @return void
-	 * @see Tx_Extbase_Persistence_Repository::add()
 	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
 	 */
 	public function add($object) {
@@ -70,7 +70,6 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Tx_Extbase_Persist
 	 *
 	 * @param object $object
 	 * @return void
-	 * @see Tx_Extbase_Persistence_Repository::remove()
 	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
 	 */
 	public function remove($object) {
@@ -82,7 +81,6 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Tx_Extbase_Persist
 	 *
 	 * @param object $modifiedObject
 	 * @return void
-	 * @see Tx_Extbase_Persistence_Repository::update()
 	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
 	 */
 	public function update($modifiedObject) {
@@ -95,7 +93,6 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Tx_Extbase_Persist
 	 * @param object $existingObject
 	 * @param object $newObject
 	 * @return void
-	 * @see Tx_Extbase_Persistence_Repository::replace()
 	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
 	 */
 	public function replace($existingObject, $newObject) {

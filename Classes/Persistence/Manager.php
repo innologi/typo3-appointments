@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,7 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * The Appointments Persistence Manager
  *
@@ -46,7 +49,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Persistence_Manager extends Tx_Extbase_Persistence_Manager {
+class Tx_Appointments_Persistence_Manager extends PersistenceManager {
 
 	/**
 	 * Commits new objects and changes to objects of a single repository, as well as
@@ -55,13 +58,12 @@ class Tx_Appointments_Persistence_Manager extends Tx_Extbase_Persistence_Manager
 	 * Is mostly an adjusted copy of persistAll(), used as a lighter alternative
 	 * when appointment-persistence has to happen mid-process.
 	 *
-	 * @param Tx_Extbase_Persistence_Repository $repository The repository to persist
+	 * @param Repository $repository The repository to persist
 	 * @return void
-	 * @see Tx_Extbase_Persistence_Manager::persistAll()
 	 */
-	public function persistRepository(Tx_Extbase_Persistence_Repository $repository) {
-		$aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
-		$removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
+	public function persistRepository(Repository $repository) {
+		$aggregateRootObjects = new ObjectStorage();
+		$removedObjects = new ObjectStorage();
 
 		//fetch and inspect objects from the repository
 		$aggregateRootObjects->addAll($repository->getAddedObjects());

@@ -23,7 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 /**
  * Changes to support properties from properties. This version simply assumes
  * that such are _ALWAYS_ present, hence it is only usable with such fields.
@@ -37,7 +39,7 @@
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Appointments_ViewHelpers_Form_RadioViewHelper extends Tx_Fluid_ViewHelpers_Form_RadioViewHelper {
+class Tx_Appointments_ViewHelpers_Form_RadioViewHelper extends RadioViewHelper {
 
 	/**
 	 * Get the value of this form element.
@@ -50,17 +52,12 @@ class Tx_Appointments_ViewHelpers_Form_RadioViewHelper extends Tx_Fluid_ViewHelp
 	 *
 	 * @param boolean $convertObjects whether or not to convert objects to identifiers
 	 * @return mixed Value
-	 * @see Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper::getValue()
 	 */
 	protected function getValue($convertObjects = TRUE) {
-		if ($this->arguments instanceof Tx_Fluid_Core_ViewHelper_Arguments) { //TYPO3 4.5 compatibility
-			return $this->getOrChangeValue($convertObjects);
-		} else {
-			if ($this->arguments['value'] === NULL) {
-				$this->arguments['value'] = '';
-			}
-			return parent::getValue($convertObjects);
+		if ($this->arguments['value'] === NULL) {
+			$this->arguments['value'] = '';
 		}
+		return parent::getValue($convertObjects);
 	}
 
 	/**
@@ -107,17 +104,15 @@ class Tx_Appointments_ViewHelpers_Form_RadioViewHelper extends Tx_Fluid_ViewHelp
 	 *
 	 * @return array An array of Tx_Fluid_Error_Error objects
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
-	 * @see Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper::getErrorsForProperty()
 	 */
 	public function getErrorsForProperty() { #@LOW put somewhere else and call it from these VHs
 		if (!$this->isObjectAccessorMode()) {
 			return array();
 		}
 		$errors = $this->controllerContext->getRequest()->getErrors();
-		$formClass = version_compare(TYPO3_branch, '6.0', '>=') ? 'TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper' : 'Tx_Fluid_ViewHelpers_FormViewHelper';
-		$formObjectName = $this->viewHelperVariableContainer->get($formClass, 'formObjectName');
+		$formObjectName = $this->viewHelperVariableContainer->get(FormViewHelper::class, 'formObjectName');
 		// <!-- CHANGE
-			$propertyName = t3lib_div::trimExplode('.',$this->arguments['property'],1);
+			$propertyName = GeneralUtility::trimExplode('.',$this->arguments['property'],1);
 		// CHANGE -->
 		$formErrors = array();
 		foreach ($errors as $error) {

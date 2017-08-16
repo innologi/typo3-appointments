@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +24,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 /**
  * Validator Resolver
  *
@@ -36,7 +38,7 @@
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Appointments_Validation_ValidatorResolver extends Tx_Extbase_Validation_ValidatorResolver {
+class Tx_Appointments_Validation_ValidatorResolver extends ValidatorResolver {
 
 	/**
 	 * Resolves and returns the base validator conjunction for the given data type.
@@ -48,7 +50,7 @@ class Tx_Appointments_Validation_ValidatorResolver extends Tx_Extbase_Validation
 	 *
 	 * @param string $dataType The data type to search a validator for. Usually the fully qualified object name
 	 * @param boolean $dontStoreConjunction If true, will not store the result or use it from storage
-	 * @return Tx_Extbase_Validation_Validator_ConjunctionValidator The validator conjunction or NULL
+	 * @return \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator The validator conjunction or NULL
 	 */
 	public function getBaseValidatorConjunction($dataType, $dontStoreConjunction = FALSE) {
 		// <!-- CHANGE
@@ -150,7 +152,7 @@ class Tx_Appointments_Validation_ValidatorResolver extends Tx_Extbase_Validation
 					// @todo: Respect validationGroups
 					$newValidator = $this->createValidator($validateAnnotation['validatorName'], $validateAnnotation['validatorOptions']);
 					if ($newValidator === NULL) {
-						throw new Exception\NoSuchValidatorException('Invalid validate annotation in ' . $targetClassName . '::' . $classPropertyName . ': Could not resolve class name for  validator "' . $validateAnnotation->type . '".', 1241098027);
+						throw new NoSuchValidatorException('Invalid validate annotation in ' . $targetClassName . '::' . $classPropertyName . ': Could not resolve class name for  validator "' . $validateAnnotation->type . '".', 1241098027);
 					}
 					$objectValidator->addPropertyValidator($classPropertyName, $newValidator);
 				}

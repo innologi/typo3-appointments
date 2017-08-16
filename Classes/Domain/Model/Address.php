@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Address domain model
  *
@@ -31,7 +32,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_AbstractEntity implements Tx_Appointments_Domain_Model_EmailContainerInterface {
+class Tx_Appointments_Domain_Model_Address extends AbstractEntity implements Tx_Appointments_Domain_Model_EmailContainerInterface {
 
 	/**
 	 * First Name
@@ -195,7 +196,7 @@ class Tx_Appointments_Domain_Model_Address extends Tx_Extbase_DomainObject_Abstr
 	public function setName($name = NULL) {
 		$name = $this->firstName.' '.$this->middleName.' '.$this->lastName;
 		//clean up in case of any missing values
-		$this->name = join(' ', t3lib_div::trimExplode(' ',$name,1));
+		$this->name = join(' ', GeneralUtility::trimExplode(' ',$name,1));
 	}
 
 	/**

@@ -23,7 +23,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
+use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Exception;
 /**
  * Appointments Action Controller.
  *
@@ -165,19 +170,19 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 			//is user logged in as required?
 			$this->feUser = $this->userService->getCurrentUser();
 			if ($this->requireLogin && !$this->feUser) {
-				$errors[] = Tx_Extbase_Utility_Localization::translate('tx_appointments.login_error', $this->extensionName);
+				$errors[] = LocalizationUtility::translate('tx_appointments.login_error', $this->extensionName);
 			}
 
 			//is an agenda record set?
 			$this->agenda = $this->agendaRepository->findByUid($this->settings['agendaUid']);
 			if ($this->agenda === NULL) {
-				$errors[] = Tx_Extbase_Utility_Localization::translate('tx_appointments.no_agenda', $this->extensionName);
+				$errors[] = LocalizationUtility::translate('tx_appointments.no_agenda', $this->extensionName);
 			}
 
 			//errors!
 			if (!empty($errors)) {
 				foreach ($errors as $flashMessage) {
-					$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+					$this->flashMessageContainer->add($flashMessage,'',FlashMessage::ERROR);
 				}
 				$this->forward('none');
 			}
@@ -220,8 +225,8 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 			return $types;
 		} else {
 			//no types found
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments.no_types', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+			$flashMessage = LocalizationUtility::translate('tx_appointments.no_types', $this->extensionName);
+			$this->flashMessageContainer->add($flashMessage,'',FlashMessage::ERROR);
 			$this->forward('none');
 		}
 	}
@@ -243,31 +248,31 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 
 		try {
 			parent::mapRequestArgumentsToControllerArguments();
-		} catch (Tx_Extbase_MVC_Exception_InvalidArgumentValue $e) {
+		} catch (InvalidArgumentValueException $e) {
 			$objectDeleted = TRUE;
-		} catch (Tx_Extbase_Property_Exception_TargetNotFound $e) {
+		} catch (TargetNotFoundException $e) {
 			$objectDeleted = TRUE;
 		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) {
 			$propertyDeleted = TRUE;
-		} catch (t3lib_error_Exception $e) {
+		} catch (Exception $e) {
 			$propertyDeleted = TRUE;
 		}
 
 		if ($objectDeleted) {
-			t3lib_div::sysLog('An appointment disappeared while an feuser tried to interact with it: ' . $e->getMessage(),
-				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_NOTICE);
+			GeneralUtility::sysLog('An appointment disappeared while an feuser tried to interact with it: ' . $e->getMessage(),
+				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_NOTICE);
 
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
+			$flashMessage = LocalizationUtility::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
 			#@TODO deprecated, see add() for replacement
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+			$this->flashMessageContainer->add($flashMessage,'',FlashMessage::ERROR);
 			$this->redirect('list');
 		}
 		if ($propertyDeleted) {
-			t3lib_div::sysLog('An appointment is missing a property which was most likely deleted by a backend user: ' . $e->getMessage(),
-				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_ERROR);
+			GeneralUtility::sysLog('An appointment is missing a property which was most likely deleted by a backend user: ' . $e->getMessage(),
+				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_ERROR);
 
-			$flashMessage = Tx_Extbase_Utility_Localization::translate('tx_appointments.appointment_property_deleted', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',t3lib_FlashMessage::ERROR);
+			$flashMessage = LocalizationUtility::translate('tx_appointments.appointment_property_deleted', $this->extensionName);
+			$this->flashMessageContainer->add($flashMessage,'',FlashMessage::ERROR);
 
 			//in case not the original argument, but one of its object-properties no longer exist, try to redirect to the appropriate action
 			$redirectTo = 'list';

@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * Abstract slot
  *
@@ -33,7 +33,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-abstract class Tx_Appointments_Domain_Model_AbstractSlot extends Tx_Extbase_DomainObject_AbstractEntity {
+abstract class Tx_Appointments_Domain_Model_AbstractSlot extends AbstractEntity {
 
 	/**
 	 * key

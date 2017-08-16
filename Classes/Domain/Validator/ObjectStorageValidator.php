@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Object Storage Validator, validates an ObjectStorage's objects.
  *
@@ -51,7 +51,7 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appoint
 		$valid = FALSE;
 		$storageError = NULL;
 
-		if ($value instanceof Tx_Extbase_Persistence_ObjectStorage) {
+		if ($value instanceof ObjectStorage) {
 			$validator = $this->objectManager->get('Tx_Appointments_Validation_ValidatorResolver')->createValidator('Tx_Appointments_Domain_Validator_ObjectPropertiesValidator', $this->options);
 			$valid = TRUE;
 			// registers values referred to by delayed objects

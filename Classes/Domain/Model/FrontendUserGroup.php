@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup;
 /**
  * FontendUserGroup domain model. Used to ditch the record_type requirement of the original model.
  *
@@ -31,7 +31,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_FrontendUserGroup extends Tx_Extbase_Domain_Model_FrontendUserGroup {
+class Tx_Appointments_Domain_Model_FrontendUserGroup extends FrontendUserGroup {
 
 }
 ?>

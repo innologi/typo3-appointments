@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * CamelCase Viewhelper
  *
@@ -31,7 +32,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_ViewHelpers_Format_CamelCaseViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Appointments_ViewHelpers_Format_CamelCaseViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Formats a string according to any of the three supported and CamelCase related t3lib_div functions.
@@ -39,7 +40,9 @@ class Tx_Appointments_ViewHelpers_Format_CamelCaseViewHelper extends Tx_Fluid_Co
 	 * @param string $type Type of conversion [ camelCaseToLowerCaseUnderscored / underscoredToLowerCamelCase / underscoredToUpperCamelCase ]
 	 * @param string $value The value to format
 	 * @return string
-	 * @see t3lib_div::camelCaseToLowerCaseUnderscored(),t3lib_div::underscoredToLowerCamelCase(),t3lib_div::underscoredToUpperCamelCase()
+	 * @see GeneralUtility::camelCaseToLowerCaseUnderscored()
+	 * @see GeneralUtility::underscoredToLowerCamelCase()
+	 * @see GeneralUtility::underscoredToUpperCamelCase()
 	 */
 	public function render($type, $value = NULL) {
 		if ($value === NULL) {
@@ -50,7 +53,7 @@ class Tx_Appointments_ViewHelpers_Format_CamelCaseViewHelper extends Tx_Fluid_Co
 				case 'camelCaseToLowerCaseUnderscored':
 				case 'underscoredToLowerCamelCase':
 				case 'underscoredToUpperCamelCase':
-					$value = t3lib_div::$type($value);
+					$value = GeneralUtility::$type($value);
 					break;
 				default:
 					break;

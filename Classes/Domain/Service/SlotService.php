@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,7 +23,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Manages the date- and their time slots, persists them and their changes to cache.
  *
@@ -30,7 +34,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
+class Tx_Appointments_Domain_Service_SlotService implements SingletonInterface {
 
 	//constants
 	const DATESLOT_KEY_FORMAT = 'Ymd';
@@ -268,7 +272,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		$temp = $this->appointmentRepository->findExpiredUnfinished($agenda, $this->expireMinutes);
 
 		if (!empty($temp)) {
-			$types = new Tx_Extbase_Persistence_ObjectStorage();
+			$types = new ObjectStorage();
 			foreach ($temp as $appointment) {
 				$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
 				//this is really the only reason we have a boolean in update()'s arguments: prevent multiple resets for a single type
@@ -618,7 +622,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 		$dateSlot->setTimestamp($dateTime->getTimestamp());
 		$dateSlot->setKey($dateTime->format(self::DATESLOT_KEY_FORMAT));
 		$dateSlot->setDayName($dateTime->format('l'));
-		$dayShort = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.day_s'.$dateTime->format('N'), $this->extensionName);
+		$dayShort = LocalizationUtility::translate('tx_appointments_list.day_s'.$dateTime->format('N'), $this->extensionName);
 		$dateSlot->setLabel($dayShort . ' ' . $dateTime->format('d-m-Y'));
 		return $dateSlot;
 	}
@@ -865,7 +869,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	protected function getCache($key, $identifier) {
 		$cacheIdentifier = $this->extensionName . '-' . $identifier;
 		$cacheHash = md5($cacheIdentifier . $key);
-		return t3lib_pageSelect::getHash($cacheHash);
+		return PageRepository::getHash($cacheHash);
 	}
 
 	/**
@@ -880,7 +884,7 @@ class Tx_Appointments_Domain_Service_SlotService implements t3lib_Singleton {
 	protected function setCache($key, $identifier, $data) {
 		$cacheIdentifier = $this->extensionName . '-' . $identifier;
 		$cacheHash = md5($cacheIdentifier . $key);
-		t3lib_pageSelect::storeHash($cacheHash,serialize($data),$cacheIdentifier);
+		PageRepository::storeHash($cacheHash,serialize($data),$cacheIdentifier);
 	}
 
 	/**

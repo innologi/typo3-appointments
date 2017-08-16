@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * Agenda Controller
  *
@@ -117,7 +118,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 
 		//set standard month properties
 		#$monthName = strftime('%B',$start->getTimestamp()); //DateTime::format doesn't heed locale, hence strftime()
-		$monthName = Tx_Extbase_Utility_Localization::translate('tx_appointments_agenda.month_'.$start->format('n'), $this->extensionName);
+		$monthName = LocalizationUtility::translate('tx_appointments_agenda.month_'.$start->format('n'), $this->extensionName);
 		$month->setName($monthName);
 		$month->setYear($start->format('Y'));
 
@@ -208,11 +209,11 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 				$this->appointmentRepository->findBetween($agenda, $start, $end, $showTypes, 1)
 		);
 		while ($start->getTimestamp() < $endTime) {
-			$week = new Tx_Extbase_Persistence_ObjectStorage();
+			$week = new ObjectStorage();
 			for ($i = intval($start->format('N')); $i <= 7 && $start->getTimestamp() < $endTime; $i++) {
 				$date = new Tx_Appointments_Domain_Model_Agenda_Date();
 				$date->setDayNumber($start->format('j'));
-				$monthShort = Tx_Extbase_Utility_Localization::translate('tx_appointments_agenda.month_s'.$start->format('n'), $this->extensionName); #@TODO this can be stored in an array or smth .. or not necessary if we use locales
+				$monthShort = LocalizationUtility::translate('tx_appointments_agenda.month_s'.$start->format('n'), $this->extensionName); #@TODO this can be stored in an array or smth .. or not necessary if we use locales
 				$date->setMonthShort($monthShort);
 				$fullDate = $start->format('d-m-Y');
 				$date->setTimestamp($start->getTimestamp());
