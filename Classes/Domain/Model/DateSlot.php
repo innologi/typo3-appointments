@@ -134,4 +134,3 @@ class DateSlot extends AbstractSlot {
 	}
 
 }
-?>

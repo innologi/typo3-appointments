@@ -136,5 +136,3 @@ $TCA['tx_appointments_domain_model_formfieldvalue'] = array(
 		),
 	),
 );
-
-?>

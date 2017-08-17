@@ -90,5 +90,3 @@ class StorageError extends Error {
 		return $this->propertyName;
 	}
 }
-
-?>

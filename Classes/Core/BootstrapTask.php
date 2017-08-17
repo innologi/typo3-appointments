@@ -101,5 +101,3 @@ class BootstrapTask extends Bootstrap {
 	}
 
 }
-
-?>

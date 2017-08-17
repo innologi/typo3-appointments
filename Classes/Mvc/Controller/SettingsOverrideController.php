@@ -92,4 +92,3 @@ class SettingsOverrideController extends ErrorOnDebugController {
 	}
 
 }
-?>

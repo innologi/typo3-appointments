@@ -293,4 +293,3 @@ class ActionController extends CsrfProtectController {
 		}
 	}
 }
-?>

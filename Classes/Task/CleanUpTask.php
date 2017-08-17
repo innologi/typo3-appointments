@@ -71,5 +71,3 @@ class CleanUpTask extends Task {
 	}
 
 }
-
-?>

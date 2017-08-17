@@ -306,4 +306,3 @@ class Date extends AbstractEntity {
 	}
 
 }
-?>

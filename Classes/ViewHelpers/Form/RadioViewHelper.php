@@ -148,5 +148,3 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper 
 	}
 
 }
-
-?>

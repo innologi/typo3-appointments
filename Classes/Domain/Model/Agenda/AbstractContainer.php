@@ -256,4 +256,3 @@ abstract class AbstractContainer extends AbstractEntity {
 	}
 
 }
-?>

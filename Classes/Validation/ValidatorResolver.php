@@ -166,4 +166,3 @@ class ValidatorResolver extends \TYPO3\CMS\Extbase\Validation\ValidatorResolver 
 	}
 
 }
-?>

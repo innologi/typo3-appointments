@@ -82,4 +82,3 @@ class TimerViewHelper extends AbstractViewHelper {
 	}
 
 }
-?>

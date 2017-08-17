@@ -102,4 +102,3 @@ class CleanUpTaskLogic extends BootstrapTask {
 	}
 
 }
-?>

@@ -34,4 +34,3 @@ namespace Innologi\Appointments\Persistence;
 interface PersistenceManagerInterface extends \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface {
 
 }
-?>

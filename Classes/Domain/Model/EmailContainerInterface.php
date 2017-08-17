@@ -46,4 +46,3 @@ interface EmailContainerInterface {
 	 */
 	public function setEmail($email);
 }
-?>

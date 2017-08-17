@@ -101,4 +101,3 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper {
 
 	}
 }
-?>

@@ -67,4 +67,3 @@ class ObjectPropertiesValidator extends PreppedAbstractValidator {
 	}
 
 }
-?>

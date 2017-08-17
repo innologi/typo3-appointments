@@ -34,4 +34,3 @@ use Innologi\Appointments\Persistence\NoPersistRepository;
 class FrontendUserGroupRepository extends NoPersistRepository {
 
 }
-?>

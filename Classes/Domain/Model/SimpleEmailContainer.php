@@ -53,4 +53,3 @@ class SimpleEmailContainer implements EmailContainerInterface {
 		$this->email = $email;
 	}
 }
-?>

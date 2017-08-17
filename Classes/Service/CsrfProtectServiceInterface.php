@@ -213,4 +213,3 @@ interface CsrfProtectServiceInterface {
 	public function hasNewTokenPerRequest();
 
 }
-?>

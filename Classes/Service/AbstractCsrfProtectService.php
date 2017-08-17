@@ -607,4 +607,3 @@ abstract class AbstractCsrfProtectService implements CsrfProtectServiceInterface
 	}
 
 }
-?>

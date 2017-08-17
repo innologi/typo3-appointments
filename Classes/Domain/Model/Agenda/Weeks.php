@@ -36,4 +36,3 @@ namespace Innologi\Appointments\Domain\Model\Agenda;
 class Weeks extends AbstractContainer {
 
 }
-?>

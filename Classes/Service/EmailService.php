@@ -576,4 +576,3 @@ class EmailService implements SingletonInterface {
 		return $link;
 	}
 }
-?>

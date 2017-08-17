@@ -87,4 +87,3 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser implemen
 		return $this->usergroup;
 	}
 }
-?>

@@ -251,5 +251,3 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 		),
 	),
 );
-
-?>

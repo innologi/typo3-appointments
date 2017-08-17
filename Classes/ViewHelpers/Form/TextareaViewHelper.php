@@ -92,5 +92,3 @@ class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\TextareaViewH
 	}
 
 }
-
-?>

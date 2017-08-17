@@ -130,4 +130,3 @@ class KeyObjectStorage extends ObjectStorage {
 	}
 
 }
-?>

@@ -240,4 +240,3 @@ if (TYPO3_MODE === 'BE') {
 	$TBE_STYLES['spriteIconApi']['spriteIconRecordOverlayNames']['tx_appointments_expired'] = 'status-overlay-deleted';
 	array_unshift($TBE_STYLES['spriteIconApi']['spriteIconRecordOverlayPriorities'],'tx_appointments_expired','tx_appointments_unfinished');
 }
-?>

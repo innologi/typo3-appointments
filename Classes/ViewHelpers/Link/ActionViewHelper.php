@@ -125,4 +125,3 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelpe
 		);
 	}
 }
-?>

@@ -67,4 +67,3 @@ class IsExpiredViewHelper extends AbstractViewHelper {
 	}
 
 }
-?>

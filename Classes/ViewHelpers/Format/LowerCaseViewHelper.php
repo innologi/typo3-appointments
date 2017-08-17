@@ -51,4 +51,3 @@ class LowerCaseViewHelper extends AbstractViewHelper {
 	}
 
 }
-?>

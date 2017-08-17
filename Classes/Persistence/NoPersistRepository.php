@@ -100,4 +100,3 @@ class NoPersistRepository extends Repository {
 		throw new Exception\NoPersistRepository();
 	}
 }
-?>

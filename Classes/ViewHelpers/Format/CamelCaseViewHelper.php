@@ -64,4 +64,3 @@ class CamelCaseViewHelper extends AbstractViewHelper {
 	}
 
 }
-?>

@@ -155,4 +155,3 @@ class FormFieldValueValidator extends PreppedAbstractValidator {
 	}
 
 }
-?>

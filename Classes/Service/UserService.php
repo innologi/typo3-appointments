@@ -107,4 +107,3 @@ class UserService implements SingletonInterface {
 	}
 
 }
-?>

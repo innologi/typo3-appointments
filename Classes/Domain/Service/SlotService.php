@@ -1016,4 +1016,3 @@ class SlotService implements SingletonInterface {
 	}
 
 }
-?>

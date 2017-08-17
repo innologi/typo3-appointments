@@ -352,4 +352,3 @@ class Address extends AbstractEntity implements EmailContainerInterface {
 	}
 
 }
-?>

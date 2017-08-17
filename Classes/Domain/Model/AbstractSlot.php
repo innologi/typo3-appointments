@@ -114,4 +114,3 @@ abstract class AbstractSlot extends AbstractEntity {
 	}
 
 }
-?>

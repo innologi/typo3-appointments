@@ -387,4 +387,3 @@ class AppointmentRepository extends Repository {
 		$this->slotService->resetStorageObject($object->getType(), $object->getAgenda());
 	}
 }
-?>

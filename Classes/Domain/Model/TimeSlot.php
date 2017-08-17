@@ -36,4 +36,3 @@ namespace Innologi\Appointments\Domain\Model;
 class TimeSlot extends AbstractSlot {
 
 }
-?>

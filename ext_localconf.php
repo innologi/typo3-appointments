@@ -58,4 +58,3 @@ if (TYPO3_MODE === 'BE') {
 		'additionalFields'	=> \Innologi\Appointments\Task\CleanUpTaskAdditionalFieldProvider::class
 	);
 }
-?>

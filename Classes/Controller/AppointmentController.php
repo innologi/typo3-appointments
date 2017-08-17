@@ -905,4 +905,3 @@ class AppointmentController extends ActionController {
 	}
 
 }
-?>
