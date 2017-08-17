@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Validation;
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +30,7 @@ use TYPO3\CMS\Extbase\Validation\Error;
  * @package appointments
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Appointments_Validation_StorageError extends Error {
+class StorageError extends Error {
 
 	/**
 	 * @var string The default (english) error message.

@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model\Agenda;
 /***************************************************************
  *  Copyright notice
  *
@@ -25,6 +25,7 @@
  ***************************************************************/
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use Innologi\Appointments\Domain\Model\Appointment;
 /**
  * Agenda Date
  *
@@ -34,7 +35,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Agenda_Date extends AbstractEntity {
+class Date extends AbstractEntity {
 
 	/**
 	 * Classes for agenda use
@@ -88,7 +89,7 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends AbstractEntity {
 	/**
 	 * Appointments
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Appointment>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Appointment>
 	 */
 	protected $appointments;
 
@@ -268,27 +269,27 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends AbstractEntity {
 	/**
 	 * Adds an appointment
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment
 	 * @return void
 	 */
-	public function addAppointment(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function addAppointment(Appointment $appointment) {
 		$this->appointments->attach($appointment);
 	}
 
 	/**
 	 * Removes an appointment
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointmentToRemove The Appointment to be removed
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointmentToRemove The Appointment to be removed
 	 * @return void
 	 */
-	public function removeAppointment(Tx_Appointments_Domain_Model_Appointment $appointmentToRemove) {
+	public function removeAppointment(Appointment $appointmentToRemove) {
 		$this->appointments->detach($appointmentToRemove);
 	}
 
 	/**
 	 * Returns the appointments
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Appointment> $appointments
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getAppointments() {
 		return $this->appointments;
@@ -297,7 +298,7 @@ class Tx_Appointments_Domain_Model_Agenda_Date extends AbstractEntity {
 	/**
 	 * Sets the appointments
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Appointment> $appointments
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $appointments
 	 * @return void
 	 */
 	public function setAppointments(ObjectStorage $appointments) {

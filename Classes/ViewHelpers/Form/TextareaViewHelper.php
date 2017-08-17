@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\ViewHelpers\Form;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,8 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Fluid\ViewHelpers\Form\TextareaViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Innologi\Appointments\Validation\StorageError;
 /**
  * Changes to support properties from properties. This version simply assumes
  * that such are _ALWAYS_ present, hence it is only usable with such fields.
@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Appointments_ViewHelpers_Form_TextareaViewHelper extends TextareaViewHelper {
+class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\TextareaViewHelper {
 
 	#@LOW make a version that copes well with both normal properties and properties of properties (as well as Select/Textfield)
 	/**
@@ -70,7 +70,7 @@ class Tx_Appointments_ViewHelpers_Form_TextareaViewHelper extends TextareaViewHe
 								//if property of property
 								if ($propertyError instanceof Tx_Extbase_Validation_PropertyError && $propertyError->getPropertyName() === $propertyName[1]) {
 									return $propertyError->getErrors();
-								} elseif ($propertyError instanceof Tx_Appointments_Validation_StorageError) { //if property of storage-property
+								} elseif ($propertyError instanceof StorageError) { //if property of storage-property
 									$storageErrors = $propertyError->getErrors();
 									foreach ($storageErrors as $id=>$storageError) {
 										if (is_array($storageError)) {

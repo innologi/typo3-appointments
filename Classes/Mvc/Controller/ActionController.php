@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Mvc\Controller;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,6 +29,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Exception;
+use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
 /**
  * Appointments Action Controller.
  *
@@ -46,12 +47,12 @@ use TYPO3\CMS\Core\Exception;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MVC_Controller_CsrfProtectController {
+class ActionController extends CsrfProtectController {
 
 	/**
 	 * agendaRepository
 	 *
-	 * @var Tx_Appointments_Domain_Repository_AgendaRepository
+	 * @var \Innologi\Appointments\Domain\Repository\AgendaRepository
 	 * @inject
 	 */
 	protected $agendaRepository;
@@ -59,7 +60,7 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 	/**
 	 * appointmentRepository
 	 *
-	 * @var Tx_Appointments_Domain_Repository_AppointmentRepository
+	 * @var \Innologi\Appointments\Domain\Repository\AppointmentRepository
 	 * @inject
 	 */
 	protected $appointmentRepository;
@@ -67,19 +68,19 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 	/**
 	 * typeRepository
 	 *
-	 * @var Tx_Appointments_Domain_Repository_TypeRepository
+	 * @var \Innologi\Appointments\Domain\Repository\TypeRepository
 	 * @inject
 	 */
 	protected $typeRepository;
 
 	/**
-	 * @var Tx_Appointments_Service_UserService
+	 * @var \Innologi\Appointments\Service\UserService
 	 * @inject
 	 */
 	protected $userService;
 
 	/**
-	 * @var Tx_Appointments_Domain_Service_SlotService
+	 * @var \Innologi\Appointments\Domain\Service\SlotService
 	 * @inject
 	 */
 	protected $slotService;
@@ -87,14 +88,14 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 	/**
 	 * Logged in frontend user
 	 *
-	 * @var Tx_Appointments_Domain_Model_FrontendUser
+	 * @var \Innologi\Appointments\Domain\Model\FrontendUser
 	 */
 	protected $feUser;
 
 	/**
 	 * Agenda
 	 *
-	 * @var Tx_Appointments_Domain_Model_Agenda
+	 * @var \Innologi\Appointments\Domain\Model\Agenda
 	 */
 	protected $agenda;
 
@@ -206,7 +207,7 @@ class Tx_Appointments_MVC_Controller_ActionController extends Tx_Appointments_MV
 			$objectDeleted = TRUE;
 		} catch (TargetNotFoundException $e) {
 			$objectDeleted = TRUE;
-		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) {
+		} catch (PropertyDeleted $e) {
 			$propertyDeleted = TRUE;
 		} catch (Exception $e) {
 			$propertyDeleted = TRUE;

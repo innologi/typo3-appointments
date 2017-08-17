@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Mvc\Controller;
 /***************************************************************
  *  Copyright notice
  *
@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_MVC_Controller_SettingsOverrideController extends Tx_Appointments_MVC_Controller_ErrorOnDebugController {
+class SettingsOverrideController extends ErrorOnDebugController {
 
 	/**
 	 * Injects the configuration manager and resolves the plugin settings.

@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Mvc\Exception;
 /***************************************************************
  *  Copyright notice
 *
@@ -31,9 +31,9 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_MVC_Exception_NoPersistRepository extends Exception {
+class PropertyDeleted extends Exception {
 
-	protected $message = 'Persisting objects through a no-persist-repository is not possible.';
+	protected $message = 'One or more object-properties are not available.';
 
 	protected $code = 407501337;
 

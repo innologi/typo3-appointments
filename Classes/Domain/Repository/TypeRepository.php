@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Innologi\Appointments\Persistence\NoPersistRepository;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 /**
  * Type Repository
@@ -31,7 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Appointments_Persistence_NoPersistRepository {
+class TypeRepository extends NoPersistRepository {
 	#@TODO _the use of this function has changed, so you might want to look if the function itself might benefit from a change
 	/**
 	 * Returns all objects of this repository belonging to the provided category
@@ -43,16 +44,16 @@ class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Appointments_P
 	public function findIn($typeArray, $showSuperUserTypes = FALSE) {
 		$query = $this->createQuery();
 		$constraints = array(
-				$query->in('uid', $typeArray)
+			$query->in('uid', $typeArray)
 		);
 		if ($showSuperUserTypes === FALSE) {
 			$constraints[] = $query->equals('superuser_only', 0);
 		}
 
 		$result = $query->matching(
-				$query->logicalAnd(
-						$constraints
-				)
+			$query->logicalAnd(
+				$constraints
+			)
 		)->execute();
 		return $result;
 	}
@@ -80,7 +81,7 @@ class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Appointments_P
 	 * Returns the type with the smallest 'blocked_hours' value.
 	 *
 	 * @param array $types Contains type uid's to filter by
-	 * @return Tx_Appointments_Domain_Model_Type The type
+	 * @return \Innologi\Appointments\Domain\Model\Type The type
 	 */
 	public function findBySmallestBlockedHours(array $types) { #@LOW no longer used, clean up?
 		$query = $this->createQuery();

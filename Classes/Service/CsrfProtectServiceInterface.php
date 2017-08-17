@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Service;
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +31,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
  * @author Frenck Lutke <typo3@innologi.nl>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-interface Tx_Appointments_Service_CsrfProtectServiceInterface {
+interface CsrfProtectServiceInterface {
 
 	/*
 	 * These constants represent the methods of protection, each with its own trade-off.

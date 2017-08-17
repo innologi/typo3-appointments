@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Validator;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Innologi\Appointments\Validation\Validator\PreppedAbstractValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+use Innologi\Appointments\Domain\Model\Appointment;
+use Innologi\Appointments\Domain\Model\Type;
 /**
  * Appointment Domain Validator.
  *
@@ -34,7 +37,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Validator_AppointmentValidator extends Tx_Appointments_Validation_Validator_PreppedAbstractValidator {
+class AppointmentValidator extends PreppedAbstractValidator {
 
 	/**
 	 * Test if address needs to be validated, and if so, run through it.
@@ -44,17 +47,17 @@ class Tx_Appointments_Domain_Validator_AppointmentValidator extends Tx_Appointme
 	 */
 	public function isValid($appointment) {
 		$valid = FALSE;
-		if ($appointment instanceof Tx_Appointments_Domain_Model_Appointment) {
+		if ($appointment instanceof Appointment) {
 			$type = $appointment->getType();
 
-			if ($type instanceof Tx_Appointments_Domain_Model_Type) {
+			if ($type instanceof Type) {
 				if ($type->getAddressDisable()) {
 					//address is not to be tested
 					$valid = TRUE;
 				} else {
 					//address needs to validate, or appointment isn't valid
 					$validatorResolver = $this->objectManager->get(ValidatorResolver::class);
-					$validator = $validatorResolver->createValidator('Tx_Appointments_Domain_Validator_ObjectPropertiesValidator');
+					$validator = $validatorResolver->createValidator(ObjectPropertiesValidator::class);
 
 					if ($validator->isValid($appointment->getAddress())) {
 						$valid = TRUE;

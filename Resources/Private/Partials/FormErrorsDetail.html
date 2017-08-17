@@ -1,4 +1,7 @@
-{namespace a=Tx_Appointments_ViewHelpers}
+<html data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:a="http://typo3.org/ns/Innologi/Appointments/ViewHelpers">
+	
 <f:for each="{error.errors}" key="identity" as="errorDetail">
 	<f:if condition="{isStorageObject}">
 		<f:then>
@@ -44,3 +47,5 @@
 		</f:else> 
 	</f:if>
 </f:for>
+
+</html>

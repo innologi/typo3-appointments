@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use Innologi\Appointments\Persistence\NoPersistRepository;
 /**
  * FontendUserGroup repository. Used to ditch the record_type requirement of the original model.
  *
@@ -31,7 +31,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Repository_FrontendUserGroupRepository extends Tx_Appointments_Persistence_NoPersistRepository {
+class FrontendUserGroupRepository extends NoPersistRepository {
 
 }
 ?>

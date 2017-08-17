@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\ViewHelpers\Link;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
+
 /**
  * Link Action ViewHelper
  *
@@ -34,7 +34,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Appointments_ViewHelpers_Link_ActionViewHelper extends ActionViewHelper {
+class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 	#@TODO _______ use DI override instead once we lose 4.x compatibility
 
 	/**
@@ -43,15 +43,15 @@ class Tx_Appointments_ViewHelpers_Link_ActionViewHelper extends ActionViewHelper
 	protected $extensionKey = 'appointments';
 
 	/**
-	 * @var Tx_Appointments_Service_CsrfProtectServiceInterface
+	 * @var \Innologi\Appointments\Service\CsrfProtectServiceInterface
 	 */
 	protected $csrfProtectService;
 
 	/**
-	 * @param Tx_Appointments_Service_CsrfProtectServiceInterface $csrfProtectService
+	 * @param \Innologi\Appointments\Service\CsrfProtectServiceInterface $csrfProtectService
 	 * @return void
 	 */
-	public function injectCsrfProtectService(Tx_Appointments_Service_CsrfProtectServiceInterface $csrfProtectService) {
+	public function injectCsrfProtectService(\Innologi\Appointments\Service\CsrfProtectServiceInterface $csrfProtectService) {
 		$csrfProtectService->setProtectionLevelByExtConf($this->extensionKey);
 		$this->csrfProtectService = $csrfProtectService;
 	}

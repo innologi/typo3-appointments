@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model\Agenda;
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +34,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-abstract class Tx_Appointments_Domain_Model_Agenda_AbstractContainer extends AbstractEntity {
+abstract class AbstractContainer extends AbstractEntity {
 
 	/**
 	 * name

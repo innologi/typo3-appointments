@@ -1,5 +1,5 @@
 config.tx_extbase.objects {
-	Tx_Appointments_Service_CsrfProtectServiceInterface {
-		className = Tx_Appointments_Service_Typo3CsrfProtectService
+	Innologi\Appointments\Service\CsrfProtectServiceInterface {
+		className = Innologi\Appointments\Service\Typo3CsrfProtectService
 	}
 }

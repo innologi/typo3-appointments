@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Hooks;
 /***************************************************************
  *  Copyright notice
 *
@@ -32,8 +32,8 @@
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Appointments_Hooks_Iconworks {
-
+class Iconworks {
+	// @FIX probably doesn't work anymore since Iconworks was replaced with IconFactory, find a workaround
 	/**
 	 * Visualizes the creation progress of an appointment.
 	 *
@@ -53,9 +53,5 @@ class Tx_Appointments_Hooks_Iconworks {
 			}
 		}
 	}
-}
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/appointments/Classes/Hooks/Tx_Appointments_Hooks_Iconworks.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/appointments/Classes/Hooks/Tx_Appointments_Hooks_Iconworks.php']);
 }
 ?>

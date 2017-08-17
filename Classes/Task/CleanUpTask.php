@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Task;
 /***************************************************************
  *  Copyright notice
 *
@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Task_CleanUpTask extends Task {
+class CleanUpTask extends Task {
 
 	/**
 	 * Age
@@ -66,7 +66,7 @@ class Tx_Appointments_Task_CleanUpTask extends Task {
 	 * @return	boolean		True on success, false on failure
 	 */
 	public function execute() {
-		$businessLogic = GeneralUtility::makeInstance('Tx_Appointments_Task_CleanUpTaskLogic',$this->age);
+		$businessLogic = GeneralUtility::makeInstance(CleanUpTaskLogic::class, $this->age);
 		return $businessLogic->execute();
 	}
 

@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Controller;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,10 +23,18 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Innologi\Appointments\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use Innologi\Appointments\Domain\Model\Appointment;
+use Innologi\Appointments\Domain\Model\FormFieldValue;
+use Innologi\Appointments\Domain\Model\FormField;
+use Innologi\Appointments\Utility\GeneralUtility;
+use Innologi\Appointments\Domain\Model\Agenda;
+use Innologi\Appointments\Domain\Service\SlotService;
+use Innologi\Appointments\Validation\StorageError;
 /**
  * Appointment Controller
  *
@@ -34,7 +42,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_MVC_Controller_ActionController {
+class AppointmentController extends ActionController {
 
 	/**
 	 * Indicates if user needs to be logged in to access action methods
@@ -44,17 +52,17 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	protected $requireLogin = FALSE; #@LOW be configurable?
 
 	/**
-	 * @var Tx_Appointments_Service_EmailService
+	 * @var \Innologi\Appointments\Service\EmailService
 	 */
 	protected $emailService;
 
 	/**
 	 * Injects the Email Service
 	 *
-	 * @param Tx_Appointments_Service_EmailService $emailService
+	 * @param \Innologi\Appointments\Service\EmailService $emailService
 	 * @return void
 	 */
-	public function injectEmailService(Tx_Appointments_Service_EmailService $emailService) {
+	public function injectEmailService(\Innologi\Appointments\Service\EmailService $emailService) {
 		$emailService->setExtensionName($this->extensionName);
 		$this->emailService = $emailService;
 	}
@@ -69,11 +77,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	public function listAction() {
 		if ($this->feUser !== FALSE) {
 			$types = $this->getTypes(); //we need to include types in case a type was hidden or deleted, or we get all sorts of errors
-			$appointments = $this->appointmentRepository->findPersonalList($this->agenda, $types, $this->feUser, FALSE, new DateTime());
+			$appointments = $this->appointmentRepository->findPersonalList($this->agenda, $types, $this->feUser, FALSE, new \DateTime());
 			#@LOW enable through flexform?
 			$unfinishedAppointments = $this->settings['allowResume'] ?
 				$this->appointmentRepository->findPersonalList(
-					$this->agenda, $types, $this->feUser, TRUE, new DateTime()
+					$this->agenda, $types, $this->feUser, TRUE, new \DateTime()
 				) : array();
 			//users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet
 			//a superuser can ALWAYS mutate, so 'now = 0' fixes that
@@ -92,12 +100,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * Certain conditions get to show more data (i.e. being superuser and/or owner)
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to show
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to show
 	 * @dontvalidate $appointment
 	 * @ignorevalidation $appointment
 	 * @return void
 	 */
-	public function showAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function showAction(Appointment $appointment) {
 		// limited rights by default
 		$showMore = FALSE;
 		$endTime = 0;
@@ -131,23 +139,23 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * Part 1 of a multi-step form. This action by itself creats a multi-step form as well.
 	 * This action sets all fields that are required before timeslot-reservation, step by step.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
 	 * @param string $dateFirst The timestamp that should be set before a type was already chosen
 	 * @dontvalidate $appointment
 	 * @ignorevalidation $appointment
 	 * @return void
 	 */
-	public function new1Action(Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $dateFirst = NULL) {
+	public function new1Action(Appointment $appointment = NULL, $dateFirst = NULL) {
 		//find types
 		$types = $this->getTypes();
 		#@LOW in a seperate action that forwards/redirects or not.. consider the extra overhead, it's probably not worth it
 		if (isset($dateFirst[0])) { //overrides in case an appointment-date is picked through agenda
 			//removes types that can't produce timeslots on the dateFirst date
-			$beginTime = new DateTime();
+			$beginTime = new \DateTime();
 			$beginTime->setTimestamp($dateFirst);
 			$types = $this->limitTypesByDate($types, $this->agenda, clone $beginTime);
 			if (!empty($types)) {
-				$appointment = new Tx_Appointments_Domain_Model_Appointment();
+				$appointment = new Appointment();
 				$appointment->setType(current($types));
 				$appointment->setBeginTime($beginTime);
 			} else {
@@ -193,12 +201,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * processNew action. It builds the form used to fill out the entire appointment details,
 	 * and displays a timer for the timeslot reservation.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
 	 * @dontvalidate $appointment
 	 * @ignorevalidation $appointment
 	 * @return void
 	 */
-	public function new2Action(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function new2Action(Appointment $appointment) {
 		#$this->appointmentRepository->update($appointment); //was necessary to retain fieldvalues of validation-error-returned appointments
 
 		//limit the available types by the already chosen timeslot
@@ -230,15 +238,15 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * processNew action. It builds the form used to fill out the entire appointment details,
 	 * and displays a timer for the timeslot reservation.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
 	 * @dontvalidate $appointment
 	 * @ignorevalidation $appointment
 	 * @return void
 	 */
-	public function simpleProcessNewAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function simpleProcessNewAction(Appointment $appointment) {
 		$this->appointmentRepository->update($appointment);
 		$arguments = array(
-				'appointment' => $appointment
+			'appointment' => $appointment
 		);
 		$this->redirect('new2',NULL,NULL,$arguments);
 	}
@@ -250,13 +258,13 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * adds missing properties, persists / refreshes timeslot reservations, and then redirects to
 	 * the appropriate action.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that's being created
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
 	 * @dontvalidate $appointment
 	 * @ignorevalidation $appointment
 	 * @verifycsrftoken
 	 * @return void
 	 */
-	public function processNewAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function processNewAction(Appointment $appointment) {
 		$arguments = array();
 		$appointment->setAgenda($this->agenda);
 		if ($this->feUser) {
@@ -282,17 +290,17 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			} else {
 
 				//expired appointments should be refreshed
-				if ($appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::EXPIRED) { //it's possible to get here when expired and the appointment no longer exists, thus throwing an exception #@TODO caught by.. ? SettingsOverride? I don't remember!
+				if ($appointment->getCreationProgress() === Appointment::EXPIRED) { //it's possible to get here when expired and the appointment no longer exists, thus throwing an exception #@TODO caught by.. ? SettingsOverride? I don't remember!
 					//checks whether the timeslot was changed or not
 					$cleanBeginTime = $appointment->_getCleanProperty('beginTime');
-					if ($cleanBeginTime instanceof DateTime && $cleanBeginTime->getTimestamp() !== $appointment->getBeginTime()->getTimestamp()) {
+					if ($cleanBeginTime instanceof \DateTime && $cleanBeginTime->getTimestamp() !== $appointment->getBeginTime()->getTimestamp()) {
 						$timerStart = TRUE;
 					} else {
 						//messages for the same timeslot again (refresh)
 						$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_timerrefresh', $this->extensionName);
 						$this->flashMessageContainer->add($flashMessage, '', FlashMessage::INFO);
 					}
-					$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::UNFINISHED);
+					$appointment->setCreationProgress(Appointment::UNFINISHED);
 				}
 
 				$this->appointmentRepository->update($appointment);
@@ -334,11 +342,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * his timeslot by submitting an invalid appointment over and over. We might need to fix that, but for
 	 * now the cleanup task will prevent excessive time-differences over firstAvailableTime.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to create
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to create
 	 * @verifycsrftoken
 	 * @return void
 	 */
-	public function createAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function createAction(Appointment $appointment) {
 		$timeFields = $this->calculateTimes($appointment); //times can be influenced by formfields
 		#@FIX _there is no check whether timeslotisallowed, which is good for the firstavailabletime, but what about maxPerDays and all that?
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
@@ -346,7 +354,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		//isTimeSlotAllowed() does not suffice by itself, because of formfields that add time and can cause overlap
 		if (($overlap = $this->crossAppointments($appointment)) !== FALSE) { //an appointment was found that makes the current one's times not possible
 			//updating it as expired so the fields get saved while not blocking any appointment that might have caused crossAppointment to be TRUE
-			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
+			$appointment->setCreationProgress(Appointment::EXPIRED);
 			$this->appointmentRepository->update($appointment, FALSE); //not resetting the storage object just yet because this one still has a chance regaining his prematurely ended reservation
 
 			$this->processOverlapInfo($overlap,$appointment);
@@ -356,7 +364,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			if (version_compare(TYPO3_branch, '4.7', '<') && $appointment->getAddress() !== NULL) {
 				$appointment->getAddress()->setName(); //otherwise, it isn't set until show
 			}
-			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::FINISHED);
+			$appointment->setCreationProgress(Appointment::FINISHED);
 			$this->appointmentRepository->update($appointment);
 
 			$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_create_success', $this->extensionName);
@@ -376,13 +384,13 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * $appointment should not be validated, because changes to the extension or some editing in TCA might cause
 	 * validation errors, and we can't fix those in FE if editAction isn't allowed. Validation is done in updateAction anyway.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to edit
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to edit
 	 * @param string $changedDate Changed date
 	 * @dontvalidate $appointment
 	 * @ignorevalidation $appointment
 	 * @return void
 	 */
-	public function editAction(Tx_Appointments_Domain_Model_Appointment $appointment, $changedDate = NULL) {
+	public function editAction(Appointment $appointment, $changedDate = NULL) {
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 
 		$formFieldValues = $appointment->getFormFieldValues();
@@ -393,7 +401,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 
 		//if the date was changed, reflect it on the form but don't persist it yet
 		if ($changedDate !== NULL) {
-			$appointment->setBeginTime(new DateTime($changedDate)); #@LOW couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
+			$appointment->setBeginTime(new \DateTime($changedDate)); #@LOW couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
 			$appointment->_memorizeCleanState('beginTime'); //makes sure it isn't persisted automatically
 		}
 		$dateSlots = $this->slotService->getDateSlotsIncludingCurrent($appointment,TRUE);
@@ -410,11 +418,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * action update
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to update
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to update
 	 * @verifycsrftoken
 	 * @return void
 	 */
-	public function updateAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function updateAction(Appointment $appointment) {
 		$timeFields = $this->calculateTimes($appointment); //times can be influenced by formfields
 
 		#@TODO betekent calculateTimes nu niet dat hij altijd als modified wordt geregistreerd?
@@ -440,13 +448,13 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * action delete
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to delete
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to delete
 	 * @dontvalidate $appointment
 	 * @ignorevalidation $appointment
 	 * @verifycsrftoken
 	 * @return void
 	 */
-	public function deleteAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function deleteAction(Appointment $appointment) {
 		$this->appointmentRepository->remove($appointment);
 		$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_delete_success', $this->extensionName);
 		$this->flashMessageContainer->add($flashMessage, '', FlashMessage::OK);
@@ -461,14 +469,14 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 *
 	 * When an unfinished appointment is started, one is allowed to free up the chosen timeslot.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment's time to free up
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment's time to free up
 	 * @dontvalidate $appointment
 	 * @ignorevalidation $appointment
 	 * @return void
 	 */
-	public function freeAction(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function freeAction(Appointment $appointment) {
 		//set it to expired to free up the timeslot, but still pass along the appointment so that it may be reconstituted in the same session
-		$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
+		$appointment->setCreationProgress(Appointment::EXPIRED);
 		$this->appointmentRepository->update($appointment);
 
 		$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_free_success', $this->extensionName);
@@ -533,7 +541,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 			//formfieldvalues to add
 			foreach ($formFields as $formField) {
 				$uid = $formField->getUid();
-				$formFieldValue = new Tx_Appointments_Domain_Model_FormFieldValue();
+				$formFieldValue = new FormFieldValue();
 				$formFieldValue->setFormField($formField);
 				$items[$uid] = $formFieldValue;
 				$order[$uid] = $formField->getSorting();
@@ -555,10 +563,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * Calculates the time-properties of an appointments, and sets them.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment of which to calculate the time properties
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment of which to calculate the time properties
 	 * @return array Contains the uids of the addtime fields
 	 */
-	protected function calculateTimes(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	protected function calculateTimes(Appointment $appointment) {
 		$timeFields = array();
 		$dateTime = clone $appointment->getBeginTime();
 		$type = $appointment->getType();
@@ -574,18 +582,18 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		$formFieldValues = $appointment->getFormFieldValues();
 		foreach($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
-			if ($formField->getFunction() === Tx_Appointments_Domain_Model_FormField::FUNCTION_ADDTIME) {
+			if ($formField->getFunction() === FormField::FUNCTION_ADDTIME) {
 				$timeFields[] = $formField->getUid();
 				$fieldType = $formField->getFieldType();
 				$value = $formFieldValue->getValue();
 				switch ($fieldType) {
-					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE:
-					case Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL:
+					case FormField::TYPE_TEXTLARGE:
+					case FormField::TYPE_TEXTSMALL:
 						$dateTime->modify('+'.intval($value).$unit); #@LOW _add a validator-choice with a customizable max?
 						break;
-					case Tx_Appointments_Domain_Model_FormField::TYPE_RADIO:
-					case Tx_Appointments_Domain_Model_FormField::TYPE_SELECT:
-					case Tx_Appointments_Domain_Model_FormField::TYPE_BOOLEAN:
+					case FormField::TYPE_RADIO:
+					case FormField::TYPE_SELECT:
+					case FormField::TYPE_BOOLEAN:
 						#@TODO moet mogelijk zijn met de timeAdd optie
 				}
 			}
@@ -599,28 +607,28 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * Adds the timer message for a currently reserved (or expired) timeslot.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment Appointment which uses the timeslot
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment Appointment which uses the timeslot
 	 * @return void
 	 */
-	protected function addTimerMessage(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	protected function addTimerMessage(Appointment $appointment) {
 		//get remaining seconds
-		$remainingSeconds = Tx_Appointments_Utility_GeneralUtility::getTimerRemainingSeconds(
+		$remainingSeconds = GeneralUtility::getTimerRemainingSeconds(
 			$appointment, (int) $this->settings['freeSlotInMinutes']
 		);
 
 		//when the appointment was flagged 'expired' in the current pagehit, (e.g. page refresh)
 		//this $appointment reference might not yet be up to date, so we have to check
 		//$remainingSeconds === 0 for those specific cases
-		if ($remainingSeconds === 0 && $appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::UNFINISHED) {
-			$appointment->setCreationProgress(Tx_Appointments_Domain_Model_Appointment::EXPIRED);
+		if ($remainingSeconds === 0 && $appointment->getCreationProgress() === Appointment::UNFINISHED) {
+			$appointment->setCreationProgress(Appointment::EXPIRED);
 			$appointment->_memorizePropertyCleanState('creationProgress'); //if we don't register EXPIRED as clean state, setting it to unfinished later won't be recognized by persistence!
 		}
 
 		//inform of timer
-		if ($appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::UNFINISHED) {
+		if ($appointment->getCreationProgress() === Appointment::UNFINISHED) {
 			$flashMessage = str_replace(
 					'$1',
-					'<span class="reservation-timer">' . Tx_Appointments_Utility_GeneralUtility::getAppointmentTimer($appointment) . '</span>',
+					'<span class="reservation-timer">' . GeneralUtility::getAppointmentTimer($appointment) . '</span>',
 					LocalizationUtility::translate('tx_appointments_list.appointment_timer', $this->extensionName)
 			);
 			$flashHeader = LocalizationUtility::translate('tx_appointments_list.appointment_timer_header', $this->extensionName);
@@ -644,10 +652,10 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * Currently unused are the following, disabled keys:
 	 * - changeTimeSlot => boolean whether the timeslot NEEDS to be changed
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to check
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to check
 	 * @return mixed Array on overlap, boolean FALSE on no overlap
 	 */
-	protected function crossAppointments(Tx_Appointments_Domain_Model_Appointment $appointment) {
+	protected function crossAppointments(Appointment $appointment) {
 		$crossAppointments = $this->appointmentRepository->findCrossAppointments($appointment);
 		if (!empty($crossAppointments)) {
 			$beginTimeDiff = array();
@@ -713,12 +721,12 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * Limits the allowed types based on available timeslots on the given DateTime.
 	 *
-	 * @param Iterator|Array $types Previous types result
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda Agenda to check
-	 * @param DateTime $dateTime DateTime to get dateslot for
+	 * @param \Iterator|array $types Previous types result
+	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda Agenda to check
+	 * @param \DateTime $dateTime DateTime to get dateslot for
 	 * @return array Contains types that have an available timeslot
 	 */
-	protected function limitTypesByDate($types, Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $dateTime) {
+	protected function limitTypesByDate($types, Agenda $agenda, \DateTime $dateTime) {
 		$newTypes = array();
 		foreach ($types as $type) {
 			$slotStorage = $this->slotService->getSingleDateSlot($type, $agenda, clone $dateTime);
@@ -733,13 +741,13 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	/**
 	 * Limits the allowed types based on appointment properties.
 	 *
-	 * @param Iterator|Array $types Previous types result
-	 * @param Tx_Appointments_Domain_Model_Appointment $excludeAppointment Appointment to exclude in available timeslot calculation
+	 * @param \Iterator|array $types Previous types result
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $excludeAppointment Appointment to exclude in available timeslot calculation
 	 * @return array Contains types that have an available timeslot
 	 */
-	protected function limitTypesByAppointment($types, Tx_Appointments_Domain_Model_Appointment $appointment) {
+	protected function limitTypesByAppointment($types, Appointment $appointment) {
 		$newTypes = array();
-		$timeSlotKey = $appointment->getBeginTime()->format(Tx_Appointments_Domain_Service_SlotService::TIMESLOT_KEY_FORMAT);
+		$timeSlotKey = $appointment->getBeginTime()->format(SlotService::TIMESLOT_KEY_FORMAT);
 
 		foreach ($types as $type) {
 			$slotStorage = $this->slotService->getSingleDateSlotIncludingCurrent($appointment, $type);
@@ -756,9 +764,9 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * Performs all mailing actions appropriate to $action.
 	 *
 	 * @param string $action The email action [create / update / delete]
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to inform about
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to inform about
 	 */
-	protected function performMailingActions($action,Tx_Appointments_Domain_Model_Appointment $appointment) {
+	protected function performMailingActions($action, Appointment $appointment) {
 		$this->emailService->setControllerContext($this->controllerContext); //can't be done @ injection because controllerContext won't be initialized yet
 
 		if (!$this->emailService->sendAction($action,$appointment)) {
@@ -783,7 +791,7 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 		//marks all the time-related formfieldvalues
 		if ($timeFields !== NULL && !empty($timeFields)) {
 			$propertyError = new Tx_Extbase_Validation_PropertyError('formFieldValues');
-			$storageError = new Tx_Appointments_Validation_StorageError('formFieldValue');
+			$storageError = new StorageError('formFieldValue');
 			foreach ($timeFields as $uid) {
 				$subPropertyError = new Tx_Extbase_Validation_PropertyError('value');
 				$subPropertyError->addErrors(array(
@@ -817,11 +825,11 @@ class Tx_Appointments_Controller_AppointmentController extends Tx_Appointments_M
 	 * Currently only appends related messages.
 	 *
 	 * @param array $overlapInfo As returned by crossAppointments()
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that is overlapping
+	 * @param Appointment $appointment The appointment that is overlapping
 	 * @return void
 	 * @see self::crossAppointments()
 	 */
-	protected function processOverlapInfo(array $overlapInfo, Tx_Appointments_Domain_Model_Appointment $appointment) {
+	protected function processOverlapInfo(array $overlapInfo, Appointment $appointment) {
 		$messageParts = '';
 
 		if (isset($overlapInfo['begin'])) {

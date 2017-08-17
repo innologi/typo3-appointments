@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Repository_FormFieldValueRepository extends Repository {
+class FormFieldValueRepository extends Repository {
 
 	/**
 	 * Finds all orphaned formfieldvalues (where appointment is NULL)
@@ -49,9 +49,9 @@ class Tx_Appointments_Domain_Repository_FormFieldValueRepository extends Reposit
 		#		$query->equals('appointment.deleted', 1)
 		#)->execute()->toArray();
 		$result = $query->statement(
-				'SELECT `ffv`.*
-				FROM `tx_appointments_domain_model_formfieldvalue` `ffv` LEFT JOIN (`tx_appointments_domain_model_appointment` `a`) ON (`ffv`.`appointment`=`a`.`uid`)
-				WHERE `ffv`.`deleted`=0 AND `a`.`uid` IS NULL'
+			'SELECT `ffv`.*
+			FROM `tx_appointments_domain_model_formfieldvalue` `ffv` LEFT JOIN (`tx_appointments_domain_model_appointment` `a`) ON (`ffv`.`appointment`=`a`.`uid`)
+			WHERE `ffv`.`deleted`=0 AND `a`.`uid` IS NULL'
 		)->execute();
 
 		return $result;

@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Address extends AbstractEntity implements Tx_Appointments_Domain_Model_EmailContainerInterface {
+class Address extends AbstractEntity implements EmailContainerInterface {
 
 	/**
 	 * First Name
@@ -72,7 +72,7 @@ class Tx_Appointments_Domain_Model_Address extends AbstractEntity implements Tx_
 	/**
 	 * Birthday
 	 *
-	 * @var DateTime
+	 * @var \DateTime
 	 */
 	protected $birthday; #@LOW is property-value in formField template still necessary?
 
@@ -118,7 +118,7 @@ class Tx_Appointments_Domain_Model_Address extends AbstractEntity implements Tx_
 	 *
 	 * @var integer
 	 */
-	protected $creationProgress = Tx_Appointments_Domain_Model_Appointment::UNFINISHED;
+	protected $creationProgress = Appointment::UNFINISHED;
 
 	/**
 	 * Returns the firstName
@@ -221,7 +221,7 @@ class Tx_Appointments_Domain_Model_Address extends AbstractEntity implements Tx_
 	/**
 	 * Returns the birthday
 	 *
-	 * @return DateTime $birthday
+	 * @return \DateTime $birthday
 	 */
 	public function getBirthday() {
 		return $this->birthday;
@@ -230,7 +230,7 @@ class Tx_Appointments_Domain_Model_Address extends AbstractEntity implements Tx_
 	/**
 	 * Sets the birthday
 	 *
-	 * @param DateTime $birthday
+	 * @param \DateTime $birthday
 	 * @return void
 	 */
 	public function setBirthday($birthday) {

@@ -7,33 +7,33 @@ plugin.tx_appointments {
 	persistence {
 		storagePid = {$plugin.tx_appointments.persistence.storagePid}
 		classes {
-			Tx_Appointments_Domain_Model_Appointment {
+			Innologi\Appointments\Domain\Model\Appointment {
 				mapping.columns {
 					crdate.mapOnProperty = crdate
 				}
 			}
-			Tx_Appointments_Domain_Model_FormField {
+			Innologi\Appointments\Domain\Model\FormField {
 				mapping.columns {
 					sorting.mapOnProperty = sorting
 				}
 			}
-			Tx_Appointments_Domain_Model_Address {
+			Innologi\Appointments\Domain\Model\Address {
 				mapping.columns {
 					tx_appointments_social_security_number.mapOnProperty = socialSecurityNumber
 					tx_appointments_creation_progress.mapOnProperty = creationProgress
 				}
 			}
 		
-			Tx_Appointments_Domain_Model_Address {
+			Innologi\Appointments\Domain\Model\Address {
 				mapping {
 					tableName = tt_address
-					recordType = Tx_Appointments_Domain_Model_Address
+					recordType = Tx_Appointments_Address
 				}
 			}
-			Tx_Appointments_Domain_Model_FrontendUser {
+			Innologi\Appointments\Domain\Model\FrontendUser {
 				mapping.tableName = fe_users
 			}
-			Tx_Appointments_Domain_Model_FrontendUserGroup {
+			Innologi\Appointments\Domain\Model\FrontendUserGroup {
 				mapping.tableName = fe_groups
 			}
 		}
@@ -149,7 +149,7 @@ plugin.tx_appointments {
 		}
 		# extbase 6.2+ bugfix for rewrittenPropertyMapper=0
 		TYPO3\CMS\Extbase\Validation\ValidatorResolver {
-			className = Tx_Appointments_Validation_ValidatorResolver
+			className = Innologi\Appointments\Validation\ValidatorResolver
 		}
 	}
 }

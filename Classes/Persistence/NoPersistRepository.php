@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Persistence;
 /***************************************************************
  *  Copyright notice
  *
@@ -25,6 +25,7 @@
  ***************************************************************/
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use Innologi\Appointments\Mvc\Exception;
 /**
  * This repository prevents registration @ persistence manager.
  *
@@ -37,7 +38,7 @@ use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Persistence_NoPersistRepository extends Repository {
+class NoPersistRepository extends Repository {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
@@ -59,10 +60,10 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Repository {
 	 *
 	 * @param object $object
 	 * @return void
-	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
+	 * @throws Exception\NoPersistRepository
 	 */
 	public function add($object) {
-		throw new Tx_Appointments_MVC_Exception_NoPersistRepository();
+		throw new Exception\NoPersistRepository();
 	}
 
 	/**
@@ -70,10 +71,10 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Repository {
 	 *
 	 * @param object $object
 	 * @return void
-	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
+	 * @throws Exception\NoPersistRepository
 	 */
 	public function remove($object) {
-		throw new Tx_Appointments_MVC_Exception_NoPersistRepository();
+		throw new Exception\NoPersistRepository();
 	}
 
 	/**
@@ -81,10 +82,10 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Repository {
 	 *
 	 * @param object $modifiedObject
 	 * @return void
-	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
+	 * @throws Exception\NoPersistRepository
 	 */
 	public function update($modifiedObject) {
-		throw new Tx_Appointments_MVC_Exception_NoPersistRepository();
+		throw new Exception\NoPersistRepository();
 	}
 
 	/**
@@ -93,10 +94,10 @@ class Tx_Appointments_Persistence_NoPersistRepository extends Repository {
 	 * @param object $existingObject
 	 * @param object $newObject
 	 * @return void
-	 * @throws Tx_Appointments_MVC_Exception_NoPersistRepository
+	 * @throws Exception\NoPersistRepository
 	 */
 	public function replace($existingObject, $newObject) {
-		throw new Tx_Appointments_MVC_Exception_NoPersistRepository();
+		throw new Exception\NoPersistRepository();
 	}
 }
 ?>

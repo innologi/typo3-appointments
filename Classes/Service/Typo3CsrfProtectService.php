@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Service;
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Frenck Lutke <typo3@innologi.nl>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Service_AbstractCsrfProtectService implements SingletonInterface {
+class Typo3CsrfProtectService extends AbstractCsrfProtectService implements SingletonInterface {
 
 	/**
 	 * @var string
@@ -69,7 +69,7 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	 * Initializes class properties
 	 *
 	 * @return void
-	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::initialize()
+	 * @see AbstractCsrfProtectService::initialize()
 	 */
 	protected function initialize() {
 		$this->executionTime = (int)$GLOBALS['EXEC_TIME'];
@@ -114,11 +114,11 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 			$this->tokenUri = $this->getRequestUri();
 
 			if ($this->request->getMethod() === 'GET') {
-				$this->tokenUri = Tx_Appointments_Utility_GeneralUtility::stripGetParameters(
+				$this->tokenUri = \Innologi\Appointments\Utility\GeneralUtility::stripGetParameters(
 					$this->tokenUri, array(
 						'chash',
 						urlencode(
-							Tx_Appointments_Utility_GeneralUtility::wrapGetParameter(
+							\Innologi\Appointments\Utility\GeneralUtility::wrapGetParameter(
 								$this->getTokenKey(),
 								$this->request->getControllerExtensionKey(),
 								$this->request->getPluginName()
@@ -157,7 +157,7 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	 * @param string $uri
 	 * @param string $hash
 	 * @return string
-	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getToken()
+	 * @see AbstractCsrfProtectService::getToken()
 	 */
 	protected function getToken($uri, $hash) {
 		return $this->hashService->generateHmac(
@@ -170,7 +170,7 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	 * to determine the token's location.
 	 *
 	 * @return string
-	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getRequestToken()
+	 * @see AbstractCsrfProtectService::getRequestToken()
 	 */
 	protected function getRequestToken() {
 		return $this->hasJsDependency()
@@ -190,7 +190,7 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 	 *
 	 * @param boolean $fromReferrer
 	 * @return string
-	 * @see Tx_Appointments_Service_AbstractCsrfProtectService::getHashSource()
+	 * @see AbstractCsrfProtectService::getHashSource()
 	 */
 	protected function getHashSource($fromReferrer = FALSE) {
 		if ($this->hasReferrerDependency()) {
@@ -198,7 +198,7 @@ class Tx_Appointments_Service_Typo3CsrfProtectService extends Tx_Appointments_Se
 				? $this->getHeader('REFERER')
 				: $this->getRequestUri();
 			$sourceUri = serialize(
-				Tx_Appointments_Utility_GeneralUtility::splitUrlAndSortInArray($sourceUri)
+				\Innologi\Appointments\Utility\GeneralUtility::splitUrlAndSortInArray($sourceUri)
 			);
 		} else {
 			$sourceUri = $this->getBaseUri();

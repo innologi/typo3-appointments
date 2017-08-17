@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * FrontendUser, allows us to include fe_users of any recordType.
@@ -39,10 +38,10 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_FrontendUser extends FrontendUser implements Tx_Appointments_Domain_Model_EmailContainerInterface{
+class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser implements EmailContainerInterface{
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_FrontendUserGroup>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FrontendUserGroup>
 	 */
 	protected $usergroup;
 
@@ -60,20 +59,20 @@ class Tx_Appointments_Domain_Model_FrontendUser extends FrontendUser implements 
 	/**
 	 * Adds a usergroup to the frontend user
 	 *
-	 * @param Tx_Appointments_Domain_Model_FrontendUserGroup $usergroup
+	 * @param \Innologi\Appointments\Domain\Model\FrontendUserGroup $usergroup
 	 * @return void
 	 */
-	public function addUsergroup(Tx_Appointments_Domain_Model_FrontendUserGroup $usergroup) {
+	public function addUsergroup(FrontendUserGroup $usergroup) {
 		$this->usergroup->attach($usergroup);
 	}
 
 	/**
 	 * Removes a usergroup from the frontend user
 	 *
-	 * @param Tx_Appointments_Domain_Model_FrontendUserGroup $usergroup
+	 * @param \Innologi\Appointments\Domain\Model\FrontendUserGroup $usergroup
 	 * @return void
 	 */
-	public function removeUsergroup(Tx_Appointments_Domain_Model_FrontendUserGroup $usergroup) {
+	public function removeUsergroup(FrontendUserGroup $usergroup) {
 		$this->usergroup->detach($usergroup);
 	}
 
@@ -82,7 +81,7 @@ class Tx_Appointments_Domain_Model_FrontendUser extends FrontendUser implements 
 	 * Returns the usergroups. Keep in mind that the property is called "usergroup"
 	 * although it can hold several usergroups.
 	 *
-	 * @return TYPO3\CMS\Extbase\Persistence\ObjectStorage An object storage containing the usergroup
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getUsergroup() {
 		return $this->usergroup;

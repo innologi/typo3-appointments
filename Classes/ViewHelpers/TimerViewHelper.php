@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
@@ -24,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use Innologi\Appointments\Domain\Model\Appointment;
+use Innologi\Appointments\Utility\GeneralUtility;
 /**
  * Timer Viewhelper
  *
@@ -38,39 +40,39 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_ViewHelpers_TimerViewHelper extends AbstractViewHelper {
+class TimerViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Render timer
 	 *
 	 * @param integer $timerMinutes Total number of minutes the timer normally
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment
+	 * @param Appointment $appointment The appointment
 	 * @param string $format timer|minutes|seconds
 	 * @return string
 	 */
-	public function render($timerMinutes = 1, Tx_Appointments_Domain_Model_Appointment $appointment = NULL, $format = "timer") {
+	public function render($timerMinutes = 1, Appointment $appointment = NULL, $format = "timer") {
 		if ($appointment === NULL) {
 			$appointment = $this->renderChildren();
-			if (!$appointment instanceof Tx_Appointments_Domain_Model_Appointment) {
+			if (!$appointment instanceof Appointment) {
 				// @LOW throw exception
 				return;
 			}
 		}
 		switch ($format) {
 			case 'timer':
-				$timer = Tx_Appointments_Utility_GeneralUtility::getAppointmentTimer(
+				$timer = GeneralUtility::getAppointmentTimer(
 					$appointment, (int) $timerMinutes
 				);
 				break;
 			case 'minutes':
-				$seconds = Tx_Appointments_Utility_GeneralUtility::getTimerRemainingSeconds(
+				$seconds = GeneralUtility::getTimerRemainingSeconds(
 					$appointment, (int) $timerMinutes
 				);
 				$max = ceil($seconds / 60);
 				$timer = '~' . ($max > 1 ? '1-' : '') . $max;
 				break;
 			case 'seconds':
-				$timer = Tx_Appointments_Utility_GeneralUtility::getTimerRemainingSeconds(
+				$timer = GeneralUtility::getTimerRemainingSeconds(
 					$appointment, (int) $timerMinutes
 				);
 				break;

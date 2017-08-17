@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Validator;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,9 +23,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Innologi\Appointments\Validation\Validator\PreppedAbstractValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Innologi\Appointments\Domain\Model\FormFieldValue;
+use Innologi\Appointments\Domain\Model\FormField;
 /**
  * FormFieldVlaue Domain Validator.
  *
@@ -36,7 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Validator_FormFieldValueValidator extends Tx_Appointments_Validation_Validator_PreppedAbstractValidator {
+class FormFieldValueValidator extends PreppedAbstractValidator {
 
 	/**
 	 * Tests if special properties are valid.
@@ -46,7 +49,7 @@ class Tx_Appointments_Domain_Validator_FormFieldValueValidator extends Tx_Appoin
 	 */
 	public function isValid($formFieldValue) {
 		$valid = FALSE;
-		if ($formFieldValue instanceof Tx_Appointments_Domain_Model_FormFieldValue) {
+		if ($formFieldValue instanceof FormFieldValue) {
 			$valid = $this->validateValue($formFieldValue->getValue(), $formFieldValue->getFormField());
 		}
 		return $valid;
@@ -60,10 +63,10 @@ class Tx_Appointments_Domain_Validator_FormFieldValueValidator extends Tx_Appoin
 	 * that here.
 	 *
 	 * @param string $value The value to validate
-	 * @param Tx_Appointments_Domain_Model_FormField $formField
+	 * @param \Innologi\Appointments\Domain\Model\FormField $formField
 	 * @return boolean TRUE if valid, FALSE if invalid
 	 */
-	protected function validateValue($value, Tx_Appointments_Domain_Model_FormField $formField) {
+	protected function validateValue($value, FormField $formField) {
 		$validationTypes = GeneralUtility::trimExplode(',', $formField->getValidationTypes(), TRUE);
 		$validatorResolver = $this->objectManager->get(ValidatorResolver::class);
 		$validatorConjunction = $this->objectManager->get(ConjunctionValidator::class);
@@ -75,18 +78,18 @@ class Tx_Appointments_Domain_Validator_FormFieldValueValidator extends Tx_Appoin
 				$validationType = intval($validationType);
 				#@TODO currently tells FE the field is required if ANY of these is selected, but alphanum, string and text don't require it to be, so they're disabled in TCA. Fix this as soon as extbase is consistent @ its Validators.
 				switch ($validationType) {
-					case Tx_Appointments_Domain_Model_FormField::VALIDATE_ALPHANUMERIC: #@LOW move these outside of formfield and into the validator to lose the formfield dependence
+					case FormField::VALIDATE_ALPHANUMERIC: #@LOW move these outside of formfield and into the validator to lose the formfield dependence
 						$validator = $validatorResolver->createValidator('Alphanumeric');
 						break;
-					case Tx_Appointments_Domain_Model_FormField::VALIDATE_DATE_TIME:
+					case FormField::VALIDATE_DATE_TIME:
 						$validator = $validatorResolver->createValidator('DateTime');
 						//$value is of type string, while this validator tests it for objecttype DateTime
 						if (!empty($value)) {
 							try {
-								$newValue = new DateTime($value);
+								$newValue = new \DateTime($value);
 								//results in NULL if a valid DateTime string but not in the specified format, so that you can't get away with a timestamp or some other format
 								$value = ($value === $newValue->format('d-m-Y')) ? $newValue : NULL;
-							} catch (Exception $e) { //if $value is no valid DateTime string
+							} catch (\Exception $e) { //if $value is no valid DateTime string
 								$value = NULL;
 							}
 							if ($value === NULL && version_compare(TYPO3_branch, '6.2', '>=')) {
@@ -95,29 +98,29 @@ class Tx_Appointments_Domain_Validator_FormFieldValueValidator extends Tx_Appoin
 							}
 						}
 						break;
-					case Tx_Appointments_Domain_Model_FormField::VALIDATE_EMAIL_ADDRESS:
+					case FormField::VALIDATE_EMAIL_ADDRESS:
 						$validator = $validatorResolver->createValidator('EmailAddress');
 						break;
-					case Tx_Appointments_Domain_Model_FormField::VALIDATE_FLOAT:
+					case FormField::VALIDATE_FLOAT:
 						$validator = $validatorResolver->createValidator('Float');
 						break;
-					case Tx_Appointments_Domain_Model_FormField::VALIDATE_INTEGER:
+					case FormField::VALIDATE_INTEGER:
 						$validator = $validatorResolver->createValidator('Integer');
 						break;
-					case Tx_Appointments_Domain_Model_FormField::VALIDATE_NOT_EMPTY:
+					case FormField::VALIDATE_NOT_EMPTY:
 						$validator = $validatorResolver->createValidator('NotEmpty');
 						$addNotEmpty = FALSE;
 						break;
-					case Tx_Appointments_Domain_Model_FormField::VALIDATE_NUMBER:
+					case FormField::VALIDATE_NUMBER:
 						$validator = $validatorResolver->createValidator('Number');
 						break;
-					case Tx_Appointments_Domain_Model_FormField::VALIDATE_STRING:
+					case FormField::VALIDATE_STRING:
 						$validator = $validatorResolver->createValidator('String');
 						break;
-					case Tx_Appointments_Domain_Model_FormField::VALIDATE_TEXT:
+					case FormField::VALIDATE_TEXT:
 						$validator = $validatorResolver->createValidator('Text');
 						break;
-					case Tx_Appointments_Domain_Model_FormField::VALIDATE_NATURALNUMBER:
+					case FormField::VALIDATE_NATURALNUMBER:
 						//without options, it sets startRange = 0 and endRange = PHP_INT_MAX
 						$validator = $validatorResolver->createValidator('NumberRange');
 						break;

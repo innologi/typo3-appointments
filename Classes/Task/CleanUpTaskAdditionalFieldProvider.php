@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Task;
 /***************************************************************
  *  Copyright notice
 *
@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Task_CleanUpTaskAdditionalFieldProvider implements AdditionalFieldProviderInterface {
+class CleanUpTaskAdditionalFieldProvider implements AdditionalFieldProviderInterface {
 
 	/**
 	 * Additional field

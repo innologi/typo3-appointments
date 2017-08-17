@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_FormField extends AbstractEntity {
+class FormField extends AbstractEntity {
 
 	//constants
 	const VALIDATE_NOT_EMPTY = 1;
@@ -135,7 +135,7 @@ class Tx_Appointments_Domain_Model_FormField extends AbstractEntity {
 	/**
 	 * The field this one enables
 	 *
-	 * @var Tx_Appointments_Domain_Model_FormField
+	 * @var \Innologi\Appointments\Domain\Model\FormField
 	 * @lazy
 	 */
 	protected $enableField;
@@ -361,7 +361,7 @@ class Tx_Appointments_Domain_Model_FormField extends AbstractEntity {
 	/**
 	 * Returns the enableField
 	 *
-	 * @return Tx_Appointments_Domain_Model_FormField $enableField
+	 * @return \Innologi\Appointments\Domain\Model\FormField
 	 */
 	public function getEnableField() {
 		return $this->enableField;
@@ -370,10 +370,10 @@ class Tx_Appointments_Domain_Model_FormField extends AbstractEntity {
 	/**
 	 * Sets the enableField
 	 *
-	 * @param Tx_Appointments_Domain_Model_FormField $enableField
+	 * @param \Innologi\Appointments\Domain\Model\FormField $enableField
 	 * @return void
 	 */
-	public function setEnableField(Tx_Appointments_Domain_Model_FormField $enableField) {
+	public function setEnableField(FormField $enableField) {
 		$this->enableField = $enableField;
 	}
 

@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Agenda extends AbstractEntity {
+class Agenda extends AbstractEntity {
 
 	/**
 	 * Name of agenda
@@ -60,7 +60,7 @@ class Tx_Appointments_Domain_Model_Agenda extends AbstractEntity {
 	/**
 	 * Types
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Type>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Type>
 	 * @lazy
 	 */
 	protected $types;
@@ -97,7 +97,7 @@ class Tx_Appointments_Domain_Model_Agenda extends AbstractEntity {
 	/**
 	 * Emails a confirmation on every scheduled appointment to an address
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Address>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Address>
 	 * @lazy
 	 */
 	protected $emailAddress;
@@ -112,7 +112,7 @@ class Tx_Appointments_Domain_Model_Agenda extends AbstractEntity {
 	/**
 	 * Emails a calendar invitation on every scheduled appointment to an address
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_Address>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Address>
 	 * @lazy
 	 */
 	protected $calendarInviteAddress;
@@ -213,20 +213,20 @@ class Tx_Appointments_Domain_Model_Agenda extends AbstractEntity {
 	/**
 	 * Adds a Type
 	 *
-	 * @param Tx_Appointments_Domain_Model_Type $type
+	 * @param \Innologi\Appointments\Domain\Model\Type $type
 	 * @return void
 	 */
-	public function addTypes(Tx_Appointments_Domain_Model_Type $type) {
+	public function addTypes(Type $type) {
 		$this->types->attach($type);
 	}
 
 	/**
 	 * Removes a Type
 	 *
-	 * @param Tx_Appointments_Domain_Model_Type $typeToRemove The Type to be removed
+	 * @param \Innologi\Appointments\Domain\Model\Type $typeToRemove The Type to be removed
 	 * @return void
 	 */
-	public function removeTypes(Tx_Appointments_Domain_Model_Type $typeToRemove) {
+	public function removeTypes(Type $typeToRemove) {
 		$this->types->detach($typeToRemove);
 	}
 
@@ -328,27 +328,27 @@ class Tx_Appointments_Domain_Model_Agenda extends AbstractEntity {
 	/**
 	 * Adds a Address
 	 *
-	 * @param Tx_Appointments_Domain_Model_Address $emailAddress
+	 * @param \Innologi\Appointments\Domain\Model\Address $emailAddress
 	 * @return void
 	 */
-	public function addEmailAddress(Tx_Appointments_Domain_Model_Address $emailAddress) {
+	public function addEmailAddress(Address $emailAddress) {
 		$this->emailAddress->attach($emailAddress);
 	}
 
 	/**
 	 * Removes a Address
 	 *
-	 * @param Tx_Appointments_Domain_Model_Address $emailAddressToRemove The Address to be removed
+	 * @param \Innologi\Appointments\Domain\Model\Address $emailAddressToRemove The Address to be removed
 	 * @return void
 	 */
-	public function removeEmailAddress(Tx_Appointments_Domain_Model_Address $emailAddressToRemove) {
+	public function removeEmailAddress(Address $emailAddressToRemove) {
 		$this->emailAddress->detach($emailAddressToRemove);
 	}
 
 	/**
 	 * Returns the emailAddress
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $emailAddress
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getEmailAddress() {
 		return $this->emailAddress;
@@ -386,20 +386,20 @@ class Tx_Appointments_Domain_Model_Agenda extends AbstractEntity {
 	/**
 	 * Adds a Address
 	 *
-	 * @param Tx_Appointments_Domain_Model_Address $calendarInviteAddress
+	 * @param \Innologi\Appointments\Domain\Model\Address $calendarInviteAddress
 	 * @return void
 	 */
-	public function addCalendarInviteAddress(Tx_Appointments_Domain_Model_Address $calendarInviteAddress) {
+	public function addCalendarInviteAddress(Address $calendarInviteAddress) {
 		$this->calendarInviteAddress->attach($calendarInviteAddress);
 	}
 
 	/**
 	 * Removes a Address
 	 *
-	 * @param Tx_Appointments_Domain_Model_Address $calendarInviteAddressToRemove The Address to be removed
+	 * @param \Innologi\Appointments\Domain\Model\Address $calendarInviteAddressToRemove The Address to be removed
 	 * @return void
 	 */
-	public function removeCalendarInviteAddress(Tx_Appointments_Domain_Model_Address $calendarInviteAddressToRemove) {
+	public function removeCalendarInviteAddress(Address $calendarInviteAddressToRemove) {
 		$this->calendarInviteAddress->detach($calendarInviteAddressToRemove);
 	}
 

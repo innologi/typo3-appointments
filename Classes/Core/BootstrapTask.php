@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Core;
 /***************************************************************
  *  Copyright notice
 *
@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\Core\Bootstrap;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Core_BootstrapTask extends Bootstrap {
+class BootstrapTask extends Bootstrap {
 
 	/**
 	 * Extension name

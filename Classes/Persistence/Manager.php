@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Persistence;
 /***************************************************************
  *  Copyright notice
  *
@@ -49,7 +49,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Persistence_Manager extends PersistenceManager {
+class Manager extends PersistenceManager {
 
 	/**
 	 * Commits new objects and changes to objects of a single repository, as well as
@@ -71,7 +71,7 @@ class Tx_Appointments_Persistence_Manager extends PersistenceManager {
 
 		//note that we can't remove this part because some (child) objects are reconstituted through session
 		foreach ($this->session->getReconstitutedObjects() as $reconstitutedObject) {
-			$reconstitutedClass = str_replace('_Model_','_Repository_',get_class($reconstitutedObject)) . 'Repository';
+			$reconstitutedClass = str_replace('\\Model\\','\\Repository\\',get_class($reconstitutedObject)) . 'Repository';
 			if ($reconstitutedClass === get_class($repository)) {
 				$aggregateRootObjects->attach($reconstitutedObject);
 			}

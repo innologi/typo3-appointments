@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Utility;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use Innologi\Appointments\Domain\Model\Appointment;
 /**
  * General Utility class
  *
@@ -31,16 +31,16 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Utility_GeneralUtility {
+class GeneralUtility {
 
 	/**
 	 * Returns remaining seconds of the timer of the appointment's timeslot.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment
+	 * @param Appointment $appointment
 	 * @param integer $timerMinutes
 	 * @return integer
 	 */
-	public static function getTimerRemainingSeconds(Tx_Appointments_Domain_Model_Appointment $appointment, $timerMinutes = 1) {
+	public static function getTimerRemainingSeconds(Appointment $appointment, $timerMinutes = 1) {
 		// default number of seconds remaining before timeslot is freed
 		$remainingSeconds = $timerMinutes * 60;
 		$secondsBusy = time() - $appointment->getCrdate();
@@ -59,11 +59,11 @@ class Tx_Appointments_Utility_GeneralUtility {
 	 * Returns string representation of the appointment's timeslot timer.
 	 * e.g. 8:45
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment
+	 * @param Appointment $appointment
 	 * @param integer $timerMinutes
 	 * @return string
 	 */
-	public static function getAppointmentTimer(Tx_Appointments_Domain_Model_Appointment $appointment, $timerMinutes = 1) {
+	public static function getAppointmentTimer(Appointment $appointment, $timerMinutes = 1) {
 		$remainingSeconds = $appointment->getRemainingSeconds();
 		if ($remainingSeconds === NULL) {
 			$remainingSeconds = self::getTimerRemainingSeconds($appointment, $timerMinutes);

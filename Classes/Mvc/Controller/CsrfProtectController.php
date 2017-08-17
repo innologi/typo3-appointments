@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Mvc\Controller;
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Appointments_MVC_Controller_CsrfProtectController extends Tx_Appointments_MVC_Controller_SettingsOverrideController {
+class CsrfProtectController extends SettingsOverrideController {
 
 	// @LOW review public/protected in service
 	// @LOW pull apart service into different files?
@@ -51,15 +51,15 @@ class Tx_Appointments_MVC_Controller_CsrfProtectController extends Tx_Appointmen
 	protected $enableCsrfProtect = TRUE;
 
 	/**
-	 * @var Tx_Appointments_Service_CsrfProtectServiceInterface
+	 * @var \Innologi\Appointments\Service\CsrfProtectServiceInterface
 	 */
 	protected $csrfProtectService;
 
 	/**
-	 * @param Tx_Appointments_Service_CsrfProtectServiceInterface $csrfProtectService
+	 * @param \Innologi\Appointments\Service\CsrfProtectServiceInterface $csrfProtectService
 	 * @return void
 	 */
-	public function injectCsrfProtectService(Tx_Appointments_Service_CsrfProtectServiceInterface $csrfProtectService) {
+	public function injectCsrfProtectService(\Innologi\Appointments\Service\CsrfProtectServiceInterface $csrfProtectService) {
 		// note that strtolower wouldnt suffice in case of underscores in extension key
 		$csrfProtectService->setProtectionLevelByExtConf(strtolower($this->extensionName));
 		$this->csrfProtectService = $csrfProtectService;

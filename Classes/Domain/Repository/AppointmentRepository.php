@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
@@ -25,6 +25,9 @@
  ***************************************************************/
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use Innologi\Appointments\Domain\Model\FrontendUser;
+use Innologi\Appointments\Domain\Model\Agenda;
+use Innologi\Appointments\Domain\Model\Appointment;
 /**
  * Appointment Repository
  *
@@ -32,10 +35,10 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository {
+class AppointmentRepository extends Repository {
 
 	/**
-	 * @var Tx_Appointments_Domain_Service_SlotService
+	 * @var \Innologi\Appointments\Domain\Service\SlotService
 	 * @inject
 	 */
 	protected $slotService;
@@ -50,16 +53,16 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository
 	 * Returns all objects of this repository belonging to Agenda, Types and FrontendUser, and optionally
 	 * from, between or up to a start and/or end time. Only finished appointments.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda which the appointments belong to
+	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda The agenda which the appointments belong to
 	 * @param array $types The types the appointments belong to
-	 * @param Tx_Appointments_Domain_Model_FrontendUser $feUser The user which the appointments belong to
+	 * @param \Innologi\Appointments\Domain\Model\FrontendUser $feUser The user which the appointments belong to
 	 * @param boolean $unfinished If TRUE: get unfinished appointments instead
-	 * @param DateTime $start Optional start time
-	 * @param DateTime $end Optional end time
+	 * @param \DateTime $start Optional start time
+	 * @param \DateTime $end Optional end time
 	 * @param boolean $descending If TRUE: sorts by begintime descending, if FALSE: ascending
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
-	public function findPersonalList(Tx_Appointments_Domain_Model_Agenda $agenda, array $types, Tx_Appointments_Domain_Model_FrontendUser $feUser, $unfinished = FALSE, DateTime $start = NULL, DateTime $end = NULL, $descending = FALSE) {
+	public function findPersonalList(Agenda $agenda, array $types, FrontendUser $feUser, $unfinished = FALSE, \DateTime $start = NULL, \DateTime $end = NULL, $descending = FALSE) {
 		$query = $this->createQuery();
 		$constraints = array(
 			$query->equals('agenda', $agenda),
@@ -67,8 +70,8 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository
 			$query->equals('feUser', $feUser),
 			$unfinished
 				? $query->logicalNot(
-					$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::FINISHED)
-				) : $query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::FINISHED)
+					$query->equals('creation_progress', Appointment::FINISHED)
+				) : $query->equals('creation_progress', Appointment::FINISHED)
 		);
 		if ($start !== NULL) {
 			$constraints[] = $query->greaterThanOrEqual('beginTime', $start->getTimestamp());
@@ -94,16 +97,16 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository
 	/**
 	 * Returns all objects of this repository belonging to the specified day. No expired appointments.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda which the appointments belong to
-	 * @param DateTime $day Day to which appointments belong to
+	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda The agenda which the appointments belong to
+	 * @param \DateTime $day Day to which appointments belong to
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
-	public function findByAgendaAndDay(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $day) {
+	public function findByAgendaAndDay(Agenda $agenda, \DateTime $day) {
 		$query = $this->createQuery();
 		$result = $query->matching(
 				$query->logicalAnd( array(
 						$query->logicalNot(
-								$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::EXPIRED)
+							$query->equals('creation_progress', Appointment::EXPIRED)
 						),
 						$query->equals('agenda', $agenda),
 						$query->greaterThanOrEqual('beginTime', $day->setTime(0,0)->getTimestamp()),
@@ -121,17 +124,17 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository
 	/**
 	 * Returns all objects of this repository of a agenda between two times.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda which the appointments belong to
-	 * @param DateTime $start The starting time
-	 * @param DateTime $end The ending time
+	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda The agenda which the appointments belong to
+	 * @param \DateTime $start The starting time
+	 * @param \DateTime $end The ending time
 	 * @param array $types Types to limit appointments by, if not NULL
 	 * @param boolean $includeExclusive Include exclusives, but only if $types === NULL
-	 * @param Tx_Appointments_Domain_Model_Appointment $excludeAppointment Appointment that is ignored in retrieving appointments
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $excludeAppointment Appointment that is ignored in retrieving appointments
 	 * @param boolean $includeUnfinished On true, includes unfinished appointments
 	 * @param boolean $dontRestrictTypeCounts If set, sets the relevant type parameter as condition
 	 * @return array An array of objects, empty if no objects found
 	 */
-	public function findBetween(Tx_Appointments_Domain_Model_Agenda $agenda, DateTime $start, DateTime $end, array $types = NULL, $includeExclusive = FALSE, Tx_Appointments_Domain_Model_Appointment $excludeAppointment = NULL, $includeUnfinished = FALSE, $dontRestrictTypeCounts = NULL) {
+	public function findBetween(Agenda $agenda, \DateTime $start, \DateTime $end, array $types = NULL, $includeExclusive = FALSE, Appointment $excludeAppointment = NULL, $includeUnfinished = FALSE, $dontRestrictTypeCounts = NULL) {
 		$query = $this->createQuery();
 
 		$constraint = array(
@@ -152,10 +155,10 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository
 
 		if ($includeUnfinished) { //aka no expired appointments
 			$constraint[] = $query->logicalNot(
-					$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::EXPIRED)
+					$query->equals('creation_progress', Appointment::EXPIRED)
 			);
 		} else { //aka only finished appointments
-			$constraint[] = $query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::FINISHED);
+			$constraint[] = $query->equals('creation_progress', Appointment::FINISHED);
 		}
 
 		if ($excludeAppointment !== NULL && !$excludeAppointment->_isNew()) {
@@ -182,11 +185,11 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository
 	 * as the given appointment. Note that appointments are allowed to overlap in their reserveblocks.
 	 * (aka "BETWEEN Minutes") The query adheres to that rule. No expired appointments.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment
+	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment
 	 * @param boolean $includeExclusive Include exclusives, but only if the current one isn't exclusive
 	 * @return array An array of objects, empty if no objects found
 	 */
-	public function findCrossAppointments(Tx_Appointments_Domain_Model_Appointment $appointment, $includeExclusive = FALSE) {
+	public function findCrossAppointments(Appointment $appointment, $includeExclusive = FALSE) {
 		$query = $this->createQuery();
 
 		$beginReserved = $appointment->getBeginReserved()->getTimestamp();
@@ -202,7 +205,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository
 					$query->equals('uid', $appointment->getUid())
 			),
 			$query->logicalNot(
-					$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::EXPIRED)
+					$query->equals('creation_progress', Appointment::EXPIRED)
 			),
 			$query->logicalOr( array(
 					$query->logicalAnd( array( //looks for an overlap @ beginTime
@@ -251,11 +254,11 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository
 	 *
 	 * An unfinished appointment expires counting from its crdate, NOT its tstamp!
 	 *
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to check
+	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda The agenda to check
 	 * @param integer $expireMinutes The number of minutes since creation date
 	 * @return array An array of objects, empty if no objects found
 	 */
-	public function findExpiredUnfinished(Tx_Appointments_Domain_Model_Agenda $agenda, $expireMinutes = 15) {
+	public function findExpiredUnfinished(Agenda $agenda, $expireMinutes = 15) {
 		if ($expireMinutes < 1) {
 			$expireMinutes = 15;
 		}
@@ -265,7 +268,7 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository
 				$query->logicalAnd( array(
 						$query->equals('agenda', $agenda),
 						$query->lessThanOrEqual('crdate', time() - ($expireMinutes * 60)),
-						$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::UNFINISHED)
+						$query->equals('creation_progress', Appointment::UNFINISHED)
 					)
 				)
 		)->execute()->toArray();
@@ -284,11 +287,10 @@ class Tx_Appointments_Domain_Repository_AppointmentRepository extends Repository
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$result = $query->matching(
-				$query->logicalAnd( array(
-						$query->equals('creation_progress', Tx_Appointments_Domain_Model_Appointment::EXPIRED),
-						$query->lessThanOrEqual('tstamp', time() - $age),
-					)
-				)
+				$query->logicalAnd(array(
+					$query->equals('creation_progress', Appointment::EXPIRED),
+					$query->lessThanOrEqual('tstamp', time() - $age),
+				))
 		)->execute();
 
 		return $result;

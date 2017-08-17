@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\ViewHelpers\Form;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,9 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
+use Innologi\Appointments\Validation\StorageError;
 /**
  * Changes to support properties from properties. This version simply assumes
  * that such are _ALWAYS_ present, hence it is only usable with such fields.
@@ -39,7 +39,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Appointments_ViewHelpers_Form_RadioViewHelper extends RadioViewHelper {
+class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper {
 
 	/**
 	 * Get the value of this form element.
@@ -84,7 +84,7 @@ class Tx_Appointments_ViewHelpers_Form_RadioViewHelper extends RadioViewHelper {
 		} elseif ($this->arguments['value'] === NULL) {
 			$value = '';
 		// CHANGE -->
-		} elseif ($this->isObjectAccessorMode() && $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject')) {
+		} elseif ($this->isObjectAccessorMode() && $this->viewHelperVariableContainer->exists(FormViewHelper::class, 'formObject')) {
 			$this->addAdditionalIdentityPropertiesIfNeeded();
 			$value = $this->getPropertyValue();
 		}
@@ -126,7 +126,7 @@ class Tx_Appointments_ViewHelpers_Form_RadioViewHelper extends RadioViewHelper {
 								//if property of property
 								if ($propertyError instanceof Tx_Extbase_Validation_PropertyError && $propertyError->getPropertyName() === $propertyName[1]) {
 									return $propertyError->getErrors();
-								} elseif ($propertyError instanceof Tx_Appointments_Validation_StorageError) { //if property of storage-property
+								} elseif ($propertyError instanceof StorageError) { //if property of storage-property
 									$storageErrors = $propertyError->getErrors();
 									foreach ($storageErrors as $id=>$storageError) {
 										if (is_array($storageError)) {

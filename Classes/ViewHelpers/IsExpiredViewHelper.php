@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
@@ -24,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use Innologi\Appointments\Domain\Model\Appointment;
+use Innologi\Appointments\Utility\GeneralUtility;
 /**
  * Is Expired Viewhelper
  *
@@ -37,28 +39,28 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_ViewHelpers_IsExpiredViewHelper extends AbstractViewHelper {
+class IsExpiredViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Return if appointment is expired
 	 *
 	 * @param integer $timerMinutes Total number of minutes the timer normally
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment
+	 * @param Appointment $appointment The appointment
 	 * @return boolean
 	 */
-	public function render($timerMinutes = 1, Tx_Appointments_Domain_Model_Appointment $appointment = NULL) {
+	public function render($timerMinutes = 1, Appointment $appointment = NULL) {
 		if ($appointment === NULL) {
 			$appointment = $this->renderChildren();
-			if (!$appointment instanceof Tx_Appointments_Domain_Model_Appointment) {
+			if (!$appointment instanceof Appointment) {
 				// @LOW throw exception
 				return;
 			}
 		}
-		if ($appointment->getCreationProgress() === Tx_Appointments_Domain_Model_Appointment::EXPIRED) {
+		if ($appointment->getCreationProgress() === Appointment::EXPIRED) {
 			return TRUE;
 		}
 
-		$seconds = Tx_Appointments_Utility_GeneralUtility::getTimerRemainingSeconds(
+		$seconds = GeneralUtility::getTimerRemainingSeconds(
 			$appointment, (int) $timerMinutes
 		);
 		return $seconds > 0 ? FALSE : TRUE;

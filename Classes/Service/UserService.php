@@ -1,4 +1,5 @@
 <?php
+namespace Innologi\Appointments\Service;
 /***************************************************************
  *  Copyright notice
  *
@@ -30,12 +31,12 @@ use TYPO3\CMS\Core\SingletonInterface;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Service_UserService implements SingletonInterface {
+class UserService implements SingletonInterface {
 
 	/**
 	 * Logged in frontend user
 	 *
-	 * @var Tx_Appointments_Domain_Model_FrontendUser
+	 * @var \Innologi\Appointments\Domain\Model\FrontendUser
 	 */
 	protected $feUser = NULL;
 
@@ -49,7 +50,7 @@ class Tx_Appointments_Service_UserService implements SingletonInterface {
 	/**
 	 * frontendUserRepository
 	 *
-	 * @var Tx_Appointments_Domain_Repository_FrontendUserRepository
+	 * @var \Innologi\Appointments\Domain\Repository\FrontendUserRepository
 	 * @inject
 	 */
 	protected $frontendUserRepository;
@@ -57,7 +58,7 @@ class Tx_Appointments_Service_UserService implements SingletonInterface {
 	/**
 	 * frontendUserGroupRepository
 	 *
-	 * @var Tx_Appointments_Domain_Repository_FrontendUserGroupRepository
+	 * @var \Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository
 	 * @inject
 	 */
 	protected $frontendUserGroupRepository;
@@ -65,7 +66,7 @@ class Tx_Appointments_Service_UserService implements SingletonInterface {
 	/**
 	 * Returns current frontend user.
 	 *
-	 * @return Tx_Appointments_Domain_Model_FrontendUser
+	 * @return \Innologi\Appointments\Domain\Model\FrontendUser
 	 */
 	public function getCurrentUser() {
 		if ($this->feUser === NULL) {

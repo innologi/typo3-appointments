@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Validation\Validator;
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-abstract class Tx_Appointments_Validation_Validator_PreppedAbstractValidator extends AbstractValidator {
+abstract class PreppedAbstractValidator extends AbstractValidator {
 
 	/**
 	 * @var array

@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Validator;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Innologi\Appointments\Validation\Validator\PreppedAbstractValidator;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
+use Innologi\Appointments\Validation\ValidatorResolver;
+use Innologi\Appointments\Domain\Model\FormFieldValue;
+use Innologi\Appointments\Validation\StorageError;
 /**
  * Object Storage Validator, validates an ObjectStorage's objects.
  *
@@ -31,7 +36,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appointments_Validation_Validator_PreppedAbstractValidator {
+class ObjectStorageValidator extends PreppedAbstractValidator {
 
 	/**
 	 * Checks if an object is a valid objectstorage by passing all its objects
@@ -45,14 +50,14 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appoint
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
-	 * @throws Tx_Appointments_MVC_Exception_PropertyDeleted
+	 * @throws PropertyDeleted
 	 */
 	public function isValid($value) {
 		$valid = FALSE;
 		$storageError = NULL;
 
 		if ($value instanceof ObjectStorage) {
-			$validator = $this->objectManager->get('Tx_Appointments_Validation_ValidatorResolver')->createValidator('Tx_Appointments_Domain_Validator_ObjectPropertiesValidator', $this->options);
+			$validator = $this->objectManager->get(ValidatorResolver::class)->createValidator(ObjectPropertiesValidator::class, $this->options);
 			$valid = TRUE;
 			// registers values referred to by delayed objects
 			$valueRegister = array();
@@ -66,10 +71,10 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appoint
 				#@TODO wait, doesn't this do some of the stuff I added in sanitizeFormFieldValues()?
 				foreach ($value as $obj) {
 					// formfieldvalue special treatment for enable_field
-					if ($obj instanceof Tx_Appointments_Domain_Model_FormFieldValue) {
+					if ($obj instanceof FormFieldValue) {
 						$uidObj = $obj->getFormField();
 						if ($uidObj === NULL) {
-							throw new Tx_Appointments_MVC_Exception_PropertyDeleted();
+							throw new PropertyDeleted();
 						}
 						/*
 						 * if the formfield is enabled by another, we'll need to exclude
@@ -101,9 +106,9 @@ class Tx_Appointments_Domain_Validator_ObjectStorageValidator extends Tx_Appoint
 						$valid = FALSE;
 
 						if (!isset($storageError)) {
-							$propertyName = str_replace('Tx_Appointments_Domain_Model_','',get_class($obj));
+							$propertyName = str_replace('Innologi\\Appointments\\Domain\\Model\\','',get_class($obj));
 							$propertyName[0] = strtolower($propertyName[0]);
-							$storageError = new Tx_Appointments_Validation_StorageError($propertyName);
+							$storageError = new StorageError($propertyName);
 						}
 
 						$storageError->addErrors($uidObj->getUid(), $validator->getErrors());

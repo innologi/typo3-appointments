@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Persistence;
 /***************************************************************
  *  Copyright notice
  *
@@ -36,7 +36,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Persistence_KeyObjectStorage extends ObjectStorage {
+class KeyObjectStorage extends ObjectStorage {
 
 	/**
 	 * Associates data to an object in the storage. offsetSet() is an alias of attach().

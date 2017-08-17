@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Validation;
 /***************************************************************
  *  Copyright notice
  *
@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 /**
  * Validator Resolver
@@ -38,7 +37,7 @@ use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Appointments_Validation_ValidatorResolver extends ValidatorResolver {
+class ValidatorResolver extends \TYPO3\CMS\Extbase\Validation\ValidatorResolver {
 
 	/**
 	 * Resolves and returns the base validator conjunction for the given data type.

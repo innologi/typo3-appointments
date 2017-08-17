@@ -1,4 +1,5 @@
 <?php
+namespace Innologi\Appointments\Service;
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +31,7 @@
  * @author Frenck Lutke <typo3@innologi.nl>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-abstract class Tx_Appointments_Service_AbstractCsrfProtectService implements Tx_Appointments_Service_CsrfProtectServiceInterface {
+abstract class AbstractCsrfProtectService implements CsrfProtectServiceInterface {
 
 	/**
 	 * @var array

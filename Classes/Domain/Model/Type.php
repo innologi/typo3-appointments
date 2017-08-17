@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Type extends AbstractEntity {
+class Type extends AbstractEntity {
 
 	/**
 	 * Name of type
@@ -418,7 +418,7 @@ class Tx_Appointments_Domain_Model_Type extends AbstractEntity {
 	 * Lazy although a clone is modified in new/edit cases, after which count() will prove useless.
 	 * To remedy that, we convert the modified clone toArray() once we need to count, so we can keep it lazy.
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Appointments_Domain_Model_FormField>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormField>
 	 * @lazy
 	 * @cascade remove
 	 */
@@ -1411,27 +1411,27 @@ class Tx_Appointments_Domain_Model_Type extends AbstractEntity {
 	/**
 	 * Adds a FormField
 	 *
-	 * @param Tx_Appointments_Domain_Model_FormField $formField
+	 * @param \Innologi\Appointments\Domain\Model\FormField $formField
 	 * @return void
 	 */
-	public function addFormField(Tx_Appointments_Domain_Model_FormField $formField) {
+	public function addFormField(FormField $formField) {
 		$this->formField->attach($formField);
 	}
 
 	/**
 	 * Removes a FormField
 	 *
-	 * @param Tx_Appointments_Domain_Model_FormField $formFieldToRemove The FormField to be removed
+	 * @param \Innologi\Appointments\Domain\Model\FormField $formFieldToRemove The FormField to be removed
 	 * @return void
 	 */
-	public function removeFormField(Tx_Appointments_Domain_Model_FormField $formFieldToRemove) {
+	public function removeFormField(FormField $formFieldToRemove) {
 		$this->formField->detach($formFieldToRemove);
 	}
 
 	/**
 	 * Returns the formFields
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage $formFields
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getFormFields() {
 		return $this->formFields;

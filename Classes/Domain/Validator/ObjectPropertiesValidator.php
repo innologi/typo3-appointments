@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Validator;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use Innologi\Appointments\Validation\Validator\PreppedAbstractValidator;
+use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
+use Innologi\Appointments\Validation\ValidatorResolver;
 /**
  * Object Properties Validator, validates an object based on its properties' validation.
  *
@@ -31,7 +33,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Validator_ObjectPropertiesValidator extends Tx_Appointments_Validation_Validator_PreppedAbstractValidator {
+class ObjectPropertiesValidator extends PreppedAbstractValidator {
 
 	/**
 	 * Checks if an object is valid according to all its properties by passing
@@ -43,15 +45,15 @@ class Tx_Appointments_Domain_Validator_ObjectPropertiesValidator extends Tx_Appo
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
-	 * @throws Tx_Appointments_MVC_Exception_PropertyDeleted
+	 * @throws PropertyDeleted
 	 */
 	public function isValid($value) {
 		if (!is_object($value)) { //also works on objectStorage objects
-			throw new Tx_Appointments_MVC_Exception_PropertyDeleted();
+			throw new PropertyDeleted();
 		}
 
 		#@TODO if this isn't solved by the rewrittenPropertyMapper (which I think it is, looking at validate()), consider using DI to overwrite the conjunction class instead to add an error-clearing method
-		$validatorResolver = $this->objectManager->get('Tx_Appointments_Validation_ValidatorResolver'); //the original resolver creates a single instance of the conjunction which accumulates errors, so we use our own
+		$validatorResolver = $this->objectManager->get(ValidatorResolver::class); //the original resolver creates a single instance of the conjunction which accumulates errors, so we use our own
 		$dontStore = (bool)$this->options['clearErrors']; //TRUE enables the workaround that prevents multiple same-class instances to accumulate their siblings errors
 
 		$validator = $validatorResolver->getBaseValidatorConjunction(get_class($value), $dontStore);

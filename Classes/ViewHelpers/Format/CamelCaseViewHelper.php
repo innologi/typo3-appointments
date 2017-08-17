@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\ViewHelpers\Format;
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_ViewHelpers_Format_CamelCaseViewHelper extends AbstractViewHelper {
+class CamelCaseViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Formats a string according to any of the three supported and CamelCase related t3lib_div functions.

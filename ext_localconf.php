@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
@@ -25,8 +26,8 @@ if (isset($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY])) {
 			array(
 				// using ext-constants in this file produces problems when the extension
 				// is uninstalled but the cache isn't cleared yet
-				3, //Tx_Appointments_Service_CsrfProtectServiceInterface::STRONG,
-				4, //Tx_Appointments_Service_CsrfProtectServiceInterface::STRONG_PLUS
+				3,
+				4,
 			)
 		) ? ', list, show' : '';
 	}
@@ -46,16 +47,15 @@ if (isset($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY])) {
 );
 
 if (TYPO3_MODE === 'BE') {
-	#$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'Tx_Appointments_Configuration_TCA_PostProcess_Appointment';
-	#$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'Tx_Appointments_Configuration_TCA_PostProcess_FormFieldValue';
-	$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][] = 'tx_appointments_hooks_iconworks';
+	#$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \Innologi\Appointments\Hooks\Tcemain::class;
+	$TYPO3_CONF_VARS['SC_OPTIONS'][\TYPO3\CMS\Core\Imaging\IconFactory::class]['overrideIconOverlay'][] = \Innologi\Appointments\Hooks\Iconworks::class;
 
 	//add scheduler tasks
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Appointments_Task_CleanUpTask'] = array(
-			'extension'			=> $_EXTKEY,
-			'title'				=> 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xml:tx_appointments_task_cleanup.name',
-			'description'		=> 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xml:tx_appointments_task_cleanup.description',
-			'additionalFields'	=> 'Tx_Appointments_Task_CleanUpTaskAdditionalFieldProvider'
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\Innologi\Appointments\Task\CleanUpTask::class] = array(
+		'extension'			=> $_EXTKEY,
+		'title'				=> 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xml:tx_appointments_task_cleanup.name',
+		'description'		=> 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xml:tx_appointments_task_cleanup.description',
+		'additionalFields'	=> \Innologi\Appointments\Task\CleanUpTaskAdditionalFieldProvider::class
 	);
 }
 ?>
