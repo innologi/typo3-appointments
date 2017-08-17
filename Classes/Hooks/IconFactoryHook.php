@@ -32,17 +32,16 @@ namespace Innologi\Appointments\Hooks;
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Iconworks {
-	// @FIX probably doesn't work anymore since Iconworks was replaced with IconFactory, find a workaround
+class IconFactoryHook {
+	// @FIX test if this works
 	/**
-	 * Visualizes the creation progress of an appointment.
-	 *
-	 * @param string $table Name of the table
-	 * @param array $row Record row containing the field values
-	 * @param array $status Status to be used for rendering the icon
-	 * @return void
+	 * @param string $table
+	 * @param array $row
+	 * @param array $status
+	 * @param string $iconName
+	 * @return string the new (or given) $iconName
 	 */
-	public function overrideIconOverlay($table, array $row, array &$status) {
+	function postOverlayPriorityLookup($table, array $row, array &$status, $iconName) {
 		if ($table === 'tx_appointments_domain_model_appointment' && isset($row['creation_progress'])) { #@TODO address too!
 			switch (intval($row['creation_progress'])) {
 				case 1:
@@ -52,6 +51,7 @@ class Iconworks {
 					$status['tx_appointments_expired'] = TRUE;
 			}
 		}
+		return $iconName;
 	}
 }
 ?>
