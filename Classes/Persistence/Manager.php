@@ -24,8 +24,7 @@ namespace Innologi\Appointments\Persistence;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extbase\Persistence\{ObjectStorage, Repository};
 /**
  * The Appointments Persistence Manager
  *

@@ -27,11 +27,8 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use Innologi\Appointments\Domain\Model\Appointment;
 use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
-use Innologi\Appointments\Domain\Model\Address;
-use Innologi\Appointments\Domain\Model\EmailContainerInterface;
-use Innologi\Appointments\Domain\Model\SimpleEmailContainer;
+use Innologi\Appointments\Domain\Model\{Appointment, Address, EmailContainerInterface, SimpleEmailContainer};
 /**
  * Facilitates email functionality.
  *

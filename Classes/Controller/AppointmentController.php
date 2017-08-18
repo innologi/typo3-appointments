@@ -23,18 +23,16 @@ namespace Innologi\Appointments\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Innologi\Appointments\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use Innologi\Appointments\Domain\Model\Appointment;
-use Innologi\Appointments\Domain\Model\FormFieldValue;
-use Innologi\Appointments\Domain\Model\FormField;
+use Innologi\Appointments\Mvc\Controller\ActionController;
 use Innologi\Appointments\Utility\GeneralUtility;
-use Innologi\Appointments\Domain\Model\Agenda;
-use Innologi\Appointments\Domain\Service\SlotService;
 use Innologi\Appointments\Validation\StorageError;
+use Innologi\Appointments\Domain\Service\SlotService;
+use Innologi\Appointments\Domain\Model\{Appointment, FormFieldValue, FormField, Agenda};
+
 /**
  * Appointment Controller
  *

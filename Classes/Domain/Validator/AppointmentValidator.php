@@ -23,10 +23,9 @@ namespace Innologi\Appointments\Domain\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Innologi\Appointments\Validation\Validator\PreppedAbstractValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
-use Innologi\Appointments\Domain\Model\Appointment;
-use Innologi\Appointments\Domain\Model\Type;
+use Innologi\Appointments\Validation\Validator\PreppedAbstractValidator;
+use Innologi\Appointments\Domain\Model\{Appointment, Type};
 /**
  * Appointment Domain Validator.
  *

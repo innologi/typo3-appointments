@@ -23,11 +23,8 @@ namespace Innologi\Appointments\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Persistence\Repository;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use Innologi\Appointments\Domain\Model\FrontendUser;
-use Innologi\Appointments\Domain\Model\Agenda;
-use Innologi\Appointments\Domain\Model\Appointment;
+use TYPO3\CMS\Extbase\Persistence\{Repository, QueryInterface};
+use Innologi\Appointments\Domain\Model\{FrontendUser, Agenda, Appointment};
 /**
  * Appointment Repository
  *

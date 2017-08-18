@@ -24,9 +24,8 @@ namespace Innologi\Appointments\Task;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 use Innologi\Appointments\Core\BootstrapTask;
-use Innologi\Appointments\Domain\Repository\AppointmentRepository;
-use Innologi\Appointments\Domain\Repository\FormFieldValueRepository;
 use Innologi\Appointments\Domain\Model\Appointment;
+use Innologi\Appointments\Domain\Repository\{AppointmentRepository, FormFieldValueRepository};
 /**
  * CleanUp Scheduler Task business logic
  *

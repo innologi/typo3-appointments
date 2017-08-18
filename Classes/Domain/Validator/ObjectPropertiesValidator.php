@@ -24,8 +24,8 @@ namespace Innologi\Appointments\Domain\Validator;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use Innologi\Appointments\Validation\Validator\PreppedAbstractValidator;
-use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
 use Innologi\Appointments\Validation\ValidatorResolver;
+use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
 /**
  * Object Properties Validator, validates an object based on its properties' validation.
  *

@@ -23,12 +23,11 @@ namespace Innologi\Appointments\Domain\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Innologi\Appointments\Validation\Validator\PreppedAbstractValidator;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use Innologi\Appointments\Validation\Validator\PreppedAbstractValidator;
+use Innologi\Appointments\Validation\{ValidatorResolver, StorageError};
 use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
-use Innologi\Appointments\Validation\ValidatorResolver;
 use Innologi\Appointments\Domain\Model\FormFieldValue;
-use Innologi\Appointments\Validation\StorageError;
 /**
  * Object Storage Validator, validates an ObjectStorage's objects.
  *

@@ -24,8 +24,8 @@ namespace Innologi\Appointments\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 /**
  * Facilitates Cross-Site Request Forgery Protection control,
  * implementation for frontend extbase plugins.

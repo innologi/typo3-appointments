@@ -23,8 +23,7 @@ namespace Innologi\Appointments\Persistence;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Persistence\Repository;
-use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\{Repository, PersistenceManagerInterface};
 use Innologi\Appointments\Mvc\Exception;
 /**
  * This repository prevents registration @ persistence manager.

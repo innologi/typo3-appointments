@@ -23,14 +23,11 @@ namespace Innologi\Appointments\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Innologi\Appointments\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use Innologi\Appointments\Mvc\Controller\ActionController;
 use Innologi\Appointments\Domain\Model\Agenda;
-use Innologi\Appointments\Domain\Model\Agenda\Month;
-use Innologi\Appointments\Domain\Model\Agenda\Weeks;
-use Innologi\Appointments\Domain\Model\Agenda\AbstractContainer;
-use Innologi\Appointments\Domain\Model\Agenda\Date;
+use Innologi\Appointments\Domain\Model\Agenda\{Month, Weeks, Date, AbstractContainer};
 /**
  * Agenda Controller
  *

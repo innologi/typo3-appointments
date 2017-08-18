@@ -27,12 +27,8 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use Innologi\Appointments\Domain\Model\Type;
-use Innologi\Appointments\Domain\Model\Agenda;
 use Innologi\Appointments\Persistence\KeyObjectStorage;
-use Innologi\Appointments\Domain\Model\Appointment;
-use Innologi\Appointments\Domain\Model\DateSlot;
-use Innologi\Appointments\Domain\Model\TimeSlot;
+use Innologi\Appointments\Domain\Model\{Type, Agenda, Appointment, DateSlot, TimeSlot};
 /**
  * Manages the date- and their time slots, persists them and their changes to cache.
  *

@@ -23,12 +23,11 @@ namespace Innologi\Appointments\Domain\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Innologi\Appointments\Validation\Validator\PreppedAbstractValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Innologi\Appointments\Domain\Model\FormFieldValue;
-use Innologi\Appointments\Domain\Model\FormField;
+use Innologi\Appointments\Validation\Validator\PreppedAbstractValidator;
+use Innologi\Appointments\Domain\Model\{FormField, FormFieldValue};
 /**
  * FormFieldVlaue Domain Validator.
  *
