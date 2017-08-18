@@ -474,85 +474,73 @@ plugin.tx_appointments._CSS_DEFAULT_STYLE (
 	}
 	
 	
-	/* Messages */
 	
+	/* Flash messages */
+
 	.tx-appointments .typo3-messages {
 		overflow:hidden;
 	}
+	.tx-appointments .typo3-messages .alert {
+		margin:8px 0;
+		padding:0 10px;
+		min-width:100px;
+		font-size:0.9em;
+		float:left;
+		clear:both;
+	}
+	.tx-appointments .typo3-messages .alert-title {
+		font-weight:bold;
+	}
+	.tx-appointments .typo3-messages .alert.alert-danger {
+		background-color:#fcb;
+		border:1px solid #ea9;
+		color:#a33;
+	}
+	.tx-appointments .typo3-messages .alert.alert-warning {
+		background-color:#ffb;
+		border:1px solid #f5d588;
+		color:#85510d;
+	}
+	.tx-appointments .typo3-messages .alert.alert-notice {
+		background-color:#e4e4e4;
+		border:1px solid #d5d5d5;
+		color:#443;
+	}
+	.tx-appointments .typo3-messages .alert.alert-info {
+		background-color:#def;
+		border:1px solid #cdf;
+		color:#469;
+	}
+	.tx-appointments .typo3-messages .alert.alert-success {
+		background-color:#cdefc0;
+		border:1px solid #b9ddaa;
+		color:#3b7826;
+	}
+
 	
-	.tx-appointments .typo3-message,
 	.tx-appointments .validation-errors {
 		margin:8px 0;
 		padding:10px;
 		min-width:100px;
 		font-size:0.9em;
 	}
-	.tx-appointments .typo3-message {
-		float:left;
-		clear:both;
-	}
 	.tx-appointments .validation-errors {
 		display:inline-block;
 	}
-	.tx-appointments .typo3-message ul.links,
 	.tx-appointments ul.validation-error-messages {
 		list-style-type:square;
 	}
-	
-	.tx-appointments .typo3-message .message-header,
 	.tx-appointments .validation-errors .validation-fieldname {
 		font-weight:bold;
 	}
-	
-	.tx-appointments .typo3-message.message-error,
 	.tx-appointments .validation-errors {
 		background-color:#fcb;
 		border:1px solid #ea9;
 		color:#a33;
 	}
-	
-	.tx-appointments .typo3-message.message-warning {
-		background-color:#ffb;
-		border:1px solid #f5d588;
-		color:#85510d;
-	}
-	
-	.tx-appointments .typo3-message.message-notice {
-		background-color:#e4e4e4;
-		border:1px solid #d5d5d5;
-		color:#443;
-	}
-	
-	.tx-appointments .typo3-message.message-information {
-		background-color:#def;
-		border:1px solid #cdf;
-		color:#469;
-	}
-	
-	.tx-appointments .typo3-message.message-ok {
-		background-color:#cdefc0;
-		border:1px solid #b9ddaa;
-		color:#3b7826;
-		
-	}
-	
-	.tx-appointments .typo3-message.message-error .message-body:before,
-	.tx-appointments .validation-errors .validation-header:before {
-		background-position:-306px -198px;
-	}
-	.tx-appointments .typo3-message.message-warning .message-body:before {
-		background-position:-54px -216px;
-	}
-	.tx-appointments .typo3-message.message-notice .message-body:before {
-		background-position:-18px -216px;
-	}
-	.tx-appointments .typo3-message.message-information .message-body:before {
-		background-position:0 -216px;
-	}
-	.tx-appointments .typo3-message.message-ok .message-body:before {
-		background-position:-36px -216px;
-	}
-	
+
+
+
 	@keyframes flashTimer {
 		0% { color:#469; }
 		30% { color:#f00; }
