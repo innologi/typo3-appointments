@@ -9,41 +9,37 @@
 				<f:render partial="FormErrorsDetail" arguments="{entity: error.propertyName, id: identity, error: realErrorDetail, formFields: formFields}" />
 			</f:for>
 		</f:then>
-		<f:else>
-			<f:if condition="{errorDetail.code} == 1242859509">
+		<f:else if="{errorDetail.code} == 1242859509">
+			<f:then>
+				<f:render partial="FormErrorsDetail" arguments="{entity: error.propertyName, id: id, error: errorDetail, formFields: formFields}" />
+			</f:then>
+			<f:else if="{errorDetail.code} == 133713371337">
 				<f:then>
-					<f:render partial="FormErrorsDetail" arguments="{entity: error.propertyName, id: id, error: errorDetail, formFields: formFields}" />
+					<f:render partial="FormErrorsDetail" arguments="{entity: error.propertyName, isStorageObject: 1, error: errorDetail, formFields: formFields}" />
 				</f:then>
 				<f:else>
-					<f:if condition="{errorDetail.code} == 133713371337">
-						<f:then>
-							<f:render partial="FormErrorsDetail" arguments="{entity: error.propertyName, isStorageObject: 1, error: errorDetail, formFields: formFields}" />
-						</f:then>
-						<f:else>
-							<li>
-								<f:if condition="{id}">
-									<f:then>
-										<f:for each="{formFields}" as="formField">
-											<f:if condition="{id} == {formField.uid}">
-												<!-- error.{entity}.{error.propertyName}.{errorDetail.code} -->
-												<span class="validation-fieldname">{formField.label}:</span>
-												<f:translate key="error.{entity}.{error.propertyName}.{errorDetail.code}">{errorDetail.message}</f:translate>
-											</f:if>
-										</f:for>
-									</f:then>
-									<f:else>
-										<f:alias map="{title: 'tx_appointments_domain_model_{a:format.lowerCase(value: entity)}.{a:format.camelCase(type:\'camelCaseToLowerCaseUnderscored\',value: error.propertyName)}'}">
-											<!-- error.{entity}.{error.propertyName}.{errorDetail.code} -->
-											<span class="validation-fieldname"><f:translate key="{title}">{title}</f:translate>:</span>
-											<f:translate key="error.{entity}.{error.propertyName}.{errorDetail.code}">{errorDetail.message}</f:translate>
-										</f:alias>
-									</f:else>
-								</f:if>
-							</li>
-						</f:else>
-					</f:if>
+					<li>
+						<f:if condition="{id}">
+							<f:then>
+								<f:for each="{formFields}" as="formField">
+									<f:if condition="{id} == {formField.uid}">
+										<!-- error.{entity}.{error.propertyName}.{errorDetail.code} -->
+										<span class="validation-fieldname">{formField.label}:</span>
+										<f:translate key="error.{entity}.{error.propertyName}.{errorDetail.code}">{errorDetail.message}</f:translate>
+									</f:if>
+								</f:for>
+							</f:then>
+							<f:else>
+								<f:alias map="{title: 'tx_appointments_domain_model_{a:format.lowerCase(value: entity)}.{a:format.camelCase(type:\'camelCaseToLowerCaseUnderscored\',value: error.propertyName)}'}">
+									<!-- error.{entity}.{error.propertyName}.{errorDetail.code} -->
+									<span class="validation-fieldname"><f:translate key="{title}">{title}</f:translate>:</span>
+									<f:translate key="error.{entity}.{error.propertyName}.{errorDetail.code}">{errorDetail.message}</f:translate>
+								</f:alias>
+							</f:else>
+						</f:if>
+					</li>
 				</f:else>
-			</f:if>
+			</f:else>
 		</f:else> 
 	</f:if>
 </f:for>
