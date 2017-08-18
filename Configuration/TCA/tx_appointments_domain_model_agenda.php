@@ -1,7 +1,5 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
-	die ('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
 $appointments_agenda_checkboxes = array(
 		'type' => 'check',
@@ -13,8 +11,28 @@ $appointments_agenda_checkboxes = array(
 		'default' => 7
 );
 
-$TCA['tx_appointments_domain_model_agenda'] = array(
-	'ctrl' => $TCA['tx_appointments_domain_model_agenda']['ctrl'],
+return [
+	'ctrl' => array(
+		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda',
+		'label' => 'name',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'dividers2tabs' => TRUE,
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		'origUid' => 't3_origuid',
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'delete' => 'deleted',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+		),
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('appointments') . 'Resources/Public/Icons/tx_appointments_domain_model_agenda.gif'
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, holidays, types, email_address, email_text, email_types, email_owner_types, email_field_types, calendar_invite_address, calendar_invite_text, calendar_invite_types',
 	),
@@ -261,4 +279,4 @@ $TCA['tx_appointments_domain_model_agenda'] = array(
 				'config' => $appointments_agenda_checkboxes
 		),
 	),
-);
+];

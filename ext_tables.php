@@ -1,31 +1,43 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-	$_EXTKEY,
-	'Agenda',
-	'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_be.xml:tx_appointments_plugin_agenda_title'
+// add plugin flexform csh
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+	'tt_content.pi_flexform.appointments_agenda.list',
+	'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_agenda.xml'
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+	'tt_content.pi_flexform.appointments_list.list',
+	'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_list.xml'
 );
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-	$_EXTKEY,
-	'List',
-	'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_be.xml:tx_appointments_plugin_list_title'
+// add task csh
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+	'tx_appointments_csh_task_clean_up',
+	'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_task_clean_up.xml'
 );
 
-$pluginSignatureStart = str_replace('_','',$_EXTKEY) . '_';
-$pluginSignature = $pluginSignatureStart . 'agenda';
-$TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_agenda.xml');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.list', 'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_agenda.xml');
-$pluginSignature = $pluginSignatureStart . 'list';
-$TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_list.xml');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tt_content.pi_flexform.'.$pluginSignature.'.list', 'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_list.xml');
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_appointments_csh_task_clean_up', 'EXT:appointments/Resources/Private/Language/locallang_csh_task_clean_up.xml');
+// add tca csh
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+	'tx_appointments_domain_model_appointment',
+	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_appointment.xml'
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+	'tx_appointments_domain_model_agenda',
+	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_agenda.xml'
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+	'tx_appointments_domain_model_type',
+	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_type.xml'
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+	'tx_appointments_domain_model_formfield',
+	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_formfield.xml'
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+	'tx_appointments_domain_model_formfieldvalue',
+	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_formfieldvalue.xml'
+);
 
 #@LOW is there a native datepicker [6.1+]?
 #@TODO _document address-problems in 4.5: no cascade remove from FE
@@ -52,187 +64,13 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_
 //<http://docs.typo3.org/typo3cms/ExtbaseFluidBook/b-ExtbaseReference/Index.html>
 #@TODO _the above link also mentions something about recordType use in a different chapter, that might be of use for address..
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Appointment Scheduler');
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_appointments_domain_model_appointment', 'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_appointment.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_appointment');
-$TCA['tx_appointments_domain_model_appointment'] = array(
-	'ctrl' => array(
-		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment',
-		'label' => 'begin_time',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'dividers2tabs' => TRUE,
-		'default_sortby' => 'ORDER BY begin_time DESC',
-		'versioningWS' => 2,
-		'versioning_followPages' => TRUE,
-		#'requestUpdate' => 'type',
-		'origUid' => 't3_origuid',
-		'languageField' => 'sys_language_uid',
-		'transOrigPointerField' => 'l10n_parent',
-		'transOrigDiffSourceField' => 'l10n_diffsource',
-		'delete' => 'deleted',
-		'enablecolumns' => array(
-			'disabled' => 'hidden',
-			'starttime' => 'starttime',
-			'endtime' => 'endtime',
-			'tx_appointments_creation_progress' => 'creation_progress', #@TODO add to enable fields with hook $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns']
-		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Appointment.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_appointments_domain_model_appointment.gif'
-	),
-);
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_appointments_domain_model_agenda', 'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_agenda.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_agenda');
-$TCA['tx_appointments_domain_model_agenda'] = array(
-	'ctrl' => array(
-		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda',
-		'label' => 'name',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'dividers2tabs' => TRUE,
-		'versioningWS' => 2,
-		'versioning_followPages' => TRUE,
-		'origUid' => 't3_origuid',
-		'languageField' => 'sys_language_uid',
-		'transOrigPointerField' => 'l10n_parent',
-		'transOrigDiffSourceField' => 'l10n_diffsource',
-		'delete' => 'deleted',
-		'enablecolumns' => array(
-			'disabled' => 'hidden',
-			'starttime' => 'starttime',
-			'endtime' => 'endtime',
-		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Agenda.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_appointments_domain_model_agenda.gif'
-	),
-);
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_appointments_domain_model_type', 'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_type.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_type');
-$TCA['tx_appointments_domain_model_type'] = array(
-	'ctrl' => array(
-		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type',
-		'label' => 'name',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'dividers2tabs' => TRUE,
-		'sortby' => 'sorting',
-		'versioningWS' => 2,
-		'versioning_followPages' => TRUE,
-		'origUid' => 't3_origuid',
-		'languageField' => 'sys_language_uid',
-		'transOrigPointerField' => 'l10n_parent',
-		'transOrigDiffSourceField' => 'l10n_diffsource',
-		'delete' => 'deleted',
-		'enablecolumns' => array(
-			'disabled' => 'hidden',
-			'starttime' => 'starttime',
-			'endtime' => 'endtime',
-		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Type.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_appointments_domain_model_type.gif'
-	),
-);
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_appointments_domain_model_formfield', 'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_formfield.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_formfield');
-$TCA['tx_appointments_domain_model_formfield'] = array(
-	'ctrl' => array(
-		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield',
-		'label' => 'title',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'dividers2tabs' => TRUE,
-		'sortby' => 'sorting',
-		'versioningWS' => 2,
-		'versioning_followPages' => TRUE,
-		'requestUpdate' => 'field_type',
-		'hideTable' => TRUE,
-		'origUid' => 't3_origuid',
-		'languageField' => 'sys_language_uid',
-		'transOrigPointerField' => 'l10n_parent',
-		'transOrigDiffSourceField' => 'l10n_diffsource',
-		'delete' => 'deleted',
-		'enablecolumns' => array(
-			'disabled' => 'hidden',
-			'starttime' => 'starttime',
-			'endtime' => 'endtime',
-		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/FormField.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_appointments_domain_model_formfield.gif'
-	),
-);
-
-#if (version_compare(TYPO3_branch, '6.1', '<')) {
-#	t3lib_div::loadTCA('tt_address');
-#}
-#@LOW make it set a type as soon as IRRE supports it
-#if (!isset($TCA['tt_address']['ctrl']['type'])) {
-#	$TCA['tt_address']['ctrl']['type'] = 'tx_extbase_type';
-#}
-#$TCA['tt_address']['columns'][$TCA['tt_address']['ctrl']['type']]['config']['items'][] = array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tt_address.tx_extbase_type.Tx_Appointments_Address','Tx_Appointments_Address');
-#$TCA['tt_address']['types']['Tx_Appointments_Address']['showitem'] = $TCA['tt_address']['types']['1']['showitem'];
-#$TCA['tt_address']['types']['Tx_Appointments_Address']['showitem'] .= ',--div--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_address,';
-#$TCA['tt_address']['types']['Tx_Appointments_Address']['showitem'] = 'first_name, middle_name, last_name, name, gender, birthday, email, address, zip, city';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_address', array(
-	'tx_appointments_social_security_number' => array (
-		'exclude' => 0,
-		'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_address.social_security_number',
-		'config' => array (
-			'type' => 'input',
-			'size' => 25,
-			'max' => 255,
-			'eval' => 'trim'
-		)
-	),
-), 1);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_address', array(
-	'tx_appointments_creation_progress' => array (
-		'exclude' => 1,
-		'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_address.creation_progress',
-		'config' => array (
-			'type' => 'none',
-		)
-	),
-), 1);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address','tx_appointments_social_security_number');
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_appointments_domain_model_formfieldvalue', 'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_formfieldvalue.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_formfieldvalue');
-$TCA['tx_appointments_domain_model_formfieldvalue'] = array(
-	'ctrl' => array(
-		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfieldvalue',
-		'label' => 'form_field',
-		'label_alt' => 'value',
-		'label_alt_force' => TRUE,
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'dividers2tabs' => TRUE,
-		'sortby' => 'sorting',
-		'versioningWS' => 2,
-		'versioning_followPages' => TRUE,
-		'hideTable' => TRUE,
-		'origUid' => 't3_origuid',
-		'languageField' => 'sys_language_uid',
-		'transOrigPointerField' => 'l10n_parent',
-		'transOrigDiffSourceField' => 'l10n_diffsource',
-		'delete' => 'deleted',
-		'enablecolumns' => array(
-			'disabled' => 'hidden',
-			'starttime' => 'starttime',
-			'endtime' => 'endtime',
-		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/FormFieldValue.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_appointments_domain_model_formfieldvalue.gif'
-	),
-);
+
 
 //set overlay icons
 if (TYPO3_MODE === 'BE') {

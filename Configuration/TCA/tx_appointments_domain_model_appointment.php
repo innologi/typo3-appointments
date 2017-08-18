@@ -1,10 +1,31 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
-	die ('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
-$TCA['tx_appointments_domain_model_appointment'] = array(
-	'ctrl' => $TCA['tx_appointments_domain_model_appointment']['ctrl'],
+return [
+	'ctrl' => array(
+		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment',
+		'label' => 'begin_time',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'dividers2tabs' => TRUE,
+		'default_sortby' => 'ORDER BY begin_time DESC',
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		#'requestUpdate' => 'type',
+		'origUid' => 't3_origuid',
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'delete' => 'deleted',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+			'tx_appointments_creation_progress' => 'creation_progress', #@TODO add to enable fields with hook $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns']
+		),
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('appointments') . 'Resources/Public/Icons/tx_appointments_domain_model_appointment.gif'
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, creation_progress, begin_time, end_time, begin_reserved, end_reserved, notes, notes_su, type, form_field_values, address, fe_user, agenda',
 	),
@@ -250,4 +271,4 @@ $TCA['tx_appointments_domain_model_appointment'] = array(
 			),
 		),
 	),
-);
+];

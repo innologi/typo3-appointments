@@ -1,10 +1,31 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
-	die ('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
-$TCA['tx_appointments_domain_model_formfield'] = array(
-	'ctrl' => $TCA['tx_appointments_domain_model_formfield']['ctrl'],
+return [
+	'ctrl' => array(
+		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield',
+		'label' => 'title',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'dividers2tabs' => TRUE,
+		'sortby' => 'sorting',
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		'requestUpdate' => 'field_type',
+		'hideTable' => TRUE,
+		'origUid' => 't3_origuid',
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'delete' => 'deleted',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+		),
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('appointments') . 'Resources/Public/Icons/tx_appointments_domain_model_formfield.gif'
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, label, csh, field_type, validation_types, choices, function, enable_field, enable_value',
 	),
@@ -248,4 +269,4 @@ $TCA['tx_appointments_domain_model_formfield'] = array(
 			),
 		),
 	),
-);
+];

@@ -1,7 +1,5 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
-	die ('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
 $appointments_type_configStartTime = array( #@LOW add custom regex eval e.g. /([0-1]{1}[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9{1}/, see manual TCA->input->eval on how
 	'type' => 'input',
@@ -27,8 +25,29 @@ $appointments_type_configMinInt['range']['lower'] = 1;
 $appointments_type_configMinInt['default'] = 15;
 $appointments_type_configMinInt['eval'] .= ',required';
 
-$TCA['tx_appointments_domain_model_type'] = array(
-	'ctrl' => $TCA['tx_appointments_domain_model_type']['ctrl'],
+return [
+	'ctrl' => array(
+		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type',
+		'label' => 'name',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'dividers2tabs' => TRUE,
+		'sortby' => 'sorting',
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		'origUid' => 't3_origuid',
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'delete' => 'deleted',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+		),
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('appointments') . 'Resources/Public/Icons/tx_appointments_domain_model_type.gif'
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, superuser_only, exclusive_availability, dont_block_types, dont_restrict_type_counts, default_duration, start_time_monday, start_time_tuesday, start_time_wednesday, start_time_thursday, start_time_friday, start_time_saturday, start_time_sunday, stop_time_monday, stop_time_tuesday, stop_time_wednesday, stop_time_thursday, stop_time_friday, stop_time_saturday, stop_time_sunday, exclude_holidays, max_amount_monday, max_amount_tuesday, max_amount_wednesday, max_amount_thursday, max_amount_friday, max_amount_saturday, max_amount_sunday, minute_interval_monday, minute_interval_tuesday, minute_interval_wednesday, minute_interval_thursday, minute_interval_friday, minute_interval_saturday, minute_interval_sunday, max_amount_per_var_days, per_var_days, per_var_days_interval, between_minutes, hours_mutable, blocked_hours, blocked_hours_workdays, max_days_forward, form_fields, address_disable, address_enable_name, address_enable_gender, address_enable_birthday, address_enable_address, address_enable_security, address_enable_email',
 	),
@@ -544,4 +563,4 @@ $TCA['tx_appointments_domain_model_type'] = array(
 			),
 		),
 	),
-);
+];
