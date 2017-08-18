@@ -3,3 +3,31 @@ config.tx_extbase.objects {
 		className = Innologi\Appointments\Service\Typo3CsrfProtectService
 	}
 }
+plugin.tx_appointments.persistence.classes {
+	Innologi\Appointments\Domain\Model\Appointment {
+		mapping.columns {
+			crdate.mapOnProperty = crdate
+		}
+	}
+	Innologi\Appointments\Domain\Model\FormField {
+		mapping.columns {
+			sorting.mapOnProperty = sorting
+		}
+	}
+	Innologi\Appointments\Domain\Model\Address {
+		mapping {
+			tableName = tt_address
+			recordType = Tx_Appointments_Address
+			columns {
+				tx_appointments_social_security_number.mapOnProperty = socialSecurityNumber
+				tx_appointments_creation_progress.mapOnProperty = creationProgress
+			}
+		}
+	}
+	Innologi\Appointments\Domain\Model\FrontendUser {
+		mapping.tableName = fe_users
+	}
+	Innologi\Appointments\Domain\Model\FrontendUserGroup {
+		mapping.tableName = fe_groups
+	}
+}
