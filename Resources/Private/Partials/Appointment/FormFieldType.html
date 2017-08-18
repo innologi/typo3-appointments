@@ -1,3 +1,6 @@
+<p data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+
 <!-- The hidden properties in each form are for unpersisted appointments, to maintain values that are chosen in other forms if available -->
 <f:form.hidden property="beginTime"  value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
 			
@@ -18,3 +21,5 @@
 </f:if>
 
 <span class="csh" title="{f:translate(key: 'tx_appointments_domain_model_appointment.type.csh_new{step}')}"><f:translate key="tx_appointments_list.csh" /></span>
+
+</p>

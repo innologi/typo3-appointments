@@ -1,3 +1,6 @@
+<html data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+
 <table class="single-appointment" summary="{f:translate(key:'tx_appointments_list.summary_show')}">
 	<caption><f:translate key="tx_appointments_list.caption_show" /></caption>
 	
@@ -54,6 +57,7 @@
 	</f:if>
 	
 	<f:if condition="{showMore}">
+		<tr>
 		<f:if condition="{appointment.type.addressDisable}">
 			<f:then>
 				<!-- TYPO3 4.5 compatibility -->
@@ -71,7 +75,6 @@
 				</tr>
 			</f:else>
 		</f:if>
-		
 		<tr>
 			<tr>
 				<th colspan="2" scope="col">
@@ -94,3 +97,5 @@
 		</tr>
 	</f:if>
 </table>
+
+</html>
