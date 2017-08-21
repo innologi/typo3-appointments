@@ -16,6 +16,7 @@
 				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_switchableControllerActions</label>
 				<config>
 					<type>select</type>
+					<renderType>selectSingle</renderType>
 					<items type="array">
 						<numIndex index="0" type="array">
 							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_switchableControllerActions.item1</numIndex>
@@ -36,6 +37,7 @@
 				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_agendaUid</label>
 				<config>
 					<type>select</type>
+					<renderType>selectSingle</renderType>
 					<items type="array">
 						<numIndex index="0" type="array">
 							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_tsDefault</numIndex>
@@ -61,6 +63,7 @@
 				<onChange>reload</onChange>
 				<config>
 					<type>select</type>
+					<renderType>selectSingle</renderType>
 					<items type="array">
 						<numIndex index="0" type="array">
 							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_agendaNavOverride.item1</numIndex>
@@ -151,6 +154,7 @@
 				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_appointmentTypeList</label>
 				<config>
 					<type>select</type>
+					<renderType>selectMultipleSideBySide</renderType>
 					<items type="array">
 						<numIndex index="0" type="array">
 							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_tsDefault</numIndex>
@@ -181,6 +185,7 @@
 				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_allowCreate</label>
 				<config>
 					<type>select</type>
+					<renderType>selectSingle</renderType>
 					<items type="array">
 						<numIndex index="0" type="array">
 							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_tsDefault</numIndex>
@@ -206,6 +211,7 @@
 				<label>LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_suGroup</label>
 				<config>
 					<type>select</type>
+					<renderType>selectSingle</renderType>
 					<items type="array">
 						<numIndex index="0" type="array">
 							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_tsDefault</numIndex>
