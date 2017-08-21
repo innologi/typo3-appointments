@@ -41,7 +41,7 @@ return [
 					--palette--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.palette.email_types;email_types,
 						email_address, email_text,
 				--div--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.div.calendar_invite,calendar_invite_types, calendar_invite_address, calendar_invite_text,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,starttime, endtime'
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'
 		], #@LOW de div, palette, types item labels verplaatsen naar locallang_be?
 	],
 	'palettes' => [
@@ -94,7 +94,7 @@ return [
 			]
 		],
 		't3ver_label' => [
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
 			'config' => [
 				'type' => 'input',
 				'size' => 30,
@@ -103,7 +103,7 @@ return [
 		],
 		'hidden' => [
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
 			'config' => [
 				'type' => 'check',
 			],

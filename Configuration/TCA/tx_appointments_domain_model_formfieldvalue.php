@@ -30,7 +30,7 @@ return [
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, value, form_field',
 	],
 	'types' => [
-		'1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, form_field, value, --div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,starttime, endtime'],
+		'1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, form_field, value, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'],
 	],
 	'palettes' => [
 		'1' => ['showitem' => ''],
@@ -78,7 +78,7 @@ return [
 			]
 		],
 		't3ver_label' => [
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
 			'config' => [
 				'type' => 'input',
 				'size' => 30,
@@ -87,7 +87,7 @@ return [
 		],
 		'hidden' => [
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
 			'config' => [
 				'type' => 'check',
 			],
