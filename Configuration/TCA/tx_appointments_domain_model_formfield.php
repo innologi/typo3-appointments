@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') or die();
 
 return [
-	'ctrl' => array(
+	'ctrl' => [
 		'title'	=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield',
 		'label' => 'title',
 		'tstamp' => 'tstamp',
@@ -10,222 +10,232 @@ return [
 		'cruser_id' => 'cruser_id',
 		'dividers2tabs' => TRUE,
 		'sortby' => 'sorting',
-		'versioningWS' => 2,
-		'versioning_followPages' => TRUE,
-		'requestUpdate' => 'field_type',
+		'versioningWS' => TRUE,
 		'hideTable' => TRUE,
 		'origUid' => 't3_origuid',
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l10n_parent',
 		'transOrigDiffSourceField' => 'l10n_diffsource',
 		'delete' => 'deleted',
-		'enablecolumns' => array(
+		'enablecolumns' => [
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
-		),
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('appointments') . 'Resources/Public/Icons/tx_appointments_domain_model_formfield.gif'
-	),
-	'interface' => array(
+		],
+		'iconfile' => 'EXT:appointments/Resources/Public/Icons/tx_appointments_domain_model_formfield.gif'
+	],
+	'interface' => [
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, label, csh, field_type, validation_types, choices, function, enable_field, enable_value',
-	),
-	'types' => array(
-		'1' => array(
-			'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, label, csh, field_type, choices, function, validation_types,
+	],
+	'types' => [
+		'1' => [
+			'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, label, csh, field_type, choices, function, validation_types,
 				--palette--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.palette.enable_field;enable_field,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,starttime, endtime'
-			),
-	),
-	'palettes' => array(
-		'1' => array('showitem' => ''),
-		'enable_field' => array(
+		],
+	],
+	'palettes' => [
+		'1' => ['showitem' => ''],
+		'enable_field' => [
 			'showitem' => 'enable_field, enable_value',
 			'canNotCollapse' => 1
-		),
-	),
-	'columns' => array(
-		'sys_language_uid' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
-			'config' => array(
+		],
+	],
+	'columns' => [
+		'sys_language_uid' => [
+			'exclude' => TRUE,
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+			'config' => [
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
-				'items' => array(
-					array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
-				),
-			),
-		),
-		'l10n_parent' => array(
+				'items' => [
+					['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
+					['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
+				],
+				'default' => 0,
+				'fieldWizard' => [
+					'selectIcons' => [
+						'disabled' => FALSE,
+					],
+				],
+			]
+		],
+		'l10n_parent' => [
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
-			'config' => array(
+			'exclude' => TRUE,
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+			'config' => [
 				'type' => 'select',
-				'items' => array(
-					array('', 0),
-				),
-				'foreign_table' => 'tx_appointments_domain_model_formfield',
-				'foreign_table_where' => 'AND tx_appointments_domain_model_formfield.pid=###CURRENT_PID### AND tx_appointments_domain_model_formfield.sys_language_uid IN (-1,0)',
-			),
-		),
-		'l10n_diffsource' => array(
-			'config' => array(
+				'renderType' => 'selectSingle',
+				'items' => [
+					['', 0]
+				],
+				'foreign_table' => 'sys_category',
+				'foreign_table_where' => 'AND sys_category.uid=###REC_FIELD_l10n_parent### AND sys_category.sys_language_uid IN (-1,0)',
+				'default' => 0
+			]
+		],
+		'l10n_diffsource' => [
+			'config' => [
 				'type' => 'passthrough',
-			),
-		),
-		't3ver_label' => array(
+				'default' => ''
+			]
+		],
+		't3ver_label' => [
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
-			'config' => array(
+			'config' => [
 				'type' => 'input',
 				'size' => 30,
 				'max' => 255,
-			)
-		),
-		'hidden' => array(
+			]
+		],
+		'hidden' => [
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-			'config' => array(
+			'config' => [
 				'type' => 'check',
-			),
-		),
-		'starttime' => array(
-			'exclude' => 1,
-			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
-			'config' => array(
+			],
+		],
+		'starttime' => [
+			'exclude' => TRUE,
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+			'config' => [
 				'type' => 'input',
-				'size' => 13,
-				'max' => 20,
+				'renderType' => 'inputDateTime',
 				'eval' => 'datetime',
-				'checkbox' => 0,
 				'default' => 0,
-				'range' => array(
-					'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
-				),
-			),
-		),
-		'endtime' => array(
-			'exclude' => 1,
-			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
-			'config' => array(
+				'behaviour' => [
+					'allowLanguageSynchronization' => TRUE,
+				]
+			]
+		],
+		'endtime' => [
+			'exclude' => TRUE,
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+			'config' => [
 				'type' => 'input',
-				'size' => 13,
-				'max' => 20,
+				'renderType' => 'inputDateTime',
 				'eval' => 'datetime',
-				'checkbox' => 0,
 				'default' => 0,
-				'range' => array(
-					'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
-				),
-			),
-		),
-		'title' => array(
+				'range' => [
+					'upper' => mktime(0, 0, 0, 1, 1, 2038),
+				],
+				'behaviour' => [
+					'allowLanguageSynchronization' => TRUE,
+				]
+			]
+		],
+		'title' => [
 			'exclude' => 0,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.title',
-			'config' => array(
+			'config' => [
 				'type' => 'input',
 				'size' => 30,
 				'eval' => 'trim,required'
-			),
-		),
-		'label' => array(
+			],
+		],
+		'label' => [
 			'exclude' => 0,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.label',
-			'config' => array(
+			'config' => [
 				'type' => 'text',
 				'cols' => 48,
 				'rows' => 2,
 				'eval' => 'trim,required'
-			),
-		),
-		'csh' => array(
+			],
+		],
+		'csh' => [
 			'exclude' => 0,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.csh',
-			'config' => array(
+			'config' => [
 				'type' => 'text',
 				'cols' => 48,
 				'rows' => 5,
 				'eval' => 'trim'
-			),
-		),
-		'validation_types' => array(
-				'exclude' => 0,
-				'displayCond' => 'FIELD:field_type:!=:'.\Innologi\Appointments\Domain\Model\FormField::TYPE_BOOLEAN,
-				'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types',
-				'config' => array(
-						'type' => 'select',
-						'items' => array(
-							#array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.alphanum',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_ALPHANUMERIC),
-							array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.datetime',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_DATE_TIME),
-							array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.email',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_EMAIL_ADDRESS),
-							array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.float',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_FLOAT),
-							array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.integer',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_INTEGER),
-							array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.notempty',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_NOT_EMPTY),
-							array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.number',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_NUMBER),
-							#array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.string',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_STRING),
-							#array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.text',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_TEXT),
-							array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.naturalnumber',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_NATURALNUMBER),
-						),
-						'size' => 7,
-						'maxitems' => 99,
-						'multiple' => 0
-				),
-		),
-		'field_type' => array(
+			],
+		],
+		'validation_types' => [
 			'exclude' => 0,
-			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type',
-			'config' => array(
+			'displayCond' => 'FIELD:field_type:!=:'.\Innologi\Appointments\Domain\Model\FormField::TYPE_BOOLEAN,
+			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types',
+			'config' => [
 				'type' => 'select',
-				'items' => array(
-					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.boolean',\Innologi\Appointments\Domain\Model\FormField::TYPE_BOOLEAN),
-					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.radio',\Innologi\Appointments\Domain\Model\FormField::TYPE_RADIO),
-					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.select',\Innologi\Appointments\Domain\Model\FormField::TYPE_SELECT),
-					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.textsmall',\Innologi\Appointments\Domain\Model\FormField::TYPE_TEXTSMALL),
-					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.textlarge',\Innologi\Appointments\Domain\Model\FormField::TYPE_TEXTLARGE)
-				),
+				'renderType' => 'selectMultipleSideBySide',
+				'items' => [
+					#['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.alphanum',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_ALPHANUMERIC],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.datetime',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_DATE_TIME],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.email',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_EMAIL_ADDRESS],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.float',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_FLOAT],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.integer',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_INTEGER],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.notempty',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_NOT_EMPTY],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.number',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_NUMBER],
+					#['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.string',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_STRING],
+					#['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.text',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_TEXT],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.validation_types.naturalnumber',\Innologi\Appointments\Domain\Model\FormField::VALIDATE_NATURALNUMBER],
+				],
+				'size' => 7,
+				'maxitems' => 99,
+				'multiple' => 0
+			],
+		],
+		'field_type' => [
+			'exclude' => 0,
+			'onChange' => 'reload',
+			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type',
+			'config' => [
+				'type' => 'select',
+				'renderType' => 'selectSingle',
+				'items' => [
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.boolean',\Innologi\Appointments\Domain\Model\FormField::TYPE_BOOLEAN],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.radio',\Innologi\Appointments\Domain\Model\FormField::TYPE_RADIO],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.select',\Innologi\Appointments\Domain\Model\FormField::TYPE_SELECT],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.textsmall',\Innologi\Appointments\Domain\Model\FormField::TYPE_TEXTSMALL],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.field_type.textlarge',\Innologi\Appointments\Domain\Model\FormField::TYPE_TEXTLARGE]
+				],
 				'size' => 1,
 				'maxitems' => 1,
 				'default' => \Innologi\Appointments\Domain\Model\FormField::TYPE_TEXTSMALL
-			),
-		),
-		'choices' => array(
+			],
+		],
+		'choices' => [
 			'exclude' => 0,
 			'displayCond' => 'FIELD:field_type:IN:'.\Innologi\Appointments\Domain\Model\FormField::TYPE_SELECT . ',' . \Innologi\Appointments\Domain\Model\FormField::TYPE_RADIO,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.choices',
-			'config' => array(
+			'config' => [
 				'type' => 'text',
 				'cols' => 48,
 				'rows' => 5,
 				'eval' => 'trim'
-			),
-		),
-		'function' => array(
+			],
+		],
+		'function' => [
 			'exclude' => 0,
 			'displayCond' => 'FIELD:field_type:IN:'.\Innologi\Appointments\Domain\Model\FormField::TYPE_TEXTLARGE.','.\Innologi\Appointments\Domain\Model\FormField::TYPE_TEXTSMALL,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function',
-			'config' => array(
+			'config' => [
 				'type' => 'select',
-				'items' => array(
-					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.info',\Innologi\Appointments\Domain\Model\FormField::FUNCTION_INFORMATIONAL),
-					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.addtime',\Innologi\Appointments\Domain\Model\FormField::FUNCTION_ADDTIME),
-					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.email',\Innologi\Appointments\Domain\Model\FormField::FUNCTION_EMAIL)
-				),
+				'renderType' => 'selectSingle',
+				'items' => [
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.info',\Innologi\Appointments\Domain\Model\FormField::FUNCTION_INFORMATIONAL],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.addtime',\Innologi\Appointments\Domain\Model\FormField::FUNCTION_ADDTIME],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.function.email',\Innologi\Appointments\Domain\Model\FormField::FUNCTION_EMAIL]
+				],
 				'size' => 1,
 				'maxitems' => 1
-			),
-		),
-		'enable_field' => array(
+			],
+		],
+		'enable_field' => [
 			'exclude' => 0,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.enable_field',
-			'config' => array(
+			'config' => [
 				'type' => 'select',
-				'items' => array(
-					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.enable_field.default', 0),
-					array('LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.div.enable_field', '--div--'),
-				),
+				'renderType' => 'selectSingle',
+				'items' => [
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.enable_field.default', 0],
+					['LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.div.enable_field', '--div--'],
+				],
 				'foreign_table' => 'tx_appointments_domain_model_formfield',
 				/*
 				 * only allow formfields other than this, that are of the same type,
@@ -252,21 +262,21 @@ return [
 				'minitems' => 0,
 				'maxitems' => 1,
 				'multiple' => 0,
-			),
-		),
-		'enable_value' => array(
+			],
+		],
+		'enable_value' => [
 			'exclude' => 0,
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.enable_value',
-			'config' => array(
+			'config' => [
 				'type' => 'input',
 				'size' => 50,
 				'eval' => 'trim'
-			),
-		),
-		'type' => array(
-			'config' => array(
+			],
+		],
+		'type' => [
+			'config' => [
 				'type' => 'passthrough',
-			),
-		),
-	),
+			],
+		],
+	],
 ];
