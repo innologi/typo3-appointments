@@ -1,4 +1,3 @@
-{namespace v=Tx_Vhs_ViewHelpers}
 <html data-namespace-typo3-fluid="true"
 	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
 <!-- FormField check required in case it was removed later on -->
@@ -10,28 +9,23 @@
 			<!-- @LOW allow enablers not to be shown if so desired? -->
 		</td>
 		<td>
-			<v:switch value="{formField.fieldType}">
-				<v:case case="1" break="TRUE"> <!-- Boolean / Checkbox -->
-					<f:if condition="{formFieldValue.value} == 1">
-						<f:then>
-							<f:translate key="tx_appointments_list.yes" />
-						</f:then>
-						<f:else>
-							<f:translate key="tx_appointments_list.no" />
-						</f:else>
-					</f:if>
-				</v:case>
-				<v:case case="5"> <!-- Radio -->
-				</v:case>
-				<v:case case="2" break="TRUE"> <!-- Select -->
-					<v:iterator.extract key="{formFieldValue.value}" content="{formField.choicesArray}" recursive="FALSE"/>
-				</v:case>
-				<v:case case="3"> <!-- Textsmall / Input -->
-				</v:case>
-				<v:case case="4"> <!-- Textlarge / Textarea -->
+			<f:switch expression="{formField.fieldType}">
+				<f:case value="1"> <!-- Boolean / Checkbox -->
+					<f:translate key="tx_appointments_list.{f:if(condition:'{formFieldValue.value} == 1', then:'yes', else:'no')}" />
+				</f:case>
+				<f:case value="2"> <!-- Select -->
+					{formField.choicesArray.{formFieldValue.value}}
+				</f:case>
+				<f:case value="3"> <!-- Textsmall / Input -->
 					{formFieldValue.value}
-				</v:case>
-			</v:switch>
+				</f:case>
+				<f:case value="4"> <!-- Textlarge / Textarea -->
+					{formFieldValue.value}
+				</f:case>
+				<f:case value="5"> <!-- Radio -->
+					{formField.choicesArray.{formFieldValue.value}}
+				</f:case>
+			</f:switch>
 		</td>
 	</tr>
 </f:if>

@@ -56,10 +56,6 @@ defined('TYPO3_MODE') or die();
 #@LOW unittesting
 #@TODO currently, month and day names are taken from locallang. I should see if the php locale can be changed to the typo3 locale in order to rely on strftime and/or f:format.date
 #@LOW use localization $arguments parameter
-#@LOW replace the following in the appointment list template once required TYPO3 version is upped to 4.7 or higher:
-//{v:math.sum(a:'{v:math.product(a:appointment.type.hoursMutable,b:3600)}',b:appointment.crdate)}
-//with:
-//{appointment.type.hoursMutable -> v:math.product(b:3600) -> v:math.sum(b:appointment.crdate)}
 
 //<http://docs.typo3.org/typo3cms/ExtbaseFluidBook/b-ExtbaseReference/Index.html>
 #@TODO _the above link also mentions something about recordType use in a different chapter, that might be of use for address..
@@ -74,7 +70,7 @@ defined('TYPO3_MODE') or die();
 
 //set overlay icons
 if (TYPO3_MODE === 'BE') {
-	$TBE_STYLES['spriteIconApi']['spriteIconRecordOverlayNames']['tx_appointments_unfinished'] = 'status-overlay-missing';
-	$TBE_STYLES['spriteIconApi']['spriteIconRecordOverlayNames']['tx_appointments_expired'] = 'status-overlay-deleted';
-	array_unshift($TBE_STYLES['spriteIconApi']['spriteIconRecordOverlayPriorities'],'tx_appointments_expired','tx_appointments_unfinished');
+	$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['tx_appointments_unfinished'] = 'status-overlay-missing';
+	$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames']['tx_appointments_expired'] = 'status-overlay-deleted';
+	array_unshift($GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'],'tx_appointments_expired','tx_appointments_unfinished');
 }

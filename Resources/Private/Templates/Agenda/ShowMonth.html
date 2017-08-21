@@ -1,6 +1,6 @@
-{namespace v=Tx_Vhs_ViewHelpers}
 <html data-namespace-typo3-fluid="true"
-	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:a="http://typo3.org/ns/Innologi/Appointments/ViewHelpers">
 	
 <f:layout name="NoFlash" />
 
@@ -23,9 +23,9 @@
 	<f:render partial="Agenda/TableHeader" />
 	
 	<tr>
-		<v:iterator.loop count="{month.weekdaysBeforeFirst}">
+		<a:loop count="{month.weekdaysBeforeFirst}">
 			<td>&nbsp;</td>
-		</v:iterator.loop>
+		</a:loop>
 	
 	<f:for each="{month.weeks}" as="week" iteration="iterationInfo">
 		<f:render partial="Agenda/Week" arguments="{week : week, currentDate : currentDate}" />
@@ -39,9 +39,9 @@
 		</f:if>
 	</f:for>
 	
-		<v:iterator.loop count="{month.weekdaysAfterLast}">
+		<a:loop count="{month.weekdaysAfterLast}">
 			<td>&nbsp;</td>
-		</v:iterator.loop>
+		</a:loop>
 	</tr>
 		
 </table>
