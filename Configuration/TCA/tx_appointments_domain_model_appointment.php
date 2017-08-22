@@ -37,13 +37,7 @@ return [
 		],
 	],
 	'palettes' => [
-		'1' => ['showitem' => ''],
-		'times' => [
-			'showitem' => 'begin_time, end_time,
-					--linebreak--,
-					begin_reserved, end_reserved',
-			'canNotCollapse' => 1,
-		]
+		'times' => ['showitem' => 'begin_time, end_time, --linebreak--, begin_reserved, end_reserved']
 	],
 	'columns' => [
 		'sys_language_uid' => [

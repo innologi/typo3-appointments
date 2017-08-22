@@ -35,11 +35,7 @@ return [
 		],
 	],
 	'palettes' => [
-		'1' => ['showitem' => ''],
-		'enable_field' => [
-			'showitem' => 'enable_field, enable_value',
-			'canNotCollapse' => 1
-		],
+		'enable_field' => ['showitem' => 'enable_field, enable_value']
 	],
 	'columns' => [
 		'sys_language_uid' => [

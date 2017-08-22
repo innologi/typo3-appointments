@@ -45,11 +45,7 @@ return [
 		], #@LOW de div, palette, types item labels verplaatsen naar locallang_be?
 	],
 	'palettes' => [
-		'1' => ['showitem' => ''],
-		'email_types' => [
-				'showitem' => 'email_types, email_owner_types, email_field_types',
-				'canNotCollapse' => 1
-		]
+		'email_types' => ['showitem' => 'email_types, email_owner_types, email_field_types']
 	],
 	'columns' => [
 		'sys_language_uid' => [

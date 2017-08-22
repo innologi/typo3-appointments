@@ -73,64 +73,22 @@ return [
 		],
 	],
 	'palettes' => [
-		'1' => ['showitem' => ''],
 		'b_hours' => ['showitem' => 'blocked_hours, --linebreak--, blocked_hours_workdays'],
-		'monday' => [
-			'showitem' => 'max_amount_monday, start_time_monday, stop_time_monday, minute_interval_monday',
-			'canNotCollapse' => 1,
-		],
-		'tuesday' => [
-			'showitem' => 'max_amount_tuesday, start_time_tuesday, stop_time_tuesday, minute_interval_tuesday',
-			'canNotCollapse' => 1,
-		],
-		'wednesday' => [
-			'showitem' => 'max_amount_wednesday, start_time_wednesday, stop_time_wednesday, minute_interval_wednesday',
-			'canNotCollapse' => 1,
-		],
-		'thursday' => [
-			'showitem' => 'max_amount_thursday, start_time_thursday, stop_time_thursday, minute_interval_thursday',
-			'canNotCollapse' => 1,
-		],
-		'friday' => [
-			'showitem' => 'max_amount_friday, start_time_friday, stop_time_friday, minute_interval_friday',
-			'canNotCollapse' => 1,
-		],
-		'saturday' => [
-			'showitem' => 'max_amount_saturday, start_time_saturday, stop_time_saturday, minute_interval_saturday',
-			'canNotCollapse' => 1,
-		],
-		'sunday' => [
-			'showitem' => 'max_amount_sunday, start_time_sunday, stop_time_sunday, minute_interval_sunday',
-			'canNotCollapse' => 1,
-		],
-		'overrule' => [
-			'showitem' => 'max_amount_per_var_days, per_var_days, per_var_days_interval, --linebreak--, exclude_holidays',
-			'canNotCollapse' => 1,
-		],
-		'address_name' => [ #@TODO __CSH
-			'showitem' => 'address_enable_name;LLL:EXT:lang/locallang_common.xml:enable',
-			'canNotCollapse' => 1,
-		],
-		'address_gender' => [
-			'showitem' => 'address_enable_gender;LLL:EXT:lang/locallang_common.xml:enable',
-			'canNotCollapse' => 1,
-		],
-		'address_birthday' => [
-			'showitem' => 'address_enable_birthday;LLL:EXT:lang/locallang_common.xml:enable',
-			'canNotCollapse' => 1,
-		],
-		'address_address' => [
-			'showitem' => 'address_enable_address;LLL:EXT:lang/locallang_common.xml:enable',
-			'canNotCollapse' => 1,
-		],
-		'address_security' => [
-			'showitem' => 'address_enable_security;LLL:EXT:lang/locallang_common.xml:enable',
-			'canNotCollapse' => 1,
-		],
-		'address_email' => [
-			'showitem' => 'address_enable_email;LLL:EXT:lang/locallang_common.xml:enable',
-			'canNotCollapse' => 1,
-		],
+		'monday' => ['showitem' => 'max_amount_monday, start_time_monday, stop_time_monday, minute_interval_monday'],
+		'tuesday' => ['showitem' => 'max_amount_tuesday, start_time_tuesday, stop_time_tuesday, minute_interval_tuesday'],
+		'wednesday' => ['showitem' => 'max_amount_wednesday, start_time_wednesday, stop_time_wednesday, minute_interval_wednesday'],
+		'thursday' => ['showitem' => 'max_amount_thursday, start_time_thursday, stop_time_thursday, minute_interval_thursday'],
+		'friday' => ['showitem' => 'max_amount_friday, start_time_friday, stop_time_friday, minute_interval_friday'],
+		'saturday' => ['showitem' => 'max_amount_saturday, start_time_saturday, stop_time_saturday, minute_interval_saturday'],
+		'sunday' => ['showitem' => 'max_amount_sunday, start_time_sunday, stop_time_sunday, minute_interval_sunday'],
+		'overrule' => ['showitem' => 'max_amount_per_var_days, per_var_days, per_var_days_interval, --linebreak--, exclude_holidays'],
+		#@TODO __CSH
+		'address_name' => ['showitem' => 'address_enable_name;LLL:EXT:lang/locallang_common.xml:enable'],
+		'address_gender' => ['showitem' => 'address_enable_gender;LLL:EXT:lang/locallang_common.xml:enable'],
+		'address_birthday' => ['showitem' => 'address_enable_birthday;LLL:EXT:lang/locallang_common.xml:enable'],
+		'address_address' => ['showitem' => 'address_enable_address;LLL:EXT:lang/locallang_common.xml:enable'],
+		'address_security' => ['showitem' => 'address_enable_security;LLL:EXT:lang/locallang_common.xml:enable'],
+		'address_email' => ['showitem' => 'address_enable_email;LLL:EXT:lang/locallang_common.xml:enable'],
 	],
 	'columns' => [
 		'sys_language_uid' => [
