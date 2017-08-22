@@ -77,7 +77,7 @@ class SettingsOverrideController extends ErrorOnDebugController {
 			if (isset($tsOverride['selectFields'])) {
 				$selectFields = GeneralUtility::trimExplode(',',$tsOverride['selectFields'],1);
 				foreach ($selectFields as $selectField) {
-					if (isset($settings[$selectField][0])) {
+					if (isset($settings[$selectField][0]) && $settings[$selectField] !== '0') {
 						$fields = GeneralUtility::trimExplode(';',$settings[$selectField],1);
 						foreach ($fields as $field) {
 							#@LOW make this work as overrule-setting, not overwrite

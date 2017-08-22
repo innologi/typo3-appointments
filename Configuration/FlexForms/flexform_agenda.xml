@@ -71,13 +71,13 @@
 						</numIndex>
 						<numIndex index="1" type="array">
 							<numIndex index="0">LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_flexform_agendaNavOverride.item2</numIndex>
-							<numIndex index="1"></numIndex>
+							<numIndex index="1">0</numIndex>
 						</numIndex>
 					</items>
 					<size>1</size>
 					<maxitems>1</maxitems>
 					<multiple>0</multiple>
-					<default>1</default>
+					<default>0</default>
 				</config>
 			</TCEforms>
 		</settings.agendaNavOverride>
