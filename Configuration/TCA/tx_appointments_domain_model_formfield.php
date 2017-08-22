@@ -28,7 +28,7 @@ return [
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, label, csh, field_type, validation_types, choices, function, enable_field, enable_value',
 	],
 	'types' => [
-		'1' => [
+		'0' => [
 			'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, label, csh, field_type, choices, function, validation_types,
 				--palette--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_formfield.palette.enable_field;enable_field,
 				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'
