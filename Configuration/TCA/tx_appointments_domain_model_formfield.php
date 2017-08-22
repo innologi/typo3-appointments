@@ -207,7 +207,8 @@ return [
 				'type' => 'text',
 				'cols' => 48,
 				'rows' => 5,
-				'eval' => 'trim'
+				'eval' => 'trim',
+				'default' => ''
 			],
 		],
 		'function' => [
@@ -244,24 +245,17 @@ return [
 				 * other fields, or ANY field if current one is set as enable_field
 				 * for another field.
 				 */
+				// @TODO be sure to check indexes
 				// @LOW Add support for all field types, eventually
-				'foreign_table_where' => '
-					AND tx_appointments_domain_model_formfield.uid <> ###THIS_UID###
-					AND tx_appointments_domain_model_formfield.type = ###REC_FIELD_type###
-					AND tx_appointments_domain_model_formfield.field_type IN(' . \Innologi\Appointments\Domain\Model\FormField::TYPE_SELECT . ',' . \Innologi\Appointments\Domain\Model\FormField::TYPE_RADIO . ')
-					AND tx_appointments_domain_model_formfield.enable_field = 0
-					AND 0=(
-						SELECT COUNT(*)
-						FROM tx_appointments_domain_model_formfield
-						WHERE enable_field = ###THIS_UID###
-					)
-					ORDER BY tx_appointments_domain_model_formfield.sorting ASC',
+				// Note that T3 8.7.4 fails to extract the "ORDER BY" before putting it in a "WHERE", if there are newlines and possibly tabs, due to the limited regular expession employed in \TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider->processForeignTableClause():1145
+				'foreign_table_where' => 'AND tx_appointments_domain_model_formfield.uid <> ###THIS_UID### AND tx_appointments_domain_model_formfield.type = ###REC_FIELD_type### AND tx_appointments_domain_model_formfield.field_type IN(' . \Innologi\Appointments\Domain\Model\FormField::TYPE_SELECT . ',' . \Innologi\Appointments\Domain\Model\FormField::TYPE_RADIO . ') AND tx_appointments_domain_model_formfield.enable_field = 0 AND 0=(SELECT COUNT(*) FROM tx_appointments_domain_model_formfield WHERE enable_field = ###THIS_UID###) ORDER BY tx_appointments_domain_model_formfield.sorting ASC',
 				// 'MM' => 'tx_appointments_formfield_mm', // @LOW allow multiple choices?
 				'size' => 1,
 				// 'autoSizeMax' => 30,
 				'minitems' => 0,
 				'maxitems' => 1,
 				'multiple' => 0,
+				'default' => 0
 			],
 		],
 		'enable_value' => [
