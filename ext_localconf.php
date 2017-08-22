@@ -1,10 +1,8 @@
 <?php
+defined('TYPO3_MODE') or die();
 
-if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
-}
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	$_EXTKEY,
+	'Innologi.' . $_EXTKEY,
 	'Agenda',
 	array(
 		'Agenda' => 'showMonth, showWeeks, none',
@@ -34,7 +32,7 @@ if (isset($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY])) {
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	$_EXTKEY,
+	'Innologi.' . $_EXTKEY,
 	'List',
 	array(
 		'Appointment' => 'list, show, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free, none, ajaxVerifyToken, ajaxGenerateTokens',
