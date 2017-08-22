@@ -83,12 +83,12 @@ return [
 		'sunday' => ['showitem' => 'max_amount_sunday, start_time_sunday, stop_time_sunday, minute_interval_sunday'],
 		'overrule' => ['showitem' => 'max_amount_per_var_days, per_var_days, per_var_days_interval, --linebreak--, exclude_holidays'],
 		#@TODO __CSH
-		'address_name' => ['showitem' => 'address_enable_name;LLL:EXT:lang/locallang_common.xml:enable'],
-		'address_gender' => ['showitem' => 'address_enable_gender;LLL:EXT:lang/locallang_common.xml:enable'],
-		'address_birthday' => ['showitem' => 'address_enable_birthday;LLL:EXT:lang/locallang_common.xml:enable'],
-		'address_address' => ['showitem' => 'address_enable_address;LLL:EXT:lang/locallang_common.xml:enable'],
-		'address_security' => ['showitem' => 'address_enable_security;LLL:EXT:lang/locallang_common.xml:enable'],
-		'address_email' => ['showitem' => 'address_enable_email;LLL:EXT:lang/locallang_common.xml:enable'],
+		'address_name' => ['showitem' => 'address_enable_name;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
+		'address_gender' => ['showitem' => 'address_enable_gender;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
+		'address_birthday' => ['showitem' => 'address_enable_birthday;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
+		'address_address' => ['showitem' => 'address_enable_address;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
+		'address_security' => ['showitem' => 'address_enable_security;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
+		'address_email' => ['showitem' => 'address_enable_email;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
 	],
 	'columns' => [
 		'sys_language_uid' => [
