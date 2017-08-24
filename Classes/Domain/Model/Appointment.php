@@ -96,14 +96,14 @@ class Appointment extends AbstractEntity {
 	 *
 	 * @var string
 	 */
-	protected $notes;
+	protected $notes = '';
 
 	/**
 	 * Notes SU
 	 *
 	 * @var string
 	 */
-	protected $notesSu;
+	protected $notesSu = '';
 
 	/**
 	 * Type which this Appointment belongs to

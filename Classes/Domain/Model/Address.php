@@ -39,28 +39,28 @@ class Address extends AbstractEntity implements EmailContainerInterface {
 	 *
 	 * @var string
 	 */
-	protected $firstName;
+	protected $firstName = '';
 
 	/**
 	 * Middle Name
 	 *
 	 * @var string
 	 */
-	protected $middleName;
+	protected $middleName = '';
 
 	/**
 	 * Last Name
 	 *
 	 * @var string
 	 */
-	protected $lastName;
+	protected $lastName = '';
 
 	/**
 	 * Name
 	 *
 	 * @var string
 	 */
-	protected $name;
+	protected $name = '';
 
 	/**
 	 * Gender
@@ -90,7 +90,7 @@ class Address extends AbstractEntity implements EmailContainerInterface {
 	 *
 	 * @var string
 	 */
-	protected $address; #@LOW regex validator? but GEMHMK doesn't want to
+	protected $address = ''; #@LOW regex validator? but GEMHMK doesn't want to
 
 	/**
 	 * Zip code

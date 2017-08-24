@@ -68,7 +68,7 @@ class FormField extends AbstractEntity {
 	 * @var string
 	 * @validate NotEmpty
 	 */
-	protected $label;
+	protected $label = '';
 
 	/**
 	 * Context Sensitive Help
@@ -76,7 +76,7 @@ class FormField extends AbstractEntity {
 	 * @var string
 	 * @validate NotEmpty
 	 */
-	protected $csh;
+	protected $csh = '';
 
 	/**
 	 * Validation Types
@@ -114,7 +114,7 @@ class FormField extends AbstractEntity {
 	 *
 	 * @var string
 	 */
-	protected $choices;
+	protected $choices = '';
 
 	/**
 	 * Selection choices relevant for boolean and selection types

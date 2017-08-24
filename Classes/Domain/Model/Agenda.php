@@ -47,7 +47,7 @@ class Agenda extends AbstractEntity {
 	 *
 	 * @var string
 	 */
-	protected $holidays;
+	protected $holidays = '';
 
 	/**
 	 * Array of the holiday dates, with the holidays as key
@@ -107,7 +107,7 @@ class Agenda extends AbstractEntity {
 	 *
 	 * @var string
 	 */
-	protected $emailText;
+	protected $emailText = '';
 
 	/**
 	 * Emails a calendar invitation on every scheduled appointment to an address
@@ -122,7 +122,7 @@ class Agenda extends AbstractEntity {
 	 *
 	 * @var string
 	 */
-	protected $calendarInviteText;
+	protected $calendarInviteText = '';
 
 	/**
 	 * __construct
