@@ -6,6 +6,10 @@
 
 <f:section name="main">
 
+<f:if condition="{timerMessage}">
+	{timerMessage -> f:format.raw()}
+</f:if>
+
 <div class="header">
 	<h3><f:translate key="tx_appointments_list.appointment_new" /></h3>
 	<f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[dateFirst]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>

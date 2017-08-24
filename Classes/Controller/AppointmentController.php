@@ -32,6 +32,7 @@ use Innologi\Appointments\Utility\GeneralUtility;
 use Innologi\Appointments\Validation\StorageError;
 use Innologi\Appointments\Domain\Service\SlotService;
 use Innologi\Appointments\Domain\Model\{Appointment, FormFieldValue, FormField, Agenda};
+use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 
 /**
  * Appointment Controller
@@ -624,20 +625,32 @@ class AppointmentController extends ActionController {
 
 		//inform of timer
 		if ($appointment->getCreationProgress() === Appointment::UNFINISHED) {
-			$flashMessage = str_replace(
-					'$1',
-					'<span class="reservation-timer">' . GeneralUtility::getAppointmentTimer($appointment) . '</span>',
-					LocalizationUtility::translate('tx_appointments_list.appointment_timer', $this->extensionName)
-			);
-			$flashHeader = LocalizationUtility::translate('tx_appointments_list.appointment_timer_header', $this->extensionName);
-			$flashState = FlashMessage::INFO;
+			// we use HTML in this flash message, but we'd need a custom VH which I'm not going to do for this single case, so:
+			$messages = [ \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				FlashMessage::class,
+				LocalizationUtility::translate('tx_appointments_list.appointment_timer', $this->extensionName),
+				LocalizationUtility::translate('tx_appointments_list.appointment_timer_header', $this->extensionName),
+				FlashMessage::INFO,
+				TRUE
+			) ];
+
+			$timerMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlashMessageRendererResolver::class)
+				->resolve()
+				->render($messages);
+			
+			$this->view->assign('timerMessage', str_replace(
+				'$1',
+				'<span class="reservation-timer">' . GeneralUtility::getAppointmentTimer($appointment) . '</span>',
+				$timerMessage
+			));
 		} else { //warn of expiration
-			$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_expired', $this->extensionName);
-			$flashHeader = LocalizationUtility::translate('tx_appointments_list.appointment_expired_header', $this->extensionName);
-			$flashState = FlashMessage::WARNING;
+			$this->addFlashMessage(
+				LocalizationUtility::translate('tx_appointments_list.appointment_expired', $this->extensionName),
+				LocalizationUtility::translate('tx_appointments_list.appointment_expired_header', $this->extensionName),
+				FlashMessage::WARNING
+			);
 			$this->view->assign('expired', 1); //for free-time button
 		}
-		$this->addFlashMessage($flashMessage,$flashHeader,$flashState);
 	}
 
 	/**
