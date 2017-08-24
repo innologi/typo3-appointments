@@ -3,7 +3,7 @@ namespace Innologi\Appointments\Hooks;
 /***************************************************************
  *  Copyright notice
 *
-*  (c) 2012-2013 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+*  (c) 2012-2017 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
 *
 *  All rights reserved
 *
@@ -27,13 +27,13 @@ namespace Innologi\Appointments\Hooks;
 /**
  * Hook for t3lib_iconworks.
  *
- * Provides additional statuses to allow icon overlays based on an appointments' creation progress.
+ * Provides icon overlays based on an appointments' creation progress.
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class IconFactoryHook {
-	// @FIX test if this works
+
 	/**
 	 * @param string $table
 	 * @param array $row
@@ -45,10 +45,9 @@ class IconFactoryHook {
 		if ($table === 'tx_appointments_domain_model_appointment' && isset($row['creation_progress'])) { #@TODO address too!
 			switch (intval($row['creation_progress'])) {
 				case 1:
-					$status['tx_appointments_unfinished'] = TRUE; #@TODO __can we add a pencil overlay?
-					break;
+					return 'overlay-missing';
 				case 2:
-					$status['tx_appointments_expired'] = TRUE;
+					return 'overlay-deleted';
 			}
 		}
 		return $iconName;
