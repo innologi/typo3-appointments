@@ -59,7 +59,7 @@ plugin.tx_appointments {
 		# cat=plugin.tx_appointments/b_javascript/040; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_toFooter
 		toFooter = 1
 		# cat=plugin.tx_appointments/b_javascript/011; type=string; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_jQueryCDN
-		jQueryCDN = https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
+		jQueryCDN = https://code.jquery.com/jquery-3.2.1.min.js
 		
 		uiLibFile = EXT:appointments/Resources/Public/Scripts/jquery-ui-1.10.2.custom.min.js
 		uiCssFile = EXT:appointments/Resources/Public/Styles/smoothness/jquery-ui-1.10.2.custom.css
