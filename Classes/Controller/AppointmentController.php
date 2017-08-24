@@ -160,7 +160,7 @@ class AppointmentController extends ActionController {
 				//no types available on chosen time, so no appointments either.
 				//the condition also functions as a check for a valid dateFirst
 				$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_create_no_types', $this->extensionName);
-				$this->flashMessageContainer->add($flashMessage, '', FlashMessage::ERROR);
+				$this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
 				//$appointment == NULL
 			}
 		}
@@ -296,7 +296,7 @@ class AppointmentController extends ActionController {
 					} else {
 						//messages for the same timeslot again (refresh)
 						$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_timerrefresh', $this->extensionName);
-						$this->flashMessageContainer->add($flashMessage, '', FlashMessage::INFO);
+						$this->addFlashMessage($flashMessage, '', FlashMessage::INFO);
 					}
 					$appointment->setCreationProgress(Appointment::UNFINISHED);
 				}
@@ -311,12 +311,12 @@ class AppointmentController extends ActionController {
 				$flashMessage = str_replace('$1', $freeSlotInMinutes,
 					LocalizationUtility::translate('tx_appointments_list.appointment_timerstart', $this->extensionName)
 				);
-				$this->flashMessageContainer->add($flashMessage, '', FlashMessage::INFO);
+				$this->addFlashMessage($flashMessage, '', FlashMessage::INFO);
 			}
 		} else {
 			$action = 'new1'; //if a timeslot is not allowed, we'll need to force the user to pick a new one
 			$flashMessage = LocalizationUtility::translate('tx_appointments_list.timeslot_not_allowed', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage, '', FlashMessage::ERROR);
+			$this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
 
 			//not adding appointment as argument prevents a uriBuilder exception @ redirect() if appointment wasn't persisted yet..
 			if (!$appointment->_isNew()) { //.. but since we're not redirecting if this condition returns TRUE, there's no need for it here anyway
@@ -366,7 +366,7 @@ class AppointmentController extends ActionController {
 			$this->appointmentRepository->update($appointment);
 
 			$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_create_success', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage, '', FlashMessage::OK);
+			$this->addFlashMessage($flashMessage, '', FlashMessage::OK);
 
 			$this->performMailingActions('create',$appointment);
 
@@ -433,7 +433,7 @@ class AppointmentController extends ActionController {
 		} else {
 			$this->appointmentRepository->update($appointment);
 			$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage, '', FlashMessage::OK);
+			$this->addFlashMessage($flashMessage, '', FlashMessage::OK);
 
 			$this->performMailingActions('update',$appointment);
 
@@ -455,7 +455,7 @@ class AppointmentController extends ActionController {
 	public function deleteAction(Appointment $appointment) {
 		$this->appointmentRepository->remove($appointment);
 		$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_delete_success', $this->extensionName);
-		$this->flashMessageContainer->add($flashMessage, '', FlashMessage::OK);
+		$this->addFlashMessage($flashMessage, '', FlashMessage::OK);
 
 		$this->performMailingActions('delete',$appointment);
 
@@ -478,7 +478,7 @@ class AppointmentController extends ActionController {
 		$this->appointmentRepository->update($appointment);
 
 		$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_free_success', $this->extensionName);
-		$this->flashMessageContainer->add($flashMessage, '', FlashMessage::INFO);
+		$this->addFlashMessage($flashMessage, '', FlashMessage::INFO);
 
 		$arguments = array(
 				'appointment' => $appointment
@@ -637,7 +637,7 @@ class AppointmentController extends ActionController {
 			$flashState = FlashMessage::WARNING;
 			$this->view->assign('expired', 1); //for free-time button
 		}
-		$this->flashMessageContainer->add($flashMessage,$flashHeader,$flashState);
+		$this->addFlashMessage($flashMessage,$flashHeader,$flashState);
 	}
 
 	/**
@@ -769,7 +769,7 @@ class AppointmentController extends ActionController {
 
 		if (!$this->emailService->sendAction($action,$appointment)) {
 			$flashMessage = LocalizationUtility::translate('tx_appointments_list.email_error', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage, '', FlashMessage::ERROR);
+			$this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
 		}
 	}
 
@@ -849,7 +849,7 @@ class AppointmentController extends ActionController {
 			);
 		}
 
-		$this->flashMessageContainer->add(
+		$this->addFlashMessage(
 			nl2br(LocalizationUtility::translate('tx_appointments_list.crosstime_info',$this->extensionName,array($messageParts))),
 			LocalizationUtility::translate('tx_appointments_list.crosstime_title',$this->extensionName),
 			FlashMessage::ERROR

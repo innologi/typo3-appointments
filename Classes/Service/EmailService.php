@@ -88,7 +88,7 @@ class EmailService implements SingletonInterface {
 	/**
 	 * Set controllerContext (REQUIRED)
 	 *
-	 * Used to access UriBuilder and retrieve the flashMessageContainer.
+	 * Used to access UriBuilder.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
 	 */

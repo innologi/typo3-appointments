@@ -137,7 +137,7 @@ class ActionController extends CsrfProtectController {
 			//errors!
 			if (!empty($errors)) {
 				foreach ($errors as $flashMessage) {
-					$this->flashMessageContainer->add($flashMessage,'',FlashMessage::ERROR);
+					$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 				}
 				$this->forward('none');
 			}
@@ -181,7 +181,7 @@ class ActionController extends CsrfProtectController {
 		} else {
 			//no types found
 			$flashMessage = LocalizationUtility::translate('tx_appointments.no_types', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',FlashMessage::ERROR);
+			$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 			$this->forward('none');
 		}
 	}
@@ -219,7 +219,7 @@ class ActionController extends CsrfProtectController {
 
 			$flashMessage = LocalizationUtility::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
 			#@TODO deprecated, see add() for replacement
-			$this->flashMessageContainer->add($flashMessage,'',FlashMessage::ERROR);
+			$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 			$this->redirect('list');
 		}
 		if ($propertyDeleted) {
@@ -227,7 +227,7 @@ class ActionController extends CsrfProtectController {
 				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_ERROR);
 
 			$flashMessage = LocalizationUtility::translate('tx_appointments.appointment_property_deleted', $this->extensionName);
-			$this->flashMessageContainer->add($flashMessage,'',FlashMessage::ERROR);
+			$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 
 			//in case not the original argument, but one of its object-properties no longer exist, try to redirect to the appropriate action
 			$redirectTo = 'list';
