@@ -26,6 +26,7 @@ namespace Innologi\Appointments\Mvc\Controller;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Exception;
@@ -136,6 +137,8 @@ class ActionController extends CsrfProtectController {
 
 			//errors!
 			if (!empty($errors)) {
+				// we'll need it for the FlashMessageQueue
+				$this->controllerContext = $this->buildControllerContext();
 				foreach ($errors as $flashMessage) {
 					$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 				}
@@ -218,7 +221,6 @@ class ActionController extends CsrfProtectController {
 				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_NOTICE);
 
 			$flashMessage = LocalizationUtility::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
-			#@TODO deprecated, see add() for replacement
 			$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 			$this->redirect('list');
 		}
@@ -259,37 +261,38 @@ class ActionController extends CsrfProtectController {
 	 * - Model-based validators (validate annotations in the model)
 	 * - Custom model validator classes
 	 *
-	 * This override works around the 6.2-bug where it no longer supports
-	 * dontvalidate for the deprecatedPropertyMapper when a matching
-	 * Domain Model validator is present.
+	 * This override allows to truly ignore validation for @ignorevalidation
+	 * action method arguments.
 	 *
 	 * @return void
 	 */
 	protected function initializeActionMethodValidators() {
-		if (version_compare(TYPO3_branch, '6.2', '<')) {
-			parent::initializeActionMethodValidators();
-		} else {
-			// @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
+		if (version_compare(TYPO3_branch, '8.7', '>')) {
+			// @TODO review on TYPO3 v9
+			return parent::initializeActionMethodValidators();
+		}
 
-			$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
-			$dontValidateAnnotations = array();
+		$actionMethodParameters = static::getActionMethodParameters($this->objectManager);
+		$methodParameters = $actionMethodParameters[$this->actionMethodName] ?? [];
+		$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
+		$ignoreArgs = $methodTagsValues['ignorevalidation'] ?? [];
+		foreach ($ignoreArgs as $ignore) {
+			unset($methodParameters[substr($ignore, 1)]);
+		}
 
-			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
-			if (isset($methodTagsValues['dontvalidate'])) {
-				$dontValidateAnnotations = $methodTagsValues['dontvalidate'];
+		$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName, $methodParameters);
+		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+		foreach ($this->arguments as $argument) {
+			if (!isset($parameterValidators[$argument->getName()])) {
+				continue;
 			}
+			$validator = $parameterValidators[$argument->getName()];
 
-			foreach ($this->arguments as $argument) {
-				$validator = $parameterValidators[$argument->getName()];
-				if (array_search('$' . $argument->getName(), $dontValidateAnnotations) === FALSE) {
-					$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
-					if ($baseValidatorConjunction !== NULL) {
-						$validator->addValidator($baseValidatorConjunction);
-					}
-					// moved this INSIDE the if, instead of outside
-					$argument->setValidator($validator);
-				}
+			$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
+			if (!empty($baseValidatorConjunction) && $validator instanceof AbstractCompositeValidator) {
+				$validator->addValidator($baseValidatorConjunction);
 			}
+			$argument->setValidator($validator);
 		}
 	}
 }

@@ -6,13 +6,13 @@
 	
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_appointment.type" />
+			<f:translate key="property.appointment.type" />
 		</td>
 		<td>{appointment.type.name}</td>
 	</tr>
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_appointment.begin_time.date" />
+			<f:translate key="property.appointment.beginTime.date" />
 		</td>
 		<td>
 			<f:format.date format="d-m-Y">{appointment.beginTime}</f:format.date>
@@ -20,7 +20,7 @@
 	</tr>
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_appointment.begin_time.time" />
+			<f:translate key="property.appointment.beginTime.time" />
 		</td>
 		<td>
 			<f:format.date format="H:i">{appointment.beginTime}</f:format.date>
@@ -32,7 +32,7 @@
 	<f:if condition="{appointment.feUser}">
 		<tr>
 			<td scope="row">
-				<f:translate key="tx_appointments_domain_model_appointment.fe_user" />
+				<f:translate key="property.appointment.feUser" />
 			</td>
 			<td>{appointment.feUser.name}</td>
 		</tr>
@@ -45,7 +45,7 @@
 	<f:if condition="{formFieldValues}">
 		<tr>
 			<th colspan="2" scope="col">
-				<f:translate key="tx_appointments_domain_model_appointment.form_field_values" />
+				<f:translate key="property.appointment.formFieldValues" />
 			</th>
 		</tr>
 		<f:for each="{formFieldValues}" as="value">
@@ -65,7 +65,7 @@
 			<f:else>
 				<tr>
 					<th colspan="2" scope="col">
-						<f:translate key="tx_appointments_domain_model_appointment.address" />
+						<f:translate key="property.appointment.address" />
 					</th>
 				</tr>
 				<f:render partial="Address/Properties" arguments="{address : appointment.address, type : appointment.type}" />
@@ -78,11 +78,11 @@
 		<tr>
 			<tr>
 				<th colspan="2" scope="col">
-					<f:translate key="tx_appointments_domain_model_appointment.special_fields" />
+					<f:translate key="property.appointment.specialFields" />
 				</th>
 			</tr>
 			<td scope="row">
-				<f:translate key="tx_appointments_domain_model_appointment.notes" />
+				<f:translate key="property.appointment.notes" />
 			</td>
 			<td>{appointment.notes}</td>
 		</tr>
@@ -91,7 +91,7 @@
 	<f:if condition="{superUser}">
 		<tr>
 			<td scope="row">
-				<f:translate key="tx_appointments_domain_model_appointment.notes_su" />
+				<f:translate key="property.appointment.notesSu" />
 			</td>
 			<td>{appointment.notesSu}</td>
 		</tr>

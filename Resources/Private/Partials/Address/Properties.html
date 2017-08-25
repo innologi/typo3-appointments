@@ -4,7 +4,7 @@
 <f:if condition="{type.addressEnableName}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address.name" />
+			<f:translate key="property.appointment.address.name" />
 		</td>
 		<td>{address.name}</td>
 	</tr>
@@ -13,7 +13,7 @@
 <f:if condition="{type.addressEnableSecurity}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address.social_security_number" />
+			<f:translate key="property.appointment.address.socialSecurityNumber" />
 		</td>
 		<td>{address.socialSecurityNumber}</td>
 	</tr>
@@ -22,10 +22,10 @@
 <f:if condition="{type.addressEnableGender}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address.gender" />
+			<f:translate key="property.appointment.address.gender" />
 		</td>
 		<td>
-			<f:translate key="tx_appointments_domain_model_address.gender.{address.gender}" />
+			<f:translate key="property.appointment.address.gender.{address.gender}" />
 		</td>
 	</tr>
 </f:if>
@@ -33,7 +33,7 @@
 <f:if condition="{type.addressEnableBirthday}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address.birthday" />
+			<f:translate key="property.appointment.address.birthday" />
 		</td>
 		<td><f:format.date format="d-m-Y">{address.birthday}</f:format.date></td>
 	</tr>
@@ -42,7 +42,7 @@
 <f:if condition="{type.addressEnableAddress}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address" />
+			<f:translate key="property.appointment.address" />
 		</td>
 		<td>
 			{address.address}
@@ -56,7 +56,7 @@
 <f:if condition="{type.addressEnableEmail}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address.email" />
+			<f:translate key="property.appointment.address.email" />
 		</td>
 		<td>{address.email}</td>
 	</tr>

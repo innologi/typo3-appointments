@@ -74,7 +74,6 @@ class FormField extends AbstractEntity {
 	 * Context Sensitive Help
 	 *
 	 * @var string
-	 * @validate NotEmpty
 	 */
 	protected $csh = '';
 
@@ -84,6 +83,12 @@ class FormField extends AbstractEntity {
 	 * @var string
 	 */
 	protected $validationTypes;
+
+	/**
+	 * @var array
+	 * @transient
+	 */
+	protected $validationTypesArray;
 
 	/**
 	 * Is date field?
@@ -228,6 +233,19 @@ class FormField extends AbstractEntity {
 	 */
 	public function setValidationTypes($validationTypes) {
 		$this->validationTypes = $validationTypes;
+	}
+
+	/**
+	 * Returns validation types as array
+	 *
+	 * @return array
+	 */
+	public function getValidationTypesArray() {
+		if ($this->validationTypesArray === NULL) {
+			$valueArray = GeneralUtility::trimExplode(',', $this->validationTypes, TRUE);
+			$this->validationTypesArray = array_combine($valueArray, $valueArray);
+		}
+		return $this->validationTypesArray;
 	}
 
 	/**

@@ -25,14 +25,13 @@ namespace Innologi\Appointments\Controller;
  ***************************************************************/
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use Innologi\Appointments\Mvc\Controller\ActionController;
 use Innologi\Appointments\Utility\GeneralUtility;
-use Innologi\Appointments\Validation\StorageError;
 use Innologi\Appointments\Domain\Service\SlotService;
 use Innologi\Appointments\Domain\Model\{Appointment, FormFieldValue, FormField, Agenda};
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
+use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
 
 /**
  * Appointment Controller
@@ -64,6 +63,29 @@ class AppointmentController extends ActionController {
 	public function injectEmailService(\Innologi\Appointments\Service\EmailService $emailService) {
 		$emailService->setExtensionName($this->extensionName);
 		$this->emailService = $emailService;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @see \Innologi\Appointments\Mvc\Controller\ActionController::initializeAction()
+	 */
+	protected function initializeAction() {
+		parent::initializeAction();
+		if ($this->arguments->hasArgument('appointment')) {
+			/** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
+			$propertyMappingConfiguration = $this->arguments['appointment']->getPropertyMappingConfiguration();
+			$propertyMappingConfiguration->forProperty('beginTime')->setTypeConverterOption(
+				DateTimeConverter::class,
+				DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+				$this->request->hasArgument('expectDate') ? SlotService::DATESLOT_KEY_FORMAT : SlotService::TIMESLOT_KEY_FORMAT
+			);
+			// @TODO needs to be configurable!
+			$propertyMappingConfiguration->forProperty('address.birthday')->setTypeConverterOption(
+				DateTimeConverter::class,
+				DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+				'd-m-Y'
+			);
+		}
 	}
 
 	/**
@@ -277,9 +299,10 @@ class AppointmentController extends ActionController {
 
 			//when a validation error ensues, we don't want the unfinished appointment being re-added, hence the check
 			if ($appointment->_isNew()) {
+				// currently, persist happens within add
+				// because $appointment is used as argument @ redirect() and thus to be serialized by uriBuilder (which requires an uid)
+					// we NEED it to be persisted. Of course, the real reason is that we want to reserve the timeslots from the start
 				$this->appointmentRepository->add($appointment);
-				#currently, persist happens within add
-				#$this->appointmentRepository->persistChanges(); //because $appointment is used as argument @ redirect() and thus to be serialized by uriBuilder (which requires an uid)
 				$timerStart = TRUE;
 			} else {
 
@@ -302,7 +325,7 @@ class AppointmentController extends ActionController {
 
 
 			if ($timerStart) {
-				$freeSlotInMinutes = intval($this->settings['freeSlotInMinutes']); #@LOW is 0 supported everywhere? it should be, but I think I left a <1 check somewhere. Also timer messages should react to 0
+				$freeSlotInMinutes = (int) $this->settings['freeSlotInMinutes']; #@LOW is 0 supported everywhere? it should be, but I think I left a <1 check somewhere. Also timer messages should react to 0
 				//message for a new timeslot
 				$flashMessage = str_replace('$1', $freeSlotInMinutes,
 					LocalizationUtility::translate('tx_appointments_list.appointment_timerstart', $this->extensionName)
@@ -354,10 +377,6 @@ class AppointmentController extends ActionController {
 			$this->processOverlapInfo($overlap,$appointment);
 			$this->failTimeValidation('new2',4075013371337,$timeFields);
 		} else {
-			#@LOW remove when TYPO3 version dependency is raised
-			if (version_compare(TYPO3_branch, '4.7', '<') && $appointment->getAddress() !== NULL) {
-				$appointment->getAddress()->setName(); //otherwise, it isn't set until show
-			}
 			$appointment->setCreationProgress(Appointment::FINISHED);
 			$this->appointmentRepository->update($appointment);
 
@@ -474,7 +493,7 @@ class AppointmentController extends ActionController {
 		$this->addFlashMessage($flashMessage, '', FlashMessage::INFO);
 
 		$arguments = array(
-				'appointment' => $appointment
+			'appointment' => $appointment
 		);
 		$this->redirect('new1',NULL,NULL,$arguments);
 	}
@@ -515,9 +534,7 @@ class AppointmentController extends ActionController {
 					$uid = $formField->getUid();
 					$items[$uid] = $formFieldValue; //I'd prefer $items[$sorting] = $formFieldValue, but the sorting value can be messed with to cause duplicate keys
 					$order[$uid] = $formField->getSorting();
-					if (isset($formFields[$formField])) {
-						$formFields->detach($formField);
-					}
+					$formFields->detach($formField);
 				}
 			} else {
 				//the formfield was removed at some point, so should its value
@@ -555,10 +572,10 @@ class AppointmentController extends ActionController {
 	 * Calculates the time-properties of an appointments, and sets them.
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment of which to calculate the time properties
-	 * @return array Contains the uids of the addtime fields
+	 * @return array Contains the formfields of the addtime fields
 	 */
 	protected function calculateTimes(Appointment $appointment) {
-		$timeFields = array();
+		$timeFields = [];
 		$dateTime = clone $appointment->getBeginTime();
 		$type = $appointment->getType();
 		$unit = ' minutes';
@@ -574,7 +591,7 @@ class AppointmentController extends ActionController {
 		foreach($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
 			if ($formField->getFunction() === FormField::FUNCTION_ADDTIME) {
-				$timeFields[] = $formField->getUid();
+				$timeFields[] = $formField;
 				$fieldType = $formField->getFieldType();
 				$value = $formFieldValue->getValue();
 				switch ($fieldType) {
@@ -629,7 +646,7 @@ class AppointmentController extends ActionController {
 			$timerMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlashMessageRendererResolver::class)
 				->resolve()
 				->render($messages);
-			
+
 			$this->view->assign('timerMessage', str_replace(
 				'$1',
 				'<span class="reservation-timer">' . GeneralUtility::getAppointmentTimer($appointment) . '</span>',
@@ -786,39 +803,37 @@ class AppointmentController extends ActionController {
 	 * @param integer $errorCode The errorcode
 	 * @param array $timeFields Contains formfield uids of time-related formfields
 	 * @return void
+	 * @see getReferringRequest()
 	 */
-	protected function failTimeValidation($action = 'new1', $errorCode = 407501337, array $timeFields = NULL) { #@TODO _kunnen we dit aanroepen samen met andere validation errors? dus pre validation de errors toevoegen?
-		$errors = array();
+	protected function failTimeValidation($action = 'new1', $errorCode = 407501337, array $timeFields = NULL) {
 		$errorMsg = 'Time-related validation error.';
 
-		//marks all the time-related formfieldvalues
+		$validationResults = new \TYPO3\CMS\Extbase\Error\Result();
+		$appointmentResult = $validationResults->forProperty('appointment');
+
+		// this marks the beginTime fields (date / time), and adds the validation error message to it
+		$appointmentResult->forProperty('beginTime')->addError(
+			new \TYPO3\CMS\Extbase\Validation\Error($errorMsg, $errorCode)
+		);
+
+		// marks all the time-related formfieldvalues
 		if ($timeFields !== NULL && !empty($timeFields)) {
-			$propertyError = new Tx_Extbase_Validation_PropertyError('formFieldValues');
-			$storageError = new StorageError('formFieldValue');
-			foreach ($timeFields as $uid) {
-				$subPropertyError = new Tx_Extbase_Validation_PropertyError('value');
-				$subPropertyError->addErrors(array(
-					new Error($errorMsg,$errorCode)
-				));
-				$storageError->addErrors($uid, array($subPropertyError));
+			$formFieldValuesResult = $appointmentResult->forProperty('formFieldValues');
+			/** @var \Innologi\Appointments\Domain\Model\FormField $formField */
+			foreach ($timeFields as $formField) {
+				$formFieldValuesResult->forProperty('i' . $formField->getUid() . '.value')->addError(
+					new \TYPO3\CMS\Extbase\Validation\Error($errorMsg, $errorCode, [], $formField->getLabel())
+				);
 			}
-			$propertyError->addErrors(array($storageError));
-			$errors[] = $propertyError;
 		}
 
-		//this marks the beginTime fields (date / time), and adds the validation error message to it
-		$propertyError = new Tx_Extbase_Validation_PropertyError('beginTime');
-		$propertyError->addErrors(array(
-			new Error($errorMsg,$errorCode)
-		));
-		$errors[] = $propertyError;
+		// merge with any other outstanding validation results
+		$validationResults->merge($this->arguments->getValidationResults());
 
-		//this adds the validation errors to the appointment argument, which identifies with a form's objectName
-		$argumentError = new Tx_Extbase_MVC_Controller_ArgumentError('appointment');
-		$argumentError->addErrors($errors);
-
-		//set the errors within the request, which survives the forward()
-		$this->request->setErrors(array($argumentError));
+		// forward request
+		$originalRequest = clone $this->request;
+		$this->request->setOriginalRequest($originalRequest);
+		$this->request->setOriginalRequestMappingResults($validationResults);
 		$this->forward($action);
 	}
 
@@ -837,25 +852,25 @@ class AppointmentController extends ActionController {
 
 		if (isset($overlapInfo['begin'])) {
 			$messageParts .= LocalizationUtility::translate('tx_appointments_list.crosstime_begin',
-					$this->extensionName,
-					array(
-							$appointment->getBeginTime()->format('H:i'),
-							$overlapInfo['begin'] / 60
-					)
+				$this->extensionName,
+				array(
+					$appointment->getBeginTime()->format('H:i'),
+					$overlapInfo['begin'] / 60
+				)
 			);
 		}
 		if (isset($overlapInfo['end'])) {
 			$messageParts .= LocalizationUtility::translate('tx_appointments_list.crosstime_end',
-					$this->extensionName,
-					array(
-							$appointment->getEndTime()->format('H:i'),
-							$overlapInfo['end'] / 60
-					)
+				$this->extensionName,
+				array(
+					$appointment->getEndTime()->format('H:i'),
+					$overlapInfo['end'] / 60
+				)
 			);
 		}
 
 		$this->addFlashMessage(
-			nl2br(LocalizationUtility::translate('tx_appointments_list.crosstime_info',$this->extensionName,array($messageParts))),
+			LocalizationUtility::translate('tx_appointments_list.crosstime_info',$this->extensionName,array($messageParts)),
 			LocalizationUtility::translate('tx_appointments_list.crosstime_title',$this->extensionName),
 			FlashMessage::ERROR
 		);

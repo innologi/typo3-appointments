@@ -829,6 +829,13 @@ class SlotService implements SingletonInterface {
 			}
 			$timestamp = $block['end'];
 		}
+
+		// if dateslot-key is ever based on timeslot
+		// we can't use this as long as dateFirst functionality works with 00:00:00 timestamps
+		#$firstTimeSlot = $dateSlot->getTimeSlots()->getFirst();
+		#if ($firstTimeSlot !== NULL) {
+		#	$dateSlot->setKey($firstTimeSlot->getKey());
+		#}
 	}
 
 	/**
@@ -850,6 +857,8 @@ class SlotService implements SingletonInterface {
 	//*********
 	// CACHING
 	//*********
+
+	// @TODO replace with its own caching configuration
 
 	/**
 	 * Gets the cache entry

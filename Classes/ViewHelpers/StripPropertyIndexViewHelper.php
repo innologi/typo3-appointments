@@ -1,9 +1,9 @@
 <?php
-namespace Innologi\Appointments\ViewHelpers\Format;
+namespace Innologi\Appointments\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+ *  (c) 2017 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -23,31 +23,37 @@ namespace Innologi\Appointments\ViewHelpers\Format;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
- * Lower Case Viewhelper
+ * Strip Property Index Viewhelper
+ *
+ * Strips ObjectStorage indexes used in propertypaths of our form fields.
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class LowerCaseViewHelper extends AbstractViewHelper {
+class StripPropertyIndexViewHelper extends AbstractViewHelper {
+	use CompileWithRenderStatic;
 
 	/**
-	 * Formats a string to lowercase
-	 *
-	 * @param string $value The value to format
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
 	 * @return string
 	 */
-	public function render($value = NULL) {
-		if ($value === NULL) {
-			$value = $this->renderChildren();
-		}
-		if (is_string($value)) {
-			$value = strtolower($value);
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$parts = GeneralUtility::trimExplode('.', $renderChildrenClosure(), TRUE);
+		foreach ($parts as $i => $part) {
+			if ($part[0] === 'i' && is_numeric(substr($part, 1))) {
+				unset($parts[$i]);
+			}
 		}
 
-		return $value;
+		return join('.', $parts);
 	}
 
 }

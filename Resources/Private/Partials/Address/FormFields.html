@@ -4,21 +4,21 @@
 <f:if condition="{type.addressEnableName}">
 	<div class="formfield-wrap">
 		<label>
-			<f:translate key="tx_appointments_domain_model_address.first_name" /><br />
+			<f:translate key="property.appointment.address.firstName" /><br />
 			<f:form.textfield property="address.firstName" id="appointments-address-firstName" class="textinput session" />
 		</label>
 	</div>
 	
 	<div class="formfield-wrap">
 		<label>
-			<f:translate key="tx_appointments_domain_model_address.middle_name" /><br />
+			<f:translate key="tx_appointments_domain_model_address.middleName" /><br />
 			<f:form.textfield property="address.middleName" id="appointments-address-middleName" class="textinput session" />
 		</label>
 	</div>
 
 	<div class="formfield-wrap">
 		<label>
-			<f:translate key="tx_appointments_domain_model_address.last_name" /><br />
+			<f:translate key="tx_appointments_domain_model_address.lastName" /><br />
 			<f:form.textfield property="address.lastName" id="appointments-address-lastName" class="textinput session" />
 		</label>
 	</div>
@@ -27,7 +27,7 @@
 <f:if condition="{type.addressEnableSecurity}">
 	<div class="formfield-wrap">
 		<label>
-			<f:translate key="tx_appointments_domain_model_address.social_security_number" /><br />
+			<f:translate key="property.appointment.address.socialSecurityNumber" /><br />
 			<f:form.textfield property="address.socialSecurityNumber" id="appointments-address-socialSecurityNumber" class="textinput session" />
 		</label>
 	</div>
@@ -36,9 +36,9 @@
 <f:if condition="{type.addressEnableGender}">
 	<div class="formfield-wrap">
 		<label>
-			<f:translate key="tx_appointments_domain_model_address.gender" /><br />
+			<f:translate key="property.appointment.address.gender" /><br />
 			<f:form.select property="address.gender" id="appointments-address-gender" class="select session"
-				options="{m: '{f:translate(key: \'tx_appointments_domain_model_address.gender.m\')}', f: '{f:translate(key: \'tx_appointments_domain_model_address.gender.f\')}'}"
+				options="{m: '{f:translate(key: \'property.appointment.address.gender.m\')}', f: '{f:translate(key: \'property.appointment.address.gender.f\')}'}"
 			/>
 		</label>
 	</div>
@@ -47,8 +47,8 @@
 <f:if condition="{type.addressEnableBirthday}">
 	<div class="formfield-wrap">
 		<label>
-			<f:translate key="tx_appointments_domain_model_address.birthday" /><br />
-			<f:form.textfield property="address.birthday" value="{address.birthday -> f:format.date(format:'d-m-Y')}" id="appointments-address-birthday" class="textinput datepicker max-today session" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.birthday.placeholder')}" />
+			<f:translate key="property.appointment.address.birthday" /><br />
+			<f:form.textfield property="address.birthday" value="{address.birthday -> f:format.date(format:'d-m-Y')}" id="appointments-address-birthday" class="textinput datepicker max-today session" placeholder="{f:translate(key: 'property.appointment.address.birthday.placeholder')}" />
 		</label>
 	</div>
 </f:if>
@@ -56,21 +56,21 @@
 <f:if condition="{type.addressEnableAddress}">
 	<div class="formfield-wrap">
 		<label>
-			<f:translate key="tx_appointments_domain_model_address" /><br />
+			<f:translate key="property.appointment.address" /><br />
 			<f:form.textfield property="address.address" id="appointments-address-address" class="textinput session" />
 		</label>
 	</div>
 
 	<div class="formfield-wrap">
 		<label>
-			<f:translate key="tx_appointments_domain_model_address.zip" /><br />
-			<f:form.textfield property="address.zip" id="appointments-address-zip" class="textinput session" placeholder="{f:translate(key: 'tx_appointments_domain_model_address.zip.placeholder')}" />
+			<f:translate key="property.appointment.address.zip" /><br />
+			<f:form.textfield property="address.zip" id="appointments-address-zip" class="textinput session" placeholder="{f:translate(key: 'property.appointment.address.zip.placeholder')}" />
 		</label>
 	</div>
 
 	<div class="formfield-wrap">
 		<label>
-			<f:translate key="tx_appointments_domain_model_address.city" /><br />
+			<f:translate key="property.appointment.address.city" /><br />
 			<f:form.textfield property="address.city" id="appointments-address-city" class="textinput session" />
 		</label>
 	</div>
@@ -79,7 +79,7 @@
 <f:if condition="{type.addressEnableEmail}">
 	<div class="formfield-wrap">
 		<label>
-			<f:translate key="tx_appointments_domain_model_address.email" /><br />
+			<f:translate key="property.appointment.address.email" /><br />
 			<f:form.textfield property="address.email" id="appointments-address-email" class="textinput session" />
 		</label>
 	</div>

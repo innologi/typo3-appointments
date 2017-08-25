@@ -104,23 +104,6 @@ plugin.tx_appointments {
 		checkFields = agendaUid,appointmentTypeList,suGroup,allowCreate
 		selectFields = agendaNavOverride
 	}
-	features {
-		# @TODO support before TYPO3 7.0 release
-		rewrittenPropertyMapper = 0
-	}
-	objects {
-		# extbase 6.1+ bugfix for rewrittenPropertyMapper=0
-		TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager {
-			className = Innologi\Appointments\Persistence\PersistenceManager
-		}
-		TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface {
-			className = Innologi\Appointments\Persistence\PersistenceManagerInterface
-		}
-		# extbase 6.2+ bugfix for rewrittenPropertyMapper=0
-		TYPO3\CMS\Extbase\Validation\ValidatorResolver {
-			className = Innologi\Appointments\Validation\ValidatorResolver
-		}
-	}
 }
 
 module.tx_appointments.persistence < plugin.tx_appointments.persistence

@@ -132,8 +132,11 @@ class Appointment extends AbstractEntity {
 	 *
 	 * 2. Can be lazy, because the objectStorage is ONLY manipulated by form.
 	 *
+	 * 3. validate Collection(elementType=\Innologi\Appointments\Domain\Model\FormFieldValue),
+	 * disabled because we need a little bit more specialization as is done through
+	 * AppointmentValidator.
+	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
-	 * @validate \Innologi\Appointments\Domain\Validator\ObjectStorageValidator(clearErrors=1)
 	 * @lazy
 	 */
 	protected $formFieldValues; #@LOW create an extbase feature suggestion and patch to remedy the objectstorage behaviour with instanceof checks
@@ -149,6 +152,8 @@ class Appointment extends AbstractEntity {
 
 	/**
 	 * Name and address information
+	 *
+	 * Validation is done through AppointmentValidator
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\Address
 	 * @cascade remove

@@ -15,7 +15,7 @@
 					<f:form.hidden property="formFieldValues.i{formField.uid}.formField" value="{formField}" />
 				</f:else>
 			</f:if>
-		
+			
 			<f:switch expression="{formField.fieldType}">
 				<f:case value="1"> <!-- Boolean / Checkbox -->
 					<f:form.checkbox
@@ -27,11 +27,11 @@
 					/>
 				</f:case>
 				<f:case value="2">  <!-- Select -->
-					<f:if condition="{formField.validationTypes}">
+					<f:if condition="{formField.validationTypesArray.1}">
 						<span class="required">*</span>
 					</f:if>
 					<br />
-					<a:form.select
+					<f:form.select
 						id="appointments-formfield-{formField.uid}"
 						property="formFieldValues.i{formField.uid}.value"
 						options="{formField.choicesArray}"
@@ -40,26 +40,26 @@
 					/>
 				</f:case>
 				<f:case value="3"> <!-- Textsmall / Input -->
-					<f:if condition="{formField.validationTypes}">
+					<f:if condition="{formField.validationTypesArray.1}">
 						<span class="required">*</span>
 					</f:if>
 					<br />
 					<!-- @TODO use data attributes instead, once I can go HTML5-only -->
-					<a:form.textfield
+					<f:form.textfield
 						id="appointments-formfield-{formField.uid}"
 						property="formFieldValues.i{formField.uid}.value"
 						value="{formFieldValue.value}"
 						class="formfield-id-{formField.uid} textinput{f:if(condition:formField.isDate,then:' datepicker')} session"
-						required="{f:if(condition:formField.validationTypes,then:1)}"
-						realPlaceholder="{f:if(condition:formField.isDate,then:'dd-mm-jjjj')}"
+						required="{f:if(condition:formField.validationTypesArray.1,then:1)}"
+						placeholder="{f:if(condition:formField.isDate,then:'dd-mm-jjjj')}"
 					/>
 				</f:case>
 				<f:case value="4"> <!-- Textlarge / Textarea -->
-					<f:if condition="{formField.validationTypes}">
+					<f:if condition="{formField.validationTypesArray.1}">
 						<span class="required">*</span>
 					</f:if>
 					<br />
-					<a:form.textarea
+					<f:form.textarea
 						id="appointments-formfield-{formField.uid}"
 						property="formFieldValues.i{formField.uid}.value"
 						value="{formFieldValue.value}"
@@ -68,12 +68,12 @@
 					/>
 				</f:case>
 				<f:case value="5">  <!-- Radio -->
-					<f:if condition="{formField.validationTypes}">
+					<f:if condition="{formField.validationTypesArray.1}">
 						<span class="required">*</span>
 					</f:if>
 					<br />
 					<f:for each="{formField.choicesArray}" as="choiceValue" key="choiceKey" iteration="choiceIterator">
-						<a:form.radio
+						<f:form.radio
 							id="appointments-formfield-{formField.uid}-{choiceIterator.index}"
 							property="formFieldValues.i{formField.uid}.value"
 							value="{choiceKey}"

@@ -9,17 +9,17 @@
 <div class="header">
 	<h3><f:translate key="tx_appointments_list.appointment_edit_header" /></h3>
 	<f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
-	<f:render partial="FormErrors" arguments="{formFields : appointment.type.formFields}" />
+	<f:render partial="FormErrors" />
 	<p><span class="required">*</span> = <f:translate key="tx_appointments_list.required" /></p>
 </div>
 
 <div class="formfield-wrap">
 	<label>
-		<f:translate key="tx_appointments_domain_model_appointment.type" />:
+		<f:translate key="property.appointment.type" />:
 		<br />
 		<input type="text" readonly="readonly" value="{appointment.type.name}" class="textinput small" />
 	</label>
-	<span class="csh" title="{f:translate(key:'tx_appointments_domain_model_appointment.type.csh_edit')}"><f:translate key="tx_appointments_list.csh" /></span>
+	<span class="csh" title="{f:translate(key:'property.appointment.type.cshEdit')}"><f:translate key="tx_appointments_list.csh" /></span>
 </div>
 
 <f:if condition="{dateSlots}">
