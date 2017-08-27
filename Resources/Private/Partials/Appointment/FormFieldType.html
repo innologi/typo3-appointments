@@ -2,7 +2,7 @@
 	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
 
 <!-- The hidden properties in each form are for unpersisted appointments, to maintain values that are chosen in other forms if available -->
-<f:form.hidden property="beginTime"  value="{appointment.beginTime -> f:format.date(format:'Y-m-d H:i:s')}" />
+<f:form.hidden property="beginTime" value="{appointment.beginTime -> f:format.date(format:'YmdHis')}" />
 			
 <label>
 	<f:translate key="tx_appointments_list.label_type" />
