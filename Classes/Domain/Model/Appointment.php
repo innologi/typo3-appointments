@@ -157,7 +157,6 @@ class Appointment extends AbstractEntity {
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\Address
 	 * @cascade remove
-	 * @lazy
 	 */
 	protected $address;
 
@@ -471,7 +470,6 @@ class Appointment extends AbstractEntity {
 	 * @return \Innologi\Appointments\Domain\Model\Address
 	 */
 	public function getAddress() {
-		$this->noLazy($this->address);
 		return $this->address;
 	}
 
