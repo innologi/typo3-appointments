@@ -2,12 +2,12 @@
 	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
 	xmlns:a="http://typo3.org/ns/Innologi/Appointments/ViewHelpers">
 	
-<div class="typo3-messages">
-	<div class="typo3-message message-warning">
-		<div class="message-header">
+<ul class="typo3-messages">
+	<li class="alert alert-warning">
+		<h4 class="alert-title">
 			<f:translate key="tx_appointments_list.unfinished_header" />
-		</div>
-		<div class="message-body">
+		</h4>
+		<div class="alert-message">
 			<f:translate key="tx_appointments_list.unfinished_body" />
 			<ul class="links">
 				<f:for each="{appointments}" as="appointment">
@@ -30,7 +30,7 @@
 				</f:for>
 			</ul>
 		</div>
-	</div>
-</div>
+	</li>
+</ul>
 
 </html>
