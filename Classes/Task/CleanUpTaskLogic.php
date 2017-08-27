@@ -24,8 +24,7 @@ namespace Innologi\Appointments\Task;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 use Innologi\Appointments\Core\BootstrapTask;
-use Innologi\Appointments\Domain\Model\Appointment;
-use Innologi\Appointments\Domain\Repository\{AppointmentRepository, FormFieldValueRepository};
+use Innologi\Appointments\Domain\Repository\AppointmentRepository;
 /**
  * CleanUp Scheduler Task business logic
  *
@@ -50,13 +49,6 @@ class CleanUpTaskLogic extends BootstrapTask {
 	protected $appointmentRepository;
 
 	/**
-	 * formFieldValueRepository
-	 *
-	 * @var FormFieldValueRepository
-	 */
-	protected $formFieldValueRepository;
-
-	/**
 	 * __construct
 	 *
 	 * @param integer $age
@@ -76,7 +68,6 @@ class CleanUpTaskLogic extends BootstrapTask {
 	 */
 	protected function initRepositories() {
 		$this->appointmentRepository = $this->objectManager->get(AppointmentRepository::class);
-		$this->formFieldValueRepository = $this->objectManager->get(FormFieldValueRepository::class);
 	}
 
 	/**
@@ -87,14 +78,7 @@ class CleanUpTaskLogic extends BootstrapTask {
 	public function execute() {
 		$expiredAppointments = $this->appointmentRepository->findExpiredByAge($this->age);
 		foreach ($expiredAppointments as $appointment) {
-			$appointment instanceof Appointment;
 			$this->appointmentRepository->remove($appointment);
-		}
-
-		//we need to delete these manually because of the cascade remove problem
-		$orphanedFormFieldValues = $this->formFieldValueRepository->findOrphaned();
-		foreach ($orphanedFormFieldValues as $formFieldValue) {
-			$this->formFieldValueRepository->remove($formFieldValue);
 		}
 
 		return TRUE;

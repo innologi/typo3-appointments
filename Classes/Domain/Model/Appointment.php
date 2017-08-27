@@ -113,34 +113,18 @@ class Appointment extends AbstractEntity {
 	 * @lazy
 	 */
 	protected $type;
-	#@LOW should see if this is still the case in 6.2, once we raise dependency version
+
 	/**
 	 * Form field values associated with this appointment
 	 *
-	 * 1. Cannot cascade remove this, because Extbase is anal about deleting these then,
-	 * if changed from the parentObject, which I do. Also, Extbase isn't as extensible
-	 * as I hoped: creating an alternative to ObjectStorage with a slightly different
-	 * implementation of its methods would have circumvented the issue gracefully, but
-	 * Extbase has its behaviour around ObjectStorages determined by hardcoded strings
-	 * that represent classnames, which can of course be changed from within this extension,
-	 * but needs a terrible amount of overrides of Extbase (and Fluid!) Core classes that
-	 * I'm not willing to make, due to the increased chance of breaking at each version
-	 * change.
-	 *
-	 * As an alternative to cascade remove, the records that are connected to deleted
-	 * appointments will be deleted by the GC scheduler task.
-	 *
-	 * 2. Can be lazy, because the objectStorage is ONLY manipulated by form.
-	 *
-	 * 3. validate Collection(elementType=\Innologi\Appointments\Domain\Model\FormFieldValue),
-	 * disabled because we need a little bit more specialization as is done through
-	 * AppointmentValidator.
+	 * Couldn't be cascade remove in 4.5-4.7, because Extbase attempted to remove them
+	 * upon changing content via parentObj. But doesn't seem to be an issue on T3v8.
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
+	 * @cascade remove
 	 * @lazy
 	 */
-	protected $formFieldValues; #@LOW create an extbase feature suggestion and patch to remedy the objectstorage behaviour with instanceof checks
-	#@LOW test and see if making this an array would resolve the fluid issue of directly addressing an object (e.g. formFieldValues.189.value or formFieldValues._189.value)
+	protected $formFieldValues;
 
 	/**
 	 * FormFieldValues that are set as sending-email-address
