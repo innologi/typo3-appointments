@@ -34,7 +34,7 @@
 			<td scope="row">
 				<f:translate key="property.appointment.feUser" />
 			</td>
-			<td>{appointment.feUser.name}</td>
+			<td>{f:if(condition:appointment.feUser.name, then:appointment.feUser.name, else:appointment.feUser.username)}</td>
 		</tr>
 	</f:if>
 	
