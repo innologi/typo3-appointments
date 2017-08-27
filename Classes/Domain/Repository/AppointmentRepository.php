@@ -23,8 +23,9 @@ namespace Innologi\Appointments\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Persistence\{Repository, QueryInterface};
-use Innologi\Appointments\Domain\Model\{FrontendUser, Agenda, Appointment};
+use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use Innologi\Appointments\Domain\Model\{Agenda, Appointment};
 /**
  * Appointment Repository
  *
@@ -52,14 +53,14 @@ class AppointmentRepository extends Repository {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda The agenda which the appointments belong to
 	 * @param array $types The types the appointments belong to
-	 * @param \Innologi\Appointments\Domain\Model\FrontendUser $feUser The user which the appointments belong to
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser The user which the appointments belong to
 	 * @param boolean $unfinished If TRUE: get unfinished appointments instead
 	 * @param \DateTime $start Optional start time
 	 * @param \DateTime $end Optional end time
 	 * @param boolean $descending If TRUE: sorts by begintime descending, if FALSE: ascending
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
-	public function findPersonalList(Agenda $agenda, array $types, FrontendUser $feUser, $unfinished = FALSE, \DateTime $start = NULL, \DateTime $end = NULL, $descending = FALSE) {
+	public function findPersonalList(Agenda $agenda, array $types, \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser, $unfinished = FALSE, \DateTime $start = NULL, \DateTime $end = NULL, $descending = FALSE) {
 		$query = $this->createQuery();
 		$constraints = array(
 			$query->equals('agenda', $agenda),
@@ -197,7 +198,7 @@ class AppointmentRepository extends Repository {
 
 		$constraint = array(
 			//apparently, if $agenda isn't validated separately, its lazy storages aren't resolved, which generates an exception, hence we'll stick with its uid
-			$query->equals('agenda', $appointment->getAgenda()->getUid()), #@TODO _is the getUid() still necessary?
+			$query->equals('agenda', $appointment->getAgenda()->getUid()),
 			$query->logicalNot(
 					$query->equals('uid', $appointment->getUid())
 			),

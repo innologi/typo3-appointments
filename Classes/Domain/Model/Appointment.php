@@ -164,7 +164,7 @@ class Appointment extends AbstractEntity {
 	/**
 	 * User who created this appointment
 	 *
-	 * @var \Innologi\Appointments\Domain\Model\FrontendUser
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 * @lazy
 	 */
 	protected $feUser;
@@ -508,7 +508,7 @@ class Appointment extends AbstractEntity {
 	/**
 	 * Returns the feUser
 	 *
-	 * @return \Innologi\Appointments\Domain\Model\FrontendUser
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 */
 	public function getFeUser() {
 		return $this->feUser;
@@ -517,10 +517,10 @@ class Appointment extends AbstractEntity {
 	/**
 	 * Sets the feUser
 	 *
-	 * @param \Innologi\Appointments\Domain\Model\FrontendUser $feUser
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser
 	 * @return void
 	 */
-	public function setFeUser(FrontendUser $feUser) {
+	public function setFeUser(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser) {
 		$this->feUser = $feUser;
 	}
 

@@ -36,7 +36,7 @@ class UserService implements SingletonInterface {
 	/**
 	 * Logged in frontend user
 	 *
-	 * @var \Innologi\Appointments\Domain\Model\FrontendUser
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 */
 	protected $feUser = NULL;
 
@@ -50,7 +50,7 @@ class UserService implements SingletonInterface {
 	/**
 	 * frontendUserRepository
 	 *
-	 * @var \Innologi\Appointments\Domain\Repository\FrontendUserRepository
+	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
 	 * @inject
 	 */
 	protected $frontendUserRepository;
@@ -58,7 +58,7 @@ class UserService implements SingletonInterface {
 	/**
 	 * frontendUserGroupRepository
 	 *
-	 * @var \Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository
+	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository
 	 * @inject
 	 */
 	protected $frontendUserGroupRepository;
@@ -66,7 +66,7 @@ class UserService implements SingletonInterface {
 	/**
 	 * Returns current frontend user.
 	 *
-	 * @return \Innologi\Appointments\Domain\Model\FrontendUser
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser|FALSE
 	 */
 	public function getCurrentUser() {
 		if ($this->feUser === NULL) {

@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
-use Innologi\Appointments\Domain\Model\{Appointment, Address, EmailContainerInterface, SimpleEmailContainer};
+use Innologi\Appointments\Domain\Model\{Appointment, Address, SimpleEmailContainer};
 /**
  * Facilitates email functionality.
  *
@@ -316,14 +316,14 @@ class EmailService implements SingletonInterface {
 	/**
 	 * Returns email recipients array.
 	 *
-	 * @param array $emailAddresses Contains implementations of EmailContainerInterface
+	 * @param array $emailAddresses Contains objects with a getEmail() method
 	 * @return array Consists of email addresses
 	 */
 	protected function getRecipientEmailArray($emailAddresses) {
 		$emailArray = array();
 
 		foreach ($emailAddresses as $address) {
-			if ($address instanceof EmailContainerInterface) {
+			if (method_exists($address, 'getEmail')) {
 				$email = $address->getEmail();
 				// @LOW log erroneous email addresses?
 				if (isset($email[0]) && GeneralUtility::validEmail($email)) {

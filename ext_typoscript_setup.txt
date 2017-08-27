@@ -24,10 +24,4 @@ plugin.tx_appointments.persistence.classes {
 			}
 		}
 	}
-	Innologi\Appointments\Domain\Model\FrontendUser {
-		mapping.tableName = fe_users
-	}
-	Innologi\Appointments\Domain\Model\FrontendUserGroup {
-		mapping.tableName = fe_groups
-	}
 }

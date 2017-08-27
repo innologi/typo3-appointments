@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Address extends AbstractEntity implements EmailContainerInterface {
+class Address extends AbstractEntity {
 
 	/**
 	 * First Name
