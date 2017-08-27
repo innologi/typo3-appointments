@@ -17,7 +17,7 @@ plugin.tx_appointments.persistence.classes {
 	Innologi\Appointments\Domain\Model\Address {
 		mapping {
 			tableName = tt_address
-			recordType = Tx_Appointments_Address
+			#recordType = Tx_Appointments_Address
 			columns {
 				tx_appointments_social_security_number.mapOnProperty = socialSecurityNumber
 				tx_appointments_creation_progress.mapOnProperty = creationProgress
