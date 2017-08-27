@@ -66,7 +66,7 @@ class Appointment extends AbstractEntity {
 	 * Start time
 	 *
 	 * @var \DateTime
-	 * @validate DateTime
+	 * @validate NotEmpty,DateTime
 	 */
 	protected $beginTime;
 
