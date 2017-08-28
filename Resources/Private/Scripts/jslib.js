@@ -57,7 +57,7 @@ jQuery(document).ready(function() {
 	}
 
 	//run through the warnUnload script
-	if (warnUnloadEnabled == '1') { //if warnUnload-enabled in TypoScript
+	if (warnUnloadEnabled === '1') { //if warnUnload-enabled in TypoScript
 		var warnUnloadElem = jQuery('.tx-appointments form.warnUnload');
 		if (warnUnloadElem[0]) { //if a warnUnload element is available
 			if (warnUnloadText.length) { //if warnUnloadText is empty, there's no sense in continuing
@@ -80,9 +80,8 @@ jQuery(document).ready(function() {
 					});
 				}
 
-				// @TODO warning: TypeError: anonymous function does not always return a value
 				//set the actual onbeforeunload event
-				window.onbeforeunload = function() {
+				window.addEventListener('beforeunload', function (e) {
 					//before calling the message, check if respect REFRESH needs to disable it
 					if (secondsUntilRefresh != null) {
 						haveRefreshSecondsPassed(); //disables warnUnload if REFRESH seconds passed
@@ -90,9 +89,10 @@ jQuery(document).ready(function() {
 
 					//calls message if not disabled
 					if (warnUnloadText.length) {
-						return warnUnloadText;
+						e.returnValue = warnUnloadText; // Gecko, Trident, Chrome 34+
+						return warnUnloadText; // Gecko, WebKit, Chrome <34
 					}
-				};
+				});
 
 				//exceptions to warnUnload event
 				jQuery('.tx-appointments .allowUnload').on('submit', function() {
