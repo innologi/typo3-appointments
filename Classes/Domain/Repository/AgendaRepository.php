@@ -23,7 +23,7 @@ namespace Innologi\Appointments\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Innologi\Appointments\Persistence\NoPersistRepository;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * Agenda Repository
  *
@@ -31,6 +31,6 @@ use Innologi\Appointments\Persistence\NoPersistRepository;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class AgendaRepository extends NoPersistRepository {
+class AgendaRepository extends Repository {
 
 }

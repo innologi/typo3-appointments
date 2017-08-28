@@ -423,7 +423,6 @@ class Type extends AbstractEntity {
 	 * @cascade remove
 	 */
 	protected $formFields;
-	#@TODO find out if we can put edit to cache, paired with a typoscript clearcache command! especially test a validation error then, as that won't update the record yet thus there would be no clearcache. or does clearcache only work through TCA?
 
 	/**
 	 * __construct

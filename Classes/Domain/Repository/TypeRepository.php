@@ -23,8 +23,7 @@ namespace Innologi\Appointments\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Innologi\Appointments\Persistence\NoPersistRepository;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * Type Repository
  *
@@ -32,7 +31,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class TypeRepository extends NoPersistRepository {
+class TypeRepository extends Repository {
 	#@TODO _the use of this function has changed, so you might want to look if the function itself might benefit from a change
 	/**
 	 * Returns all objects of this repository belonging to the provided category
@@ -75,25 +74,6 @@ class TypeRepository extends NoPersistRepository {
 
 		$result = $query->execute();
 		return $result;
-	}
-
-	/**
-	 * Returns the type with the smallest 'blocked_hours' value.
-	 *
-	 * @param array $types Contains type uid's to filter by
-	 * @return \Innologi\Appointments\Domain\Model\Type The type
-	 */
-	public function findBySmallestBlockedHours(array $types) { #@LOW no longer used, clean up?
-		$query = $this->createQuery();
-		$result = $query->matching(
-				$query->in('uid', $types)
-		)->setOrderings(
-				array(
-					'blocked_hours' => QueryInterface::ORDER_ASCENDING
-				)
-		)->setLimit(1)->execute();
-
-		return $result->getFirst();
 	}
 
 }

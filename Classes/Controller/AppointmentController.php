@@ -477,7 +477,7 @@ class AppointmentController extends ActionController {
 		$this->view->assign('formFieldValues', $formFieldValues);
 		$this->view->assign('superUser', $superUser);
 	}
-	#@TODO ________verify ownership/SU on edit/delete
+
 	/**
 	 * action update
 	 *

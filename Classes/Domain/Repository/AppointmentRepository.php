@@ -91,34 +91,6 @@ class AppointmentRepository extends Repository {
 		return $result;
 	}
 
-	#@LOW no longer used, clean up? maybe check EVERYTHING again, because there have been a lot of efficiency-changes
-	/**
-	 * Returns all objects of this repository belonging to the specified day. No expired appointments.
-	 *
-	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda The agenda which the appointments belong to
-	 * @param \DateTime $day Day to which appointments belong to
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
-	 */
-	public function findByAgendaAndDay(Agenda $agenda, \DateTime $day) {
-		$query = $this->createQuery();
-		$result = $query->matching(
-				$query->logicalAnd( array(
-						$query->logicalNot(
-							$query->equals('creation_progress', Appointment::EXPIRED)
-						),
-						$query->equals('agenda', $agenda),
-						$query->greaterThanOrEqual('beginTime', $day->setTime(0,0)->getTimestamp()),
-						$query->lessThanOrEqual('beginTime', $day->setTime(23,59)->getTimestamp())
-					)
-				)
-		)->setOrderings(
-				array(
-					'beginTime' => QueryInterface::ORDER_ASCENDING
-				)
-		)->execute();
-		return $result;
-	}
-
 	/**
 	 * Returns all objects of this repository of a agenda between two times.
 	 *

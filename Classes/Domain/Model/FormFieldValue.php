@@ -91,13 +91,4 @@ class FormFieldValue extends AbstractEntity {
 		$this->formField = $formField;
 	}
 
-	/**
-	 * Returns storage index
-	 *
-	 * @return string
-	 */
-	public function getIndex() {
-		return $this->index; #@TODO cleanup
-	}
-
 }
