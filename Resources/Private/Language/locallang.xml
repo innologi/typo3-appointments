@@ -12,6 +12,7 @@
 			<label index="tx_appointments.csrf_invalid_request">The form or link has expired. Please try again.</label>
 			<label index="tx_appointments.appointment_no_longer_available">The appointment is no longer available. It may have been cancelled or deleted by someone after you visited the page.</label>
 			<label index="tx_appointments.appointment_property_deleted">The appointment is missing some property values. Someone might have deleted these manually after you visited the page.</label>
+			<label index="tx_appointments_list.no_mutate">Sorry, but you don't have permission to change appointments you did not create yourself.</label>
 			<label index="tx_appointments_list.timeslot_not_allowed">The timeslot you picked is no longer available, possibly because you&apos;ve waited too long.</label>
 			<label index="tx_appointments_list.free_state">not reserved</label>
 			<label index="tx_appointments_list.minutes_remaining">min remaining</label>
@@ -189,6 +190,7 @@
 			<label index="tx_appointments.csrf_invalid_request">De geldigheid van het formulier of link is verlopen. Probeer het opnieuw s.v.p.</label>
 			<label index="tx_appointments.appointment_no_longer_available">De afspraak is niet meer beschikbaar. Het is mogelijk geannuleerd of verwijderd door iemand nadat u de pagina bezocht.</label>
 			<label index="tx_appointments.appointment_property_deleted">De afspraak mist enkele formulier gegevens. Het is mogelijk dat iemand deze handmatig heeft verwijderd nadat u de pagina bezocht.</label>
+			<label index="tx_appointments_list.no_mutate">U kunt geen afspraken wijzigen die u zelf niet heeft aangemaakt.</label>
 			<label index="tx_appointments_list.timeslot_not_allowed">Het door u gekozen tijdstip is niet (meer) beschikbaar, mogelijk omdat u te lang heeft gewacht.</label>
 			<label index="tx_appointments_list.free_state">vrijgegeven</label>
 			<label index="tx_appointments_list.minutes_remaining">min resterend</label>

@@ -59,6 +59,28 @@ class AppointmentController extends ActionController {
 	}
 
 	/**
+	 * This method is to ensure that only an appointment owner or superuser can mutate the given appointment.
+	 * This method is to be used on any method that attempts or implies a mutate action. Because we're caching
+	 * the show action, this will prevent any users sharing the usergroups, and therefore cache, can change
+	 * or delete anyone else's appointment.
+	 *
+	 * @param Appointment $appointment
+	 * @return void
+	 */
+	protected function validateMutateAttempt(Appointment $appointment) {
+		if ( !( $this->feUser->getUid() === $appointment->getFeUser()->getUid() || $this->userService->isInGroup($this->settings['suGroup']) ) ) {
+			$this->addFlashMessage(
+				LocalizationUtility::translate('tx_appointments_list.no_mutate', $this->extensionName),
+				'',
+				FlashMessage::ERROR,
+				TRUE,
+				TRUE
+			);
+			$this->redirect('list');
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * @see \Innologi\Appointments\Mvc\Controller\ActionController::initializeAction()
 	 */
@@ -220,8 +242,6 @@ class AppointmentController extends ActionController {
 	 * @return void
 	 */
 	public function new2Action(Appointment $appointment) {
-		#$this->appointmentRepository->update($appointment); //was necessary to retain fieldvalues of validation-error-returned appointments
-
 		//limit the available types by the already chosen timeslot
 		$types = $this->limitTypesByAppointment($this->getTypes(),$appointment);
 
@@ -256,6 +276,8 @@ class AppointmentController extends ActionController {
 	 * @return void
 	 */
 	public function simpleProcessNewAction(Appointment $appointment) {
+		$this->validateMutateAttempt($appointment);
+
 		$this->appointmentRepository->update($appointment);
 		$arguments = array(
 			'appointment' => $appointment
@@ -398,6 +420,7 @@ class AppointmentController extends ActionController {
 	 * @return void
 	 */
 	public function editAction(Appointment $appointment, $changedDate = NULL) {
+		$this->validateMutateAttempt($appointment);
 		$superUser = $this->userService->isInGroup($this->settings['suGroup']);
 
 		$formFieldValues = $appointment->getFormFieldValues();
@@ -430,6 +453,7 @@ class AppointmentController extends ActionController {
 	 * @return void
 	 */
 	public function updateAction(Appointment $appointment) {
+		$this->validateMutateAttempt($appointment);
 		$timeFields = $this->calculateTimes($appointment); //times can be influenced by formfields
 
 		#@TODO betekent calculateTimes nu niet dat hij altijd als modified wordt geregistreerd?
@@ -461,6 +485,8 @@ class AppointmentController extends ActionController {
 	 * @return void
 	 */
 	public function deleteAction(Appointment $appointment) {
+		$this->validateMutateAttempt($appointment);
+
 		$this->appointmentRepository->remove($appointment);
 		$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_delete_success', $this->extensionName);
 		$this->addFlashMessage($flashMessage, '', FlashMessage::OK);
