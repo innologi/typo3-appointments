@@ -38,7 +38,7 @@
 	</f:form>
 </f:if>
 	
-<a:form action="update" id="appointment-form-{appointment.uid}" class="appointment-form" name="appointment" object="{appointment}" syncToken="TRUE" absolute="TRUE">
+<f:form action="update" id="appointment-form-{appointment.uid}" class="appointment-form" name="appointment" object="{appointment}" absolute="TRUE">
 	<f:if condition="{timeSlots}">
 		<fieldset>
 			<label>
@@ -52,9 +52,10 @@
 	
 	<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, timeSlots : timeSlots, superUser : superUser}" />
 	<fieldset>
+		<f:form.hidden name="stoken" value="{a:csrf(uid:appointment.uid)}" />
 		<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_update')}" class="submit next" />
 	</fieldset>
-</a:form>
+</f:form>
 </f:section>
 
 </html>

@@ -1,5 +1,6 @@
 plugin.tx_appointments {
 	view {
+		#@TODO deprecated!
 		templateRootPath = {$plugin.tx_appointments.view.templateRootPath}
 		partialRootPath = {$plugin.tx_appointments.view.partialRootPath}
 		layoutRootPath = {$plugin.tx_appointments.view.layoutRootPath}
@@ -85,9 +86,6 @@ plugin.tx_appointments {
 		}
 	}
 	settings {
-		type {
-			xhr = {$plugin.tx_appointments.settings.type.xhr}
-		}
 		agendaUid = {$plugin.tx_appointments.settings.agendaUid}
 		allowCreate = {$plugin.tx_appointments.settings.allowCreate}
 		agendaBack = {$plugin.tx_appointments.settings.agendaBack}
@@ -129,26 +127,6 @@ page.jsFooterInline.198311210 < plugin.tx_appointments.jslib.inlineJS
 page.jsInline.198311210 < plugin.tx_appointments.jslib.inlineJS
 
 [global]
-
-# XHR pagetype, not using eid because of required extbase controller context
-# @TODO should probably consider eid though, not having to deal with pid bullshit etc.
-appointments_xhr = PAGE
-appointments_xhr {
-	typeNum = {$plugin.tx_appointments.settings.type.xhr}
-	config {
-		disableAllHeaderCode = 1
-		disablePrefixComment = 1
-		xhtml_cleaning = 0
-		admPanel = 0
-		debug = 0
-		no_cache = 1
-		metaCharset = utf-8
-	}
-	10 = COA_INT
-	10 < styles.content.get
-	// exclusively take list content, regardless of colPos
-	10.select.where = list_type = 'appointments_list'
-}
 
 # default CSS
 plugin.tx_appointments._CSS_DEFAULT_STYLE (

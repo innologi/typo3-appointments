@@ -11,9 +11,12 @@
 	<f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
 	<f:if condition="{mutable}">
 		<f:link.action action="edit" arguments="{appointment : appointment}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action>
-		<a:form enctype="multipart/form-data" method="post" action="delete" object="{appointment}" objectName="appointment" class="delete-form one-button-form" syncToken="TRUE" absolute="TRUE">
-			<fieldset><f:form.button type="submit" name="submit" class="button_delete"><f:translate key="tx_appointments_list.appointment_delete" /></f:form.button></fieldset>
-		</a:form>
+		<f:form enctype="multipart/form-data" method="post" action="delete" object="{appointment}" objectName="appointment" class="delete-form one-button-form" absolute="TRUE">
+			<fieldset>
+				<f:form.hidden name="stoken" value="{a:csrf(uid:appointment.uid)}" />
+				<f:form.button type="submit" name="submit" class="button_delete"><f:translate key="tx_appointments_list.appointment_delete" /></f:form.button>
+			</fieldset>
+		</f:form>
 	</f:if>
 </div>
 

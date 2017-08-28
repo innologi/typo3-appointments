@@ -57,13 +57,14 @@
 	</f:form>
 </f:if>
 
-<a:form enctype="multipart/form-data" method="post" action="create" id="appointment-form-{appointment.uid}" object="{appointment}" objectName="appointment" class="appointment-form warnUnload allowUnload session" syncToken="TRUE" absolute="TRUE">
+<f:form enctype="multipart/form-data" method="post" action="create" id="appointment-form-{appointment.uid}" object="{appointment}" objectName="appointment" class="appointment-form warnUnload allowUnload session" absolute="TRUE">
 	<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, superUser : superUser}" />
 		
 	<fieldset>
+		<f:form.hidden name="stoken" value="{a:csrf(uid:appointment.uid)}" />
 		<f:form.submit value="{f:translate(key: 'tx_appointments_list.submit_new')}" class="submit next" />
 	</fieldset>
-</a:form>
+</f:form>
 
 </f:section>
 

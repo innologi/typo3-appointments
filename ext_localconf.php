@@ -14,33 +14,16 @@ defined('TYPO3_MODE') or die();
 	)
 );
 
-// STRONG csrf protection levels prevent caching of some views
-$noCache = '';
-if (isset($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY])) {
-	$extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY]);
-	if (isset($extConf['csrf_protection_level'])) {
-		$noCache = in_array(
-			(int)$extConf['csrf_protection_level'],
-			array(
-				// using ext-constants in this file produces problems when the extension
-				// is uninstalled but the cache isn't cleared yet
-				3,
-				4,
-			)
-		) ? ', show' : '';
-	}
-}
-
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
 	'Innologi.' . $_EXTKEY,
 	'List',
 	array(
-		'Appointment' => 'list, show, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free, none, ajaxVerifyToken, ajaxGenerateTokens',
+		'Appointment' => 'list, show, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free, none',
 
 	),
 	// non-cacheable actions
 	array(
-		'Appointment' => 'list, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free, ajaxVerifyToken, ajaxGenerateTokens' . $noCache,
+		'Appointment' => 'list, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free',
 	)
 );
 

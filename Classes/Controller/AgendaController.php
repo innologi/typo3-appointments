@@ -45,13 +45,6 @@ class AgendaController extends ActionController {
 	protected $requireLogin = FALSE; #@LOW be configurable?
 
 	/**
-	 * Indicates if CSRFprotect needs to check for method annotations.
-	 *
-	 * @var boolean
-	 */
-	protected $enableCsrfProtect = FALSE;
-
-	/**
 	 * action show month
 	 *
 	 * @param integer $monthModifier Modifies the displayed month

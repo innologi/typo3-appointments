@@ -32,7 +32,6 @@ use Innologi\Appointments\Domain\Service\SlotService;
 use Innologi\Appointments\Domain\Model\{Appointment, FormFieldValue, FormField, Agenda};
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
-
 /**
  * Appointment Controller
  *
@@ -78,6 +77,44 @@ class AppointmentController extends ActionController {
 			);
 			$this->redirect('list');
 		}
+	}
+
+	/**
+	 * Initialize Process New Action
+	 *
+	 * @return void
+	 */
+	protected function initializeProcessNewAction() {
+		if (isset($this->request->getArgument('appointment')['__identity'])) {
+			$this->validateRequest();
+		}
+	}
+
+	/**
+	 * Initialize Create Action
+	 *
+	 * @return void
+	 */
+	protected function initializeCreateAction() {
+		$this->validateRequest();
+	}
+
+	/**
+	 * Initialize Update Action
+	 *
+	 * @return void
+	 */
+	protected function initializeUpdateAction() {
+		$this->validateRequest();
+	}
+
+	/**
+	 * Initialize Delete Action
+	 *
+	 * @return void
+	 */
+	protected function initializeDeleteAction() {
+		$this->validateRequest();
 	}
 
 	/**
@@ -297,18 +334,12 @@ class AppointmentController extends ActionController {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
 	 * @ignorevalidation $appointment
-	 * @verifycsrftoken
 	 * @return void
 	 */
 	public function processNewAction(Appointment $appointment) {
 		$arguments = array();
 		$appointment->setAgenda($this->agenda);
-		if ($this->feUser) {
-			$appointment->setFeUser($this->feUser);
-		} else {
-			// @LOW ____option to refer to login or saving as user?
-		}
-
+		$appointment->setFeUser($this->feUser);
 
 		if ($this->slotService->isTimeSlotAllowed($appointment)) {
 			$this->calculateTimes($appointment); //set the remaining DateTime properties of appointment
@@ -380,7 +411,6 @@ class AppointmentController extends ActionController {
 	 * now the cleanup task will prevent excessive time-differences over firstAvailableTime.
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to create
-	 * @verifycsrftoken
 	 * @return void
 	 */
 	public function createAction(Appointment $appointment) {
@@ -452,7 +482,6 @@ class AppointmentController extends ActionController {
 	 * action update
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to update
-	 * @verifycsrftoken
 	 * @return void
 	 */
 	public function updateAction(Appointment $appointment) {
@@ -484,7 +513,6 @@ class AppointmentController extends ActionController {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to delete
 	 * @ignorevalidation $appointment
-	 * @verifycsrftoken
 	 * @return void
 	 */
 	public function deleteAction(Appointment $appointment) {

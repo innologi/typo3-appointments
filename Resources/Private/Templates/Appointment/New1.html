@@ -40,7 +40,7 @@
 </f:if>
 	
 <f:if condition="{timeSlots}">
-	<a:form enctype="multipart/form-data" method="post" action="processNew" object="{appointment}" objectName="appointment" class="allowUnload" syncToken="TRUE" absolute="TRUE">
+	<f:form enctype="multipart/form-data" method="post" action="processNew" object="{appointment}" objectName="appointment" class="allowUnload" absolute="TRUE">
 		<fieldset>
 			<f:form.hidden property="type" />
 			
@@ -50,11 +50,12 @@
 				<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'YmdHis')}" class="select" />
 			</label>					
 			&rarr;
-			
+
+			<f:form.hidden name="stoken" value="{a:csrf(uid:appointment.uid)}" />
 			<f:form.submit id="appointments-submit-time" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
 			<f:render partial="Appointment/FormFieldTimeCsh" arguments="{step : 1}" />
 		</fieldset>
-	</a:form>
+	</f:form>
 </f:if>
 
 <f:if condition="{appointment.uid}">
