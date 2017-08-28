@@ -1,9 +1,9 @@
 <?php
-namespace Innologi\Appointments\ViewHelpers;
+namespace Innologi\Appointments\ViewHelpers\Appointment;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2014 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+ *  (c) 2014-2017 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -24,6 +24,8 @@ namespace Innologi\Appointments\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use Innologi\Appointments\Domain\Model\Appointment;
 use Innologi\Appointments\Utility\GeneralUtility;
 /**
@@ -33,7 +35,7 @@ use Innologi\Appointments\Utility\GeneralUtility;
  * displaying the remaining minutes and seconds in format 8:45
  *
  * <span class="reservation-timer">
- * 		<a:timer appointment="{appointment}" timerMinutes="{settings.freeSlotInMinutes}" format="timer|minutes|seconds"/>
+ * 		<a:appointment.timer appointment="{appointment}" timerMinutes="{settings.freeSlotInMinutes}" format="timer|minutes|seconds"/>
  * </span>
  *
  * @package appointments
@@ -41,41 +43,61 @@ use Innologi\Appointments\Utility\GeneralUtility;
  *
  */
 class TimerViewHelper extends AbstractViewHelper {
+	use CompileWithRenderStatic;
 
 	/**
-	 * Render timer
-	 *
-	 * @param integer $timerMinutes Total number of minutes the timer normally
-	 * @param Appointment $appointment The appointment
-	 * @param string $format timer|minutes|seconds
-	 * @return string
+	 * @var boolean
 	 */
-	public function render($timerMinutes = 1, Appointment $appointment = NULL, $format = "timer") {
-		if ($appointment === NULL) {
-			$appointment = $this->renderChildren();
-			if (!$appointment instanceof Appointment) {
-				// @LOW throw exception
-				return;
-			}
-		}
-		switch ($format) {
+	protected $escapeChildren = TRUE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $escapeOutput = TRUE;
+
+	/**
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('appointment', Appointment::class, 'The appointment to show a timer for.', TRUE);
+		$this->registerArgument('timerMinutes', 'integer', 'The number of minutes it takes for a timeslot to be freed again.', FALSE, 1);
+		$this->registerArgument('format', 'string', 'The type of timer to show: timer|minutes|seconds', FALSE, 'timer');
+	}
+
+	/**
+	 *
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return boolean
+	 */
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		/** @var Appointment $appointment */
+		$appointment = $arguments['appointment'];
+		$timerMinutes = (int) $arguments['timerMinutes'];
+		$timer = '';
+
+		switch ($arguments['format']) {
 			case 'timer':
 				$timer = GeneralUtility::getAppointmentTimer(
-					$appointment, (int) $timerMinutes
+					$appointment, $timerMinutes
 				);
 				break;
 			case 'minutes':
 				$seconds = GeneralUtility::getTimerRemainingSeconds(
-					$appointment, (int) $timerMinutes
+					$appointment, $timerMinutes
 				);
 				$max = ceil($seconds / 60);
 				$timer = '~' . ($max > 1 ? '1-' : '') . $max;
 				break;
 			case 'seconds':
 				$timer = GeneralUtility::getTimerRemainingSeconds(
-					$appointment, (int) $timerMinutes
+					$appointment, $timerMinutes
 				);
 				break;
+			default:
+				// @LOW throw exception
 		}
 
 		return $timer;

@@ -28,9 +28,9 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use Innologi\Appointments\Domain\Model\Appointment;
 /**
- * Strip Property Index Viewhelper
+ * Is Mutable Viewhelper
  *
- * Strips ObjectStorage indexes used in propertypaths of our form fields.
+ * Determines whether an appointment falls within its "mutable hours", effectively allowing changes.
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
@@ -38,16 +38,6 @@ use Innologi\Appointments\Domain\Model\Appointment;
  */
 class IsMutableViewHelper extends AbstractViewHelper {
 	use CompileWithRenderStatic;
-
-	/**
-	 * @var boolean
-	 */
-	protected $escapeChildren = TRUE;
-
-	/**
-	 * @var boolean
-	 */
-	protected $escapeOutput = TRUE;
 
 	/**
 	 * @return void
@@ -62,7 +52,7 @@ class IsMutableViewHelper extends AbstractViewHelper {
 	 * @param array $arguments
 	 * @param \Closure $renderChildrenClosure
 	 * @param RenderingContextInterface $renderingContext
-	 * @return string
+	 * @return boolean
 	 */
 	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		/** @var Appointment $appointment */

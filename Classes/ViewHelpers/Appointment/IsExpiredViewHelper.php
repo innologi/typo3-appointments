@@ -1,9 +1,9 @@
 <?php
-namespace Innologi\Appointments\ViewHelpers;
+namespace Innologi\Appointments\ViewHelpers\Appointment;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2014 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+ *  (c) 2014-2017 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -24,6 +24,8 @@ namespace Innologi\Appointments\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use Innologi\Appointments\Domain\Model\Appointment;
 use Innologi\Appointments\Utility\GeneralUtility;
 /**
@@ -31,39 +33,41 @@ use Innologi\Appointments\Utility\GeneralUtility;
  *
  * Returns whether the appointment is expired. For use in conditions.
  *
- * <f:if condition="{a:isExpired(appointment:appointment,timerMinutes:settings.freeSlotInMinutes)}">
- * or
- * <f:if condition="{appointment -> a:isExpired(timerMinutes:settings.freeSlotInMinutes)}">
- *
+ * <f:if condition="{a:appointment.isExpired(appointment:appointment,timerMinutes:settings.freeSlotInMinutes)}">
+  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
 class IsExpiredViewHelper extends AbstractViewHelper {
+	use CompileWithRenderStatic;
 
 	/**
-	 * Return if appointment is expired
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerArgument('appointment', Appointment::class, 'The appointment to check if it is expired.', TRUE);
+		$this->registerArgument('timerMinutes', 'integer', 'The number of minutes it takes for a timeslot to be freed again.', FALSE, 1);
+	}
+
+	/**
 	 *
-	 * @param integer $timerMinutes Total number of minutes the timer normally
-	 * @param Appointment $appointment The appointment
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
 	 * @return boolean
 	 */
-	public function render($timerMinutes = 1, Appointment $appointment = NULL) {
-		if ($appointment === NULL) {
-			$appointment = $this->renderChildren();
-			if (!$appointment instanceof Appointment) {
-				// @LOW throw exception
-				return;
-			}
-		}
+	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		/** @var Appointment $appointment */
+		$appointment = $arguments['appointment'];
 		if ($appointment->getCreationProgress() === Appointment::EXPIRED) {
 			return TRUE;
 		}
-
 		$seconds = GeneralUtility::getTimerRemainingSeconds(
-			$appointment, (int) $timerMinutes
+			$appointment, (int) $arguments['timerMinutes']
 		);
-		return $seconds > 0 ? FALSE : TRUE;
+		return $seconds < 1;
 	}
 
 }
