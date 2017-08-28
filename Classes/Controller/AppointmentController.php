@@ -43,13 +43,6 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
 class AppointmentController extends ActionController {
 
 	/**
-	 * Indicates if user needs to be logged in to access action methods
-	 *
-	 * @var boolean
-	 */
-	protected $requireLogin = FALSE; #@LOW be configurable?
-
-	/**
 	 * @var \Innologi\Appointments\Service\EmailService
 	 */
 	protected $emailService;
@@ -70,6 +63,8 @@ class AppointmentController extends ActionController {
 	 * @see \Innologi\Appointments\Mvc\Controller\ActionController::initializeAction()
 	 */
 	protected function initializeAction() {
+		// doing this in the appropriate initialize methods is too late, so..
+		$this->disableRequireLogin(['list', 'show']);
 		parent::initializeAction();
 		if ($this->arguments->hasArgument('appointment')) {
 			/** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */

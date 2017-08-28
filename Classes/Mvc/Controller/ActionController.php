@@ -155,6 +155,16 @@ class ActionController extends CsrfProtectController {
 	}
 
 	/**
+	 * Disables (or enables) requireLogin by action
+	 *
+	 * @param array $actions For which to disable requireLogin
+	 * @return void
+	 */
+	protected function disableRequireLogin(array $actions = []) {
+		$this->requireLogin = !in_array(substr($this->actionMethodName, 0, -6), $actions);
+	}
+
+	/**
 	 * action none
 	 *
 	 * If the plugin is supposed to do nothing but present flash messages.
