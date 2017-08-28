@@ -9,7 +9,8 @@
 				<div class="validation-header"><f:translate key="tx_appointments_list.validation_errors" /></div>
 				<ul class="validation-error-messages">
 					<f:for each="{validationResults.flattenedErrors}" as="errors" key="property">
-						<li>{f:if(condition:errors.0.title, then:errors.0.title, else:'{property -> f:translate(key:\'property.appointment.{property}\')}')}
+						<li>
+							<h4 class="alert-title">{f:if(condition:errors.0.title, then:errors.0.title, else:'{property -> f:translate(key:\'property.appointment.{property}\')}')}</h4>
 							<ul>
 								<f:for each="{errors}" as="error">
 									<f:alias map="{errorKey: 'error.appointment.{property -> a:stripPropertyIndex()}.{error.code}'}">
