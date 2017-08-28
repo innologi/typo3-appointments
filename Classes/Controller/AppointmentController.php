@@ -110,6 +110,9 @@ class AppointmentController extends ActionController {
 	 *
 	 * Shows the list of future appointments of the logged-in user
 	 *
+	 * Note that we cannot cache this page! Otherwise, users in the same usergroup will end up
+	 * seeing other people's lists
+	 *
 	 * @return void
 	 */
 	public function listAction() {

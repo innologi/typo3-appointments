@@ -27,7 +27,7 @@ if (isset($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY])) {
 				3,
 				4,
 			)
-		) ? ', list, show' : '';
+		) ? ', show' : '';
 	}
 }
 
@@ -40,7 +40,7 @@ if (isset($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY])) {
 	),
 	// non-cacheable actions
 	array(
-		'Appointment' => 'create, update, delete, edit, new1, new2, processNew, simpleProcessNew, free, ajaxVerifyToken, ajaxGenerateTokens' . $noCache,
+		'Appointment' => 'list, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free, ajaxVerifyToken, ajaxGenerateTokens' . $noCache,
 	)
 );
 
