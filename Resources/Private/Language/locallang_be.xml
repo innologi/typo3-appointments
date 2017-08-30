@@ -11,7 +11,7 @@
 			<label index="tx_appointments_plugin_list_title">Appointment Scheduler: Appointment List</label>
 			
 			<label index="tx_appointments_subcategory_extconf">Extension Configuration</label>
-			<label index="tx_appointments_subcategory_javascript">Javascript</label>
+			<label index="tx_appointments_subcategory_javascript">Frontend Assets</label>
 			<label index="tx_appointments_subcategory_plugins">All Plugins (Flexform)</label>
 			<label index="tx_appointments_subcategory_agenda">Agenda Plugin (Flexform)</label>
 			
@@ -37,6 +37,7 @@
 			<label index="tx_appointments_constants_js_jQueryCDN">jQuery CDN url: The url from which jQuery is included. Configurable to easily allow jQuery version changes.</label>
 			<label index="tx_appointments_constants_js_warnOnLeave">Set Warning On Page-Leave: If Javascript included: adds a warning message to the new-appointment forms to warn you for losing given input, which is shown when the page is refreshed or left, giving the option to 'Leave' or 'Stay' on the page, while informing the user of possible consequences.</label>
 			<label index="tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod">Allow Auto-Refresh With WarnOnLeave: When using page.meta.REFRESH or a REFRESH header (i.e. for automatic logout purposes), warnOnLeave might prevent it. Setting this to the appropriate method will respect that method when applied if warnOnLeave is enabled.</label>
+			<label index="ts_css_frontendFile">Frontend CSS path: Provides frontend styling to plugin</label>			
 			
 			<label index="tx_appointments_constants_appointmentTypeList">Appointment Types: Comma separated list of UIDs</label>
 			<label index="tx_appointments_flexform_appointmentTypeList">Appointment Types</label>
@@ -74,7 +75,7 @@
 			<label index="tx_appointments_plugin_list_title">Afspraken Planner: Afspraken Lijst</label>
 			
 			<label index="tx_appointments_subcategory_extconf">Extensie Configuratie</label>
-			<label index="tx_appointments_subcategory_javascript">Javascript</label>
+			<label index="tx_appointments_subcategory_javascript">Frontend Assets</label>
 			<label index="tx_appointments_subcategory_plugins">Plugins Algemeen (Flexform)</label>
 			<label index="tx_appointments_subcategory_agenda">Agenda Plugin (Flexform)</label>
 			
@@ -100,6 +101,7 @@
 			<label index="tx_appointments_constants_js_jQueryCDN">jQuery CDN url: The url from which jQuery is included. Configurable to easily allow jQuery version changes.</label>
 			<label index="tx_appointments_constants_js_warnOnLeave">Waarschuwing Pagina Verlaten: Indien Javascript ingeschakeld: toont een waarschuwingsbericht bij het verlaten of vernieuwen van de pagina voor het verliezen van ingevulde gegevens bij een nieuwe-afspraak formulier en geeft hierbij de keuze op de pagina te blijven of deze te 'verlaten', met nadruk op de mogelijke gevolgen.</label>
 			<label index="tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod">Sta Auto-Refresh Toe Bij WarnOnLeave: Wanneer uw website page.meta.REFRESH of een REFRESH header gebruikt (bijv. voor automatisch uitloggen), dan zou warnOnLeave dat kunnen voorkomen. Hier kunt u aangeven om de toegepaste methode te respecteren indien warnOnLeave is ingeschakeld.</label>
+			<label index="ts_css_frontendFile">Frontend CSS pad: Verzorgt de frontend styling van de plugin.</label>
 			
 			<label index="tx_appointments_constants_appointmentTypeList">Afspraak Typen: Komma-gescheiden lijst van UID&apos;s</label>
 			<label index="tx_appointments_flexform_appointmentTypeList">Afspraak Typen</label>
