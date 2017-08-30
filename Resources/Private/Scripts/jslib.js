@@ -201,17 +201,17 @@ jQuery(document).ready(function() {
 
 	//replace timer message
 	function replaceTimerMessage(timer) {
-		var body = jQuery(timer.element).parent('.tx-appointments .typo3-message.message-information .message-body');
+		var body = jQuery(timer.element).parent('.tx-appointments .typo3-messages .alert.alert-info .alert-message');
 		if (body[0]) {
-			var head = body.prev('.tx-appointments .typo3-message .message-header');
-			var container = body.parent('.tx-appointments .typo3-message');
+			var head = body.prev('.tx-appointments .typo3-messages .alert-title');
+			var container = body.parent('.tx-appointments .typo3-messages .alert');
 			if (head[0] && container[0]) {
 				//replace texts
 				body.html("###TIMER_ZERO###");
 				head.html("###TIMER_ZERO_HEAD###");
 				//replace box class
-				container.addClass('message-warning');
-				container.removeClass('message-information');
+				container.addClass('alert-warning');
+				container.removeClass('alert-info');
 				return true;
 			}
 		}
