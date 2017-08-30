@@ -2,17 +2,15 @@
  * Appointments Javascript Library
  * -----
  * jQuery dependent.
- * Yes, I know of $.
- * @TODO zie main.js assumburg
- * Yes, I know of noConflict().
- * -----
- * @author Frenck Lutke <http://frencklutke.nl/>
+
+ * @author Frenck Lutke <typo3@innologi.nl>
  */
-jQuery(document).ready(function() {
+(function($) {
 
 	//general vars
-	var scriptStartTime = new Date().getTime() / 1000;
-	// @TODO var formELem = $('.tx-appointments form'); ?
+	var scriptStartTime = new Date().getTime() / 1000,
+		$container = $('.tx-appointments'),
+		$forms = $('form', $container);
 
 
 	//*********************
@@ -22,7 +20,7 @@ jQuery(document).ready(function() {
 	var confirmDeleteMessage = "###DELETE_CONFIRM###";
 
 	//click function performs a confirm, if TRUE/OK continues button functionality
-	jQuery('.tx-appointments .button_delete').click(function(event) {
+	$('.button_delete', $container).click(function(event) {
 		if(confirm(confirmDeleteMessage)) {
 			return true;
 		} else {
@@ -36,11 +34,11 @@ jQuery(document).ready(function() {
 	// unload warning
 	//****************
 
-	var warnUnloadEnabled = "###WARN_ON_LEAVE###";
-	var warnUnloadText = "###WARN_UNLOAD###";
-	//respect REFRESH vars
-	var secondsUntilRefresh = null;
-	var respectMethod = null;
+	var warnUnloadEnabled = "###WARN_ON_LEAVE###",
+		warnUnloadText = "###WARN_UNLOAD###",
+		//respect REFRESH vars
+		secondsUntilRefresh = null,
+		respectMethod = null;
 
 	//gets (int)seconds from a REFRESH string
 	function getRefreshSeconds(refreshString) {
@@ -49,8 +47,8 @@ jQuery(document).ready(function() {
 
 	//checks if the amount of REFRESH seconds have passed, to see if warnUnload needs to be disabled
 	function haveRefreshSecondsPassed() {
-		var currentTime = new Date().getTime() / 1000;
-		var secondsSinceStart = Math.round(currentTime - scriptStartTime);
+		var currentTime = new Date().getTime() / 1000,
+			secondsSinceStart = Math.round(currentTime - scriptStartTime);
 		if (secondsSinceStart >= secondsUntilRefresh) {
 			warnUnloadText = ''; //disable message
 		}
@@ -58,7 +56,7 @@ jQuery(document).ready(function() {
 
 	//run through the warnUnload script
 	if (warnUnloadEnabled === '1') { //if warnUnload-enabled in TypoScript
-		var warnUnloadElem = jQuery('.tx-appointments form.warnUnload');
+		var warnUnloadElem = $('form.warnUnload', $container);
 		if (warnUnloadElem[0]) { //if a warnUnload element is available
 			if (warnUnloadText.length) { //if warnUnloadText is empty, there's no sense in continuing
 				//set exception-button text in warnUnloadText
@@ -66,13 +64,13 @@ jQuery(document).ready(function() {
 				//check respect REFRESH settings and read seconds
 				respectMethod = "###WARN_ON_LEAVE_RESPECT_REFRESH###";
 				if (respectMethod == 'meta-tag') { //read from meta tag
-					var metaElem = jQuery('meta[http-equiv=REFRESH]'); //e.g. <meta http-equiv="REFRESH" content="1800; URL={url}" />
+					var metaElem = $('meta[http-equiv=REFRESH]'); //e.g. <meta http-equiv="REFRESH" content="1800; URL={url}" />
 					if (metaElem[0]) { //if there is a meta tag
 						secondsUntilRefresh = getRefreshSeconds(metaElem.attr('content'));
 					}
 				} else if (respectMethod == 'header') { //read from header
 					//prepare a new HEAD request in order to be able to read the response REFRESH header
-					var jqxhr = jQuery.ajax({type:'HEAD'}).done(function() {
+					var jqxhr = $.ajax({type:'HEAD'}).done(function() {
 						var refreshHeader = jqxhr.getResponseHeader('REFRESH'); //e.g. REFRESH: 1800;URL={url}
 						if (refreshHeader != null && refreshHeader.length) {
 							secondsUntilRefresh = getRefreshSeconds(refreshHeader);
@@ -95,7 +93,7 @@ jQuery(document).ready(function() {
 				});
 
 				//exceptions to warnUnload event
-				jQuery('.tx-appointments .allowUnload').on('submit', function() {
+				$('.allowUnload', $container).on('submit', function() {
 						warnUnloadText = ''; //disable message
 				});
 			}
@@ -108,15 +106,15 @@ jQuery(document).ready(function() {
 	//**********
 
 	//hovering over the csh element will replace the normal tooltip with ours
-	jQuery('.tx-appointments .csh').hover(
+	$('.csh', $container).hover(
 		function() {
 			appear = true;
-			if (jQuery(this).next().is('.tx-appointments span.tooltip') == false) {
-				tooltip = jQuery(this).attr('title');
+			if ($(this).next().is('.tx-appointments span.tooltip') == false) {
+				tooltip = $(this).attr('title');
 				if (tooltip) {
-					jQuery(this).data('title',tooltip);
+					$(this).data('title',tooltip);
 					//we rely on animate() to fade in, so we have to set display and opacity in js
-					jQuery(this).after(jQuery('<span class="tooltip" style="display:none;opacity:0;"/>').text(tooltip));
+					$(this).after($('<span class="tooltip" style="display:none;opacity:0;"/>').text(tooltip));
 				} else {
 					appear = false;
 				}
@@ -125,19 +123,19 @@ jQuery(document).ready(function() {
 
 			if (appear) {
 				//removes the actual tooltip
-				jQuery(this).prop('title', ''); //need to use prop() because removeAttr() doesn't work well in IE (7,8,9)
+				$(this).prop('title', ''); //need to use prop() because removeAttr() doesn't work well in IE (7,8,9)
 				//fadeToggle() and fadeIn() touch the display style property, hence animate()
-				jQuery(this).next().css('display','inline-block').animate({'opacity':0.85},150);
+				$(this).next().css('display','inline-block').animate({'opacity':0.85},150);
 			}
 		},
 		function() {
-			elem = jQuery(this).next();
+			elem = $(this).next();
 			if (elem.is('.tx-appointments span.tooltip')) {
 				//fadeOut() doesn't change the final opacity style edited by animate(), so again animate()
-				jQuery(elem).animate({'opacity':0},150, function() {
-					jQuery(this).css('display','none');
+				$(elem).animate({'opacity':0},150, function() {
+					$(this).css('display','none');
 				});
-				jQuery(this).prop('title',jQuery(this).data('title')); //returns the title attribute to its original value
+				$(this).prop('title',$(this).data('title')); //returns the title attribute to its original value
 			}
 		}
 	);
@@ -148,7 +146,7 @@ jQuery(document).ready(function() {
 	//***************
 
 	//enable jQuery UI datepicker
-	jQuery('.tx-appointments form .datepicker').datepicker({
+	$('.datepicker', $forms).datepicker({
 		showOn: 'focus', //focus|button|both
 		dateFormat: 'dd-mm-yy',
 		changeMonth: true, //select box month
@@ -166,7 +164,7 @@ jQuery(document).ready(function() {
 	});
 
 	//sets max of datepicker to today if the field has class 'max-today'
-	jQuery('.tx-appointments form .datepicker.max-today').datepicker('option','maxDate','0');
+	$('.datepicker.max-today', $forms).datepicker('option','maxDate','0');
 
 
 	//*****************************
@@ -176,12 +174,12 @@ jQuery(document).ready(function() {
 	//countdown timer-html-setter function
 	function reservationTimer(timer) {
 		//timerSeconds--; //this isn't representative if an alert or warnunload box comes along
-		var currentTime = new Date().getTime() / 1000;
-		var secondsSinceStart = Math.round(currentTime - scriptStartTime);
+		var currentTime = new Date().getTime() / 1000,
+			secondsSinceStart = Math.round(currentTime - scriptStartTime);
 		timer.remaining = timer.seconds - secondsSinceStart;
 
 		if (!timer.flashSet && timer.remaining <= timer.flashStart) {
-			jQuery(timer.element).addClass('flash'); //starts flashing (or marking) the timer according to class css
+			$(timer.element).addClass('flash'); //starts flashing (or marking) the timer according to class css
 			timer.flashSet = true;
 		} else if (timer.remaining < 1) {
 			clearInterval(timer.counter); //stop counter
@@ -193,15 +191,15 @@ jQuery(document).ready(function() {
 			}
 		}
 
-		var displayMin = Math.floor(timer.remaining / 60);
-		var displaySec = '0' + (timer.remaining % 60); //remainder of seconds by modulus
+		var displayMin = Math.floor(timer.remaining / 60),
+			displaySec = '0' + (timer.remaining % 60); //remainder of seconds by modulus
 		//set new inner html
-		jQuery(timer.element).html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
+		$(timer.element).html(displayMin + ':' + displaySec.slice(-2)); //only show the last 2 numbers of seconds
 	}
 
 	//replace timer message
 	function replaceTimerMessage(timer) {
-		var body = jQuery(timer.element).parent('.tx-appointments .typo3-messages .alert.alert-info .alert-message');
+		var body = $(timer.element).parent('.tx-appointments .typo3-messages .alert.alert-info .alert-message');
 		if (body[0]) {
 			var head = body.prev('.tx-appointments .typo3-messages .alert-title');
 			var container = body.parent('.tx-appointments .typo3-messages .alert');
@@ -220,7 +218,7 @@ jQuery(document).ready(function() {
 
 	//replace timeslot button
 	function replaceTimeSlotButton() {
-		var freeTimeButton = jQuery('.tx-appointments form #appointments-submit-time');
+		var freeTimeButton = $('#appointments-submit-time', $forms);
 		if (freeTimeButton[0]) {
 			freeTimeButton.val("###RENEW_TIME###");
 			freeTimeButton.addClass('attention');
@@ -228,7 +226,7 @@ jQuery(document).ready(function() {
 	}
 
 	// start timer countdown for each timer
-	jQuery('.tx-appointments span.reservation-timer').each(function() {
+	$('span.reservation-timer', $container).each(function() {
 		var timer = {
 			seconds: 0,
 			remaining: 0,
@@ -236,15 +234,15 @@ jQuery(document).ready(function() {
 			flashSet: false,
 			counter: null,
 			element: this
-		};
+		},
+			//calculate timer variables
+			timerVal = $(this).html(),
+			splitAt = timerVal.indexOf(':',0),
+			minutes = parseInt(timerVal.substring(0, splitAt),10);
 
-		//calculate timer variables
-		var timerVal = jQuery(this).html();
-		var splitAt = timerVal.indexOf(':',0);
-		var minutes = parseInt(timerVal.substring(0, splitAt),10);
 		timer.seconds = (minutes * 60) + parseInt(timerVal.substring(splitAt+1),10);
 		if (timer.seconds <= timer.flashStart) {
-			jQuery(this).addClass('flash');
+			$(this).addClass('flash');
 			timer.flashSet = true;
 		}
 		//run every second (in milliseconds)
@@ -256,16 +254,16 @@ jQuery(document).ready(function() {
 	// Change submit buttons
 	//***********************
 
-	jQuery('.tx-appointments form #appointments-select-type').change(function() {
-		jQuery('.tx-appointments form #appointments-submit-type').addClass('attention');
+	$('#appointments-select-type', $forms).change(function() {
+		$('#appointments-submit-type', $(this).parents('.tx-appointments form')).addClass('attention');
 	});
 
-	jQuery('.tx-appointments form #appointments-select-date').change(function() {
-		jQuery('.tx-appointments form #appointments-submit-date').addClass('attention');
+	$('#appointments-select-date', $forms).change(function() {
+		$('#appointments-submit-date', $(this).parents('.tx-appointments form')).addClass('attention');
 	});
 
-	jQuery('.tx-appointments form #appointments-select-time').change(function() {
-		jQuery('.tx-appointments form #appointments-submit-time').addClass('attention');
+	$('#appointments-select-time', $forms).change(function() {
+		$('#appointments-submit-time', $(this).parents('.tx-appointments form')).addClass('attention');
 	});
 
 
@@ -273,8 +271,9 @@ jQuery(document).ready(function() {
 	// The "Disabled" Form
 	//*********************
 
-	jQuery('.tx-appointments .appointment-form.disabled :input').prop('disabled', true);
-	jQuery('.tx-appointments .appointment-form.disabled').addClass('visible');
+	var $disabledForms = $('.appointment-form.disabled', $container);
+	$disabledForms.addClass('visible');
+	$(':input', $disabledForms).prop('disabled', true);
 
 
 	//**********************
@@ -301,16 +300,16 @@ jQuery(document).ready(function() {
 	//populates the form fields from session values
 	function getFormStorage(form) {
 		//retrieve all ids of session-marked form elements
-		var fields = jQuery('.session', form).map(function(index) {
+		var fields = $('.session', form).map(function(index) {
 			return this.id;
 		}).get();
 
 		for (var i in fields) {
-			var id = fields[i];
-			var sId = form.id + '_' + id;
+			var id = fields[i],
+				sId = form.id + '_' + id;
 			if (sessionStorage.getItem(sId)) { //checks if there is a session value for the id
-				var elemObj = jQuery('#' + id, form);
-				var val = sessionStorage.getItem(sId);
+				var elemObj = $('#' + id, form),
+					val = sessionStorage.getItem(sId);
 				//checkboxes/radio work differently from all other fields
 				if (elemObj.hasClass('checkbox') || elemObj.hasClass('radio')) {
 					//note that val retrieved from sessionStorage is of type string, NOT boolean!
@@ -329,39 +328,39 @@ jQuery(document).ready(function() {
 	//run appropriate functions if supported
 	if (isStorageSupported()) {
 		//var storage = window['sessionStorage'];
-		jQuery('.tx-appointments form.session').each(function() {
+		$('form.session', $container).each(function() {
 			var formId = this.id;
 			getFormStorage(this);
 
 			//add storage events
-			jQuery('textarea.session', this).keyup(function() {
+			$('textarea.session', this).keyup(function() {
 				storeValueInSession(this, formId);
 			});
-			jQuery('.textinput.session', this).keyup(function() {
+			$('.textinput.session', this).keyup(function() {
 				storeValueInSession(this, formId);
 			});
 			//usage of datepicker can happen without keyup events
-			jQuery('.datepicker.session', this).change(function() {
+			$('.datepicker.session', this).change(function() {
 				storeValueInSession(this, formId);
 			});
-			jQuery('.select.session', this).change(function() {
+			$('.select.session', this).change(function() {
 				storeValueInSession(this, formId);
 			});
 			// we look at checked instead of value @ radio / checkboxes
-			jQuery('.radio.session', this).change(function() {
+			$('.radio.session', this).change(function() {
 				sessionStorage.setItem(
 					formId + '_' + this.id,
 					this.checked
 				);
 				// radio only triggers onchange if enabled, but enabling one disables others
-				jQuery(this).siblings('.radio.session[name="' + jQuery(this).attr('name') + '"]').each(function(i, radio) {
+				$(this).siblings('.radio.session[name="' + $(this).attr('name') + '"]').each(function(i, radio) {
 					sessionStorage.setItem(
 						formId + '_' + radio.id,
 						radio.checked
 					);
 				});
 			});
-			jQuery('.checkbox.session', this).change(function() {
+			$('.checkbox.session', this).change(function() {
 				sessionStorage.setItem(
 					formId + '_' + this.id,
 					this.checked
@@ -370,13 +369,13 @@ jQuery(document).ready(function() {
 
 			// DISABLED BECAUSE OF CHANGES FOR RESUMING APPOINTMENT-CREATION
 			//clicking the new and edit links should all clear the session (also works on tab/enter).
-			/*jQuery('.tx-appointments .button_new').click(function() {
+			/*$('.tx-appointments .button_new').click(function() {
 				sessionStorage.clear();
 			});
-			jQuery('.tx-appointments .button_new_datefirst').click(function() {
+			$('.tx-appointments .button_new_datefirst').click(function() {
 				sessionStorage.clear();
 			});
-			jQuery('.tx-appointments .button_edit').click(function() {
+			$('.tx-appointments .button_edit').click(function() {
 				sessionStorage.clear();
 			});*/
 			//doing it on form submit can cause us to lose values if a validation error won't save anything,
@@ -393,21 +392,21 @@ jQuery(document).ready(function() {
 
 	//set events on enablers as configured by fields that are to be enabled
 	var fieldEnablers = {};
-	jQuery('.tx-appointments form .enablefield').each(function(i, elem) {
-		var classes = jQuery(elem).attr('class');
-		var evalPos = classes.indexOf('eval-f') + 6;
-		var evalParts = classes.slice(evalPos).split('-');
-		var uid = evalParts[0];
-		// the split here ensures correct value regardless if more classes follow
-		var desiredValue = evalParts[1].split(' ')[0].toLowerCase();
+	$('.enablefield', $forms).each(function(i, elem) {
+		var classes = $(elem).attr('class'),
+			evalPos = classes.indexOf('eval-f') + 6,
+			evalParts = classes.slice(evalPos).split('-'),
+			uid = evalParts[0],
+			// the split here ensures correct value regardless if more classes follow
+			desiredValue = evalParts[1].split(' ')[0].toLowerCase(),
+			enablerObj = null;
 
-		var enablerObj = null;
 		// check if the enabler was already processed
 		if (fieldEnablers[uid] !== undefined) {
 			enablerObj = fieldEnablers[uid];
 		} else {
 			// new enabler
-			enablerObj = jQuery('.tx-appointments form .formfield-id-' + uid);
+			enablerObj = $('.formfield-id-' + uid, $(elem).parents('.tx-appointments form'));
 			if (enablerObj[0]) {
 				// sets as processed, so it doesn't again for multiple fields
 				fieldEnablers[uid] = enablerObj;
@@ -430,7 +429,7 @@ jQuery(document).ready(function() {
 		// if the enabler exists, add this field to its data store
 		if (enablerObj[0]) {
 			// get data from the first object
-			var fields = jQuery(enablerObj[0]).data('enable-fields');
+			var fields = $(enablerObj[0]).data('enable-fields');
 			fields[i] = {
 				element: elem,
 				enableValue: desiredValue,
@@ -443,14 +442,14 @@ jQuery(document).ready(function() {
 	// retrieve elements set with 'required' attribute
 	function getRequiredElements(elem) {
 		var required = [];
-		if (jQuery(elem).attr('required') === 'required') {
+		if ($(elem).attr('required') === 'required') {
 			required.push(elem);
 		} else {
 			/*
 			 * if the current element doesn't have any set, then perhaps it is a wrapper
 			 * CONTAINING elements that possibly have a required attribute set
 			 */
-			jQuery(elem).find('[required="required"]').each(function(i, reqElem) {
+			$(elem).find('[required="required"]').each(function(i, reqElem) {
 				required.push(reqElem);
 			});
 		}
@@ -459,20 +458,20 @@ jQuery(document).ready(function() {
 
 	// checks if a field{element,enableValue,required} should be shown or hidden
 	function checkEnableField(field, currentValue, active) {
-		var elemObj = jQuery(field.element);
+		var elemObj = $(field.element);
 		if (active && currentValue === field.enableValue) {
-			jQuery(field.required).attr('required','required');
+			$(field.required).attr('required','required');
 			elemObj.show();
 		} else {
 			elemObj.hide();
-			jQuery(field.required).removeAttr('required');
+			$(field.required).removeAttr('required');
 		}
 	}
 
 	function runChecks(elem, active) {
-		var newValue = jQuery(elem).val().toLowerCase();
+		var newValue = $(elem).val().toLowerCase(),
 		// get fields to check from data store
-		var fields = jQuery(elem).data('enable-fields');
+			fields = $(elem).data('enable-fields');
 		for (var m in fields) {
 			checkEnableField(fields[m], newValue, active);
 		}
@@ -504,4 +503,4 @@ jQuery(document).ready(function() {
 		}
 	}
 
-});
+})(jQuery);
