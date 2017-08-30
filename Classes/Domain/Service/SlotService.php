@@ -3,7 +3,7 @@ namespace Innologi\Appointments\Domain\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2017 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -24,11 +24,12 @@ namespace Innologi\Appointments\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use Innologi\Appointments\Persistence\KeyObjectStorage;
 use Innologi\Appointments\Domain\Model\{Type, Agenda, Appointment, DateSlot, TimeSlot};
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
 /**
  * Manages the date- and their time slots, persists them and their changes to cache.
  *
@@ -71,14 +72,14 @@ class SlotService implements SingletonInterface {
 	 *
 	 * @var array
 	 */
-	protected $dateSlots = array();
+	protected $dateSlots = [];
 
 	/**
 	 * Single DateSlot storage array
 	 *
 	 * @var array
 	 */
-	protected $singleDateSlots = array();
+	protected $singleDateSlots = [];
 
 	/**
 	 * appointmentRepository
@@ -87,6 +88,11 @@ class SlotService implements SingletonInterface {
 	 * @inject
 	 */
 	protected $appointmentRepository;
+
+	/**
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+	 */
+	protected $cache;
 
 	/**
 	 * Initializes slot service
@@ -100,6 +106,7 @@ class SlotService implements SingletonInterface {
 		$this->extensionName = $extensionName;
 		$this->expireMinutes = $expireMinutes;
 		$this->intervalBasedShifting = $intervalBasedShifting;
+		$this->cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('appointments_slots');
 	}
 
 	/**
@@ -158,7 +165,7 @@ class SlotService implements SingletonInterface {
 					!$cleared && ( //try to retrieve it from a normal dateSlotStorage if available
 							(isset($this->dateSlots[$typeUid][$dateSlotKey]) && $dateSlotStorage = $this->dateSlots[$typeUid])
 							|| (
-									($dateSlotStorage = $this->getStorageObjectFromCache($this->getCacheKey($type, $agenda),'dateSlotStorage',$type, $agenda)) !== FALSE
+									($dateSlotStorage = $this->getStorageObjectFromCache('dateSlotStorage', $type, $agenda)) !== FALSE
 									&& isset($dateSlotStorage[$dateSlotKey])
 							)
 			)) {
@@ -858,48 +865,52 @@ class SlotService implements SingletonInterface {
 	// CACHING
 	//*********
 
-	// @TODO replace with its own caching configuration
-
 	/**
 	 * Gets the cache entry
 	 *
-	 * @param	string		$key		cache key
-	 * @param	string		$identifier	unique identifier
-	 * @return	string		serialized cache entry
-	 * @author	Steffen Kamper <http://buzz.typo3.org/people/steffen-kamper/article/using-cache-in-extensions/>
+	 * @param Type $type
+	 * @param Agenda $agenda
+	 * @param string $id
+	 * @return mixed
 	 */
-	protected function getCache($key, $identifier) {
-		$cacheIdentifier = $this->extensionName . '-' . $identifier;
-		$cacheHash = md5($cacheIdentifier . $key);
-		return PageRepository::getHash($cacheHash);
+	protected function getCache(Type $type, Agenda $agenda, string $id) {
+		$data = NULL;
+		$entryIdentifier = $this->generateCacheEntryIdentifier($type, $agenda, $id);
+		if ($this->cache->has($entryIdentifier)) {
+			$data = $this->cache->get($entryIdentifier);
+		}
+		return $data;
 	}
 
 	/**
 	 * Stores data in cache
 	 *
-	 * @param	string		$key		cache key
-	 * @param	string		$identifier	unique identifier
-	 * @param	array		$data		your data to store in cache
-	 * @return	void		...
-	 * @author Steffen Kamper <http://buzz.typo3.org/people/steffen-kamper/article/using-cache-in-extensions/>
+	 * @param Type $type
+	 * @param Agenda $agenda
+	 * @param string $id
+	 * @param mixed $data
+	 * @return	void
 	 */
-	protected function setCache($key, $identifier, $data) {
-		$cacheIdentifier = $this->extensionName . '-' . $identifier;
-		$cacheHash = md5($cacheIdentifier . $key);
-		PageRepository::storeHash($cacheHash,serialize($data),$cacheIdentifier);
+	protected function setCache(Type $type, Agenda $agenda, string $id, $data) {
+		$this->cache->set(
+			$this->generateCacheEntryIdentifier($type, $agenda, $id),
+			$data,
+			[
+				'type_' . $type->getUid()
+			]
+		);
 	}
 
 	/**
-	 * Gets the cache key of the type and agenda
+	 * Gets the cache entry identifier
 	 *
 	 * @param Type $type
 	 * @param Agenda $agenda
-	 * @param integer $minutes Block of minutes this cache-key is valid for
+	 * @param string $id
 	 * @return string
 	 */
-	protected function getCacheKey(Type $type, Agenda $agenda, $minutes = 60) {
-		$timestampPerMinutesVar = ceil( time() / ($minutes * 60) );
-		return md5($agenda->getUid() . '-' . $type->getUid() . '-' . $timestampPerMinutesVar);
+	protected function generateCacheEntryIdentifier(Type $type, Agenda $agenda, string $id): string {
+		return md5($agenda->getUid() . '-' . $type->getUid() . '-' . $id);
 	}
 
 	/**
@@ -911,12 +922,11 @@ class SlotService implements SingletonInterface {
 	 */
 	protected function getStorageObject(Type $type, Agenda $agenda) {
 		$id = 'dateSlotStorage';
-		$key = $this->getCacheKey($type, $agenda); #@LOW utilize configurable cache-key minutes??
-		$data = $this->getStorageObjectFromCache($key, $id, $type, $agenda);
+		$data = $this->getStorageObjectFromCache($id, $type, $agenda);
 		if ($data === FALSE) {
 			//not cached so begin building
 			$data = $this->buildStorageObject($type, $agenda);
-			$this->setCache($key,$id,$data);
+			$this->setCache($type, $agenda, $id, $data);
 		}
 		return $data;
 	}
@@ -935,13 +945,12 @@ class SlotService implements SingletonInterface {
 		$dateSlotKey = $dateTime->format(self::DATESLOT_KEY_FORMAT);
 
 		$id = 'singleDateSlotStorage';
-		$key = $this->getCacheKey($type, $agenda);
-		$data = $this->getStorageObjectFromCache($key, $id, $type, $agenda);
+		$data = $this->getStorageObjectFromCache($id, $type, $agenda);
 		//note that the singleStorageObject is stored per type/agenda in its entirety in a single cache record
 		if (($data === FALSE && $data = array()) || !isset($data[$dateSlotKey])) {
 			//not cached so begin building
 			$data[$dateSlotKey] = $this->buildSingleStorageObject($type, $agenda, $dateTime);
-			$this->setCache($key,$id,$data);
+			$this->setCache($type, $agenda, $id, $data);
 		}
 		return $data[$dateSlotKey];
 	}
@@ -955,16 +964,11 @@ class SlotService implements SingletonInterface {
 	 * @param Agenda $agenda The agenda to which the dateslot storage belongs to
 	 * @return KeyObjectStorage
 	 */
-	protected function getStorageObjectFromCache($key, $id, Type $type, Agenda $agenda) {
-		$cacheContent = $this->getCache($key,$id);
-		if (isset($cacheContent)) {
-			$data = unserialize($cacheContent);
-			//makes sure unserialization delivered a valid object, considering there are (inconsistent) issues with serialized object storages
-			if ($data instanceof KeyObjectStorage || gettype($data) === 'array') {
-				return $data;
-			}
+	protected function getStorageObjectFromCache($id, Type $type, Agenda $agenda) {
+		$data = $this->getCache($type, $agenda, $id);
+		if ($data !== NULL && ($data instanceof KeyObjectStorage || gettype($data) === 'array')) {
+			return $data;
 		}
-
 		return FALSE;
 	}
 
@@ -976,48 +980,38 @@ class SlotService implements SingletonInterface {
 	 * @return void
 	 */
 	public function resetStorageObject(Type $type, Agenda $agenda) {
+		$tags = [];
 		//if the current type is exclusive, we only need to reset that one
 		$isExclusive = $type->getExclusiveAvailability() && $type->getDontBlockTypes();
-		$types = $isExclusive ? array($type) : $agenda->getTypes();
-
+		$types = $isExclusive ? [$type] : $agenda->getTypes();
 		foreach ($types as $type) {
 			//if the current type wasn't exclusive, only reset those that aren't exclusive either
 			if ($isExclusive || !$type->getExclusiveAvailability() ) {
-				$typeUid = $type->getUid();
-				$key = $this->getCacheKey($type, $agenda);
-
-				$id = 'dateSlotStorage';
-				$cacheContent = $this->getCache($key,$id);
-				if (isset($cacheContent)) {
-					$this->setCache($key,$id,NULL);
-				}
-				$id = 'singleDateSlotStorage';
-				$cacheContent = $this->getCache($key,$id);
-				if (isset($cacheContent)) {
-					$this->setCache($key,$id,NULL);
-				}
-
-				unset($this->dateSlots[$typeUid]);
-				unset($this->singleDateSlots[$typeUid]);
+				$uid = $type->getUid();
+				$tags[] = 'type_' . $uid;
+				unset($this->dateSlots[$uid]);
+				unset($this->singleDateSlots[$uid]);
 			}
 		}
-
-		#@LOW imagine a different approach to building and caching storageObjects:
-		/*
-		 * - create a week worth of slots for a type, and cache it with an identifier that changes only when the type record is changed
-		 * - retrieve the cache, then create a new storage with it, according to firstAvailableTime and maxDaysForward
-		 * - remove all dateslots that are holidays, and place appointments in a blockarray by which we first check max,
-		 * then maxpervardays, then maxpervardaysinterval, in turn removing dateslots and timeslots where necessary
-		 * - in case timeslots are removed instead of dateslots, check at the end of that part whether there are timeslots
-		 * left, and delete the dateslot if not
-		 * - cache the result by type, agenda, and a configurable amount of minutes, like now
-		 * - etc.
-		 *
-		 *  Would that be more efficient?
-		 *
-		 *  I should seriously time the results on empty agenda's, as well as agenda's with small,
-		 *  medium or large appointment-sets, iterating with different values for maxDaysForward as well.
-		 */
+		$this->cache->flushByTags($tags);
 	}
+
+
+	#@LOW imagine a different approach to building and caching storageObjects:
+	/*
+	 * - create a week worth of slots for a type, and cache it with an identifier that changes only when the type record is changed
+	 * - retrieve the cache, then create a new storage with it, according to firstAvailableTime and maxDaysForward
+	 * - remove all dateslots that are holidays, and place appointments in a blockarray by which we first check max,
+	 * then maxpervardays, then maxpervardaysinterval, in turn removing dateslots and timeslots where necessary
+	 * - in case timeslots are removed instead of dateslots, check at the end of that part whether there are timeslots
+	 * left, and delete the dateslot if not
+	 * - cache the result by type, agenda, and a configurable amount of minutes, like now
+	 * - etc.
+	 *
+	 *  Would that be more efficient?
+	 *
+	 *  I should seriously time the results on empty agenda's, as well as agenda's with small,
+	 *  medium or large appointment-sets, iterating with different values for maxDaysForward as well.
+	 */
 
 }

@@ -27,6 +27,19 @@ defined('TYPO3_MODE') or die();
 	)
 );
 
+// create a cache specifically the date/time slots
+if (!isset($TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['appointments_slots'])
+	|| !is_array($TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['appointments_slots'])
+) {
+	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['appointments_slots'] = [
+		'options' => array(
+			'defaultLifetime' => 3600,
+			'compression' => extension_loaded('zlib')
+		),
+		'groups' => array('pages', 'all')
+	];
+}
+
 if (TYPO3_MODE === 'BE') {
 	#$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \Innologi\Appointments\Hooks\Tcemain::class;
 	$TYPO3_CONF_VARS['SC_OPTIONS'][\TYPO3\CMS\Core\Imaging\IconFactory::class]['overrideIconOverlay'][] = \Innologi\Appointments\Hooks\IconFactoryHook::class;
