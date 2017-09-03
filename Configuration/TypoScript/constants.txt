@@ -52,8 +52,6 @@ plugin.tx_appointments {
 		includeJqueryUI = 1
 		# cat=plugin.tx_appointments/b_javascript/030; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_includeJS
 		includeJS = 1
-		# cat=plugin.tx_appointments/b_javascript/040; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_toFooter
-		toFooter = 1
 		# cat=plugin.tx_appointments/b_javascript/011; type=string; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_jQueryCDN
 		jQueryCDN = https://code.jquery.com/jquery-3.2.1.min.js
 		

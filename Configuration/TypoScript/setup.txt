@@ -8,81 +8,99 @@ plugin.tx_appointments {
 	persistence {
 		storagePid = {$plugin.tx_appointments.persistence.storagePid}
 	}
-	jslib {
-		jQuery.external = 1
-		jQuery = {$plugin.tx_appointments.js.jQueryCDN}
-		#TYPO3 4.6.0, http://forge.typo3.org/issues/29695 resolved? Clearly not, so for now:
-		jQuery.disableCompression = 1
-		
-		jQueryUI.external = 0
-		jQueryUI = {$plugin.tx_appointments.js.uiLibFile}
-		jQueryUI.disableCompression = 1
-		jQueryUIcss.external = 0
-		jQueryUIcss = {$plugin.tx_appointments.js.uiCssFile}
-		jQueryUIcss.disableCompression = 1
-		
-		inlineJS = TEMPLATE
-		inlineJS.template = FILE
-		inlineJS.template.file = {$plugin.tx_appointments.js.libFile}
-		inlineJS.marks {
-			XHR_PAGETYPE = TEXT
-			XHR_PAGETYPE.value = {$plugin.tx_appointments.settings.type.xhr}
-			XHR_PAGEID = TEXT
-			XHR_PAGEID.value = {$plugin.tx_appointments.settings.pages.xhr}
-			WARN_ON_LEAVE = TEXT
-			WARN_ON_LEAVE.value = {$plugin.tx_appointments.js.warnOnLeave}
-			WARN_ON_LEAVE_RESPECT_REFRESH = TEXT
-			WARN_ON_LEAVE_RESPECT_REFRESH.value = {$plugin.tx_appointments.js.warnOnLeaveRespectRefreshMethod}
-			WARN_UNLOAD = TEXT
-			WARN_UNLOAD.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.warn_unload
-			WARN_UNLOAD_S1 = TEXT
-			WARN_UNLOAD_S1.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_new
-			DELETE_CONFIRM = TEXT
-			DELETE_CONFIRM.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_delete_confirm
-			TIMER_ZERO = TEXT
-			TIMER_ZERO.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_expired
-			TIMER_ZERO_HEAD = TEXT
-			TIMER_ZERO_HEAD.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_expired_header
-			RENEW_TIME = TEXT
-			RENEW_TIME.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_time_expired
-			DAY1 = TEXT
-			DAY1.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s1
-			DAY2 = TEXT
-			DAY2.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s2
-			DAY3 = TEXT
-			DAY3.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s3
-			DAY4 = TEXT
-			DAY4.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s4
-			DAY5 = TEXT
-			DAY5.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s5
-			DAY6 = TEXT
-			DAY6.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s6
-			DAY7 = TEXT
-			DAY7.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s7
-			MON1 = TEXT
-			MON1.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s1
-			MON2 = TEXT
-			MON2.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s2
-			MON3 = TEXT
-			MON3.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s3
-			MON4 = TEXT
-			MON4.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s4
-			MON5 = TEXT
-			MON5.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s5
-			MON6 = TEXT
-			MON6.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s6
-			MON7 = TEXT
-			MON7.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s7
-			MON8 = TEXT
-			MON8.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s8
-			MON9 = TEXT
-			MON9.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s9
-			MON10 = TEXT
-			MON10.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s10
-			MON11 = TEXT
-			MON11.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s11
-			MON12 = TEXT
-			MON12.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s12
+	# assets provider configuration
+	assets {
+		controller.Appointment.default {
+			css {
+				libs {
+					jQueryUI = {$plugin.tx_appointments.js.uiCssFile}
+					jQueryUI.if.value = {$plugin.tx_appointments.js.includeJqueryUI}
+					jQueryUI.if.equals = 1
+					# relies om images on original location
+					jQueryUI.disableCompression = 1
+					jQueryUI.excludeFromConcatenation = 1
+				}
+			}
+			javascript {
+				libs {
+					jQuery = {$plugin.tx_appointments.js.jQueryCDN}
+					jQuery.if.value = {$plugin.tx_appointments.js.includeJquery}
+					jQuery.if.equals = 1
+					jQuery.forceOnTop = 1
+					jQuery.external = 1
+					
+					jQueryUI = {$plugin.tx_appointments.js.uiLibFile}
+					jQueryUI.if.value = {$plugin.tx_appointments.js.includeJqueryUI}
+					jQueryUI.if.equals = 1
+					jQueryUI.placeInFooter = 1
+				}
+				inline {
+					tx_appointments_jsInline {
+						10 = TEMPLATE
+						10.template = FILE
+						10.template.file = {$plugin.tx_appointments.js.libFile}
+						10.marks {
+							WARN_ON_LEAVE = TEXT
+							WARN_ON_LEAVE.value = {$plugin.tx_appointments.js.warnOnLeave}
+							WARN_ON_LEAVE_RESPECT_REFRESH = TEXT
+							WARN_ON_LEAVE_RESPECT_REFRESH.value = {$plugin.tx_appointments.js.warnOnLeaveRespectRefreshMethod}
+							WARN_UNLOAD = TEXT
+							WARN_UNLOAD.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.warn_unload
+							WARN_UNLOAD_S1 = TEXT
+							WARN_UNLOAD_S1.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_new
+							DELETE_CONFIRM = TEXT
+							DELETE_CONFIRM.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_delete_confirm
+							TIMER_ZERO = TEXT
+							TIMER_ZERO.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_expired
+							TIMER_ZERO_HEAD = TEXT
+							TIMER_ZERO_HEAD.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.appointment_expired_header
+							RENEW_TIME = TEXT
+							RENEW_TIME.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.submit_time_expired
+							DAY1 = TEXT
+							DAY1.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s1
+							DAY2 = TEXT
+							DAY2.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s2
+							DAY3 = TEXT
+							DAY3.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s3
+							DAY4 = TEXT
+							DAY4.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s4
+							DAY5 = TEXT
+							DAY5.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s5
+							DAY6 = TEXT
+							DAY6.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s6
+							DAY7 = TEXT
+							DAY7.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_list.day_s7
+							MON1 = TEXT
+							MON1.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s1
+							MON2 = TEXT
+							MON2.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s2
+							MON3 = TEXT
+							MON3.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s3
+							MON4 = TEXT
+							MON4.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s4
+							MON5 = TEXT
+							MON5.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s5
+							MON6 = TEXT
+							MON6.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s6
+							MON7 = TEXT
+							MON7.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s7
+							MON8 = TEXT
+							MON8.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s8
+							MON9 = TEXT
+							MON9.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s9
+							MON10 = TEXT
+							MON10.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s10
+							MON11 = TEXT
+							MON11.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s11
+							MON12 = TEXT
+							MON12.data = LLL:EXT:appointments/Resources/Private/Language/locallang.xml:tx_appointments_agenda.month_s12
+						}
+						placeInFooter = 1
+						if.value = {$plugin.tx_appointments.js.includeJS}
+						if.equals = 1
+					}
+				}
+			}
 		}
 	}
 	settings {
@@ -105,27 +123,5 @@ plugin.tx_appointments {
 }
 
 module.tx_appointments.persistence < plugin.tx_appointments.persistence
-
-[globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJquery}] && [globalVar = LIT:0 < {$plugin.tx_appointments.js.toFooter}] 
-page.includeJSFooterlibs.appointments_jQuery < plugin.tx_appointments.jslib.jQuery
-
-[globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJquery}] && [globalVar = LIT:1 > {$plugin.tx_appointments.js.toFooter}] 
-page.includeJSlibs.appointments_jQuery < plugin.tx_appointments.jslib.jQuery
-
-[globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJqueryUI}] && [globalVar = LIT:0 < {$plugin.tx_appointments.js.toFooter}] 
-page.includeJSFooterlibs.appointments_jQueryUI < plugin.tx_appointments.jslib.jQueryUI
-page.includeCSS.appointments_jQueryUI < plugin.tx_appointments.jslib.jQueryUIcss
-
-[globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJqueryUI}] && [globalVar = LIT:1 > {$plugin.tx_appointments.js.toFooter}] 
-page.includeJSlibs.appointments_jQueryUI < plugin.tx_appointments.jslib.jQueryUI
-page.includeCSS.appointments_jQueryUI < plugin.tx_appointments.jslib.jQueryUIcss
-
-[globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJS}] && [globalVar = LIT:0 < {$plugin.tx_appointments.js.toFooter}]
-page.jsFooterInline.198311210 < plugin.tx_appointments.jslib.inlineJS
-
-[globalVar = LIT:0 < {$plugin.tx_appointments.js.includeJS}] && [globalVar = LIT:1 > {$plugin.tx_appointments.js.toFooter}]
-page.jsInline.198311210 < plugin.tx_appointments.jslib.inlineJS
-
-[global]
 
 page.includeCSS.appointmentsFrontend = {$plugin.tx_appointments.css.frontendFile}

@@ -32,6 +32,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Exception;
 use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\AbstractTemplateView;
 /**
  * Appointments Action Controller.
  *
@@ -88,6 +90,12 @@ class ActionController extends SettingsOverrideController {
 	protected $slotService;
 
 	/**
+	 * @var \Innologi\Appointments\Library\AssetProvider\ProviderServiceInterface
+	 * @inject
+	 */
+	protected $assetProviderService;
+
+	/**
 	 * Logged in frontend user
 	 *
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
@@ -109,6 +117,27 @@ class ActionController extends SettingsOverrideController {
 	 * @var boolean
 	 */
 	protected $requireLogin = TRUE;
+
+	/**
+	 * Initializes the view before invoking an action method.
+	 *
+	 * Override this method to solve assign variables common for all actions
+	 * or prepare the view in another way before the action is called.
+	 *
+	 * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view The view to be initialized
+	 *
+	 * @return void
+	 * @api
+	 */
+	protected function initializeView(ViewInterface $view) {
+		if ($view instanceof AbstractTemplateView && $this->request->getFormat() === 'html') {
+			// provide assets as configured per action
+			$this->assetProviderService->provideAssets(
+				$this->request->getControllerName(),
+				$this->request->getControllerActionName()
+			);
+		}
+	}
 
 	/**
 	 * Initializes the controller before invoking an action method.
