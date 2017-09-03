@@ -145,26 +145,28 @@
 	// UI Datepicker
 	//***************
 
-	//enable jQuery UI datepicker
-	$('.datepicker', $forms).datepicker({
-		showOn: 'focus', //focus|button|both
-		dateFormat: 'dd-mm-yy',
-		changeMonth: true, //select box month
-		changeYear: true, //select box year
-		constrainInput: true, //only allows characters of dateFormat
-		firstDay: 1, //start with monday
-		hideIfNoPrevNext: true, //hide arrows if not available
-		minDate: '-120y',
-		yearRange: '-120y:+10',
-		showOtherMonths: true, //shows days of adjacent months to fill out the table
-		selectOtherMonths: true, //makes above days selectable
-		showWeek: true,
-		dayNamesMin: ["###DAY7###","###DAY1###","###DAY2###","###DAY3###","###DAY4###","###DAY5###","###DAY6###"],
-		monthNamesShort: ["###MON1###","###MON2###","###MON3###","###MON4###","###MON5###","###MON6###","###MON7###","###MON8###","###MON9###","###MON10###","###MON11###","###MON12###"]
-	});
+	if ($.datepicker) {
+		//enable jQuery UI datepicker
+		$('.datepicker', $forms).datepicker({
+			showOn: 'focus', //focus|button|both
+			dateFormat: 'dd-mm-yy',
+			changeMonth: true, //select box month
+			changeYear: true, //select box year
+			constrainInput: true, //only allows characters of dateFormat
+			firstDay: 1, //start with monday
+			hideIfNoPrevNext: true, //hide arrows if not available
+			minDate: '-120y',
+			yearRange: '-120y:+10',
+			showOtherMonths: true, //shows days of adjacent months to fill out the table
+			selectOtherMonths: true, //makes above days selectable
+			showWeek: true,
+			dayNamesMin: ["###DAY7###","###DAY1###","###DAY2###","###DAY3###","###DAY4###","###DAY5###","###DAY6###"],
+			monthNamesShort: ["###MON1###","###MON2###","###MON3###","###MON4###","###MON5###","###MON6###","###MON7###","###MON8###","###MON9###","###MON10###","###MON11###","###MON12###"]
+		});
 
-	//sets max of datepicker to today if the field has class 'max-today'
-	$('.datepicker.max-today', $forms).datepicker('option','maxDate','0');
+		//sets max of datepicker to today if the field has class 'max-today'
+		$('.datepicker.max-today', $forms).datepicker('option','maxDate','0');
+	}
 
 
 	//*****************************
