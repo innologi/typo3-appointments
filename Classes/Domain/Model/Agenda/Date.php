@@ -164,7 +164,7 @@ class Date extends AbstractEntity {
 	public function setDayNumber($dayNumber) {
 		$this->dayNumber = $dayNumber;
 	}
-
+	// @TODO monthShort is a representation choice.. just make it a month property and get the string from locallang in the template
 	/**
 	 * Returns the month short
 	 *

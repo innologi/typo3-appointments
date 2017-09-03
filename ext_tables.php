@@ -30,6 +30,7 @@ defined('TYPO3_MODE') or die();
 	'tx_appointments_domain_model_type',
 	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_type.xml'
 );
+// @LOW it seems inline records CSH doesn't get displayed in T3 v8.7(.4), even though the mouse icon shows there is CSH
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 	'tx_appointments_domain_model_formfield',
 	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_formfield.xml'
@@ -47,20 +48,19 @@ defined('TYPO3_MODE') or die();
 #@TODO _______Remove all button which marks the entire unfinished-list as DELETED, with a confirm box
 #@TODO _______icon/message indicating incomplete data, per unfinished appointment, removed by script checking sessionStorage data
 #@TODO __make messages dismissable
+#@TODO __only show required legenda if there are required fields
 #@TODO __add validation options to Address
-#@FIX do Manual
 #@LOW look at / replace Resources/Public/Icons
 #@LOW unittesting
 #@TODO currently, month and day names are taken from locallang. I should see if the php locale can be changed to the typo3 locale in order to rely on strftime and/or f:format.date
 #@LOW use localization $arguments parameter
-
-//<http://docs.typo3.org/typo3cms/ExtbaseFluidBook/b-ExtbaseReference/Index.html>
-#@TODO _the above link also mentions something about recordType use in a different chapter, that might be of use for address..
-
+#@LOW consider using crop VH in Agenda views (not available in 4.5)
+#@TODO default templates aren't tableless
+#@LOW what about labelless edit/delete buttons? -->
+#@TODO use data attributes instead in frontend, once I can go HTML5-only
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_appointment');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_agenda');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_type');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_formfield');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_formfieldvalue');
-
