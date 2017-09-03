@@ -1,0 +1,16 @@
+<html data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+
+<f:if condition="{formField.validationTypesArray.1}">
+	<span class="required">*</span>
+</f:if>
+<br />
+<f:form.select
+	id="appointments-formfield-{formField.uid}"
+	property="formFieldValues.i{formField.uid}.value"
+	options="{formField.choicesArray}"
+	value="{formFieldValue.value}"
+	class="formfield-id-{formField.uid} select session"
+/>
+
+</html>
