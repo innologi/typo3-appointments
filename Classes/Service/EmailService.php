@@ -537,10 +537,14 @@ class EmailService implements SingletonInterface {
 		if ($this->isActionAllowed($action, $agenda->getEmailFieldTypes())) {
 			$emailFormFieldValues = $appointment->getEmailFormFieldValues();
 			foreach ($emailFormFieldValues as $formFieldValue) {
-				// @TODO replace "new" calls for DI support
-				$emailObj = new SimpleEmailContainer();
-				$emailObj->setEmail($formFieldValue->getValue());
-				$recipientArray[] = $emailObj;
+				$email = $formFieldValue->getValue();
+				// we assume validation was applied, but not necessarily that the field was required
+				if (isset($email[0])) {
+					// @TODO replace "new" calls for DI support
+					$emailObj = new SimpleEmailContainer();
+					$emailObj->setEmail($email);
+					$recipientArray[] = $emailObj;
+				}
 			}
 		}
 
