@@ -6,7 +6,7 @@
 		<div class="dayBar">
 			<f:if condition="{date.allowCreate}">
 				<f:then>
-					<f:link.action controller="Appointment" arguments="{dateFirst : date.timestamp}" action="new1" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]'}" class="button_new_datefirst">
+					<f:link.action title="{f:translate(key:'link.title.appointment_new')}" controller="Appointment" arguments="{dateFirst : date.timestamp}" action="new1" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]'}" class="button_new_datefirst">
 						{date.dayNumber} {date.monthShort}
 					</f:link.action>
 				</f:then>
@@ -15,12 +15,11 @@
 				</f:else>
 			</f:if>
 		</div>
-		<!-- @TODO add title to all links -->
 		<f:if condition="{date.appointments}">
 			<ul>
 				<f:for each="{date.appointments}" as="appointment">
 					<li>
-						<f:link.action controller="Appointment" action="show" arguments="{appointment : appointment}" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[dateFirst]'}" class="link_appointment">
+						<f:link.action title="{f:translate(key:'link.title.appointment_show')}" controller="Appointment" action="show" arguments="{appointment : appointment}" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[dateFirst]'}" class="link_appointment">
 							<f:format.date format="H:i">{appointment.beginTime}</f:format.date>
 							{appointment.type.name}
 						</f:link.action>

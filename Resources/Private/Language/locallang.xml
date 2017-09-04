@@ -183,6 +183,14 @@
 			<label index="tx_appointments_domain_model_agenda_month.month_back">Previous month</label>
 			<label index="tx_appointments_domain_model_agenda_month.month_forward">Next month</label>
 			<label index="tx_appointments_domain_model_agenda_date.is_holiday">Holiday</label>
+			
+			<label index="link.title.appointment_show">View appointment details</label>
+			<label index="link.title.appointment_new">Create appointment</label>
+			<label index="link.title.appointment_edit">Edit appointment</label>
+			<label index="link.title.appointment_resume">Resume appointment creation</label>
+			<label index="link.title.previous">View previous</label>
+			<label index="link.title.next">View next</label>
+			<label index="link.title.back">Go back</label>
 		</languageKey>
 		<languageKey index="nl" type="array">
 			<label index="tx_appointments.login_error">U dient ingelogd te zijn met een geldig gebruikersaccount.</label>
@@ -363,6 +371,13 @@
 			<label index="tx_appointments_domain_model_agenda_month.month_forward">Volgende maand</label>
 			<label index="tx_appointments_domain_model_agenda_date.is_holiday">Feestdag</label>
 			
+			<label index="link.title.appointment_show">Bekijk afspraak details</label>
+			<label index="link.title.appointment_new">Maak nieuwe afspraak</label>
+			<label index="link.title.appointment_edit">Wijzig afspraak</label>
+			<label index="link.title.appointment_resume">Resumeer afspraak aanmaken</label>
+			<label index="link.title.previous">Bekijk vorige</label>
+			<label index="link.title.next">Bekijk volgende</label>
+			<label index="link.title.back">Ga terug</label>
 		</languageKey>
 	</data>
 </T3locallang>

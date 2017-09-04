@@ -7,7 +7,7 @@
 <f:section name="main">
 
 <div class="header">
-	<f:link.action action="new1" addQueryString="TRUE" class="button_new"><f:translate key="tx_appointments_list.appointment_new" /></f:link.action>
+	<f:link.action title="{f:translate(key:'link.title.appointment_new')}" action="new1" addQueryString="TRUE" class="button_new"><f:translate key="tx_appointments_list.appointment_new" /></f:link.action>
 	<f:if condition="{f:count(subject: unfinishedAppointments)} > 0">
 		<f:render partial="Appointment/Unfinished" arguments="{appointments: unfinishedAppointments}" />
 	</f:if>
@@ -25,14 +25,14 @@
 	<f:for each="{appointments}" as="appointment">
 		<tr>
 			<td>
-				<f:link.action action="show" arguments="{appointment : appointment}" addQueryString="TRUE" class="link_appointment">
+				<f:link.action title="{f:translate(key:'link.title.appointment_show')}" action="show" arguments="{appointment : appointment}" addQueryString="TRUE" class="link_appointment">
 					<f:format.date format="d-m-Y, H:i">{appointment.beginTime}</f:format.date>:
 					{appointment.type.name}
 				</f:link.action>
 			</td>
 			<f:if condition="{a:appointment.isMutable(appointment:appointment, time:now)}">
 				<f:then>
-					<td><f:link.action action="edit" arguments="{appointment : appointment}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action></td>
+					<td><f:link.action title="{f:translate(key:'link.title.appointment_edit')}" action="edit" arguments="{appointment : appointment}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action></td>
 					<td><f:form enctype="multipart/form-data" method="post" action="delete" object="{appointment}" objectName="appointment" class="delete-form one-button-form" absolute="TRUE">
 						<fieldset>
 							<f:form.hidden name="stoken" value="{a:csrf(uid:appointment.uid)}" />
