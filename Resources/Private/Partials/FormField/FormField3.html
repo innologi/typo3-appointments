@@ -8,7 +8,7 @@
 <f:form.textfield
 	id="appointments-formfield-{formField.uid}"
 	property="formFieldValues.i{formField.uid}.value"
-	value="{formFieldValue.value}"
+	value="{formFieldValue.value -> f:format.htmlentities()}"
 	class="formfield-id-{formField.uid} textinput{f:if(condition:formField.isDate,then:' datepicker')} session"
 	required="{f:if(condition:formField.validationTypesArray.1,then:1)}"
 	placeholder="{f:if(condition:formField.isDate,then:'dd-mm-jjjj')}"

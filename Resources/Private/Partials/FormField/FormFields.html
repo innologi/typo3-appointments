@@ -5,7 +5,7 @@
 <f:if condition="{formField}">
 	<div class="formfield-wrap{f:if(condition:formField.enableField,then:' enablefield eval-f{formField.enableField.uid}-{formField.enableValue}')}">
 		<label>
-			{formField.label}
+			<f:format.htmlentities>{formField.label}</f:format.htmlentities>
 			
 			<f:if condition="{formFieldValue.uid}">
 				<f:then>

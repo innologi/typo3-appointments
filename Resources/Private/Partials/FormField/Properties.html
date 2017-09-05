@@ -3,7 +3,7 @@
 
 <f:if condition="{formField}">
 	<tr>
-		<td scope="row">{formField.label}</td>
+		<td scope="row"><f:format.html>{formField.label}</f:format.html></td>
 		<td>
 			<f:render partial="FormField/Property{formField.fieldType}" arguments="{formField:formField, formFieldValue:formFieldValue}" />
 		</td>

@@ -12,7 +12,7 @@
 		value="{choiceKey}"
 		checked="{0:formFieldValue.value} == {0:choiceKey}"
 		class="formfield-id-{formField.uid} radio session"
-	/> {choiceValue}
+	/> <f:format.htmlentities>{choiceValue}</f:format.htmlentities>
 </f:for>
 
 </html>

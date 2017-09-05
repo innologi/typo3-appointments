@@ -8,7 +8,7 @@
 		<td scope="row">
 			<f:translate key="property.appointment.type" />
 		</td>
-		<td>{appointment.type.name}</td>
+		<td><f:format.htmlentities>{appointment.type.name}</f:format.htmlentities></td>
 	</tr>
 	<tr>
 		<td scope="row">
@@ -84,7 +84,7 @@
 			<td scope="row">
 				<f:translate key="property.appointment.notes" />
 			</td>
-			<td>{appointment.notes}</td>
+			<td><f:format.html>{appointment.notes}</f:format.html></td>
 		</tr>
 	</f:if>
 	
@@ -93,7 +93,7 @@
 			<td scope="row">
 				<f:translate key="property.appointment.notesSu" />
 			</td>
-			<td>{appointment.notesSu}</td>
+			<td><f:format.html>{appointment.notesSu}</f:format.html></td>
 		</tr>
 	</f:if>
 </table>
