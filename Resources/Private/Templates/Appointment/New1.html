@@ -48,7 +48,7 @@
 				<f:translate key="tx_appointments_list.label_time_slot" />
 				<br />
 				<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'YmdHis')}" class="select" />
-			</label>					
+			</label>
 			&rarr;
 
 			<f:form.hidden name="stoken" value="{a:csrf(uid:appointment.uid)}" />
