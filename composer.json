@@ -1,0 +1,31 @@
+{
+	"name": "innologi/typo3-appointments",
+	"type": "typo3-cms-extension",
+	"description": "Appointment scheduler allows FE users to schedule / list / manage appointments. Agenda's are created in BE, including user-defined appointment types, conditions, registration forms, and more.",
+	"license": "GPL-2.0+",
+	"authors": [{
+			"name": "Frenck Lutke",
+			"email": "typo3@innologi.nl",
+			"homepage": "http://www.innologi.nl",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": "^7.1",
+		"typo3/cms-core": "^8.7",
+		"friendsoftypo3/tt-address": ">=3.0.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"Innologi\\Appointments\\": "Classes/"
+		}
+	},
+	"replace": {
+		"appointments": "self.version",
+		"typo3-ter/appointments": "self.version"
+	},
+	"config": {
+		"vendor-dir": ".Build/vendor",
+		"bin-dir": ".Build/bin"
+	}
+}
