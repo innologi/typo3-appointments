@@ -137,7 +137,8 @@ return [
 				'renderType' => 'selectSingle',
 				'foreign_table' => 'tx_appointments_domain_model_formfield',
 				// Note that T3 8.7.4 fails to extract the "GROUP BY" before putting it in a "WHERE", if there are newlines and possibly tabs, due to the limited regular expession employed in \TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider->processForeignTableClause():1145
-				'foreign_table_where' => 'AND tx_appointments_domain_model_formfield.hidden=0 AND tx_appointments_domain_model_formfield.type=COALESCE((SELECT a.type FROM tx_appointments_domain_model_appointment a,tx_appointments_domain_model_formfieldvalue ffv WHERE a.uid=ffv.appointment AND ffv.uid=###THIS_UID###),(SELECT type FROM tx_appointments_domain_model_appointment WHERE uid=###THIS_UID###)) GROUP BY tx_appointments_domain_model_formfield.uid',
+				'foreign_table_where' => 'AND tx_appointments_domain_model_formfield.hidden=0 AND tx_appointments_domain_model_formfield.type=COALESCE((SELECT a.type FROM tx_appointments_domain_model_appointment a,tx_appointments_domain_model_formfieldvalue ffv WHERE a.uid=ffv.appointment AND ffv.uid=###THIS_UID###),(SELECT type FROM tx_appointments_domain_model_appointment WHERE uid=###THIS_UID###))',
+				// GROUP BY tx_appointments_domain_model_formfield.uid
 					//note COALESCE(): because appointment.formfieldvalues has 'foreign_unique' set, it already
 					//retrieves this fields' values from the appointment context, where THIS_UID is the appointment UID
 					//which will very often result in NULL from the first subquery, which then triggers the second
