@@ -19,4 +19,23 @@
         </dependencies>
         <properties/>
     </file>
+
+
+<file name="Resources/Public/Css/frontend.css">
+        <min>true</min>
+        <comp>false</comp>
+        <closureCompiler>false</closureCompiler>
+        <gZip>false</gZip>
+        <resolveImports>true</resolveImports>
+        <urlRewriting>true</urlRewriting>
+        <autoBuild>true</autoBuild>
+        <lineLength>-1</lineLength>
+        <autoTimestamps>false</autoTimestamps>
+        <removeLogs>true</removeLogs>
+        <oldFileNames>false</oldFileNames>
+        <dependencies>
+            <file>Resources/Public/Css/frontend.css</file>
+        </dependencies>
+        <properties/>
+    </file>
 </rockstarapps>

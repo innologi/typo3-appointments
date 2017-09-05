@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * Type Repository
  *
@@ -31,28 +31,28 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Appointments_Persistence_NoPersistRepository {
+class TypeRepository extends Repository {
 	#@TODO _the use of this function has changed, so you might want to look if the function itself might benefit from a change
 	/**
 	 * Returns all objects of this repository belonging to the provided category
 	 *
 	 * @param array $typeArray Contains type uids
 	 * @param boolean $showSuperUserTypes Shows all types on TRUE or only the normal types on FALSE
-	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
 	public function findIn($typeArray, $showSuperUserTypes = FALSE) {
 		$query = $this->createQuery();
 		$constraints = array(
-				$query->in('uid', $typeArray)
+			$query->in('uid', $typeArray)
 		);
 		if ($showSuperUserTypes === FALSE) {
 			$constraints[] = $query->equals('superuser_only', 0);
 		}
 
 		$result = $query->matching(
-				$query->logicalAnd(
-						$constraints
-				)
+			$query->logicalAnd(
+				$constraints
+			)
 		)->execute();
 		return $result;
 	}
@@ -61,7 +61,7 @@ class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Appointments_P
 	 * Returns all objects of this repository.
 	 *
 	 * @param boolean $showSuperUserTypes Shows all types on TRUE or only the normal types on FALSE
-	 * @return Tx_Extbase_Persistence_QueryResultInterface|array
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
 	 *         all objects, will be empty if no objects are found, will be an array if raw query results are enabled
 	 */
 	public function findAll($showSuperUserTypes = FALSE) {
@@ -76,24 +76,4 @@ class Tx_Appointments_Domain_Repository_TypeRepository extends Tx_Appointments_P
 		return $result;
 	}
 
-	/**
-	 * Returns the type with the smallest 'blocked_hours' value.
-	 *
-	 * @param array $types Contains type uid's to filter by
-	 * @return Tx_Appointments_Domain_Model_Type The type
-	 */
-	public function findBySmallestBlockedHours(array $types) { #@LOW no longer used, clean up?
-		$query = $this->createQuery();
-		$result = $query->matching(
-				$query->in('uid', $types)
-		)->setOrderings(
-				array(
-						'blocked_hours' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
-				)
-		)->setLimit(1)->execute();
-
-		return $result->getFirst();
-	}
-
 }
-?>

@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Task;
 /***************************************************************
  *  Copyright notice
 *
@@ -23,7 +23,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
+use TYPO3\CMS\Extbase\Scheduler\Task;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Clean Up Scheduler Task
  *
@@ -31,7 +32,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Task_CleanUpTask extends Tx_Scheduler_Task {
+class CleanUpTask extends Task {
 
 	/**
 	 * Age
@@ -65,10 +66,8 @@ class Tx_Appointments_Task_CleanUpTask extends Tx_Scheduler_Task {
 	 * @return	boolean		True on success, false on failure
 	 */
 	public function execute() {
-		$businessLogic = t3lib_div::makeInstance('Tx_Appointments_Task_CleanUpTaskLogic',$this->age);
+		$businessLogic = GeneralUtility::makeInstance(CleanUpTaskLogic::class, $this->age);
 		return $businessLogic->execute();
 	}
 
 }
-
-?>

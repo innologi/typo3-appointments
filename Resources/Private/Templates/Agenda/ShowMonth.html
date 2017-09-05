@@ -1,4 +1,7 @@
-{namespace v=Tx_Vhs_ViewHelpers}
+<html data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:a="http://typo3.org/ns/Innologi/Appointments/ViewHelpers">
+	
 <f:layout name="NoFlash" />
 
 <f:section name="main">
@@ -7,11 +10,11 @@
 
 <div class="agendaBar">
 	<f:if condition="{month.canBack}">
-		<f:link.action arguments="{monthModifier : month.backModifier}" addQueryString="TRUE" class="button_agendaBack"><f:translate key="tx_appointments_domain_model_agenda_month.month_back" /></f:link.action>
+		<f:link.action title="{f:translate(key:'link.title.previous')}" arguments="{monthModifier : month.backModifier}" addQueryString="TRUE" class="button_agendaBack"><f:translate key="tx_appointments_domain_model_agenda_month.month_back" /></f:link.action>
 	</f:if>
 	{month.name} {month.year}
 	<f:if condition="{month.canForward}">
-		<f:link.action arguments="{monthModifier : month.forwardModifier}" addQueryString="TRUE" class="button_agendaForward"><f:translate key="tx_appointments_domain_model_agenda_month.month_forward" /></f:link.action>
+		<f:link.action title="{f:translate(key:'link.title.next')}" arguments="{monthModifier : month.forwardModifier}" addQueryString="TRUE" class="button_agendaForward"><f:translate key="tx_appointments_domain_model_agenda_month.month_forward" /></f:link.action>
 	</f:if>
 </div>
 
@@ -20,9 +23,9 @@
 	<f:render partial="Agenda/TableHeader" />
 	
 	<tr>
-		<v:iterator.loop count="{month.weekdaysBeforeFirst}">
+		<a:loop count="{month.weekdaysBeforeFirst}">
 			<td>&nbsp;</td>
-		</v:iterator.loop>
+		</a:loop>
 	
 	<f:for each="{month.weeks}" as="week" iteration="iterationInfo">
 		<f:render partial="Agenda/Week" arguments="{week : week, currentDate : currentDate}" />
@@ -32,13 +35,13 @@
 			<f:else>
 				</tr>
 				<tr>
-			</f:else>			
+			</f:else>
 		</f:if>
 	</f:for>
 	
-		<v:iterator.loop count="{month.weekdaysAfterLast}">
+		<a:loop count="{month.weekdaysAfterLast}">
 			<td>&nbsp;</td>
-		</v:iterator.loop>
+		</a:loop>
 	</tr>
 		
 </table>
@@ -46,3 +49,5 @@
 </f:if>
 
 </f:section>
+
+</html>

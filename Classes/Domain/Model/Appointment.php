@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 /**
  * Appointment domain model
  *
@@ -31,7 +33,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_AbstractEntity {
+class Appointment extends AbstractEntity {
 
 	//creation progress constants
 	const FINISHED = 0; //appointment finalized
@@ -63,29 +65,29 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Start time
 	 *
-	 * @var DateTime
-	 * @validate DateTime
+	 * @var \DateTime
+	 * @validate NotEmpty,DateTime
 	 */
 	protected $beginTime;
 
 	/**
 	 * End time
 	 *
-	 * @var DateTime
+	 * @var \DateTime
 	 */
 	protected $endTime;
 
 	/**
 	 * Start reserved
 	 *
-	 * @var DateTime
+	 * @var \DateTime
 	 */
 	protected $beginReserved;
 
 	/**
 	 * End time
 	 *
-	 * @var DateTime
+	 * @var \DateTime
 	 */
 	protected $endReserved;
 
@@ -94,70 +96,58 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 *
 	 * @var string
 	 */
-	protected $notes;
+	protected $notes = '';
 
 	/**
 	 * Notes SU
 	 *
 	 * @var string
 	 */
-	protected $notesSu;
+	protected $notesSu = '';
 
 	/**
 	 * Type which this Appointment belongs to
 	 *
-	 * @var Tx_Appointments_Domain_Model_Type
+	 * @var \Innologi\Appointments\Domain\Model\Type
 	 * @validate NotEmpty
 	 * @lazy
 	 */
 	protected $type;
-	#@LOW should see if this is still the case in 6.2, once we raise dependency version
+
 	/**
 	 * Form field values associated with this appointment
 	 *
-	 * 1. Cannot cascade remove this, because Extbase is anal about deleting these then,
-	 * if changed from the parentObject, which I do. Also, Extbase isn't as extensible
-	 * as I hoped: creating an alternative to ObjectStorage with a slightly different
-	 * implementation of its methods would have circumvented the issue gracefully, but
-	 * Extbase has its behaviour around ObjectStorages determined by hardcoded strings
-	 * that represent classnames, which can of course be changed from within this extension,
-	 * but needs a terrible amount of overrides of Extbase (and Fluid!) Core classes that
-	 * I'm not willing to make, due to the increased chance of breaking at each version
-	 * change.
+	 * Couldn't be cascade remove in 4.5-4.7, because Extbase attempted to remove them
+	 * upon changing content via parentObj. But doesn't seem to be an issue on T3v8.
 	 *
-	 * As an alternative to cascade remove, the records that are connected to deleted
-	 * appointments will be deleted by the GC scheduler task.
-	 *
-	 * 2. Can be lazy, because the objectStorage is ONLY manipulated by form.
-	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
-	 * @validate Tx_Appointments_Domain_Validator_ObjectStorageValidator(clearErrors=1)
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
+	 * @cascade remove
 	 * @lazy
 	 */
-	protected $formFieldValues; #@LOW create an extbase feature suggestion and patch to remedy the objectstorage behaviour with instanceof checks
-	#@LOW test and see if making this an array would resolve the fluid issue of directly addressing an object (e.g. formFieldValues.189.value or formFieldValues._189.value)
+	protected $formFieldValues;
 
 	/**
 	 * FormFieldValues that are set as sending-email-address
 	 *
 	 * @transient
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
 	 */
 	protected $emailFormFieldValues;
 
 	/**
 	 * Name and address information
 	 *
-	 * @var Tx_Appointments_Domain_Model_Address
+	 * Validation is done through AppointmentValidator
+	 *
+	 * @var \Innologi\Appointments\Domain\Model\Address
 	 * @cascade remove
-	 * @lazy
 	 */
 	protected $address;
 
 	/**
 	 * User who created this appointment
 	 *
-	 * @var Tx_Appointments_Domain_Model_FrontendUser
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 * @lazy
 	 */
 	protected $feUser;
@@ -165,7 +155,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Agenda in which this appointment was made
 	 *
-	 * @var Tx_Appointments_Domain_Model_Agenda
+	 * @var \Innologi\Appointments\Domain\Model\Agenda
 	 * @validate NotEmpty
 	 * @lazy
 	 */
@@ -182,7 +172,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	}
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
 	 *
 	 * @return void
 	 */
@@ -192,7 +182,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->formFieldValues = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->formFieldValues = new ObjectStorage();
 	}
 
 
@@ -254,7 +244,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Returns the beginTime
 	 *
-	 * @return DateTime $beginTime
+	 * @return \DateTime $beginTime
 	 */
 	public function getBeginTime() {
 		return $this->beginTime;
@@ -263,7 +253,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the beginTime
 	 *
-	 * @param DateTime $beginTime
+	 * @param \DateTime $beginTime
 	 * @return void
 	 */
 	public function setBeginTime($beginTime) {
@@ -273,7 +263,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Returns the endTime
 	 *
-	 * @return DateTime $endTime
+	 * @return \DateTime $endTime
 	 */
 	public function getEndTime() {
 		return $this->endTime;
@@ -282,7 +272,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the endTime
 	 *
-	 * @param DateTime $endTime
+	 * @param \DateTime $endTime
 	 * @return void
 	 */
 	public function setEndTime($endTime) {
@@ -292,7 +282,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Returns the beginReserved
 	 *
-	 * @return DateTime $beginReserved
+	 * @return \DateTime $beginReserved
 	 */
 	public function getBeginReserved() {
 		return $this->beginReserved;
@@ -301,7 +291,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the beginReserved
 	 *
-	 * @param DateTime $beginReserved
+	 * @param \DateTime $beginReserved
 	 * @return void
 	 */
 	public function setBeginReserved($beginReserved) {
@@ -311,7 +301,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Returns the endReserved
 	 *
-	 * @return DateTime $endReserved
+	 * @return \DateTime $endReserved
 	 */
 	public function getEndReserved() {
 		return $this->endReserved;
@@ -320,7 +310,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the endReserved
 	 *
-	 * @param DateTime $endReserved
+	 * @param \DateTime $endReserved
 	 * @return void
 	 */
 	public function setEndReserved($endReserved) {
@@ -368,7 +358,7 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Returns the type
 	 *
-	 * @return Tx_Appointments_Domain_Model_Type $type
+	 * @return \Innologi\Appointments\Domain\Model\Type
 	 */
 	public function getType() {
 		$this->noLazy($this->type);
@@ -378,37 +368,37 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the type
 	 *
-	 * @param Tx_Appointments_Domain_Model_Type $type
+	 * @param \Innologi\Appointments\Domain\Model\Type $type
 	 * @return void
 	 */
-	public function setType(Tx_Appointments_Domain_Model_Type $type) {
+	public function setType(Type $type) {
 		$this->type = $type;
 	}
 
 	/**
 	 * Adds a FormFieldValue
 	 *
-	 * @param Tx_Appointments_Domain_Model_FormFieldValue $formFieldValue
+	 * @param \Innologi\Appointments\Domain\Model\FormFieldValue $formFieldValue
 	 * @return void
 	 */
-	public function addFormFieldValue(Tx_Appointments_Domain_Model_FormFieldValue $formFieldValue) {
+	public function addFormFieldValue(FormFieldValue $formFieldValue) {
 		$this->formFieldValues->attach($formFieldValue);
 	}
 
 	/**
 	 * Removes a FormFieldValue
 	 *
-	 * @param Tx_Appointments_Domain_Model_FormFieldValue $formFieldValueToRemove The FormFieldValue to be removed
+	 * @param \Innologi\Appointments\Domain\Model\FormFieldValue $formFieldValueToRemove The FormFieldValue to be removed
 	 * @return void
 	 */
-	public function removeFormFieldValue(Tx_Appointments_Domain_Model_FormFieldValue $formFieldValueToRemove) {
+	public function removeFormFieldValue(FormFieldValue $formFieldValueToRemove) {
 		$this->formFieldValues->detach($formFieldValueToRemove);
 	}
 
 	/**
 	 * Returns the formFieldValues
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage $formFieldValues
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getFormFieldValues() {
 		return $this->formFieldValues;
@@ -417,17 +407,17 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the formFieldValues
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue> $formFieldValues
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $formFieldValues
 	 * @return void
 	 */
-	public function setFormFieldValues(Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
+	public function setFormFieldValues(ObjectStorage $formFieldValues) {
 		$this->formFieldValues = $formFieldValues;
 	}
 
 	/**
 	 * Returns the emailFormFieldValues
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage $emailFormFieldValues
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getEmailFormFieldValues() {
 		if ($this->emailFormFieldValues === NULL) {
@@ -439,18 +429,18 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the emailFormFieldValues, filtered from $formFieldValues
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormFieldValue> $formFieldValues
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue> $formFieldValues
 	 * @return void
 	 */
-	public function setEmailFormFieldValues(Tx_Extbase_Persistence_ObjectStorage $formFieldValues) {
-		$this->emailFormFieldValues = new Tx_Extbase_Persistence_ObjectStorage();
+	public function setEmailFormFieldValues(ObjectStorage $formFieldValues) {
+		$this->emailFormFieldValues = new ObjectStorage();
 		foreach ($formFieldValues as $formFieldValue) {
 			$formField = $formFieldValue->getFormField();
-			if ($formField->getFunction() === Tx_Appointments_Domain_Model_FormField::FUNCTION_EMAIL) {
+			if ($formField->getFunction() === FormField::FUNCTION_EMAIL) {
 				$fieldType = $formField->getFieldType();
 				if (
-					$fieldType === Tx_Appointments_Domain_Model_FormField::TYPE_TEXTLARGE
-					|| $fieldType === Tx_Appointments_Domain_Model_FormField::TYPE_TEXTSMALL
+					$fieldType === FormField::TYPE_TEXTLARGE
+					|| $fieldType === FormField::TYPE_TEXTSMALL
 				) {
 					$this->emailFormFieldValues->attach($formFieldValue);
 				}
@@ -461,27 +451,26 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Returns the address
 	 *
-	 * @return Tx_Appointments_Domain_Model_Address $address
+	 * @return \Innologi\Appointments\Domain\Model\Address
 	 */
 	public function getAddress() {
-		$this->noLazy($this->address);
 		return $this->address;
 	}
 
 	/**
 	 * Sets the address
 	 *
-	 * @param Tx_Appointments_Domain_Model_Address $address
+	 * @param \Innologi\Appointments\Domain\Model\Address $address
 	 * @return void
 	 */
-	public function setAddress(Tx_Appointments_Domain_Model_Address $address) {
+	public function setAddress(Address $address) {
 		$this->address = $address;
 	}
 
 	/**
 	 * Returns the agenda
 	 *
-	 * @return Tx_Appointments_Domain_Model_Agenda $agenda
+	 * @return \Innologi\Appointments\Domain\Model\Agenda
 	 */
 	public function getAgenda() {
 		$this->noLazy($this->agenda);
@@ -491,17 +480,17 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the agenda
 	 *
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda
+	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda
 	 * @return void
 	 */
-	public function setAgenda(Tx_Appointments_Domain_Model_Agenda $agenda) {
+	public function setAgenda(Agenda $agenda) {
 		$this->agenda = $agenda;
 	}
 
 	/**
 	 * Returns the feUser
 	 *
-	 * @return Tx_Appointments_Domain_Model_FrontendUser feUser
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 */
 	public function getFeUser() {
 		return $this->feUser;
@@ -510,10 +499,10 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	/**
 	 * Sets the feUser
 	 *
-	 * @param Tx_Appointments_Domain_Model_FrontendUser $feUser
-	 * @return Tx_Appointments_Domain_Model_FrontendUser feUser
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser
+	 * @return void
 	 */
-	public function setFeUser(Tx_Appointments_Domain_Model_FrontendUser $feUser) {
+	public function setFeUser(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser) {
 		$this->feUser = $feUser;
 	}
 
@@ -525,10 +514,9 @@ class Tx_Appointments_Domain_Model_Appointment extends Tx_Extbase_DomainObject_A
 	 * @param mixed $property Defined by reference because we're replacing the original reference
 	 */
 	protected function noLazy(&$property) { #@TODO when is this really necessary?
-		if (is_object($property) && $property instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+		if (is_object($property) && $property instanceof LazyLoadingProxy) {
 			$property = $property->_loadRealInstance();
 		}
 	}
 
 }
-?>

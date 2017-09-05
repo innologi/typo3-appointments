@@ -1,10 +1,12 @@
+<html data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+
 <f:for each="{week}" as="date">
 	<td class="agendaDay{date.agendaClasses}">
 		<div class="dayBar">
 			<f:if condition="{date.allowCreate}">
 				<f:then>
-					<!-- @TODO monthShort is a representation choice.. just make it a month property and get the string from locallang HERE -->
-					<f:link.action controller="Appointment" arguments="{dateFirst : date.timestamp}" action="new1" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]'}" class="button_new_datefirst">
+					<f:link.action title="{f:translate(key:'link.title.appointment_new')}" controller="Appointment" arguments="{dateFirst : date.timestamp}" action="new1" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]'}" class="button_new_datefirst">
 						{date.dayNumber} {date.monthShort}
 					</f:link.action>
 				</f:then>
@@ -13,15 +15,13 @@
 				</f:else>
 			</f:if>
 		</div>
-		<!-- @TODO add title to all links -->
-		<!-- @LOW use crop VH? (not available in 4.5) -->
-		<f:if condition="{date.appointments">
+		<f:if condition="{date.appointments}">
 			<ul>
 				<f:for each="{date.appointments}" as="appointment">
 					<li>
-						<f:link.action controller="Appointment" action="show" arguments="{appointment : appointment}" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[dateFirst]'}" class="link_appointment">
+						<f:link.action title="{f:translate(key:'link.title.appointment_show')}" controller="Appointment" action="show" arguments="{appointment : appointment}" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[dateFirst]'}" class="link_appointment">
 							<f:format.date format="H:i">{appointment.beginTime}</f:format.date>
-							{appointment.type.name}
+							<f:format.htmlentities>{appointment.type.name}</f:format.htmlentities>
 						</f:link.action>
 					</li>
 				</f:for>
@@ -29,3 +29,5 @@
 		</f:if>
 	</td>
 </f:for>
+
+</html>

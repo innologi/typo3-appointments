@@ -1,4 +1,5 @@
 <?php
+namespace Innologi\Appointments\Service;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Core\SingletonInterface;
 /**
  * Facilitates user/group control.
  *
@@ -30,12 +31,12 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Service_UserService implements t3lib_Singleton {
+class UserService implements SingletonInterface {
 
 	/**
 	 * Logged in frontend user
 	 *
-	 * @var Tx_Appointments_Domain_Model_FrontendUser
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 */
 	protected $feUser = NULL;
 
@@ -49,41 +50,23 @@ class Tx_Appointments_Service_UserService implements t3lib_Singleton {
 	/**
 	 * frontendUserRepository
 	 *
-	 * @var Tx_Appointments_Domain_Repository_FrontendUserRepository
+	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
+	 * @inject
 	 */
 	protected $frontendUserRepository;
 
 	/**
 	 * frontendUserGroupRepository
 	 *
-	 * @var Tx_Appointments_Domain_Repository_FrontendUserGroupRepository
+	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository
+	 * @inject
 	 */
 	protected $frontendUserGroupRepository;
 
 	/**
-	 * injectFrontendUserRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_FrontendUserRepository $frontendUserRepository
-	 * @return void
-	 */
-	public function injectFrontendUserRepository(Tx_Appointments_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
-		$this->frontendUserRepository = $frontendUserRepository;
-	}
-
-	/**
-	 * injectFrontendUserGroupRepository
-	 *
-	 * @param Tx_Appointments_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository
-	 * @return void
-	 */
-	public function injectFrontendUserGroupRepository(Tx_Appointments_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
-		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
-	}
-
-	/**
 	 * Returns current frontend user.
 	 *
-	 * @return Tx_Appointments_Domain_Model_FrontendUser
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser|FALSE
 	 */
 	public function getCurrentUser() {
 		if ($this->feUser === NULL) {
@@ -124,4 +107,3 @@ class Tx_Appointments_Service_UserService implements t3lib_Singleton {
 	}
 
 }
-?>

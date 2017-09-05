@@ -1,4 +1,7 @@
-{namespace a=Tx_Appointments_ViewHelpers}
+<html data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:a="http://typo3.org/ns/Innologi/Appointments/ViewHelpers">
+	
 <f:layout name="Default" />
 
 <f:section name="main">
@@ -6,7 +9,7 @@
 <div class="header">
 	<h3><f:translate key="tx_appointments_list.appointment_new" /></h3>
 	<f:link.action action="list" addQueryString="TRUE" argumentsToBeExcludedFromQueryString="{0:'tx_appointments_list[appointment]',1:'tx_appointments_list[dateFirst]'}" class="button_back"><f:translate key="tx_appointments_list.appointment_list" /></f:link.action>
-	<f:render partial="FormErrors" arguments="{formFields : FALSE}" />
+	<f:render partial="FormErrors" />
 </div>
 
 <f:if condition="{types}">
@@ -21,6 +24,7 @@
 	<f:form enctype="multipart/form-data" method="post" action="new1" object="{appointment}" objectName="appointment" class="allowUnload">
 		<fieldset>
 			<f:form.hidden property="type" />
+			<f:form.hidden name="expectDate" value="1" />
 			
 			<label>
 				<f:translate key="tx_appointments_list.label_date_slot" />
@@ -36,7 +40,7 @@
 </f:if>
 	
 <f:if condition="{timeSlots}">
-	<a:form enctype="multipart/form-data" method="post" action="processNew" object="{appointment}" objectName="appointment" class="allowUnload" syncToken="TRUE" absolute="TRUE">
+	<f:form enctype="multipart/form-data" method="post" action="processNew" object="{appointment}" objectName="appointment" class="allowUnload" absolute="TRUE">
 		<fieldset>
 			<f:form.hidden property="type" />
 			
@@ -44,13 +48,14 @@
 				<f:translate key="tx_appointments_list.label_time_slot" />
 				<br />
 				<f:form.select id="appointments-select-time" property="beginTime" options="{timeSlots}" optionValueField="key" optionLabelField="label" value="{appointment.beginTime -> f:format.date(format:'YmdHis')}" class="select" />
-			</label>					
+			</label>
 			&rarr;
-			
+
+			<f:form.hidden name="stoken" value="{a:csrf(uid:appointment.uid)}" />
 			<f:form.submit id="appointments-submit-time" value="{f:translate(key: 'tx_appointments_list.submit_next_step')}" class="submit next" />
 			<f:render partial="Appointment/FormFieldTimeCsh" arguments="{step : 1}" />
 		</fieldset>
-	</a:form>
+	</f:form>
 </f:if>
 
 <f:if condition="{appointment.uid}">
@@ -60,3 +65,5 @@
 </f:if>
 
 </f:section>
+
+</html>

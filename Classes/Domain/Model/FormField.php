@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * FormField domain model
  *
@@ -31,7 +32,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_AbstractEntity {
+class FormField extends AbstractEntity {
 
 	//constants
 	const VALIDATE_NOT_EMPTY = 1;
@@ -67,15 +68,14 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 * @var string
 	 * @validate NotEmpty
 	 */
-	protected $label;
+	protected $label = '';
 
 	/**
 	 * Context Sensitive Help
 	 *
 	 * @var string
-	 * @validate NotEmpty
 	 */
-	protected $csh;
+	protected $csh = '';
 
 	/**
 	 * Validation Types
@@ -83,6 +83,12 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 * @var string
 	 */
 	protected $validationTypes;
+
+	/**
+	 * @var array
+	 * @transient
+	 */
+	protected $validationTypesArray;
 
 	/**
 	 * Is date field?
@@ -113,7 +119,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 *
 	 * @var string
 	 */
-	protected $choices;
+	protected $choices = '';
 
 	/**
 	 * Selection choices relevant for boolean and selection types
@@ -134,7 +140,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	/**
 	 * The field this one enables
 	 *
-	 * @var Tx_Appointments_Domain_Model_FormField
+	 * @var \Innologi\Appointments\Domain\Model\FormField
 	 * @lazy
 	 */
 	protected $enableField;
@@ -227,6 +233,19 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	 */
 	public function setValidationTypes($validationTypes) {
 		$this->validationTypes = $validationTypes;
+	}
+
+	/**
+	 * Returns validation types as array
+	 *
+	 * @return array
+	 */
+	public function getValidationTypesArray() {
+		if ($this->validationTypesArray === NULL) {
+			$valueArray = GeneralUtility::trimExplode(',', $this->validationTypes, TRUE);
+			$this->validationTypesArray = array_combine($valueArray, $valueArray);
+		}
+		return $this->validationTypesArray;
 	}
 
 	/**
@@ -323,7 +342,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	protected function setChoicesArray($choices) {
 		$choices = str_replace("\r\n","\n",$choices);
 		$keyArray = array();
-		$valueArray = t3lib_div::trimExplode("\n", $choices, 1);
+		$valueArray = GeneralUtility::trimExplode("\n", $choices, 1);
 		foreach ($valueArray as $key=>&$choice) {
 			if (strpos($choice,'|') === FALSE) {
 				$keyArray[$key] = $choice;
@@ -360,7 +379,7 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	/**
 	 * Returns the enableField
 	 *
-	 * @return Tx_Appointments_Domain_Model_FormField $enableField
+	 * @return \Innologi\Appointments\Domain\Model\FormField
 	 */
 	public function getEnableField() {
 		return $this->enableField;
@@ -369,10 +388,10 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	/**
 	 * Sets the enableField
 	 *
-	 * @param Tx_Appointments_Domain_Model_FormField $enableField
+	 * @param \Innologi\Appointments\Domain\Model\FormField $enableField
 	 * @return void
 	 */
-	public function setEnableField(Tx_Appointments_Domain_Model_FormField $enableField) {
+	public function setEnableField(FormField $enableField) {
 		$this->enableField = $enableField;
 	}
 
@@ -415,4 +434,3 @@ class Tx_Appointments_Domain_Model_FormField extends Tx_Extbase_DomainObject_Abs
 	}
 
 }
-?>

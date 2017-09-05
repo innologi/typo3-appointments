@@ -1,4 +1,5 @@
 <?php
+namespace Innologi\Appointments\Service;
 /***************************************************************
  *  Copyright notice
  *
@@ -22,7 +23,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
+use Innologi\Appointments\Domain\Model\{Appointment, Address, SimpleEmailContainer};
 /**
  * Facilitates email functionality.
  *
@@ -30,7 +36,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
+class EmailService implements SingletonInterface {
 
 	#@LOW rebuild service and separate content / implementation somewhat more
 	/**
@@ -43,12 +49,13 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	/**
 	 * Controller context
 	 *
-	 * @var Tx_Extbase_MVC_Controller_ControllerContext
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
 	 */
 	protected $controllerContext;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @inject
 	 */
 	protected $configurationManager;
 
@@ -81,32 +88,22 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	/**
 	 * Set controllerContext (REQUIRED)
 	 *
-	 * Used to access UriBuilder and retrieve the flashMessageContainer.
+	 * Used to access UriBuilder.
 	 *
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
 	 */
-	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
+	public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
 		$this->controllerContext = $controllerContext;
-	}
-
-	/**
-	 * injectConfigurationManager
-	 *
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
 	}
 
 	/**
 	 * Initializes a mail instance
 	 *
-	 * @return t3lib_mail_Message
+	 * @return \TYPO3\CMS\Core\Mail\MailMessage
 	 */
 	protected function initializeMail() {
 		$this->text = NULL;
-		return new t3lib_mail_Message(NULL, NULL, NULL, 'utf-8');
+		return new \TYPO3\CMS\Core\Mail\MailMessage(NULL, NULL, NULL, 'utf-8');
 	}
 
 	/**
@@ -114,25 +111,25 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * a single try/catch construction on all the email-processes.
 	 *
 	 * @param string $action The email action [create / update / delete]
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment
+	 * @param Appointment $appointment
 	 * @return boolean
 	 */
-	public function sendAction($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
+	public function sendAction($action, Appointment $appointment) {
 		$returnVal = FALSE;
 		$errorMsg = 'Could not send email because of error: ';
 		try {
 			$this->sendEmailAction($action,$appointment);
 			$this->sendCalendarAction($action,$appointment);
 			$returnVal = TRUE;
-		} catch (Tx_Appointments_MVC_Exception_PropertyDeleted $e) { //a property was deleted
-			t3lib_div::sysLog($errorMsg . $e->getMessage(),
-				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_ERROR); #@TODO add 6.x logger as well
-		} catch (Swift_RfcComplianceException $e) { //one or more email properties does not comply with RFC (e.g. sender email)
-			t3lib_div::sysLog('One or more email-related configuration settings are not set or invalid: ' . $e->getMessage(),
-				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_ERROR);
-		} catch (Exception $e) {
-			t3lib_div::sysLog($errorMsg . $e->getMessage(),
-				$this->extensionName, t3lib_div::SYSLOG_SEVERITY_ERROR);
+		} catch (PropertyDeleted $e) { //a property was deleted
+			GeneralUtility::sysLog($errorMsg . $e->getMessage(),
+				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_ERROR); #@TODO add 6.x logger as well
+		} catch (\Swift_RfcComplianceException $e) { //one or more email properties does not comply with RFC (e.g. sender email)
+			GeneralUtility::sysLog('One or more email-related configuration settings are not set or invalid: ' . $e->getMessage(),
+				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_ERROR);
+		} catch (\Exception $e) {
+			GeneralUtility::sysLog($errorMsg . $e->getMessage(),
+				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_ERROR);
 		}
 		return $returnVal;
 	}
@@ -141,10 +138,10 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * Sends an email action.
 	 *
 	 * @param string $action The email action [create / update / delete]
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment to confirm
+	 * @param Appointment $appointment The appointment to confirm
 	 * @return boolean TRUE on success, FALSE on failure
 	 */
-	protected function sendEmailAction($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
+	protected function sendEmailAction($action, Appointment $appointment) {
 		$recipientArray = $this->collectAllowedRecipients($action,$appointment);
 		if (!empty($recipientArray)) {
 			$mail = $this->initializeMail();
@@ -182,13 +179,13 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	protected function getActionSubject($action, $type = 'email') {
 		switch ($action) {
 			case 'create':
-				$subject = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.'.$type.'_create_subject', $this->extensionName);
+				$subject = LocalizationUtility::translate('tx_appointments_list.'.$type.'_create_subject', $this->extensionName);
 				break;
 			case 'update':
-				$subject = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.'.$type.'_update_subject', $this->extensionName);
+				$subject = LocalizationUtility::translate('tx_appointments_list.'.$type.'_update_subject', $this->extensionName);
 				break;
 			case 'delete':
-				$subject = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.'.$type.'_delete_subject', $this->extensionName);
+				$subject = LocalizationUtility::translate('tx_appointments_list.'.$type.'_delete_subject', $this->extensionName);
 		}
 		return $subject;
 	}
@@ -226,14 +223,14 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 *
 	 * Replaces variables with appropriate values.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment Subject appointment of the text
+	 * @param Appointment $appointment Subject appointment of the text
 	 * @param string $action The email action [create / update / delete]
 	 * @param string $bodyType Sets what text property to get (email|calendar)
 	 * @param boolean $isHTML On TRUE, returns a HTML body. On FALSE, returns plain text
 	 * @return string Processed email/calendar text
-	 * @throws Tx_Appointments_MVC_Exception_PropertyDeleted
+	 * @throws PropertyDeleted
 	 */
-	protected function getText(Tx_Appointments_Domain_Model_Appointment $appointment, $action, $bodyType = 'email', $isHTML = FALSE) {
+	protected function getText(Appointment $appointment, $action, $bodyType = 'email', $isHTML = FALSE) {
 		if (!isset($this->text)) { //put everything not-$isHTML-related in text var
 			$agenda = $appointment->getAgenda();
 			switch ($bodyType) {
@@ -249,7 +246,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 			if (!is_object($type)
 					|| ( !is_object($address) && !$type->getAddressDisable() )
 			) {
-				throw new Tx_Appointments_MVC_Exception_PropertyDeleted('One or more object-properties of ' . get_class($appointment) . ':' . $appointment->getUid() . ' are not available and might have been deleted.');
+				throw new PropertyDeleted('One or more object-properties of ' . get_class($appointment) . ':' . $appointment->getUid() . ' are not available and might have been deleted.');
 			}
 
 			//replaces variables
@@ -306,11 +303,11 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	/**
 	 * Builds a nicely formatted name & address.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Address $address The address object
+	 * @param Address $address The address object
 	 * @param string $separator Separator between Name/Address and Address/Zip
 	 * @return string
 	 */
-	protected function buildAddress(Tx_Appointments_Domain_Model_Address $address, $separator = "\n") {
+	protected function buildAddress(Address $address, $separator = "\n") {
 		return $address->getName() . $separator .
 			$address->getAddress() . $separator .
 			$address->getZip() . ' ' . $address->getCity();
@@ -319,17 +316,17 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	/**
 	 * Returns email recipients array.
 	 *
-	 * @param array $emailAddresses Contains objects of Tx_Appointments_Domain_Model_EmailContainerInterface interface
+	 * @param array $emailAddresses Contains objects with a getEmail() method
 	 * @return array Consists of email addresses
 	 */
 	protected function getRecipientEmailArray($emailAddresses) {
 		$emailArray = array();
 
 		foreach ($emailAddresses as $address) {
-			if ($address instanceof Tx_Appointments_Domain_Model_EmailContainerInterface) {
+			if (method_exists($address, 'getEmail')) {
 				$email = $address->getEmail();
 				// @LOW log erroneous email addresses?
-				if (isset($email[0]) && t3lib_div::validEmail($email)) {
+				if (isset($email[0]) && GeneralUtility::validEmail($email)) {
 					$emailArray[] = $email;
 				}
 			}
@@ -346,10 +343,10 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * Sends a calendar action.
 	 *
 	 * @param string $action The calendar action [create / update / delete]
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that is the subject of the calendar action
+	 * @param Appointment $appointment The appointment that is the subject of the calendar action
 	 * @return boolean TRUE on success, FALSE on failure
 	 */
-	protected function sendCalendarAction($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
+	protected function sendCalendarAction($action, Appointment $appointment) {
 		$agenda = $appointment->getAgenda();
 		if ($this->isActionAllowed($action, $agenda->getCalendarInviteTypes())) {
 			$mail = $this->initializeMail();
@@ -386,12 +383,12 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * Gets Calendar Action body.
 	 *
 	 * @param string $action The calendar action [create / update / delete]
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment that is the subject of the calendar action
+	 * @param Appointment $appointment The appointment that is the subject of the calendar action
 	 * @return String The calendar action body
 	 */
-	protected function getCalendarActionBody($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
+	protected function getCalendarActionBody($action, Appointment $appointment) {
 		//the configuration manager gets us access to the template paths, so we use that to retrieve the body template file
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath'])
 			&& isset($extbaseFrameworkConfiguration['view']['templateRootPath'][0])
 		) {
@@ -408,20 +405,20 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		$sequence = 0;
 
 		//id unique to this appointment and domain
-		$id = 'typo3-'.$this->extensionName.'-a'.$appointment->getAgenda()->getUid().'-t'.$appointment->getType()->getUid().'-a'.$appointment->getUid() . '@' . t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
+		$id = 'typo3-'.$this->extensionName.'-a'.$appointment->getAgenda()->getUid().'-t'.$appointment->getType()->getUid().'-a'.$appointment->getUid() . '@' . GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
 
 		//escape certain chars and newlines for them to work as intended in a description
 		#@TODO should it be wrapped at 74 chars (or 63 for first line), each line after the first indented with 1 space?
 		$description = str_replace("\r",'',
-				str_replace("\n","\\n",
-						str_replace(',','\,',
-								str_replace(';','\;',
-										str_replace('\\','\\\\',
-												$this->getText($appointment,$action,'calendar')
-										)
-								)
+			str_replace("\n","\\n",
+				str_replace(',','\,',
+					str_replace(';','\;',
+						str_replace('\\','\\\\',
+							$this->getText($appointment,$action,'calendar')
 						)
+					)
 				)
+			)
 		);
 		$feUser = $appointment->getFeUser();
 		$markerArray = array(
@@ -477,7 +474,7 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 */
 	protected function fileResource($resourcePath) {
 		//replace EXT: if it's in, and create a full path out of the resourcePath
-		$resourcePath = t3lib_div::getFileAbsFileName($resourcePath);
+		$resourcePath = GeneralUtility::getFileAbsFileName($resourcePath);
 		$resourceContent = is_file($resourcePath) && file_exists($resourcePath) ? @file_get_contents($resourcePath) : '';
 
 		return $resourceContent;
@@ -513,10 +510,10 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	 * Permissions are dictated by the relevant agenda record fields.
 	 *
 	 * @param string $action The email action [create / update / delete]
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment The appointment subject of this action
+	 * @param Appointment $appointment The appointment subject of this action
 	 * @return array Contains recipient-objects
 	 */
-	protected function collectAllowedRecipients($action, Tx_Appointments_Domain_Model_Appointment $appointment) {
+	protected function collectAllowedRecipients($action, Appointment $appointment) {
 		$recipientArray = array();
 
 		$agenda = $appointment->getAgenda();
@@ -540,10 +537,14 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 		if ($this->isActionAllowed($action, $agenda->getEmailFieldTypes())) {
 			$emailFormFieldValues = $appointment->getEmailFormFieldValues();
 			foreach ($emailFormFieldValues as $formFieldValue) {
-				// @TODO replace "new" calls for DI support
-				$emailObj = new Tx_Appointments_Domain_Model_SimpleEmailContainer();
-				$emailObj->setEmail($formFieldValue->getValue());
-				$recipientArray[] = $emailObj;
+				$email = $formFieldValue->getValue();
+				// we assume validation was applied, but not necessarily that the field was required
+				if (isset($email[0])) {
+					// @TODO replace "new" calls for DI support
+					$emailObj = new SimpleEmailContainer();
+					$emailObj->setEmail($email);
+					$recipientArray[] = $emailObj;
+				}
 			}
 		}
 
@@ -553,28 +554,26 @@ class Tx_Appointments_Service_EmailService implements t3lib_Singleton {
 	/**
 	 * Builds a link to the appointment (showAction) for use in email.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Appointment $appointment
+	 * @param Appointment $appointment
 	 * @param boolean $isHTML Returns a HTML link on TRUE, only the URL on FALSE
 	 * @return string The link
 	 */
-	protected function buildLink(Tx_Appointments_Domain_Model_Appointment $appointment, $isHTML = FALSE) {
+	protected function buildLink(Appointment $appointment, $isHTML = FALSE) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 
 		$arguments = array(
-				'appointment' => $appointment
+			'appointment' => $appointment
 		);
 
-		//after a quick look @ Tx_Fluid_ViewHelpers_Link_ActionViewHelper..
 		$uri = $uriBuilder
 			->setUseCacheHash(TRUE)
 			->setCreateAbsoluteUri(TRUE)
 			->uriFor('show', $arguments, 'Appointment', 'appointments', 'list');
 
-		$text = Tx_Extbase_Utility_Localization::translate('tx_appointments_list.email_link_label', $this->extensionName);
+		$text = LocalizationUtility::translate('tx_appointments_list.email_link_label', $this->extensionName);
 
 		$link = $isHTML ? '<a href="' . $uri . '">' . $text . '</a>' : $text . ': ' . $uri;
 
 		return $link;
 	}
 }
-?>

@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model\Agenda;
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +33,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Agenda_Month extends Tx_Appointments_Domain_Model_Agenda_AbstractContainer {
+class Month extends AbstractContainer {
 
 	/**
 	 * Days before the first month day in the first week
@@ -88,4 +88,3 @@ class Tx_Appointments_Domain_Model_Agenda_Month extends Tx_Appointments_Domain_M
 	}
 
 }
-?>

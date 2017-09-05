@@ -1,12 +1,32 @@
-<f:form.errors>
-	<div class="validation">
-		<div class="validation-errors">
-			<div class="validation-header"><f:translate key="tx_appointments_list.validation_errors" /></div>
-			<ul class="validation-error-messages">
-				<f:for each="{error.errors}" as="err">
-					<f:render partial="FormErrorsDetail" arguments="{entity: 'appointment', error: err, formFields: formFields}" />
-				</f:for>
-			</ul>
+<html data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:a="http://typo3.org/ns/Innologi/Appointments/ViewHelpers">
+
+<f:form.validationResults for="appointment">
+	<f:if condition="{validationResults.flattenedErrors}">
+		<div class="validation">
+			<div class="validation-errors">
+				<div class="validation-header"><f:translate key="tx_appointments_list.validation_errors" /></div>
+				<ul class="validation-error-messages">
+					<f:for each="{validationResults.flattenedErrors}" as="errors" key="property">
+						<li>
+							<h4 class="alert-title">{f:if(condition:errors.0.title, then:errors.0.title, else:'{property -> f:translate(key:\'property.appointment.{property}\')}')}</h4>
+							<ul>
+								<f:for each="{errors}" as="error">
+									<f:alias map="{errorKey: 'error.appointment.{property -> a:stripPropertyIndex()}.{error.code}'}">
+										<li>
+											<!-- {errorKey} -->
+											<f:translate key="{errorKey}">{error}</f:translate>
+										</li>
+									</f:alias>
+								</f:for>
+							</ul>
+						</li>
+					</f:for>
+				</ul>
+			</div>
 		</div>
-	</div>
-</f:form.errors>
+	</f:if>
+</f:form.validationResults>
+
+</html>

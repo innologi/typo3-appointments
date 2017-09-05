@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Controller;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use Innologi\Appointments\Mvc\Controller\ActionController;
+use Innologi\Appointments\Domain\Model\Agenda;
+use Innologi\Appointments\Domain\Model\Agenda\{Month, Weeks, Date, AbstractContainer};
 /**
  * Agenda Controller
  *
@@ -31,7 +35,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Controller_ActionController {
+class AgendaController extends ActionController {
 	#@TODO transform core functionality to a widget, then change the plugin(s?) so that the widget and the appointment-listAction are easily interchangable
 	/**
 	 * Indicates if user needs to be logged in to access action methods
@@ -39,13 +43,6 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 * @var boolean
 	 */
 	protected $requireLogin = FALSE; #@LOW be configurable?
-
-	/**
-	 * Indicates if CSRFprotect needs to check for method annotations.
-	 *
-	 * @var boolean
-	 */
-	protected $enableCsrfProtect = FALSE;
 
 	/**
 	 * action show month
@@ -99,15 +96,15 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 * Create and return a Month object for display as calendar/agenda.
 	 *
 	 * @param integer $monthModifier Relative modifier of month to get
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to display appointments from
+	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda The agenda to display appointments from
 	 * @param array $showTypes Types to show on the agenda
 	 * @param array $allowTypes Types to allow on the agenda
-	 * @return Tx_Appointments_Domain_Model_Agenda_Month
+	 * @return \Innologi\Appointments\Domain\Model\Agenda\Month
 	 */
-	protected function createAgendaMonth($monthModifier, Tx_Appointments_Domain_Model_Agenda $agenda, array $showTypes, array $allowTypes) {
-		$month = new Tx_Appointments_Domain_Model_Agenda_Month();
+	protected function createAgendaMonth($monthModifier, Agenda $agenda, array $showTypes, array $allowTypes) {
+		$month = new Month();
 
-		$start = new DateTime(); //will represent the first minute of the month
+		$start = new \DateTime(); //will represent the first minute of the month
 		$start->setDate($start->format('Y'),$start->format('m'), 1)->setTime(0,0);
 		//adjust $start per $monthModifier
 		if ($monthModifier !== 0) {
@@ -117,7 +114,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 
 		//set standard month properties
 		#$monthName = strftime('%B',$start->getTimestamp()); //DateTime::format doesn't heed locale, hence strftime()
-		$monthName = Tx_Extbase_Utility_Localization::translate('tx_appointments_agenda.month_'.$start->format('n'), $this->extensionName);
+		$monthName = LocalizationUtility::translate('tx_appointments_agenda.month_'.$start->format('n'), $this->extensionName);
 		$month->setName($monthName);
 		$month->setYear($start->format('Y'));
 
@@ -136,17 +133,17 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	 * Create and return a Weeks object for display as calendar/agenda.
 	 *
 	 * @param integer $weeksModifier Relative modifier of weeks to get
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to display appointments from
+	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda The agenda to display appointments from
 	 * @param array $showTypes Types to show on the agenda
 	 * @param array $allowTypes Types to allow on the agenda
-	 * @return Tx_Appointments_Domain_Model_Agenda_Weeks
+	 * @return \Innologi\Appointments\Domain\Model\Agenda\Weeks
 	 */
-	protected function createAgendaWeeks($weeksModifier, Tx_Appointments_Domain_Model_Agenda $agenda, array $showTypes, array $allowTypes) {
-		$weeks = new Tx_Appointments_Domain_Model_Agenda_Weeks();
+	protected function createAgendaWeeks($weeksModifier, Agenda $agenda, array $showTypes, array $allowTypes) {
+		$weeks = new Weeks();
 		$weeksBefore = intval($this->settings['agendaWeeksBeforeCurrent']);
 		$weeksAfter = intval($this->settings['agendaWeeksAfterCurrent']);
 
-		$start = new DateTime(); //will represent the first minute of the month
+		$start = new \DateTime(); //will represent the first minute of the month
 		$daysBack = $start->setTime(0,0)->format('N')-1;
 		if ($daysBack) {
 			$start->modify("-$daysBack days");
@@ -168,17 +165,17 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	/**
 	 * Sets general agenda container properties.
 	 *
-	 * @param Tx_Appointments_Domain_Model_Agenda_AbstractContainer $container The container object to set properties in
+	 * @param \Innologi\Appointments\Domain\Model\Agenda\AbstractContainer $container The container object to set properties in
 	 * @param integer $modifier Agenda navigation modifier
 	 * @param integer $modEndModifier Modifier value for container endtime
 	 * @param string  $modEndUnit Modifier unit for container endtime
-	 * @param Tx_Appointments_Domain_Model_Agenda $agenda The agenda to display appointments from
+	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda The agenda to display appointments from
 	 * @param array $showTypes Types to show on the agenda
 	 * @param array $allowTypes Types to allow on the agenda
-	 * @param DateTime $start container starttime
+	 * @param \DateTime $start container starttime
 	 * @return void
 	 */
-	protected function setGeneralContainerProperties(Tx_Appointments_Domain_Model_Agenda_AbstractContainer $container, $modifier, $modEndModifier, $modEndUnit, Tx_Appointments_Domain_Model_Agenda $agenda, array $showTypes, array $allowTypes, DateTime $start) {
+	protected function setGeneralContainerProperties(AbstractContainer $container, $modifier, $modEndModifier, $modEndUnit, Agenda $agenda, array $showTypes, array $allowTypes, \DateTime $start) {
 		//set standard container properties
 		$container->setMaxBack(-intval($this->settings['agendaBack']));
 		$container->setBackModifier($modifier-1);
@@ -186,7 +183,7 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 		$container->setForwardModifier($modifier+1);
 
 		//will represent the first minute of the next modifier unit
-		$end = new DateTime($start->format('Y-m-d\TH:i:s'),$start->getTimezone());
+		$end = new \DateTime($start->format('Y-m-d\TH:i:s'),$start->getTimezone());
 		$end->modify("+$modEndModifier $modEndUnit");
 
 		$allowCreateTypes = array();
@@ -208,11 +205,11 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 				$this->appointmentRepository->findBetween($agenda, $start, $end, $showTypes, 1)
 		);
 		while ($start->getTimestamp() < $endTime) {
-			$week = new Tx_Extbase_Persistence_ObjectStorage();
+			$week = new ObjectStorage();
 			for ($i = intval($start->format('N')); $i <= 7 && $start->getTimestamp() < $endTime; $i++) {
-				$date = new Tx_Appointments_Domain_Model_Agenda_Date();
+				$date = new Date();
 				$date->setDayNumber($start->format('j'));
-				$monthShort = Tx_Extbase_Utility_Localization::translate('tx_appointments_agenda.month_s'.$start->format('n'), $this->extensionName); #@TODO this can be stored in an array or smth .. or not necessary if we use locales
+				$monthShort = LocalizationUtility::translate('tx_appointments_agenda.month_s'.$start->format('n'), $this->extensionName); #@TODO this can be stored in an array or smth .. or not necessary if we use locales
 				$date->setMonthShort($monthShort);
 				$fullDate = $start->format('d-m-Y');
 				$date->setTimestamp($start->getTimestamp());
@@ -233,4 +230,3 @@ class Tx_Appointments_Controller_AgendaController extends Tx_Appointments_MVC_Co
 	}
 
 }
-?>

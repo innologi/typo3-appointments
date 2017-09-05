@@ -18,14 +18,6 @@ plugin.tx_appointments {
 		storagePid = 
 	}
 	settings {
-		# @TODO llang
-		# cat=plugin.tx_appointments/a_extconf/045; type=int+; label=XHR page type
-		type.xhr = 201411301983
-		
-		# @TODO remove this when eid is utilized, preferably before TER release!
-		# cat=plugin.tx_appointments/a_extconf/046; type=int+; label=XHR page uid: For JS CSRF-security-levels to work, set this to a page you're running the extensions plugin(s) on!
-		pages.xhr = 
-		
 		# cat=plugin.tx_appointments/a_extconf/050; type=int+; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_freeSlotInMinutes
 		freeSlotInMinutes = 15
 		# cat=plugin.tx_appointments/a_extconf/060; type=boolean; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_shiftSlotPerInterval
@@ -49,6 +41,10 @@ plugin.tx_appointments {
 		# cat=plugin.tx_appointments/d_agenda/050; type=int; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_agendaWeeksAfterCurrent
 		agendaWeeksAfterCurrent = 0
 	}
+	css {
+		# cat=plugin.tx_appointments/b_javascript/005; type=string; label=LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:ts_css_frontendFile
+		frontendFile = EXT:appointments/Resources/Public/Css/frontend.min.css
+	}
 	js {
 		# cat=plugin.tx_appointments/b_javascript/010; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_includeJquery 
 		includeJquery = 1
@@ -56,13 +52,11 @@ plugin.tx_appointments {
 		includeJqueryUI = 1
 		# cat=plugin.tx_appointments/b_javascript/030; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_includeJS
 		includeJS = 1
-		# cat=plugin.tx_appointments/b_javascript/040; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_toFooter
-		toFooter = 1
 		# cat=plugin.tx_appointments/b_javascript/011; type=string; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_jQueryCDN
-		jQueryCDN = https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
+		jQueryCDN = https://code.jquery.com/jquery-3.2.1.min.js
 		
 		uiLibFile = EXT:appointments/Resources/Public/Scripts/jquery-ui-1.10.2.custom.min.js
-		uiCssFile = EXT:appointments/Resources/Public/Styles/smoothness/jquery-ui-1.10.2.custom.css
+		uiCssFile = EXT:appointments/Resources/Public/Css/smoothness/jquery-ui-1.10.2.custom.css
 		libFile = EXT:appointments/Resources/Private/Scripts/jslib.closure.js
 		
 		# cat=plugin.tx_appointments/b_javascript/050; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_warnOnLeave

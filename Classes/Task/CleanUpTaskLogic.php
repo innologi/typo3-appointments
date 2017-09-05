@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Task;
 /***************************************************************
  *  Copyright notice
 *
@@ -23,7 +23,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
+use Innologi\Appointments\Core\BootstrapTask;
+use Innologi\Appointments\Domain\Repository\AppointmentRepository;
 /**
  * CleanUp Scheduler Task business logic
  *
@@ -31,7 +32,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Task_CleanUpTaskLogic extends Tx_Appointments_Core_BootstrapTask {
+class CleanUpTaskLogic extends BootstrapTask {
 
 	/**
 	 * Age
@@ -43,22 +44,14 @@ class Tx_Appointments_Task_CleanUpTaskLogic extends Tx_Appointments_Core_Bootstr
 	/**
 	 * appointmentRepository
 	 *
-	 * @var Tx_Appointments_Domain_Repository_AppointmentRepository
+	 * @var AppointmentRepository
 	 */
 	protected $appointmentRepository;
-
-	/**
-	 * formFieldValueRepository
-	 *
-	 * @var Tx_Appointments_Domain_Repository_FormFieldValueRepository
-	 */
-	protected $formFieldValueRepository;
 
 	/**
 	 * __construct
 	 *
 	 * @param integer $age
-	 * @throws Exception
 	 * @return void
 	 */
 	public function __construct($age) {
@@ -74,8 +67,7 @@ class Tx_Appointments_Task_CleanUpTaskLogic extends Tx_Appointments_Core_Bootstr
 	 * @return void
 	 */
 	protected function initRepositories() {
-		$this->appointmentRepository = $this->objectManager->get('Tx_Appointments_Domain_Repository_AppointmentRepository');
-		$this->formFieldValueRepository = $this->objectManager->get('Tx_Appointments_Domain_Repository_FormFieldValueRepository');
+		$this->appointmentRepository = $this->objectManager->get(AppointmentRepository::class);
 	}
 
 	/**
@@ -86,18 +78,10 @@ class Tx_Appointments_Task_CleanUpTaskLogic extends Tx_Appointments_Core_Bootstr
 	public function execute() {
 		$expiredAppointments = $this->appointmentRepository->findExpiredByAge($this->age);
 		foreach ($expiredAppointments as $appointment) {
-			$appointment instanceof Tx_Appointments_Domain_Model_Appointment;
 			$this->appointmentRepository->remove($appointment);
-		}
-
-		//we need to delete these manually because of the cascade remove problem
-		$orphanedFormFieldValues = $this->formFieldValueRepository->findOrphaned();
-		foreach ($orphanedFormFieldValues as $formFieldValue) {
-			$this->formFieldValueRepository->remove($formFieldValue);
 		}
 
 		return TRUE;
 	}
 
 }
-?>

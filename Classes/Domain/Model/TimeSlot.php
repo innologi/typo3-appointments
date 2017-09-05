@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +33,6 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_TimeSlot extends Tx_Appointments_Domain_Model_AbstractSlot {
+class TimeSlot extends AbstractSlot {
 
 }
-?>

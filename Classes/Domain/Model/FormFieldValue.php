@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * FormFieldValue domain model
  *
@@ -31,7 +31,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObject_AbstractEntity {
+class FormFieldValue extends AbstractEntity {
 
 	/**
 	 * value
@@ -48,7 +48,7 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	 * No use in making these lazy, because when formFieldValues are called,
 	 * formfields are ALWAYS called as well to put the value in context.
 	 *
-	 * @var Tx_Appointments_Domain_Model_FormField
+	 * @var \Innologi\Appointments\Domain\Model\FormField
 	 * @validate NotEmpty
 	 */
 	protected $formField;
@@ -75,7 +75,7 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	/**
 	 * Returns the formField
 	 *
-	 * @return Tx_Appointments_Domain_Model_FormField $formField
+	 * @return \Innologi\Appointments\Domain\Model\FormField
 	 */
 	public function getFormField() {
 		return $this->formField;
@@ -84,21 +84,11 @@ class Tx_Appointments_Domain_Model_FormFieldValue extends Tx_Extbase_DomainObjec
 	/**
 	 * Sets the formField
 	 *
-	 * @param Tx_Appointments_Domain_Model_FormField $formField
+	 * @param \Innologi\Appointments\Domain\Model\FormField $formField
 	 * @return void
 	 */
-	public function setFormField(Tx_Appointments_Domain_Model_FormField $formField) {
+	public function setFormField(FormField $formField) {
 		$this->formField = $formField;
 	}
 
-	/**
-	 * Returns storage index
-	 *
-	 * @return string
-	 */
-	public function getIndex() {
-		return $this->index; #@TODO cleanup
-	}
-
 }
-?>

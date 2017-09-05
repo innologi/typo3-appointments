@@ -1,15 +1,18 @@
+<html data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+
 <table class="single-appointment" summary="{f:translate(key:'tx_appointments_list.summary_show')}">
 	<caption><f:translate key="tx_appointments_list.caption_show" /></caption>
 	
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_appointment.type" />
+			<f:translate key="property.appointment.type" />
 		</td>
-		<td>{appointment.type.name}</td>
+		<td><f:format.htmlentities>{appointment.type.name}</f:format.htmlentities></td>
 	</tr>
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_appointment.begin_time.date" />
+			<f:translate key="property.appointment.beginTime.date" />
 		</td>
 		<td>
 			<f:format.date format="d-m-Y">{appointment.beginTime}</f:format.date>
@@ -17,7 +20,7 @@
 	</tr>
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_appointment.begin_time.time" />
+			<f:translate key="property.appointment.beginTime.time" />
 		</td>
 		<td>
 			<f:format.date format="H:i">{appointment.beginTime}</f:format.date>
@@ -29,9 +32,9 @@
 	<f:if condition="{appointment.feUser}">
 		<tr>
 			<td scope="row">
-				<f:translate key="tx_appointments_domain_model_appointment.fe_user" />
+				<f:translate key="property.appointment.feUser" />
 			</td>
-			<td>{appointment.feUser.name}</td>
+			<td>{f:if(condition:appointment.feUser.name, then:appointment.feUser.name, else:appointment.feUser.username)}</td>
 		</tr>
 	</f:if>
 	
@@ -42,7 +45,7 @@
 	<f:if condition="{formFieldValues}">
 		<tr>
 			<th colspan="2" scope="col">
-				<f:translate key="tx_appointments_domain_model_appointment.form_field_values" />
+				<f:translate key="property.appointment.formFieldValues" />
 			</th>
 		</tr>
 		<f:for each="{formFieldValues}" as="value">
@@ -54,6 +57,7 @@
 	</f:if>
 	
 	<f:if condition="{showMore}">
+		<tr>
 		<f:if condition="{appointment.type.addressDisable}">
 			<f:then>
 				<!-- TYPO3 4.5 compatibility -->
@@ -61,7 +65,7 @@
 			<f:else>
 				<tr>
 					<th colspan="2" scope="col">
-						<f:translate key="tx_appointments_domain_model_appointment.address" />
+						<f:translate key="property.appointment.address" />
 					</th>
 				</tr>
 				<f:render partial="Address/Properties" arguments="{address : appointment.address, type : appointment.type}" />
@@ -71,26 +75,27 @@
 				</tr>
 			</f:else>
 		</f:if>
-		
 		<tr>
-			<tr>
-				<th colspan="2" scope="col">
-					<f:translate key="tx_appointments_domain_model_appointment.special_fields" />
-				</th>
-			</tr>
+			<th colspan="2" scope="col">
+				<f:translate key="property.appointment.specialFields" />
+			</th>
+		</tr>
+		<tr>
 			<td scope="row">
-				<f:translate key="tx_appointments_domain_model_appointment.notes" />
+				<f:translate key="property.appointment.notes" />
 			</td>
-			<td>{appointment.notes}</td>
+			<td><f:format.html>{appointment.notes}</f:format.html></td>
 		</tr>
 	</f:if>
 	
 	<f:if condition="{superUser}">
 		<tr>
 			<td scope="row">
-				<f:translate key="tx_appointments_domain_model_appointment.notes_su" />
+				<f:translate key="property.appointment.notesSu" />
 			</td>
-			<td>{appointment.notesSu}</td>
+			<td><f:format.html>{appointment.notesSu}</f:format.html></td>
 		</tr>
 	</f:if>
 </table>
+
+</html>

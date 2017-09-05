@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model\Agenda;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Abstract Agenda Data Container
  *
@@ -33,7 +34,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-abstract class Tx_Appointments_Domain_Model_Agenda_AbstractContainer extends Tx_Extbase_DomainObject_AbstractEntity {
+abstract class AbstractContainer extends AbstractEntity {
 
 	/**
 	 * name
@@ -80,7 +81,7 @@ abstract class Tx_Appointments_Domain_Model_Agenda_AbstractContainer extends Tx_
 	/**
 	 * Array of week storages
 	 *
-	 * @var Array<Tx_Extbase_Persistence_ObjectStorage>
+	 * @var Array<\TYPO3\CMS\Extbase\Persistence\ObjectStorage>
 	 */
 	protected $weeks; #@LOW why not array<array> again?
 
@@ -228,17 +229,17 @@ abstract class Tx_Appointments_Domain_Model_Agenda_AbstractContainer extends Tx_
 	/**
 	 * Adds a week storage
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $week
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $week
 	 * @return void
 	 */
-	public function addWeek(Tx_Extbase_Persistence_ObjectStorage $week) {
+	public function addWeek(ObjectStorage $week) {
 		$this->weeks[] = $week;
 	}
 
 	/**
 	 * Returns the weeks
 	 *
-	 * @return Array<Tx_Extbase_Persistence_ObjectStorage> $weeks
+	 * @return array $weeks
 	 */
 	public function getWeeks() {
 		return $this->weeks;
@@ -247,7 +248,7 @@ abstract class Tx_Appointments_Domain_Model_Agenda_AbstractContainer extends Tx_
 	/**
 	 * Sets the weeks
 	 *
-	 * @param Array<Tx_Extbase_Persistence_ObjectStorage> $weeks
+	 * @param array $weeks
 	 * @return void
 	 */
 	public function setWeeks($weeks) {
@@ -255,4 +256,3 @@ abstract class Tx_Appointments_Domain_Model_Agenda_AbstractContainer extends Tx_
 	}
 
 }
-?>

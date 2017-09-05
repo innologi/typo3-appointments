@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Type domain model
  *
@@ -31,7 +32,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_AbstractEntity {
+class Type extends AbstractEntity {
 
 	/**
 	 * Name of type
@@ -417,12 +418,11 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	 * Lazy although a clone is modified in new/edit cases, after which count() will prove useless.
 	 * To remedy that, we convert the modified clone toArray() once we need to count, so we can keep it lazy.
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormField>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormField>
 	 * @lazy
 	 * @cascade remove
 	 */
 	protected $formFields;
-	#@TODO find out if we can put edit to cache, paired with a typoscript clearcache command! especially test a validation error then, as that won't update the record yet thus there would be no clearcache. or does clearcache only work through TCA?
 
 	/**
 	 * __construct
@@ -435,7 +435,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	}
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
 	 *
 	 * @return void
 	 */
@@ -445,7 +445,7 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->formFields = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->formFields = new ObjectStorage();
 	}
 
 	/**
@@ -1410,27 +1410,27 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Adds a FormField
 	 *
-	 * @param Tx_Appointments_Domain_Model_FormField $formField
+	 * @param \Innologi\Appointments\Domain\Model\FormField $formField
 	 * @return void
 	 */
-	public function addFormField(Tx_Appointments_Domain_Model_FormField $formField) {
+	public function addFormField(FormField $formField) {
 		$this->formField->attach($formField);
 	}
 
 	/**
 	 * Removes a FormField
 	 *
-	 * @param Tx_Appointments_Domain_Model_FormField $formFieldToRemove The FormField to be removed
+	 * @param \Innologi\Appointments\Domain\Model\FormField $formFieldToRemove The FormField to be removed
 	 * @return void
 	 */
-	public function removeFormField(Tx_Appointments_Domain_Model_FormField $formFieldToRemove) {
+	public function removeFormField(FormField $formFieldToRemove) {
 		$this->formField->detach($formFieldToRemove);
 	}
 
 	/**
 	 * Returns the formFields
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormField> $formFields
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getFormFields() {
 		return $this->formFields;
@@ -1439,12 +1439,11 @@ class Tx_Appointments_Domain_Model_Type extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Sets the formFields
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Appointments_Domain_Model_FormField> $formFields
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $formFields
 	 * @return void
 	 */
-	public function setFormField(Tx_Extbase_Persistence_ObjectStorage $formFields) {
+	public function setFormField(ObjectStorage $formFields) {
 		$this->formFields = $formFields;
 	}
 
 }
-?>

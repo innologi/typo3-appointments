@@ -1,4 +1,6 @@
 <?php
+namespace Innologi\Appointments\Domain\Model;
+use Innologi\Appointments\Persistence\KeyObjectStorage;
 
 /***************************************************************
  *  Copyright notice
@@ -33,12 +35,12 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Domain_Model_DateSlot extends Tx_Appointments_Domain_Model_AbstractSlot {
+class DateSlot extends AbstractSlot {
 
 	/**
 	 * Time Slots
 	 *
-	 * @var Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_TimeSlot>
+	 * @var \Innologi\Appointments\Persistence\KeyObjectStorage<\Innologi\Appointments\Domain\Model\TimeSlot>
 	 */
 	protected $timeSlots;
 
@@ -60,7 +62,7 @@ class Tx_Appointments_Domain_Model_DateSlot extends Tx_Appointments_Domain_Model
 	}
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
 	 *
 	 * @return void
 	 */
@@ -70,33 +72,33 @@ class Tx_Appointments_Domain_Model_DateSlot extends Tx_Appointments_Domain_Model
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->timeSlots = new Tx_Appointments_Persistence_KeyObjectStorage();
+		$this->timeSlots = new KeyObjectStorage();
 	}
 
 	/**
 	 * Adds a TimeSlot
 	 *
-	 * @param Tx_Appointments_Domain_Model_TimeSlot $timeSlot
+	 * @param \Innologi\Appointments\Domain\Model\TimeSlot $timeSlot
 	 * @return void
 	 */
-	public function addTimeSlot(Tx_Appointments_Domain_Model_TimeSlot $timeSlot) {
+	public function addTimeSlot(TimeSlot $timeSlot) {
 		$this->timeSlots->attach($timeSlot);
 	}
 
 	/**
 	 * Removes a TimeSlot
 	 *
-	 * @param Tx_Appointments_Domain_Model_TimeSlot $timeSlotToRemove The TimeSlot to be removed
+	 * @param \Innologi\Appointments\Domain\Model\TimeSlot $timeSlotToRemove The TimeSlot to be removed
 	 * @return void
 	 */
-	public function removeTimeSlot(Tx_Appointments_Domain_Model_TimeSlot $timeSlotToRemove) {
+	public function removeTimeSlot(TimeSlot $timeSlotToRemove) {
 		$this->timeSlots->detach($timeSlotToRemove);
 	}
 
 	/**
 	 * Returns the timeSlots
 	 *
-	 * @return Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_TimeSlot> $timeSlots
+	 * @return \Innologi\Appointments\Persistence\KeyObjectStorage
 	 */
 	public function getTimeSlots() {
 		return $this->timeSlots;
@@ -105,10 +107,10 @@ class Tx_Appointments_Domain_Model_DateSlot extends Tx_Appointments_Domain_Model
 	/**
 	 * Sets the timeSlots
 	 *
-	 * @param Tx_Appointments_Persistence_KeyObjectStorage<Tx_Appointments_Domain_Model_TimeSlot> $timeSlot
+	 * @param \Innologi\Appointments\Persistence\KeyObjectStorage
 	 * @return void
 	 */
-	public function setTimeSlots(Tx_Appointments_Persistence_KeyObjectStorage $timeSlots) {
+	public function setTimeSlots(KeyObjectStorage $timeSlots) {
 		$this->timeSlots = $timeSlots;
 	}
 
@@ -132,4 +134,3 @@ class Tx_Appointments_Domain_Model_DateSlot extends Tx_Appointments_Domain_Model
 	}
 
 }
-?>

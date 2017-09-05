@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Core;
 /***************************************************************
  *  Copyright notice
 *
@@ -23,7 +23,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
+use TYPO3\CMS\Extbase\Core\Bootstrap;
 /**
  * Extbase Bootstrap for tasks (pre-CommandControllers)
  *
@@ -31,7 +31,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Core_BootstrapTask extends Tx_Extbase_Core_Bootstrap {
+class BootstrapTask extends Bootstrap {
 
 	/**
 	 * Extension name
@@ -101,5 +101,3 @@ class Tx_Appointments_Core_BootstrapTask extends Tx_Extbase_Core_Bootstrap {
 	}
 
 }
-
-?>

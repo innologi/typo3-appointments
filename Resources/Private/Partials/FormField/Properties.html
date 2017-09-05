@@ -1,35 +1,13 @@
-{namespace v=Tx_Vhs_ViewHelpers}
-<!-- FormField check required in case it was removed later on -->
-<!-- @TODO too much logic in view, move it to controller -->
+<html data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+
 <f:if condition="{formField}">
 	<tr>
-		<td scope="row">
-			{formField.label}
-			<!-- @LOW allow enablers not to be shown if so desired? -->
-		</td>
+		<td scope="row"><f:format.html>{formField.label}</f:format.html></td>
 		<td>
-			<v:switch value="{formField.fieldType}">
-				<v:case case="1" break="TRUE"> <!-- Boolean / Checkbox -->
-					<f:if condition="{formFieldValue.value} == 1">
-						<f:then>
-							<f:translate key="tx_appointments_list.yes" />
-						</f:then>
-						<f:else>
-							<f:translate key="tx_appointments_list.no" />
-						</f:else>
-					</f:if>
-				</v:case>
-				<v:case case="5"> <!-- Radio -->
-				</v:case>
-				<v:case case="2" break="TRUE"> <!-- Select -->
-					<v:iterator.extract key="{formFieldValue.value}" content="{formField.choicesArray}" recursive="FALSE"/>
-				</v:case>
-				<v:case case="3"> <!-- Textsmall / Input -->
-				</v:case>
-				<v:case case="4"> <!-- Textlarge / Textarea -->
-					{formFieldValue.value}
-				</v:case>
-			</v:switch>
+			<f:render partial="FormField/Property{formField.fieldType}" arguments="{formField:formField, formFieldValue:formFieldValue}" />
 		</td>
 	</tr>
 </f:if>
+
+</html>

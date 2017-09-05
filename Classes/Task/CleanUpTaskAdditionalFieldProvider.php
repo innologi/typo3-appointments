@@ -1,5 +1,5 @@
 <?php
-
+namespace Innologi\Appointments\Task;
 /***************************************************************
  *  Copyright notice
 *
@@ -23,7 +23,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
+use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 /**
  * Additional Field Provider for CleanUp Task. Adds 'Age' field.
  *
@@ -31,7 +32,7 @@
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Tx_Appointments_Task_CleanUpTaskAdditionalFieldProvider implements tx_scheduler_AdditionalFieldProvider {
+class CleanUpTaskAdditionalFieldProvider implements AdditionalFieldProviderInterface {
 
 	/**
 	 * Additional field
@@ -44,11 +45,11 @@ class Tx_Appointments_Task_CleanUpTaskAdditionalFieldProvider implements tx_sche
 	 * Add field to scheduler form.
 	 *
 	 * @param array $taskInfo Values of the fields from the add/edit task form
-	 * @param tx_scheduler_Task $task The task object being edited. Null when adding a task!
-	 * @param tx_scheduler_Module $schedulerModule Reference to the scheduler backend module
+	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task The task object being edited. Null when adding a task!
+	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
 	 * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
 	 */
-	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $schedulerModule) {
+	public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule) {
 		$field = $this->field;
 		//set field value
 		if (empty($taskInfo[$field])) {
@@ -76,15 +77,15 @@ class Tx_Appointments_Task_CleanUpTaskAdditionalFieldProvider implements tx_sche
 	 * Validates the fields' values
 	 *
 	 * @param array $submittedData An array containing the data submitted by the add/edit task form
-	 * @param tx_scheduler_Module $schedulerModule Reference to the scheduler backend module
+	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
 	 * @return boolean TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
-	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $schedulerModule) {
+	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule) {
 		//validate age
 		if (!is_numeric($submittedData[$this->field]) || intval($submittedData[$this->field]) < 1) {
 			$schedulerModule->addMessage(
 					$GLOBALS['LANG']->sL('LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_task_noAge'),
-					t3lib_FlashMessage::ERROR
+					FlashMessage::ERROR
 			);
 			$result = FALSE;
 		} else {
@@ -98,13 +99,11 @@ class Tx_Appointments_Task_CleanUpTaskAdditionalFieldProvider implements tx_sche
 	 * Save field value in task object
 	 *
 	 * @param array $submittedData An array containing the data submitted by the add/edit task form
-	 * @param tx_scheduler_Task $task Reference to the task object
+	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the task object
 	 * @return void
 	 */
-	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task) {
+	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$task->setAge(intval($submittedData[$this->field]));
 	}
 
 }
-
-?>

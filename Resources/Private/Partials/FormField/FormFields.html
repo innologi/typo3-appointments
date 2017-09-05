@@ -1,9 +1,11 @@
-{namespace v=Tx_Vhs_ViewHelpers}
-{namespace a=Tx_Appointments_ViewHelpers}
+<html data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:a="http://typo3.org/ns/Innologi/Appointments/ViewHelpers">
+	
 <f:if condition="{formField}">
 	<div class="formfield-wrap{f:if(condition:formField.enableField,then:' enablefield eval-f{formField.enableField.uid}-{formField.enableValue}')}">
 		<label>
-			{formField.label}
+			<f:format.htmlentities>{formField.label}</f:format.htmlentities>
 			
 			<f:if condition="{formFieldValue.uid}">
 				<f:then>
@@ -13,75 +15,8 @@
 					<f:form.hidden property="formFieldValues.i{formField.uid}.formField" value="{formField}" />
 				</f:else>
 			</f:if>
-		
-			<v:switch value="{formField.fieldType}">
-				<v:case case="1" break="TRUE"> <!-- Boolean / Checkbox -->
-					<f:form.checkbox
-						id="appointments-formfield-{formField.uid}"
-						property="formFieldValues.i{formField.uid}.value"
-						value="1"
-						checked="{formFieldValue.value} == 1"
-						class="formfield-id-{formField.uid} checkbox session"
-					/>
-				</v:case>
-				<v:case case="2" break="TRUE">  <!-- Select -->
-					<f:if condition="{formField.validationTypes}">
-						<span class="required">*</span>
-					</f:if>
-					<br />
-					<a:form.select
-						id="appointments-formfield-{formField.uid}"
-						property="formFieldValues.i{formField.uid}.value"
-						options="{formField.choicesArray}"
-						value="{formFieldValue.value}"
-						class="formfield-id-{formField.uid} select session"
-					/>
-				</v:case>
-				<v:case case="3" break="TRUE"> <!-- Textsmall / Input -->
-					<f:if condition="{formField.validationTypes}">
-						<span class="required">*</span>
-					</f:if>
-					<br />
-					<!-- @TODO use data attributes instead, once I can go HTML5-only -->
-					<a:form.textfield
-						id="appointments-formfield-{formField.uid}"
-						property="formFieldValues.i{formField.uid}.value"
-						value="{formFieldValue.value}"
-						class="formfield-id-{formField.uid} textinput{f:if(condition:formField.isDate,then:' datepicker')} session"
-						required="{f:if(condition:formField.validationTypes,then:1)}"
-						realPlaceholder="{f:if(condition:formField.isDate,then:'dd-mm-jjjj')}"
-					/>
-				</v:case>
-				<v:case case="4" break="TRUE"> <!-- Textlarge / Textarea -->
-					<f:if condition="{formField.validationTypes}">
-						<span class="required">*</span>
-					</f:if>
-					<br />
-					<a:form.textarea
-						id="appointments-formfield-{formField.uid}"
-						property="formFieldValues.i{formField.uid}.value"
-						value="{formFieldValue.value}"
-						cols="40" rows="15"
-						class="formfield-id-{formField.uid} session"
-					/>
-				</v:case>
-				<v:case case="5">  <!-- Radio -->
-					<f:if condition="{formField.validationTypes}">
-						<span class="required">*</span>
-					</f:if>
-					<br />
-					<f:for each="{formField.choicesArray}" as="choiceValue" key="choiceKey" iteration="choiceIterator">
-						<a:form.radio
-							id="appointments-formfield-{formField.uid}-{choiceIterator.index}"
-							property="formFieldValues.i{formField.uid}.value"
-							value="{choiceKey}"
-							checked="{0:formFieldValue.value} == {0:choiceKey}"
-							class="formfield-id-{formField.uid} radio session"
-						/>
-						{choiceValue}
-					</f:for>
-				</v:case>
-			</v:switch>
+			
+			<f:render partial="FormField/FormField{formField.fieldType}" arguments="{formField:formField, formFieldValue:formFieldValue}" />
 		</label>
 		
 		<f:if condition="{formField.csh}">
@@ -89,3 +24,5 @@
 		</f:if>
 	</div>
 </f:if>
+
+</html>

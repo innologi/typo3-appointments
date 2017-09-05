@@ -1,30 +1,31 @@
-{namespace v=Tx_Vhs_ViewHelpers}
+<html data-namespace-typo3-fluid="true"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+	
 <f:if condition="{type.addressEnableName}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address.name" />
+			<f:translate key="property.appointment.address.name" />
 		</td>
-		<td>{address.name}</td>
+		<td><f:format.html>{address.name}</f:format.html></td>
 	</tr>
 </f:if>
 
 <f:if condition="{type.addressEnableSecurity}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address.social_security_number" />
+			<f:translate key="property.appointment.address.socialSecurityNumber" />
 		</td>
-		<td>{address.socialSecurityNumber}</td>
+		<td><f:format.html>{address.socialSecurityNumber}</f:format.html></td>
 	</tr>
 </f:if>
 
 <f:if condition="{type.addressEnableGender}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address.gender" />
+			<f:translate key="property.appointment.address.gender" />
 		</td>
 		<td>
-			<!-- @TODO lose the vhs dependency by creating a simple VH that simply gets an array value by key? would be a speed up. Also do this for formfield -->
-			<v:iterator.extract key="{address.gender}" content="{m: '{f:translate(key: \'tx_appointments_domain_model_address.gender.m\')}', f: '{f:translate(key: \'tx_appointments_domain_model_address.gender.f\')}'}" recursive="FALSE"/>
+			<f:translate key="property.appointment.address.gender.{address.gender}" />
 		</td>
 	</tr>
 </f:if>
@@ -32,7 +33,7 @@
 <f:if condition="{type.addressEnableBirthday}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address.birthday" />
+			<f:translate key="property.appointment.address.birthday" />
 		</td>
 		<td><f:format.date format="d-m-Y">{address.birthday}</f:format.date></td>
 	</tr>
@@ -41,13 +42,10 @@
 <f:if condition="{type.addressEnableAddress}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address" />
+			<f:translate key="property.appointment.address.address" />
 		</td>
 		<td>
-			{address.address}
-			<br />
-			{address.zip}
-			{address.city}
+			<f:format.html>{address.address}<br />{address.zip} {address.city}</f:format.html>
 		</td>
 	</tr>
 </f:if>
@@ -55,8 +53,10 @@
 <f:if condition="{type.addressEnableEmail}">
 	<tr>
 		<td scope="row">
-			<f:translate key="tx_appointments_domain_model_address.email" />
+			<f:translate key="property.appointment.address.email" />
 		</td>
-		<td>{address.email}</td>
+		<td><f:format.html>{address.email}</f:format.html></td>
 	</tr>
 </f:if>
+
+</html>
