@@ -163,7 +163,6 @@
 			<label index="property.appointment.formFieldValues">Additional information</label>
 			<label index="property.appointment.address">Name and address information</label>
 			<label index="property.appointment.feUser">Created by</label>
-			<label index="property.appointment.address">Address</label>
 			<label index="property.appointment.address.name">Name</label>
 			<label index="property.appointment.address.firstName">First name</label>
 			<label index="property.appointment.address.middleName">Middle name</label>
@@ -350,7 +349,6 @@
 			<label index="property.appointment.formFieldValues">Aanvullende informatie</label>
 			<label index="property.appointment.address">NAW gegevens</label>
 			<label index="property.appointment.feUser">Aangemaakt door</label>
-			<label index="property.appointment.address">Adres</label>
 			<label index="property.appointment.address.name">Naam</label>
 			<label index="property.appointment.address.firstName">Voornaam</label>
 			<label index="property.appointment.address.middleName">Tussenvoegsel</label>
