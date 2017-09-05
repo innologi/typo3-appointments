@@ -22,7 +22,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'module' => '',
 	'state' => 'stable',
 	'internal' => '',
-	'uploadfolder' => '0',
+	'uploadfolder' => 0,
 	'createDirs' => '',
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
@@ -30,12 +30,18 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '1.0.1',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '4.5.0-6.2.99',
-			'tt_address' => '2.2.1',
+			'php' => '7.1',
+			'typo3' => '8.7.0-8.7.99',
+			'tt_address' => '3.0.1',
 		),
 		'conflicts' => array(
 		),
 		'suggests' => array(
 		),
 	),
+	'autoload' => array(
+		'psr-4' => array(
+			'Innologi\\Appointments\\' => 'Classes'
+		)
+	)
 );
