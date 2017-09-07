@@ -28,6 +28,7 @@ plugin.tx_appointments {
 					jQuery.if.value = {$plugin.tx_appointments.js.includeJquery}
 					jQuery.if.equals = 1
 					jQuery.forceOnTop = 1
+					jQuery.placeInFooter = 1
 					
 					jQueryUI = {$plugin.tx_appointments.js.uiLibFile}
 					jQueryUI.if.value = {$plugin.tx_appointments.js.includeJqueryUI}
