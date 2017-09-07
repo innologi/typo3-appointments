@@ -1,9 +1,8 @@
 plugin.tx_appointments {
 	view {
-		#@TODO deprecated!
-		templateRootPath = {$plugin.tx_appointments.view.templateRootPath}
-		partialRootPath = {$plugin.tx_appointments.view.partialRootPath}
-		layoutRootPath = {$plugin.tx_appointments.view.layoutRootPath}
+		templateRootPaths.10 = {$plugin.tx_appointments.view.templateRootPath}
+		partialRootPaths.10 = {$plugin.tx_appointments.view.partialRootPath}
+		layoutRootPaths.10 = {$plugin.tx_appointments.view.layoutRootPath}
 	}
 	persistence {
 		storagePid = {$plugin.tx_appointments.persistence.storagePid}
