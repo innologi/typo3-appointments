@@ -1,8 +1,3 @@
-config.tx_extbase.objects {
-	Innologi\Appointments\Service\CsrfProtectServiceInterface {
-		className = Innologi\Appointments\Service\Typo3CsrfProtectService
-	}
-}
 plugin.tx_appointments.persistence.classes {
 	Innologi\Appointments\Domain\Model\Appointment {
 		mapping.columns {
