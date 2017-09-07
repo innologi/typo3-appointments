@@ -55,8 +55,8 @@ plugin.tx_appointments {
 		# cat=plugin.tx_appointments/b_javascript/011; type=string; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_jQueryCDN
 		jQueryCDN = https://code.jquery.com/jquery-3.2.1.min.js
 		
-		uiLibFile = EXT:appointments/Resources/Public/Scripts/jquery-ui-1.10.2.custom.min.js
-		uiCssFile = EXT:appointments/Resources/Public/Css/smoothness/jquery-ui-1.10.2.custom.css
+		uiLibFile = EXT:appointments/Resources/Public/JavaScript/jQueryUI/jquery-ui-1.10.2.custom.min.js
+		uiCssFile = EXT:appointments/Resources/Public/JavaScript/jQueryUI/smoothness/jquery-ui-1.10.2.custom.css
 		libFile = EXT:appointments/Resources/Private/Scripts/jslib.closure.js
 		
 		# cat=plugin.tx_appointments/b_javascript/050; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_warnOnLeave
