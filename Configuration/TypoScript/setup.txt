@@ -22,12 +22,12 @@ plugin.tx_appointments {
 				}
 			}
 			javascript {
+				# note: we can't async these! content is depending on their immediate availability!
 				libs {
 					jQuery = {$plugin.tx_appointments.js.jQueryCDN}
 					jQuery.if.value = {$plugin.tx_appointments.js.includeJquery}
 					jQuery.if.equals = 1
 					jQuery.forceOnTop = 1
-					jQuery.external = 1
 					
 					jQueryUI = {$plugin.tx_appointments.js.uiLibFile}
 					jQueryUI.if.value = {$plugin.tx_appointments.js.includeJqueryUI}

@@ -51,7 +51,11 @@ class JavascriptProvider extends ProviderAbstract {
 		'type' => 'text/javascript',
 		'disableCompression' => FALSE,
 		'forceOnTop' => FALSE,
-		'excludeFromConcatenation' => FALSE
+		'excludeFromConcatenation' => FALSE,
+		'allWrap' => '',
+		'splitChar' => '|',
+		'async' => FALSE,
+		'integrity' => ''
 	);
 
 	/**
@@ -70,8 +74,11 @@ class JavascriptProvider extends ProviderAbstract {
 			$conf['type'],
 			!((bool) $conf['disableCompression']),
 			(bool) $conf['forceOnTop'],
-			'',
-			(bool) $conf['excludeFromConcatenation']
+			$conf['allWrap'],
+			(bool) $conf['excludeFromConcatenation'],
+			$conf['splitChar'],
+			$conf['async'],
+			$conf['integrity']
 		);
 	}
 
@@ -91,8 +98,11 @@ class JavascriptProvider extends ProviderAbstract {
 			$conf['type'],
 			!((bool) $conf['disableCompression']),
 			(bool) $conf['forceOnTop'],
-			'',
-			(bool) $conf['excludeFromConcatenation']
+			$conf['allWrap'],
+			(bool) $conf['excludeFromConcatenation'],
+			$conf['splitChar'],
+			$conf['async'],
+			$conf['integrity']
 		);
 	}
 
