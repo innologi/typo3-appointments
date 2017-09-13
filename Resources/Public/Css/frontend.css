@@ -72,22 +72,23 @@
 	font-weight:bold;
 	padding:10px 0;
 	width:99.5%;
-	height:25px;
+	height:auto;
 	background-color:#fafafa;
+	overflow:hidden;
 }
 
 .tx-appointments .button_agendaBack {
-	left:15px;
+	margin-left:15px;
+	float:left;
 }
 
 .tx-appointments .button_agendaForward {
-	right:15px;
+	margin-right:15px;
+	float:right;
 }
 
 .tx-appointments .button_agendaBack,
 .tx-appointments .button_agendaForward {
-	position:absolute;
-	top:13px;
 	font-size:0.8em;
 	font-weight:normal;
 }
