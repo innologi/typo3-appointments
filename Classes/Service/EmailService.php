@@ -60,6 +60,11 @@ class EmailService implements SingletonInterface {
 	protected $configurationManager;
 
 	/**
+	 * @var mixed
+	 */
+	protected $templatePaths;
+
+	/**
 	 * Sender in either array or string format
 	 *
 	 * @var mixed
@@ -118,7 +123,7 @@ class EmailService implements SingletonInterface {
 		$returnVal = FALSE;
 		$errorMsg = 'Could not send email because of error: ';
 		try {
-			$this->sendEmailAction($action,$appointment);
+			#$this->sendEmailAction($action,$appointment);
 			$this->sendCalendarAction($action,$appointment);
 			$returnVal = TRUE;
 		} catch (PropertyDeleted $e) { //a property was deleted
@@ -389,13 +394,14 @@ class EmailService implements SingletonInterface {
 	protected function getCalendarActionBody($action, Appointment $appointment) {
 		//the configuration manager gets us access to the template paths, so we use that to retrieve the body template file
 		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath'])
-			&& isset($extbaseFrameworkConfiguration['view']['templateRootPath'][0])
-		) {
-			$template = $extbaseFrameworkConfiguration['view']['templateRootPath'] . 'invite.ics';
+		$paths = array_reverse($extbaseFrameworkConfiguration['view']['templateRootPaths']);
+		$body = '';
+		foreach ($paths as $path) {
+			$body = $this->fileResource($path . 'invite.ics');
+			if ($body !== '') {
+				break;
+			}
 		}
-
-		$body = $this->fileResource($template);
 
 		$start = $appointment->getBeginTime()->getTimestamp();
 		$end = $appointment->getEndTime()->getTimestamp();
