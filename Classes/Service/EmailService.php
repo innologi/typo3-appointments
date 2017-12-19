@@ -123,7 +123,7 @@ class EmailService implements SingletonInterface {
 		$returnVal = FALSE;
 		$errorMsg = 'Could not send email because of error: ';
 		try {
-			#$this->sendEmailAction($action,$appointment);
+			$this->sendEmailAction($action,$appointment);
 			$this->sendCalendarAction($action,$appointment);
 			$returnVal = TRUE;
 		} catch (PropertyDeleted $e) { //a property was deleted
