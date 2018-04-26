@@ -464,7 +464,11 @@ class AppointmentController extends ActionController {
 
 		//if the date was changed, reflect it on the form but don't persist it yet
 		if ($changedDate !== NULL) {
-			$appointment->setBeginTime(new \DateTime($changedDate)); #@LOW couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
+			$appointment->setBeginTime(
+				$appointment->getBeginTime()->setDate(
+					substr($changedDate, 0, 4), substr($changedDate, 4, 2), substr($changedDate, 6, 2)
+				)
+			); #@LOW couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
 			$appointment->_memorizeCleanState('beginTime'); //makes sure it isn't persisted automatically
 		}
 		$dateSlots = $this->slotService->getDateSlotsIncludingCurrent($appointment,TRUE);
