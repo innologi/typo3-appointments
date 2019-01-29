@@ -27,7 +27,7 @@
 			<td>
 				<f:link.action title="{f:translate(key:'link.title.appointment_show')}" action="show" arguments="{appointment : appointment}" addQueryString="TRUE" class="link_appointment">
 					<f:format.date format="d-m-Y, H:i">{appointment.beginTime}</f:format.date>:
-					<f:format.htmlentities>{appointment.type.name}</f:format.htmlentities>
+					<f:format.htmlspecialchars>{appointment.type.name}</f:format.htmlspecialchars>
 				</f:link.action>
 			</td>
 			<f:if condition="{a:appointment.isMutable(appointment:appointment, time:now)}">

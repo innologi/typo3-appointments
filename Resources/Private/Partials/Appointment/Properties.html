@@ -8,7 +8,7 @@
 		<td scope="row">
 			<f:translate key="property.appointment.type" />
 		</td>
-		<td><f:format.htmlentities>{appointment.type.name}</f:format.htmlentities></td>
+		<td><f:format.htmlspecialchars>{appointment.type.name}</f:format.htmlspecialchars></td>
 	</tr>
 	<tr>
 		<td scope="row">
@@ -34,7 +34,9 @@
 			<td scope="row">
 				<f:translate key="property.appointment.feUser" />
 			</td>
-			<td>{f:if(condition:appointment.feUser.name, then:appointment.feUser.name, else:appointment.feUser.username)}</td>
+			<td><f:format.htmlspecialchars>
+				{f:if(condition:appointment.feUser.name, then:appointment.feUser.name, else:appointment.feUser.username)}
+			</f:format.htmlspecialchars></td>
 		</tr>
 	</f:if>
 	
@@ -84,7 +86,7 @@
 			<td scope="row">
 				<f:translate key="property.appointment.notes" />
 			</td>
-			<td><f:format.html>{appointment.notes}</f:format.html></td>
+			<td><f:format.htmlspecialchars>{appointment.notes}</f:format.htmlspecialchars></td>
 		</tr>
 	</f:if>
 	
@@ -93,7 +95,7 @@
 			<td scope="row">
 				<f:translate key="property.appointment.notesSu" />
 			</td>
-			<td><f:format.html>{appointment.notesSu}</f:format.html></td>
+			<td><f:format.htmlspecialchars>{appointment.notesSu}</f:format.htmlspecialchars></td>
 		</tr>
 	</f:if>
 </table>

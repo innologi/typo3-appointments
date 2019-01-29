@@ -6,7 +6,7 @@
 		<td scope="row">
 			<f:translate key="property.appointment.address.name" />
 		</td>
-		<td><f:format.html>{address.name}</f:format.html></td>
+		<td><f:format.htmlspecialchars>{address.name}</f:format.htmlspecialchars></td>
 	</tr>
 </f:if>
 
@@ -15,7 +15,7 @@
 		<td scope="row">
 			<f:translate key="property.appointment.address.socialSecurityNumber" />
 		</td>
-		<td><f:format.html>{address.socialSecurityNumber}</f:format.html></td>
+		<td><f:format.htmlspecialchars>{address.socialSecurityNumber}</f:format.htmlspecialchars></td>
 	</tr>
 </f:if>
 
@@ -35,7 +35,9 @@
 		<td scope="row">
 			<f:translate key="property.appointment.address.birthday" />
 		</td>
-		<td><f:format.date format="d-m-Y">{address.birthday}</f:format.date></td>
+		<td><f:format.htmlspecialchars>
+			<f:format.date format="d-m-Y">{address.birthday}</f:format.date>
+		</f:format.htmlspecialchars></td>
 	</tr>
 </f:if>
 
@@ -45,7 +47,9 @@
 			<f:translate key="property.appointment.address.address" />
 		</td>
 		<td>
-			<f:format.html>{address.address}<br />{address.zip} {address.city}</f:format.html>
+			<f:format.htmlspecialchars>{address.address}</f:format.htmlspecialchars>
+			<br />
+			<f:format.htmlspecialchars>{address.zip} {address.city}</f:format.htmlspecialchars>
 		</td>
 	</tr>
 </f:if>
@@ -55,7 +59,7 @@
 		<td scope="row">
 			<f:translate key="property.appointment.address.email" />
 		</td>
-		<td><f:format.html>{address.email}</f:format.html></td>
+		<td><f:format.htmlspecialchars>{address.email}</f:format.htmlspecialchars></td>
 	</tr>
 </f:if>
 
