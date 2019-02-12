@@ -33,7 +33,7 @@
 			<f:if condition="{a:appointment.isMutable(appointment:appointment, time:now)}">
 				<f:then>
 					<td><f:link.action title="{f:translate(key:'link.title.appointment_edit')}" action="edit" arguments="{appointment : appointment}" addQueryString="TRUE" class="button_edit"><f:translate key="tx_appointments_list.appointment_edit" /></f:link.action></td>
-					<td><f:form enctype="multipart/form-data" method="post" action="delete" object="{appointment}" objectName="appointment" class="delete-form one-button-form" absolute="TRUE">
+					<td><f:form enctype="multipart/form-data" method="post" action="delete" object="{appointment}" objectName="appointment" class="delete-form one-button-form">
 						<fieldset>
 							<f:form.hidden name="stoken" value="{a:csrf(uid:appointment.uid)}" />
 							<f:form.button type="submit" name="submit" class="button_delete"><f:translate key="tx_appointments_list.appointment_delete" /></f:form.button>

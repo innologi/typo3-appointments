@@ -57,7 +57,7 @@
 	</f:form>
 </f:if>
 
-<f:form enctype="multipart/form-data" method="post" action="create" id="appointment-form-{appointment.uid}" object="{appointment}" objectName="appointment" class="appointment-form warnUnload allowUnload session" absolute="TRUE">
+<f:form enctype="multipart/form-data" method="post" action="create" id="appointment-form-{appointment.uid}" object="{appointment}" objectName="appointment" class="appointment-form warnUnload allowUnload session">
 	<f:render partial="Appointment/FormFields" arguments="{appointment : appointment, formFieldValues : formFieldValues, superUser : superUser}" />
 		
 	<fieldset>
