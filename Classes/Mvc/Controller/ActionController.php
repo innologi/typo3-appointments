@@ -90,7 +90,7 @@ class ActionController extends SettingsOverrideController {
 	protected $slotService;
 
 	/**
-	 * @var \Innologi\Appointments\Library\AssetProvider\ProviderServiceInterface
+	 * @var \Innologi\TYPO3AssetProvider\ProviderServiceInterface
 	 * @inject
 	 */
 	protected $assetProviderService;
@@ -133,6 +133,7 @@ class ActionController extends SettingsOverrideController {
 		if ($view instanceof AbstractTemplateView && $this->request->getFormat() === 'html') {
 			// provide assets as configured per action
 			$this->assetProviderService->provideAssets(
+				$this->extensionName,
 				$this->request->getControllerName(),
 				$this->request->getControllerActionName()
 			);
