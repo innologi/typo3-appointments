@@ -55,7 +55,6 @@ class EmailService implements SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
 	 */
 	protected $configurationManager;
 
@@ -77,6 +76,16 @@ class EmailService implements SingletonInterface {
 	 * @var string
 	 */
 	protected $text;
+
+	/**
+	 *
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+	{
+		$this->configurationManager = $configurationManager;
+	}
 
 	/**
 	 * Set extensionname (REQUIRED)

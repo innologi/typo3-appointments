@@ -57,7 +57,6 @@ class ActionController extends SettingsOverrideController {
 	 * agendaRepository
 	 *
 	 * @var \Innologi\Appointments\Domain\Repository\AgendaRepository
-	 * @inject
 	 */
 	protected $agendaRepository;
 
@@ -65,7 +64,6 @@ class ActionController extends SettingsOverrideController {
 	 * appointmentRepository
 	 *
 	 * @var \Innologi\Appointments\Domain\Repository\AppointmentRepository
-	 * @inject
 	 */
 	protected $appointmentRepository;
 
@@ -73,25 +71,21 @@ class ActionController extends SettingsOverrideController {
 	 * typeRepository
 	 *
 	 * @var \Innologi\Appointments\Domain\Repository\TypeRepository
-	 * @inject
 	 */
 	protected $typeRepository;
 
 	/**
 	 * @var \Innologi\Appointments\Service\UserService
-	 * @inject
 	 */
 	protected $userService;
 
 	/**
 	 * @var \Innologi\Appointments\Domain\Service\SlotService
-	 * @inject
 	 */
 	protected $slotService;
 
 	/**
 	 * @var \Innologi\TYPO3AssetProvider\ProviderServiceInterface
-	 * @inject
 	 */
 	protected $assetProviderService;
 
@@ -117,6 +111,66 @@ class ActionController extends SettingsOverrideController {
 	 * @var boolean
 	 */
 	protected $requireLogin = TRUE;
+
+	/**
+	 *
+	 * @param \Innologi\Appointments\Domain\Repository\AgendaRepository $agendaRepository
+	 * @return void
+	 */
+	public function injectAgendaRepository(\Innologi\Appointments\Domain\Repository\AgendaRepository $agendaRepository)
+	{
+		$this->agendaRepository = $agendaRepository;
+	}
+
+	/**
+	 *
+	 * @param \Innologi\Appointments\Domain\Repository\AppointmentRepository $appointmentRepository
+	 * @return void
+	 */
+	public function injectAppointmentRepository(\Innologi\Appointments\Domain\Repository\AppointmentRepository $appointmentRepository)
+	{
+		$this->appointmentRepository = $appointmentRepository;
+	}
+
+	/**
+	 *
+	 * @param \Innologi\Appointments\Domain\Repository\TypeRepository $typeRepository
+	 * @return void
+	 */
+	public function injectTypeRepository(\Innologi\Appointments\Domain\Repository\TypeRepository $typeRepository)
+	{
+		$this->typeRepository = $typeRepository;
+	}
+
+	/**
+	 *
+	 * @param \Innologi\Appointments\Service\UserService $userService
+	 * @return void
+	 */
+	public function injectUserService(\Innologi\Appointments\Service\UserService $userService)
+	{
+		$this->userService = $userService;
+	}
+
+	/**
+	 *
+	 * @param \Innologi\Appointments\Domain\Service\SlotService $slotService
+	 * @return void
+	 */
+	public function injectSlotService(\Innologi\Appointments\Domain\Service\SlotService $slotService)
+	{
+		$this->slotService = $slotService;
+	}
+
+	/**
+	 *
+	 * @param \Innologi\TYPO3AssetProvider\ProviderServiceInterface $assetProviderService
+	 * @return void
+	 */
+	public function injectAssetProviderService(\Innologi\TYPO3AssetProvider\ProviderServiceInterface $assetProviderService)
+	{
+		$this->assetProviderService = $assetProviderService;
+	}
 
 	/**
 	 * Initializes the view before invoking an action method.

@@ -51,7 +51,6 @@ class UserService implements SingletonInterface {
 	 * frontendUserRepository
 	 *
 	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
-	 * @inject
 	 */
 	protected $frontendUserRepository;
 
@@ -59,9 +58,28 @@ class UserService implements SingletonInterface {
 	 * frontendUserGroupRepository
 	 *
 	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository
-	 * @inject
 	 */
 	protected $frontendUserGroupRepository;
+
+	/**
+	 *
+	 * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
+	 * @return void
+	 */
+	public function injectFrontendUserRepository(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository)
+	{
+		$this->frontendUserRepository = $frontendUserRepository;
+	}
+
+	/**
+	 *
+	 * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository
+	 * @return void
+	 */
+	public function injectFrontendUserGroupRepository(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository)
+	{
+		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
+	}
 
 	/**
 	 * Returns current frontend user.

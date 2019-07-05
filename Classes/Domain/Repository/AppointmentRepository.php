@@ -37,9 +37,18 @@ class AppointmentRepository extends Repository {
 
 	/**
 	 * @var \Innologi\Appointments\Domain\Service\SlotService
-	 * @inject
 	 */
 	protected $slotService;
+
+	/**
+	 *
+	 * @param \Innologi\Appointments\Domain\Service\SlotService $slotService
+	 * @return void
+	 */
+	public function injectSlotService(\Innologi\Appointments\Domain\Service\SlotService $slotService)
+	{
+		$this->slotService = $slotService;
+	}
 
 
 

@@ -85,7 +85,6 @@ class SlotService implements SingletonInterface {
 	 * appointmentRepository
 	 *
 	 * @var \Innologi\Appointments\Domain\Repository\AppointmentRepository
-	 * @inject
 	 */
 	protected $appointmentRepository;
 
@@ -93,6 +92,16 @@ class SlotService implements SingletonInterface {
 	 * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
 	 */
 	protected $cache;
+
+	/**
+	 *
+	 * @param \Innologi\Appointments\Domain\Repository\AppointmentRepository $appointmentRepository
+	 * @return void
+	 */
+	public function injectAppointmentRepository(\Innologi\Appointments\Domain\Repository\AppointmentRepository $appointmentRepository)
+	{
+		$this->appointmentRepository = $appointmentRepository;
+	}
 
 	/**
 	 * Initializes slot service
