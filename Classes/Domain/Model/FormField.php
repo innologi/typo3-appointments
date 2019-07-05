@@ -3,7 +3,7 @@ namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2019 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -59,6 +59,7 @@ class FormField extends AbstractEntity {
 	 *
 	 * @var string
 	 * @validate NotEmpty
+	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 */
 	protected $title;
 
@@ -67,6 +68,7 @@ class FormField extends AbstractEntity {
 	 *
 	 * @var string
 	 * @validate NotEmpty
+	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 */
 	protected $label = '';
 
@@ -87,6 +89,7 @@ class FormField extends AbstractEntity {
 	/**
 	 * @var array
 	 * @transient
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
 	protected $validationTypesArray;
 
@@ -95,6 +98,7 @@ class FormField extends AbstractEntity {
 	 *
 	 * @var boolean
 	 * @transient
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
 	protected $isDate;
 
@@ -103,6 +107,7 @@ class FormField extends AbstractEntity {
 	 *
 	 * @var boolean
 	 * @transient
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
 	protected $isTimeRelated;
 
@@ -111,6 +116,7 @@ class FormField extends AbstractEntity {
 	 *
 	 * @var integer
 	 * @validate NotEmpty
+	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 */
 	protected $fieldType;
 
@@ -127,6 +133,7 @@ class FormField extends AbstractEntity {
 	 *
 	 * @var array
 	 * @transient
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
 	protected $choicesArray = NULL;
 
@@ -142,6 +149,7 @@ class FormField extends AbstractEntity {
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\FormField
 	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $enableField;
 

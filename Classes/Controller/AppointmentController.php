@@ -3,7 +3,7 @@ namespace Innologi\Appointments\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2014 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2019 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -180,6 +180,7 @@ class AppointmentController extends ActionController {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to show
 	 * @ignorevalidation $appointment
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
 	 */
 	public function showAction(Appointment $appointment) {
@@ -219,6 +220,7 @@ class AppointmentController extends ActionController {
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
 	 * @param string $dateFirst The timestamp that should be set before a type was already chosen
 	 * @ignorevalidation $appointment
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
 	 */
 	public function new1Action(Appointment $appointment = NULL, $dateFirst = NULL) {
@@ -279,6 +281,7 @@ class AppointmentController extends ActionController {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
 	 * @ignorevalidation $appointment
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
 	 */
 	public function new2Action(Appointment $appointment) {
@@ -313,6 +316,7 @@ class AppointmentController extends ActionController {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
 	 * @ignorevalidation $appointment
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
 	 */
 	public function simpleProcessNewAction(Appointment $appointment) {
@@ -334,6 +338,7 @@ class AppointmentController extends ActionController {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
 	 * @ignorevalidation $appointment
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
 	 */
 	public function processNewAction(Appointment $appointment) {
@@ -450,6 +455,7 @@ class AppointmentController extends ActionController {
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to edit
 	 * @param string $changedDate Changed date
 	 * @ignorevalidation $appointment
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
 	 */
 	public function editAction(Appointment $appointment, $changedDate = NULL) {
@@ -517,6 +523,7 @@ class AppointmentController extends ActionController {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to delete
 	 * @ignorevalidation $appointment
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
 	 */
 	public function deleteAction(Appointment $appointment) {
@@ -538,6 +545,7 @@ class AppointmentController extends ActionController {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment's time to free up
 	 * @ignorevalidation $appointment
+	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
 	 */
 	public function freeAction(Appointment $appointment) {

@@ -3,7 +3,7 @@ namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2019 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -50,6 +50,7 @@ class FormFieldValue extends AbstractEntity {
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\FormField
 	 * @validate NotEmpty
+	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 */
 	protected $formField;
 

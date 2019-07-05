@@ -3,7 +3,7 @@ namespace Innologi\Appointments\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2019 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -59,6 +59,7 @@ class Appointment extends AbstractEntity {
 	 *
 	 * @var integer
 	 * @transient
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
 	protected $remainingSeconds = NULL;
 
@@ -67,6 +68,8 @@ class Appointment extends AbstractEntity {
 	 *
 	 * @var \DateTime
 	 * @validate NotEmpty,DateTime
+	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
+	 * @TYPO3\CMS\Extbase\Annotation\Validate("DateTime")
 	 */
 	protected $beginTime;
 
@@ -110,7 +113,9 @@ class Appointment extends AbstractEntity {
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\Type
 	 * @validate NotEmpty
+	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $type;
 
@@ -122,7 +127,9 @@ class Appointment extends AbstractEntity {
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
 	 * @cascade remove
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
 	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $formFieldValues;
 
@@ -130,6 +137,7 @@ class Appointment extends AbstractEntity {
 	 * FormFieldValues that are set as sending-email-address
 	 *
 	 * @transient
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
 	 */
 	protected $emailFormFieldValues;
@@ -141,6 +149,7 @@ class Appointment extends AbstractEntity {
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\Address
 	 * @cascade remove
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
 	 */
 	protected $address;
 
@@ -149,6 +158,7 @@ class Appointment extends AbstractEntity {
 	 *
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $feUser;
 
@@ -157,7 +167,9 @@ class Appointment extends AbstractEntity {
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\Agenda
 	 * @validate NotEmpty
+	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 * @lazy
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $agenda;
 
