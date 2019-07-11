@@ -3,7 +3,7 @@ namespace Innologi\Appointments\Task;
 /***************************************************************
  *  Copyright notice
 *
-*  (c) 2013-2019 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+*  (c) 2013 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
 *
 *  All rights reserved
 *
@@ -23,16 +23,17 @@ namespace Innologi\Appointments\Task;
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Extbase\Scheduler\Task;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Clean Up Scheduler Task
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ * @extensionScannerIgnoreFile
  *
  */
-class CleanUpTask extends AbstractTask {
+class CompatCleanUpTask extends Task {
 
 	/**
 	 * Age

@@ -23,17 +23,17 @@ namespace Innologi\Appointments\Task;
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
-use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
+use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 /**
  * Additional Field Provider for CleanUp Task. Adds 'Age' field.
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ * @extensionScannerIgnoreFile
  *
  */
-class CleanUpTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider {
+class CompatCleanUpTaskAdditionalFieldProvider implements AdditionalFieldProviderInterface {
 
 	/**
 	 * Additional field
@@ -54,7 +54,7 @@ class CleanUpTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 		$field = $this->field;
 		//set field value
 		if (empty($taskInfo[$field])) {
-			if ($schedulerModule->getCurrentAction()->equals(Action::EDIT)) { //existing task, meaning there is a value
+			if ($schedulerModule->CMD === 'edit') { //existing task, meaning there is a value
 				$taskInfo[$field] = $task->getAge();
 			} else {
 				$taskInfo[$field] = '';
@@ -84,8 +84,7 @@ class CleanUpTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule) {
 		//validate age
 		if (!is_numeric($submittedData[$this->field]) || intval($submittedData[$this->field]) < 1) {
-			// @extensionScannerIgnoreLine
-			$this->addMessage(
+			$schedulerModule->addMessage(
 				$GLOBALS['LANG']->sL('LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_task_noAge'),
 				FlashMessage::ERROR
 			);

@@ -40,15 +40,22 @@ if (!isset($TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['appointmen
 	];
 }
 
-if (TYPO3_MODE === 'BE') {
-	#$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \Innologi\Appointments\Hooks\Tcemain::class;
-	$TYPO3_CONF_VARS['SC_OPTIONS'][\TYPO3\CMS\Core\Imaging\IconFactory::class]['overrideIconOverlay'][] = \Innologi\Appointments\Hooks\IconFactoryHook::class;
+#$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \Innologi\Appointments\Hooks\Tcemain::class;
+$TYPO3_CONF_VARS['SC_OPTIONS'][\TYPO3\CMS\Core\Imaging\IconFactory::class]['overrideIconOverlay'][] = \Innologi\Appointments\Hooks\IconFactoryHook::class;
 
-	//add scheduler tasks
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\Innologi\Appointments\Task\CleanUpTask::class] = array(
+//add scheduler tasks
+if (version_compare(TYPO3_version, '9.4', '<')) {
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\Innologi\Appointments\Task\CompatCleanUpTask::class] = [
+		'extension'			=> $_EXTKEY,
+		'title'				=> 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xml:tx_appointments_task_cleanup.name',
+		'description'		=> 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xml:tx_appointments_task_cleanup.description',
+		'additionalFields'	=> \Innologi\Appointments\Task\CompatCleanUpTaskAdditionalFieldProvider::class
+	];
+} else {
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\Innologi\Appointments\Task\CleanUpTask::class] = [
 		'extension'			=> $_EXTKEY,
 		'title'				=> 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xml:tx_appointments_task_cleanup.name',
 		'description'		=> 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_be.xml:tx_appointments_task_cleanup.description',
 		'additionalFields'	=> \Innologi\Appointments\Task\CleanUpTaskAdditionalFieldProvider::class
-	);
+	];
 }
