@@ -179,6 +179,7 @@ class AppointmentController extends ActionController {
 	 * Certain conditions get to show more data (i.e. being superuser and/or owner)
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to show
+	 * @extensionScannerIgnoreLine
 	 * @ignorevalidation $appointment
 	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
@@ -219,6 +220,7 @@ class AppointmentController extends ActionController {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
 	 * @param string $dateFirst The timestamp that should be set before a type was already chosen
+	 * @extensionScannerIgnoreLine
 	 * @ignorevalidation $appointment
 	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
@@ -280,6 +282,7 @@ class AppointmentController extends ActionController {
 	 * and displays a timer for the timeslot reservation.
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
+	 * @extensionScannerIgnoreLine
 	 * @ignorevalidation $appointment
 	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
@@ -315,6 +318,7 @@ class AppointmentController extends ActionController {
 	 * and displays a timer for the timeslot reservation.
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
+	 * @extensionScannerIgnoreLine
 	 * @ignorevalidation $appointment
 	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
@@ -337,6 +341,7 @@ class AppointmentController extends ActionController {
 	 * the appropriate action.
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
+	 * @extensionScannerIgnoreLine
 	 * @ignorevalidation $appointment
 	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
@@ -454,6 +459,7 @@ class AppointmentController extends ActionController {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to edit
 	 * @param string $changedDate Changed date
+	 * @extensionScannerIgnoreLine
 	 * @ignorevalidation $appointment
 	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
@@ -522,6 +528,7 @@ class AppointmentController extends ActionController {
 	 * action delete
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to delete
+	 * @extensionScannerIgnoreLine
 	 * @ignorevalidation $appointment
 	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void
@@ -544,6 +551,7 @@ class AppointmentController extends ActionController {
 	 * When an unfinished appointment is started, one is allowed to free up the chosen timeslot.
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment's time to free up
+	 * @extensionScannerIgnoreLine
 	 * @ignorevalidation $appointment
 	 * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
 	 * @return void

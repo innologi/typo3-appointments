@@ -53,6 +53,7 @@ class Agenda extends AbstractEntity {
 	 * Array of the holiday dates, with the holidays as key
 	 *
 	 * @var array
+	 * @extensionScannerIgnoreLine
 	 * @transient
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
@@ -62,6 +63,7 @@ class Agenda extends AbstractEntity {
 	 * Types
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Type>
+	 * @extensionScannerIgnoreLine
 	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
@@ -100,6 +102,7 @@ class Agenda extends AbstractEntity {
 	 * Emails a confirmation on every scheduled appointment to an address
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Address>
+	 * @extensionScannerIgnoreLine
 	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
@@ -116,6 +119,7 @@ class Agenda extends AbstractEntity {
 	 * Emails a calendar invitation on every scheduled appointment to an address
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Address>
+	 * @extensionScannerIgnoreLine
 	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */

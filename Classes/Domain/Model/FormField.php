@@ -58,6 +58,7 @@ class FormField extends AbstractEntity {
 	 * Field title
 	 *
 	 * @var string
+	 * @extensionScannerIgnoreLine
 	 * @validate NotEmpty
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 */
@@ -67,6 +68,7 @@ class FormField extends AbstractEntity {
 	 * Field label
 	 *
 	 * @var string
+	 * @extensionScannerIgnoreLine
 	 * @validate NotEmpty
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 */
@@ -88,6 +90,7 @@ class FormField extends AbstractEntity {
 
 	/**
 	 * @var array
+	 * @extensionScannerIgnoreLine
 	 * @transient
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
@@ -97,6 +100,7 @@ class FormField extends AbstractEntity {
 	 * Is date field?
 	 *
 	 * @var boolean
+	 * @extensionScannerIgnoreLine
 	 * @transient
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
@@ -106,6 +110,7 @@ class FormField extends AbstractEntity {
 	 * Is time related?
 	 *
 	 * @var boolean
+	 * @extensionScannerIgnoreLine
 	 * @transient
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
@@ -115,6 +120,7 @@ class FormField extends AbstractEntity {
 	 * Field fieldType: boolean, selection, textsmall or textlarge
 	 *
 	 * @var integer
+	 * @extensionScannerIgnoreLine
 	 * @validate NotEmpty
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 */
@@ -132,6 +138,7 @@ class FormField extends AbstractEntity {
 	 * formatted as array
 	 *
 	 * @var array
+	 * @extensionScannerIgnoreLine
 	 * @transient
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
@@ -148,6 +155,7 @@ class FormField extends AbstractEntity {
 	 * The field this one enables
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\FormField
+	 * @extensionScannerIgnoreLine
 	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */

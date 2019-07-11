@@ -58,6 +58,7 @@ class Appointment extends AbstractEntity {
 	 * Remaining seconds on chosen timeslot
 	 *
 	 * @var integer
+	 * @extensionScannerIgnoreLine
 	 * @transient
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
@@ -67,6 +68,7 @@ class Appointment extends AbstractEntity {
 	 * Start time
 	 *
 	 * @var \DateTime
+	 * @extensionScannerIgnoreLine
 	 * @validate NotEmpty,DateTime
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("DateTime")
@@ -112,8 +114,10 @@ class Appointment extends AbstractEntity {
 	 * Type which this Appointment belongs to
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\Type
+	 * @extensionScannerIgnoreLine
 	 * @validate NotEmpty
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
+	 * @extensionScannerIgnoreLine
 	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
@@ -126,8 +130,10 @@ class Appointment extends AbstractEntity {
 	 * upon changing content via parentObj. But doesn't seem to be an issue on T3v8.
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
+	 * @extensionScannerIgnoreLine
 	 * @cascade remove
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
+	 * @extensionScannerIgnoreLine
 	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
@@ -136,6 +142,7 @@ class Appointment extends AbstractEntity {
 	/**
 	 * FormFieldValues that are set as sending-email-address
 	 *
+	 * @extensionScannerIgnoreLine
 	 * @transient
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
@@ -148,6 +155,7 @@ class Appointment extends AbstractEntity {
 	 * Validation is done through AppointmentValidator
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\Address
+	 * @extensionScannerIgnoreLine
 	 * @cascade remove
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
 	 */
@@ -157,6 +165,7 @@ class Appointment extends AbstractEntity {
 	 * User who created this appointment
 	 *
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
+	 * @extensionScannerIgnoreLine
 	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
@@ -166,8 +175,10 @@ class Appointment extends AbstractEntity {
 	 * Agenda in which this appointment was made
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\Agenda
+	 * @extensionScannerIgnoreLine
 	 * @validate NotEmpty
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
+	 * @extensionScannerIgnoreLine
 	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */

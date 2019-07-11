@@ -419,8 +419,10 @@ class Type extends AbstractEntity {
 	 * To remedy that, we convert the modified clone toArray() once we need to count, so we can keep it lazy.
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormField>
+	 * @extensionScannerIgnoreLine
 	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
+	 * @extensionScannerIgnoreLine
 	 * @cascade remove
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
 	 */

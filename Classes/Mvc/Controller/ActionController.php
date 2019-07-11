@@ -394,6 +394,7 @@ class ActionController extends SettingsOverrideController {
 	 * - Model-based validators (validate annotations in the model)
 	 * - Custom model validator classes
 	 *
+	 * @extensionScannerIgnoreLine
 	 * This override allows to truly ignore validation for @ignorevalidation
 	 * action method arguments.
 	 *
