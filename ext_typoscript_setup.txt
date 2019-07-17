@@ -20,3 +20,4 @@ plugin.tx_appointments.persistence.classes {
 		}
 	}
 }
+module.tx_appointments.persistence < plugin.tx_appointments.persistence

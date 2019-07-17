@@ -122,6 +122,4 @@ plugin.tx_appointments {
 	}
 }
 
-module.tx_appointments.persistence < plugin.tx_appointments.persistence
-
 page.includeCSS.appointmentsFrontend = {$plugin.tx_appointments.css.frontendFile}
