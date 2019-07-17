@@ -153,11 +153,9 @@ class FormField extends AbstractEntity {
 
 	/**
 	 * The field this one enables
+	 * -- no longer lazy, because then TYPO3v9 doesn't reliably access its uid in Fluid (unless debugging)
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\FormField
-	 * @extensionScannerIgnoreLine
-	 * @lazy
-	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $enableField;
 
