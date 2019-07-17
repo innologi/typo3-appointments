@@ -3,7 +3,7 @@ namespace Innologi\Appointments\Task;
 /***************************************************************
  *  Copyright notice
 *
-*  (c) 2013 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+*  (c) 2013-2019 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
 *
 *  All rights reserved
 *
@@ -56,7 +56,7 @@ class CleanUpTaskLogic extends BootstrapTask {
 	 */
 	public function __construct($age) {
 		$parameters = array();
-		parent::__construct('appointments', 'cleanuptask', $parameters);
+		parent::__construct('Innologi', 'appointments', 'cleanuptask', $parameters);
 		$this->initRepositories();
 		$this->age = $age;
 	}

@@ -3,7 +3,7 @@ namespace Innologi\Appointments\Core;
 /***************************************************************
  *  Copyright notice
 *
-*  (c) 2013 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+*  (c) 2013-2019 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
 *
 *  All rights reserved
 *
@@ -34,6 +34,12 @@ use TYPO3\CMS\Extbase\Core\Bootstrap;
 class BootstrapTask extends Bootstrap {
 
 	/**
+	 *
+	 * @var string
+	 */
+	protected $vendorName;
+
+	/**
 	 * Extension name
 	 *
 	 * @var string
@@ -55,7 +61,8 @@ class BootstrapTask extends Bootstrap {
 	 * @param integer $parameters
 	 * @return void
 	 */
-	public function __construct($extensionName, $pluginName, $parameters) {
+	public function __construct($vendorName, $extensionName, $pluginName, $parameters) {
+		$this->vendorName = $vendorName;
 		$this->extensionName = $extensionName;
 		$this->pluginName = $pluginName;
 		$this->setupFramework($parameters);
@@ -77,13 +84,14 @@ class BootstrapTask extends Bootstrap {
 	 * @return void
 	 */
 	protected function setupFramework($parameters) {
-		$configuration = array(
-				'extensionName' => $this->extensionName,
-				'pluginName' => 'tx_'.$this->extensionName.'_'.$this->pluginName,
-				'settings' => '< module.tx_'.$this->extensionName.'.settings',
-				'persistence' => '< module.tx_'.$this->extensionName.'.persistence',
-				'_LOCAL_LANG' => '< module.tx_'.$this->extensionName.'._LOCAL_LANG' //e.g. module.tx_extname._LOCAL_LANG.default.llangkey
-		);
+		$configuration = [
+			'vendorName' => $this->vendorName,
+			'extensionName' => $this->extensionName,
+			'pluginName' => 'tx_'.$this->extensionName.'_'.$this->pluginName,
+			'settings' => '< module.tx_'.$this->extensionName.'.settings',
+			'persistence' => '< module.tx_'.$this->extensionName.'.persistence',
+			'_LOCAL_LANG' => '< module.tx_'.$this->extensionName.'._LOCAL_LANG' //e.g. module.tx_extname._LOCAL_LANG.default.llangkey
+		];
 		foreach ($parameters as $key=>$array) {
 			$configuration[$key.'.'] = $array;
 		}
@@ -97,8 +105,6 @@ class BootstrapTask extends Bootstrap {
 	 */
 	protected function tearDownFramework() {
 		$this->persistenceManager->persistAll();
-		// @extensionScannerIgnoreLine false positive, this is not an actual request handler
-		$this->reflectionService->shutdown();
 	}
 
 }

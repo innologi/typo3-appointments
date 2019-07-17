@@ -29,7 +29,6 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use Innologi\Appointments\Persistence\KeyObjectStorage;
 use Innologi\Appointments\Domain\Model\{Type, Agenda, Appointment, DateSlot, TimeSlot};
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Cache\CacheManager;
 /**
  * Manages the date- and their time slots, persists them and their changes to cache.
  *
@@ -89,9 +88,26 @@ class SlotService implements SingletonInterface {
 	protected $appointmentRepository;
 
 	/**
+	 *
+	 * @var \TYPO3\CMS\Core\Cache\CacheManager
+	 */
+	protected $cacheManager;
+
+	/**
 	 * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
 	 */
 	protected $cache;
+
+	/**
+	 *
+	 * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+	 * @return void
+	 */
+	public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
+	{
+		$this->cacheManager = $cacheManager;
+		$this->cache = $cacheManager->getCache('appointments_slots');
+	}
 
 	/**
 	 *
@@ -115,7 +131,6 @@ class SlotService implements SingletonInterface {
 		$this->extensionName = $extensionName;
 		$this->expireMinutes = $expireMinutes;
 		$this->intervalBasedShifting = $intervalBasedShifting;
-		$this->cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('appointments_slots');
 	}
 
 	/**
