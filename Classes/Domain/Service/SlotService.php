@@ -570,7 +570,7 @@ class SlotService implements SingletonInterface {
 									$appointmentsTotalAmount = count($appointments);
 									$appointments = $this->appointmentRepository->rearrangeAppointmentArray($appointments, $interval);
 									if ($appointmentsTotalAmount >= $maxAmountPerVarDays //the totalAmount needs to be at least as much as the maxAmount for perVarDaysInterval to have any effect
-											&& !$this->processPerVarDaysInterval($appointments, $startDateTime, $endDateTime, $dateTime, $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval)
+										&& !$this->processPerVarDaysInterval($appointments, $startDateTime, $endDateTime, $dateTime, $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval)
 									) {
 										$notAllowed = TRUE;
 									}
@@ -743,9 +743,8 @@ class SlotService implements SingletonInterface {
 			}
 
 			//find the first free block in 'current' and splice off anything up to that point from the beginning
-			while (($b = each($blocksCurrent)) !== FALSE) {
+			foreach ($blocksCurrent as $block) {
 				$stats[$k]['bufferMultiplier']++; //[BUG]: the bug causes us to not write to a reference anymore, but that causes $stat['bufferMultiplier'] not to update here..
-				$block = $b['value'];
 				if (($c = count($block)) === 0) {
 					array_splice($blocksCurrent,0,($stats[$k]['bufferMultiplier']-1)); //[BUG]: .. so we can't use $stat['bufferMultiplier'] here! only use $stats[$k]['bufferMultiplier']!
 					break;
