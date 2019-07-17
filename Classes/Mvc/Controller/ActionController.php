@@ -334,32 +334,24 @@ class ActionController extends SettingsOverrideController {
 	 * @return void
 	 */
 	protected function mapRequestArgumentsToControllerArguments() {
-		$objectDeleted = FALSE;
-		$propertyDeleted = FALSE;
-
 		try {
 			parent::mapRequestArgumentsToControllerArguments();
-		} catch (InvalidArgumentValueException $e) {
-			$objectDeleted = TRUE;
-		} catch (TargetNotFoundException $e) {
-			$objectDeleted = TRUE;
-		} catch (PropertyDeleted $e) {
-			$propertyDeleted = TRUE;
-		} catch (Exception $e) {
-			$propertyDeleted = TRUE;
-		}
-
-		if ($objectDeleted) {
-			GeneralUtility::sysLog('An appointment disappeared while an feuser tried to interact with it: ' . $e->getMessage(),
-				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_NOTICE);
+		} catch (InvalidArgumentValueException|TargetNotFoundException $e) {
+			GeneralUtility::sysLog(
+				'An appointment disappeared while an feuser tried to interact with it: ' . $e->getMessage(),
+				$this->extensionName,
+				1
+			);
 
 			$flashMessage = LocalizationUtility::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
 			$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 			$this->redirect('list');
-		}
-		if ($propertyDeleted) {
-			GeneralUtility::sysLog('An appointment is missing a property which was most likely deleted by a backend user: ' . $e->getMessage(),
-				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_ERROR);
+		} catch (PropertyDeleted|Exception $e) {
+			GeneralUtility::sysLog(
+				'An appointment is missing a property which was most likely deleted by a backend user: ' . $e->getMessage(),
+				$this->extensionName,
+				3
+			);
 
 			$flashMessage = LocalizationUtility::translate('tx_appointments.appointment_property_deleted', $this->extensionName);
 			$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);

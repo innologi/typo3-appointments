@@ -105,9 +105,11 @@ class VariableValidator extends AbstractValidator {
 			return;
 		}
 
-		/** @var ValidatorResolver $validatorResolver */
+		/** @var ValidatorResolver $validatorResolver
+		 * @extensionScannerIgnoreLine false positive */
 		$validatorResolver = $this->getObjectManager()->get(ValidatorResolver::class);
-		/** @var ConjunctionValidator $validatorConjunction */
+		/** @var ConjunctionValidator $validatorConjunction
+		 * @extensionScannerIgnoreLine false positive */
 		$validatorConjunction = $this->getObjectManager()->get(ConjunctionValidator::class);
 
 		$required = FALSE;

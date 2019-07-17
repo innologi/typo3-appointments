@@ -97,6 +97,7 @@ class BootstrapTask extends Bootstrap {
 	 */
 	protected function tearDownFramework() {
 		$this->persistenceManager->persistAll();
+		// @extensionScannerIgnoreLine false positive, this is not an actual request handler
 		$this->reflectionService->shutdown();
 	}
 

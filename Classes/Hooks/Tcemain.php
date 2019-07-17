@@ -40,7 +40,9 @@ use Innologi\Appointments\Domain\Model\FormField;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
+ * @extensionScannerIgnoreFile currently unused, but be careful with TYPO3_DB usage if I ever re-activate this class!
+ * @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.0/Breaking-80929-TYPO3_DBMovedToExtension.html
+ * @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/9.0/Important-81023-DropTypo3db_legacy.html
  */
 class Tcemain {
 	#@LOW what about email/calendar? that would be a good use of these hooks

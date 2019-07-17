@@ -3,7 +3,7 @@ namespace Innologi\Appointments\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+ *  (c) 2012-2019 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
  *
  *  All rights reserved
  *
@@ -136,14 +136,15 @@ class EmailService implements SingletonInterface {
 			$this->sendCalendarAction($action,$appointment);
 			$returnVal = TRUE;
 		} catch (PropertyDeleted $e) { //a property was deleted
-			GeneralUtility::sysLog($errorMsg . $e->getMessage(),
-				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_ERROR); #@TODO add 6.x logger as well
+			GeneralUtility::sysLog($errorMsg . $e->getMessage(), $this->extensionName, 3);
 		} catch (\Swift_RfcComplianceException $e) { //one or more email properties does not comply with RFC (e.g. sender email)
-			GeneralUtility::sysLog('One or more email-related configuration settings are not set or invalid: ' . $e->getMessage(),
-				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_ERROR);
+			GeneralUtility::sysLog(
+				'One or more email-related configuration settings are not set or invalid: ' . $e->getMessage(),
+				$this->extensionName,
+				3
+			);
 		} catch (\Exception $e) {
-			GeneralUtility::sysLog($errorMsg . $e->getMessage(),
-				$this->extensionName, GeneralUtility::SYSLOG_SEVERITY_ERROR);
+			GeneralUtility::sysLog($errorMsg . $e->getMessage(), $this->extensionName, 3);
 		}
 		return $returnVal;
 	}
@@ -212,7 +213,14 @@ class EmailService implements SingletonInterface {
 	protected function getSender() {
 		if ($this->sender === NULL) {
 			global $TYPO3_CONF_VARS;
-			$extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][$this->extensionName]);
+			if (\version_compare(TYPO3_version, '9.0', '<')) {
+				// @extensionScannerIgnoreLine
+				$extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][$this->extensionName]);
+			} else {
+				$extConf = GeneralUtility::makeInstance(
+					\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+				)->get($this->extensionName);
+			}
 
 			#@TODO add support to set email address/name from agenda
 			if (isset($extConf['email_from'][0])) {
@@ -406,6 +414,7 @@ class EmailService implements SingletonInterface {
 		$paths = array_reverse($extbaseFrameworkConfiguration['view']['templateRootPaths']);
 		$body = '';
 		foreach ($paths as $path) {
+			// @extensionScannerIgnoreLine false positive
 			$body = $this->fileResource($path . 'invite.ics');
 			if ($body !== '') {
 				break;
