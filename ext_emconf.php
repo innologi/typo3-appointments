@@ -31,12 +31,14 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'php' => '7.1',
-			'typo3' => '8.7.0-8.7.99',
+			'typo3' => '8.7.0-9.5.99',
+			'felogin' => '8.7.0',
 			'tt_address' => '3.0.1',
 		),
 		'conflicts' => array(
 		),
 		'suggests' => array(
+			'scheduler' => '8.7.0'
 		),
 	),
 	'autoload' => array(
