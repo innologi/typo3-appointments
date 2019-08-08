@@ -9,10 +9,10 @@
 
 <div class="agendaBar">
 	<f:if condition="{weeks.canBack}">
-		<f:link.action title="{f:translate(key:'link.title.previous')}" arguments="{weeksModifier : weeks.backModifier}" addQueryString="TRUE" class="button_agendaBack"><f:translate key="tx_appointments_agenda.weeks_back" /></f:link.action>
+		<f:link.action action="showWeeks" title="{f:translate(key:'link.title.previous')}" arguments="{weeksModifier : weeks.backModifier}" addQueryString="TRUE" class="button_agendaBack"><f:translate key="tx_appointments_agenda.weeks_back" /></f:link.action>
 	</f:if>
 	<f:if condition="{weeks.canForward}">
-		<f:link.action title="{f:translate(key:'link.title.next')}" arguments="{weeksModifier : weeks.forwardModifier}" addQueryString="TRUE" class="button_agendaForward"><f:translate key="tx_appointments_agenda.weeks_forward" /></f:link.action>
+		<f:link.action action="showWeeks" title="{f:translate(key:'link.title.next')}" arguments="{weeksModifier : weeks.forwardModifier}" addQueryString="TRUE" class="button_agendaForward"><f:translate key="tx_appointments_agenda.weeks_forward" /></f:link.action>
 	</f:if>
 </div>
 

@@ -10,11 +10,11 @@
 
 <div class="agendaBar">
 	<f:if condition="{month.canBack}">
-		<f:link.action title="{f:translate(key:'link.title.previous')}" arguments="{monthModifier : month.backModifier}" addQueryString="TRUE" class="button_agendaBack"><f:translate key="tx_appointments_domain_model_agenda_month.month_back" /></f:link.action>
+		<f:link.action action="showMonth" title="{f:translate(key:'link.title.previous')}" arguments="{monthModifier : month.backModifier}" addQueryString="TRUE" class="button_agendaBack"><f:translate key="tx_appointments_domain_model_agenda_month.month_back" /></f:link.action>
 	</f:if>
 	{month.name} {month.year}
 	<f:if condition="{month.canForward}">
-		<f:link.action title="{f:translate(key:'link.title.next')}" arguments="{monthModifier : month.forwardModifier}" addQueryString="TRUE" class="button_agendaForward"><f:translate key="tx_appointments_domain_model_agenda_month.month_forward" /></f:link.action>
+		<f:link.action action="showMonth" title="{f:translate(key:'link.title.next')}" arguments="{monthModifier : month.forwardModifier}" addQueryString="TRUE" class="button_agendaForward"><f:translate key="tx_appointments_domain_model_agenda_month.month_forward" /></f:link.action>
 	</f:if>
 </div>
 
