@@ -53,7 +53,7 @@ plugin.tx_appointments {
 		# cat=plugin.tx_appointments/b_javascript/030; type=boolean; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_includeJS
 		includeJS = 1
 		# cat=plugin.tx_appointments/b_javascript/011; type=string; label= LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_constants_js_jQueryCDN
-		jQueryCDN = EXT:appointments/Resources/Public/JavaScript/jQuery/jquery-3.3.1.min.js
+		jQueryCDN = EXT:appointments/Resources/Public/JavaScript/jQuery/jquery-3.4.1.min.js
 		
 		uiLibFile = EXT:appointments/Resources/Public/JavaScript/jQueryUI/jquery-ui-1.12.1.min.js
 		uiCssFile = EXT:appointments/Resources/Public/JavaScript/jQueryUI/smoothness/jquery-ui-1.12.1.min.css
