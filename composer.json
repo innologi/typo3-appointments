@@ -24,6 +24,7 @@
 		}
 	},
 	"replace": {
+		"appointments": "self.version",
 		"typo3-ter/appointments": "self.version"
 	}
 }
