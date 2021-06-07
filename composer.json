@@ -18,13 +18,17 @@
 		"innologi/typo3-asset-provider": "~0.3.1 || dev-develop",
 		"friendsoftypo3/tt-address": "^3.0.1 || ^4.0.0 || ^5.0.0"
 	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "appointments"
+		}
+	},
 	"autoload": {
 		"psr-4": {
 			"Innologi\\Appointments\\": "Classes/"
 		}
 	},
 	"replace": {
-		"appointments": "self.version",
 		"typo3-ter/appointments": "self.version"
 	}
 }
