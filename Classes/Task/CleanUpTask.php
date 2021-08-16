@@ -23,8 +23,12 @@ namespace Innologi\Appointments\Task;
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use Innologi\Appointments\Domain\Repository\AppointmentRepository;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Core\Bootstrap;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 /**
  * Clean Up Scheduler Task
  *
@@ -40,6 +44,29 @@ class CleanUpTask extends AbstractTask {
 	 * @var integer
 	 */
 	protected $age;
+
+	/**
+	 * appointmentRepository
+	 *
+	 * @var AppointmentRepository
+	 */
+	protected $appointmentRepository;
+
+	/**
+	 * @var PersistenceManager
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * Initialize repositories (DI doesn't work here)
+	 *
+	 * @return void
+	 */
+	protected function initRepositories() {
+		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+		$this->appointmentRepository = $objectManager->get(AppointmentRepository::class);
+		$this->persistenceManager = $objectManager->get(PersistenceManager::class);
+	}
 
 	/**
 	 * Returns age
@@ -66,8 +93,23 @@ class CleanUpTask extends AbstractTask {
 	 * @return	boolean		True on success, false on failure
 	 */
 	public function execute() {
-		$businessLogic = GeneralUtility::makeInstance(CleanUpTaskLogic::class, $this->age);
-		return $businessLogic->execute();
-	}
+		$bootstrap = GeneralUtility::makeInstance(Bootstrap::class);
+		$bootstrap->initialize([
+			'pluginName' => 'CleanupTask',
+			'extensionName' => 'Appointments',
+			'vendorName' => 'Innologi'
+		]);
 
+		$this->initRepositories();
+
+		$expiredAppointments = $this->appointmentRepository->findExpiredByAge($this->age);
+		if ($expiredAppointments->count() > 0) {
+			foreach ($expiredAppointments as $appointment) {
+				$this->appointmentRepository->remove($appointment);
+			}
+			$this->persistenceManager->persistAll();
+		}
+
+		return true;
+	}
 }

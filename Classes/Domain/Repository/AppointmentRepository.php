@@ -231,7 +231,7 @@ class AppointmentRepository extends Repository {
 	/**
 	 * Returns all unfinished objects of this repository that are expired according to the argument.
 	 *
-	 * An unfinished appointment expires counting from its crdate, NOT its tstamp!
+	 * An unfinished appointment expires counting from its reservation_time, NOT its tstamp!
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda The agenda to check
 	 * @param integer $expireMinutes The number of minutes since creation date
@@ -246,7 +246,7 @@ class AppointmentRepository extends Repository {
 		$result = $query->matching(
 				$query->logicalAnd( array(
 						$query->equals('agenda', $agenda),
-						$query->lessThanOrEqual('crdate', time() - ($expireMinutes * 60)),
+						$query->lessThanOrEqual('reservation_time', time() - ($expireMinutes * 60)),
 						$query->equals('creation_progress', Appointment::UNFINISHED)
 					)
 				)

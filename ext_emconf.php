@@ -30,15 +30,15 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '2.1.3',
 	'constraints' => array(
 		'depends' => array(
-			'php' => '7.1',
-			'typo3' => '8.7.0-9.5.99',
-			'felogin' => '8.7.0',
-			'tt_address' => '3.0.1',
+			'php' => '7.2',
+			'typo3' => '10.4.0-10.99.99',
+			'felogin' => '10.4.0',
+			'tt_address' => '5.0.0',
 		),
 		'conflicts' => array(
 		),
 		'suggests' => array(
-			'scheduler' => '8.7.0'
+			'scheduler' => '10.4.0'
 		),
 	),
 	'autoload' => array(

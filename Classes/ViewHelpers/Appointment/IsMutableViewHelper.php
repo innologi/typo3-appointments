@@ -57,7 +57,7 @@ class IsMutableViewHelper extends AbstractViewHelper {
 	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		/** @var Appointment $appointment */
 		$appointment = $arguments['appointment'];
-		$mutableEndTime = ($appointment->getType()->getHoursMutable() * 3600) + $appointment->getCrdate();
+		$mutableEndTime = ($appointment->getType()->getHoursMutable() * 3600) + $appointment->getReservationTime();
 		return $arguments['time'] < $mutableEndTime;
 	}
 

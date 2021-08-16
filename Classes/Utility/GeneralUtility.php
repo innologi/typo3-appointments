@@ -43,7 +43,7 @@ class GeneralUtility {
 	public static function getTimerRemainingSeconds(Appointment $appointment, $timerMinutes = 1) {
 		// default number of seconds remaining before timeslot is freed
 		$remainingSeconds = $timerMinutes * 60;
-		$secondsBusy = time() - $appointment->getCrdate();
+		$secondsBusy = time() - $appointment->getReservationTime();
 		$remainingSeconds = $remainingSeconds - $secondsBusy;
 
 		if ($remainingSeconds < 0) {

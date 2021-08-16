@@ -26,9 +26,6 @@ return [
 		],
 		'iconfile' => 'EXT:appointments/Resources/Public/Icons/tx_appointments_domain_model_formfieldvalue.gif'
 	],
-	'interface' => [
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, value, form_field',
-	],
 	'types' => [
 		'0' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, form_field, value, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime, endtime'],
 	],
@@ -56,7 +53,6 @@ return [
 		],
 		'l10n_parent' => [
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => TRUE,
 			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => [
 				'type' => 'select',

@@ -26,7 +26,6 @@ namespace Innologi\Appointments\Mvc\Controller;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Exception;
@@ -34,6 +33,7 @@ use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\AbstractTemplateView;
+use TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest;
 /**
  * Appointments Action Controller.
  *
@@ -111,6 +111,11 @@ class ActionController extends SettingsOverrideController {
 	 * @var boolean
 	 */
 	protected $requireLogin = TRUE;
+
+	/**
+	 * @var string
+	 */
+	protected $extensionName = 'Appointments';
 
 	/**
 	 *
@@ -258,8 +263,26 @@ class ActionController extends SettingsOverrideController {
 	 * @throws StopActionException
 	 */
 	protected function validateRequest($tokenArgument = 'stoken') {
-		/** @var \TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest $referringRequest */
-		$referringRequest = $this->request->getReferringRequest();
+		/** @var ReferringRequest $referringRequest */
+		$referringRequest = null;
+
+		// @see \TYPO3\CMS\Extbase\Mvc\Controller\ActionController->forwardToReferringRequest()
+		$referringRequestArguments = $this->request->getInternalArguments()['__referrer'] ?? null;
+		if (is_string($referringRequestArguments['@request'] ?? null)) {
+			$referrerArray = json_decode(
+				$this->hashService->validateAndStripHmac($referringRequestArguments['@request']),
+				true
+			);
+			$arguments = [];
+			if (is_string($referringRequestArguments['arguments'] ?? null)) {
+				$arguments = unserialize(
+					base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments']))
+				);
+			}
+			$referringRequest = new ReferringRequest();
+			$referringRequest->setArguments(array_replace_recursive($arguments, $referrerArray));
+		}
+
 		if ($referringRequest !== NULL) {
 			$objectType = strtolower($referringRequest->getControllerName());
 			if ($this->request->hasArgument($tokenArgument) &&
@@ -375,50 +398,6 @@ class ActionController extends SettingsOverrideController {
 				}
 			}
 			$this->redirect($redirectTo,NULL,NULL,$arguments);
-		}
-	}
-
-	/**
-	 * Adds the needed validators to the Arguments:
-	 *
-	 * - Validators checking the data type from the @param annotation
-	 * - Custom validators specified with validate annotations.
-	 * - Model-based validators (validate annotations in the model)
-	 * - Custom model validator classes
-	 *
-	 * @extensionScannerIgnoreLine
-	 * This override allows to truly ignore validation for @ignorevalidation
-	 * action method arguments.
-	 *
-	 * @return void
-	 */
-	protected function initializeActionMethodValidators() {
-		if (version_compare(TYPO3_branch, '8.7', '>')) {
-			// @TODO review on TYPO3 v9
-			return parent::initializeActionMethodValidators();
-		}
-
-		$actionMethodParameters = static::getActionMethodParameters($this->objectManager);
-		$methodParameters = $actionMethodParameters[$this->actionMethodName] ?? [];
-		$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
-		$ignoreArgs = $methodTagsValues['ignorevalidation'] ?? [];
-		foreach ($ignoreArgs as $ignore) {
-			unset($methodParameters[substr($ignore, 1)]);
-		}
-
-		$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName, $methodParameters);
-		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
-		foreach ($this->arguments as $argument) {
-			if (!isset($parameterValidators[$argument->getName()])) {
-				continue;
-			}
-			$validator = $parameterValidators[$argument->getName()];
-
-			$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
-			if (!empty($baseValidatorConjunction) && $validator instanceof AbstractCompositeValidator) {
-				$validator->addValidator($baseValidatorConjunction);
-			}
-			$argument->setValidator($validator);
 		}
 	}
 }

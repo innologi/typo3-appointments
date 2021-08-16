@@ -41,13 +41,6 @@ class Appointment extends AbstractEntity {
 	const EXPIRED = 2; //appointment not yet finalized but NOT occupying a timeslot
 
 	/**
-	 * Creation timestamp
-	 *
-	 * @var integer
-	 */
-	protected $crdate;
-
-	/**
 	 * State of creation
 	 *
 	 * @var integer
@@ -55,11 +48,14 @@ class Appointment extends AbstractEntity {
 	protected $creationProgress = self::UNFINISHED;
 
 	/**
+	 * @var integer
+	 */
+	protected $reservationTime;
+
+	/**
 	 * Remaining seconds on chosen timeslot
 	 *
 	 * @var integer
-	 * @extensionScannerIgnoreLine
-	 * @transient
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 */
 	protected $remainingSeconds = NULL;
@@ -68,8 +64,6 @@ class Appointment extends AbstractEntity {
 	 * Start time
 	 *
 	 * @var \DateTime
-	 * @extensionScannerIgnoreLine
-	 * @validate NotEmpty,DateTime
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("DateTime")
 	 */
@@ -114,11 +108,7 @@ class Appointment extends AbstractEntity {
 	 * Type which this Appointment belongs to
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\Type
-	 * @extensionScannerIgnoreLine
-	 * @validate NotEmpty
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
-	 * @extensionScannerIgnoreLine
-	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $type;
@@ -130,11 +120,7 @@ class Appointment extends AbstractEntity {
 	 * upon changing content via parentObj. But doesn't seem to be an issue on T3v8.
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
-	 * @extensionScannerIgnoreLine
-	 * @cascade remove
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
-	 * @extensionScannerIgnoreLine
-	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $formFieldValues;
@@ -142,8 +128,6 @@ class Appointment extends AbstractEntity {
 	/**
 	 * FormFieldValues that are set as sending-email-address
 	 *
-	 * @extensionScannerIgnoreLine
-	 * @transient
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
 	 */
@@ -155,8 +139,6 @@ class Appointment extends AbstractEntity {
 	 * Validation is done through AppointmentValidator
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\Address
-	 * @extensionScannerIgnoreLine
-	 * @cascade remove
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
 	 */
 	protected $address;
@@ -165,8 +147,6 @@ class Appointment extends AbstractEntity {
 	 * User who created this appointment
 	 *
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
-	 * @extensionScannerIgnoreLine
-	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $feUser;
@@ -175,11 +155,7 @@ class Appointment extends AbstractEntity {
 	 * Agenda in which this appointment was made
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\Agenda
-	 * @extensionScannerIgnoreLine
-	 * @validate NotEmpty
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
-	 * @extensionScannerIgnoreLine
-	 * @lazy
 	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $agenda;
@@ -210,12 +186,12 @@ class Appointment extends AbstractEntity {
 
 
 	/**
-	 * Returns the creation timestamp
+	 * Returns the start of the reservation timer
 	 *
-	 * @return integer $crdate
+	 * @return integer
 	 */
-	public function getCrdate() {
-		return $this->crdate;
+	public function getReservationTime() {
+		return $this->reservationTime;
 	}
 
 	#@LOW make these chainable?
@@ -241,7 +217,7 @@ class Appointment extends AbstractEntity {
 			$address->setCreationProgress($creationProgress);
 		}
 		if ($creationProgress === self::UNFINISHED) {
-			$this->crdate = time();
+			$this->reservationTime = time();
 		}
 	}
 

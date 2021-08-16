@@ -9,6 +9,7 @@
 		<languageKey index="default" type="array">
 			<label index="tx_appointments_domain_model_appointment">Appointment</label>
 			<label index="tx_appointments_domain_model_appointment.creation_progress">Creation Progress</label>
+      <label index="tx_appointments_domain_model_appointment.reservation_time">Timer Start</label>
 			<label index="tx_appointments_domain_model_appointment.begin_time">Appointment Time</label>
 			<label index="tx_appointments_domain_model_appointment.end_time">End Time</label>
 			<label index="tx_appointments_domain_model_appointment.begin_reserved">Start Reservation Time</label>

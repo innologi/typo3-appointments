@@ -49,8 +49,6 @@ class FormFieldValue extends AbstractEntity {
 	 * formfields are ALWAYS called as well to put the value in context.
 	 *
 	 * @var \Innologi\Appointments\Domain\Model\FormField
-	 * @extensionScannerIgnoreLine
-	 * @validate NotEmpty
 	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
 	 */
 	protected $formField;

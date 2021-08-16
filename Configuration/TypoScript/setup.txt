@@ -37,7 +37,7 @@ plugin.tx_appointments {
 				inline {
 					tx_appointments_jsInline {
 						10 = TEMPLATE
-						10.template = FILE
+						10.template = APPOINTMENTS_FILE
 						10.template.file = {$plugin.tx_appointments.js.libFile}
 						10.marks {
 							WARN_ON_LEAVE = TEXT

@@ -24,9 +24,6 @@ return [
 		],
 		'iconfile' => 'EXT:appointments/Resources/Public/Icons/tx_appointments_domain_model_formfield.gif'
 	],
-	'interface' => [
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, label, csh, field_type, validation_types, choices, function, enable_field, enable_value',
-	],
 	'types' => [
 		'0' => [
 			'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, label, csh, field_type, choices, function, validation_types,
@@ -60,7 +57,6 @@ return [
 		],
 		'l10n_parent' => [
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => TRUE,
 			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => [
 				'type' => 'select',

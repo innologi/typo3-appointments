@@ -117,7 +117,7 @@ class EmailService implements SingletonInterface {
 	 */
 	protected function initializeMail() {
 		$this->text = NULL;
-		return new \TYPO3\CMS\Core\Mail\MailMessage(NULL, NULL, NULL, 'utf-8');
+		return new \TYPO3\CMS\Core\Mail\MailMessage();
 	}
 
 	/**
@@ -132,17 +132,19 @@ class EmailService implements SingletonInterface {
 		$returnVal = FALSE;
 		$errorMsg = 'Could not send email because of error: ';
 		try {
-			$this->sendEmailAction($action,$appointment);
-			$this->sendCalendarAction($action,$appointment);
+			$this->sendEmailAction($action, $appointment);
+			$this->sendCalendarAction($action, $appointment);
 			$returnVal = TRUE;
 		} catch (PropertyDeleted $e) { //a property was deleted
 			GeneralUtility::sysLog($errorMsg . $e->getMessage(), $this->extensionName, 3);
-		} catch (\Swift_RfcComplianceException $e) { //one or more email properties does not comply with RFC (e.g. sender email)
+		// @TODO TYPO3 v11 introduces an RFC validator, maybe use that?
+			// @see https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Mail/Index.html#validators
+		/*} catch (\Swift_RfcComplianceException $e) { //one or more email properties does not comply with RFC (e.g. sender email)
 			GeneralUtility::sysLog(
 				'One or more email-related configuration settings are not set or invalid: ' . $e->getMessage(),
 				$this->extensionName,
 				3
-			);
+			);*/
 		} catch (\Exception $e) {
 			GeneralUtility::sysLog($errorMsg . $e->getMessage(), $this->extensionName, 3);
 		}
@@ -157,29 +159,21 @@ class EmailService implements SingletonInterface {
 	 * @return boolean TRUE on success, FALSE on failure
 	 */
 	protected function sendEmailAction($action, Appointment $appointment) {
-		$recipientArray = $this->collectAllowedRecipients($action,$appointment);
+		$recipientArray = $this->collectAllowedRecipients($action, $appointment);
 		if (!empty($recipientArray)) {
 			$mail = $this->initializeMail();
+			$mail->subject($this->getActionSubject($action, 'email'));
+			$mail->html($this->getText($appointment, $action, 'email', true));
+			$mail->text($this->getText($appointment, $action, 'email'));
 
-			$mail->setSubject(
-					$this->getActionSubject($action,'email')
-			)->setFrom(
-					$this->getSender()
-			)->setBody(
-					$this->getText($appointment,$action,'email',1),
-					'text/html'
-			);
-			$mail->addPart(
-					$this->getText($appointment,$action,'email'),
-					'text/plain'
-			);
+			// uses the old TYPO3 swiftmailer API for [ email => name ]
+			$mail->setFrom($this->getSender());
 
-			//both recipient-classes have a getEmail() method
+			// both recipient-classes have a getEmail() method
 			$toArray = $this->getRecipientEmailArray($recipientArray);
-
-			//send to each recipient separately
+			// send to each recipient separately
 			foreach ($toArray as $to) {
-				$mail->setTo($to)->send();
+				$mail->to($to)->send();
 			}
 		}
 	}
@@ -213,14 +207,9 @@ class EmailService implements SingletonInterface {
 	protected function getSender() {
 		if ($this->sender === NULL) {
 			global $TYPO3_CONF_VARS;
-			if (\version_compare(TYPO3_version, '9.0', '<')) {
-				// @extensionScannerIgnoreLine
-				$extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][$this->extensionName]);
-			} else {
-				$extConf = GeneralUtility::makeInstance(
-					\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
-				)->get($this->extensionName);
-			}
+			$extConf = GeneralUtility::makeInstance(
+				\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+			)->get($this->extensionName);
 
 			#@TODO add support to set email address/name from agenda
 			if (isset($extConf['email_from'][0])) {
@@ -274,13 +263,13 @@ class EmailService implements SingletonInterface {
 			//replaces variables
 			$feUser = $appointment->getFeUser();
 			$body = str_replace('###USER###', ($feUser === NULL ? '' : $feUser->getName()), $body);
-			$body = str_replace('###AGENDA###',$appointment->getAgenda()->getName(),$body);
-			$body = str_replace('###TYPE###',$appointment->getType()->getName(),$body);
-			$body = str_replace('###DATE###',$appointment->getBeginTime()->format('d-m-Y'),$body);
-			$body = str_replace('###START_TIME###',$appointment->getBeginTime()->format('H:i'),$body);
-			$body = str_replace('###END_TIME###',$appointment->getEndTime()->format('H:i'),$body);
-			$body = str_replace('###NOTES###',$appointment->getNotes(),$body);
-			$body = str_replace('###NOTES_SU###',$appointment->getNotesSu(),$body);
+			$body = str_replace('###AGENDA###', $agenda->getName(), $body);
+			$body = str_replace('###TYPE###', $type->getName(), $body);
+			$body = str_replace('###DATE###', $appointment->getBeginTime()->format('d-m-Y'), $body);
+			$body = str_replace('###START_TIME###', $appointment->getBeginTime()->format('H:i'), $body);
+			$body = str_replace('###END_TIME###', $appointment->getEndTime()->format('H:i'), $body);
+			$body = str_replace('###NOTES###', $appointment->getNotes(), $body);
+			$body = str_replace('###NOTES_SU###', $appointment->getNotesSu(), $body);
 			$body = str_replace('###SECURITY###',
 					( $type->getAddressDisable() ? '' : $address->getSocialSecurityNumber() ),
 					$body
@@ -289,7 +278,8 @@ class EmailService implements SingletonInterface {
 		} else {
 			$body = $this->text;
 		}
-			//build address supports a variable separator, so we'll let $isHTML decide
+
+		// build address supports a variable separator, so we'll let $isHTML decide
 		if (strpos($body,'###ADDRESS###') !== FALSE) {
 			$body = str_replace('###ADDRESS###',
 					( $appointment->getType()->getAddressDisable() ? '' :
@@ -300,7 +290,8 @@ class EmailService implements SingletonInterface {
 					$body
 			);
 		}
-			//only build a link if action is not delete
+
+		// only build a link if action is not delete
 		if (strpos($body,'###LINK###') !== FALSE) {
 			$body = str_replace('###LINK###',
 					( $action === 'delete' ? '' : $this->buildLink($appointment,$isHTML) ),
@@ -309,8 +300,8 @@ class EmailService implements SingletonInterface {
 		}
 
 		if ($isHTML) { //html
-			//wrap with HTML tags and convert newlines
-			$body = '<html><body>'.nl2br($body).'</body></html>';
+			// convert newlines
+			$body = nl2br($body);
 		} else { //text
 			//before stripping all HTML, replace anything that represents (a) newline(s)
 			$body = preg_replace('/<p>/i','',$body);
@@ -371,17 +362,15 @@ class EmailService implements SingletonInterface {
 	protected function sendCalendarAction($action, Appointment $appointment) {
 		$agenda = $appointment->getAgenda();
 		if ($this->isActionAllowed($action, $agenda->getCalendarInviteTypes())) {
-			$mail = $this->initializeMail();
-			$ics = $this->getCalendarActionBody($action,$appointment);
+			$ics = $this->getCalendarActionBody($action, $appointment);
 
-			$mail->setSubject(
-					$this->getActionSubject($action,'calendar')
-			)->setFrom(
-					$this->getSender()
-			)->setBody(
-					$ics,
-					'text/calendar'
-			);
+			$mail = $this->initializeMail();
+			$mail->subject($this->getActionSubject($action, 'calendar'));
+			$mail->text($ics);
+			$mail->getHeaders()->addTextHeader('Content-type', 'text/calendar; charset="utf-8"; method=REQUEST');
+
+			// uses the old TYPO3 swiftmailer API for [ email => name ]
+			$mail->setFrom($this->getSender());
 
 			// @LOW google does not connect updates and outlook.com does not provide calendar interactivity, so maybe consider further imitating Google, e.g.:
 			//$mail->addPart($description,'text/plain');
@@ -394,9 +383,9 @@ class EmailService implements SingletonInterface {
 			$toArray = $this->getRecipientEmailArray(
 					$agenda->getCalendarInviteAddress()->toArray()
 			);
-
+			// send to each recipient separately
 			foreach ($toArray as $to) {
-				$mail->setTo($to)->send();
+				$mail->to($to)->send();
 			}
 		}
 	}
@@ -448,7 +437,7 @@ class EmailService implements SingletonInterface {
 		$markerArray = array(
 				'###START###' => gmdate($dateFormat, $start),
 				'###END###' => gmdate($dateFormat, $end),
-				'###CRDATE###' => gmdate($dateFormat, $appointment->getCrdate()),
+				'###CRDATE###' => gmdate($dateFormat, $appointment->getReservationTime()),
 				'###TSTAMP###' => gmdate($dateFormat),
 				'###FROM###' => is_array($sender) ? key($sender) : $sender,
 				'###FROMCN###' => ($feUser !== NULL ? $feUser->getName() : (is_array($sender) ? current($sender) : $sender)),
@@ -590,7 +579,6 @@ class EmailService implements SingletonInterface {
 		);
 
 		$uri = $uriBuilder
-			->setUseCacheHash(TRUE)
 			->setCreateAbsoluteUri(TRUE)
 			->uriFor('show', $arguments, 'Appointment', 'appointments', 'list');
 

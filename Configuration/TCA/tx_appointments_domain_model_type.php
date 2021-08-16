@@ -47,9 +47,6 @@ return [
 		],
 		'iconfile' => 'EXT:appointments/Resources/Public/Icons/tx_appointments_domain_model_type.gif'
 	],
-	'interface' => [
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, superuser_only, exclusive_availability, dont_block_types, dont_restrict_type_counts, default_duration, start_time_monday, start_time_tuesday, start_time_wednesday, start_time_thursday, start_time_friday, start_time_saturday, start_time_sunday, stop_time_monday, stop_time_tuesday, stop_time_wednesday, stop_time_thursday, stop_time_friday, stop_time_saturday, stop_time_sunday, exclude_holidays, max_amount_monday, max_amount_tuesday, max_amount_wednesday, max_amount_thursday, max_amount_friday, max_amount_saturday, max_amount_sunday, minute_interval_monday, minute_interval_tuesday, minute_interval_wednesday, minute_interval_thursday, minute_interval_friday, minute_interval_saturday, minute_interval_sunday, max_amount_per_var_days, per_var_days, per_var_days_interval, between_minutes, hours_mutable, blocked_hours, blocked_hours_workdays, max_days_forward, form_fields, address_disable, address_enable_name, address_enable_gender, address_enable_birthday, address_enable_address, address_enable_security, address_enable_email',
-	],
 	'types' => [
 		'0' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, superuser_only, exclusive_availability, dont_block_types, dont_restrict_type_counts, default_duration, between_minutes, max_days_forward, hours_mutable, --palette--;;b_hours,
 				--div--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type.div.day_config,
@@ -113,7 +110,6 @@ return [
 		],
 		'l10n_parent' => [
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => TRUE,
 			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => [
 				'type' => 'select',

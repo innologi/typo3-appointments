@@ -24,9 +24,6 @@ return [
 		],
 		'iconfile' => 'EXT:appointments/Resources/Public/Icons/tx_appointments_domain_model_appointment.gif'
 	],
-	'interface' => [
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, creation_progress, begin_time, end_time, begin_reserved, end_reserved, notes, notes_su, type, form_field_values, address, fe_user, agenda',
-	],
 	'types' => [
 		'0' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, agenda, type,
 				--palette--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.palette.times;times,
@@ -62,7 +59,6 @@ return [
 		],
 		'l10n_parent' => [
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => TRUE,
 			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => [
 				'type' => 'select',
@@ -132,6 +128,19 @@ return [
 			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.creation_progress',
 			'config' => [
 				'type' => 'none',
+			],
+		],
+		'reservation_time' => [
+			'exclude' => 1,
+			'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.reservation_time',
+			'config' => [
+				'type' => 'input',
+				'renderType' => 'inputDateTime',
+				'size' => 12,
+				'eval' => 'datetime',
+				'checkbox' => 1,
+				'default' => time(),
+				'readOnly' => 1
 			],
 		],
 		'begin_time' => [

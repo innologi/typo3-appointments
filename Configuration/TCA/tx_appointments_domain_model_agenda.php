@@ -32,9 +32,6 @@ return [
 		],
 		'iconfile' => 'EXT:appointments/Resources/Public/Icons/tx_appointments_domain_model_agenda.gif'
 	],
-	'interface' => [
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, holidays, types, email_address, email_text, email_types, email_owner_types, email_field_types, calendar_invite_address, calendar_invite_text, calendar_invite_types',
-	],
 	'types' => [
 		'0' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, types, holidays,
 				--div--;LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_agenda.div.email,
@@ -70,7 +67,6 @@ return [
 		],
 		'l10n_parent' => [
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => TRUE,
 			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => [
 				'type' => 'select',
