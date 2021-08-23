@@ -25,10 +25,8 @@ namespace Innologi\Appointments\Domain\Service;
  ***************************************************************/
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use Innologi\Appointments\Persistence\KeyObjectStorage;
 use Innologi\Appointments\Domain\Model\{Type, Agenda, Appointment, DateSlot, TimeSlot};
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Manages the date- and their time slots, persists them and their changes to cache.
  *
@@ -296,7 +294,7 @@ class SlotService implements SingletonInterface {
 		$temp = $this->appointmentRepository->findExpiredUnfinished($agenda, $this->expireMinutes);
 
 		if (!empty($temp)) {
-			$types = new ObjectStorage();
+			#$types = new ObjectStorage();
 			foreach ($temp as $appointment) {
 				$appointment->setCreationProgress(Appointment::EXPIRED);
 				//this is really the only reason we have a boolean in update()'s arguments: prevent multiple resets for a single type

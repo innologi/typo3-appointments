@@ -31,7 +31,7 @@ use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
  * Appointment Domain Validator.
  *
  * A domain-specific validator doesn't "replace" the normal validator, but instead complements it.
- * This validator tests whether $address needs to be validated, and if so, runs through it.
+ * This validator tests whether formfields needs to be validated, and if so, runs through them.
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
@@ -90,7 +90,7 @@ class AppointmentValidator extends AbstractValidator {
 				$delayedObjects = [];
 				$objects = [$formFieldValues, &$delayedObjects];
 				foreach ($objects as $container) {
-					/** @var FormFieldValue $formFieldValue */
+					/** @var \Innologi\Appointments\Domain\Model\FormFieldValue $formFieldValue */
 					foreach ($container as $formFieldValue) {
 						$formField = $formFieldValue->getFormField();
 						// although AppointmentController takes care of this, it has happened that a type was edited while an appointment was being finished
