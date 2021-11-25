@@ -26,7 +26,6 @@ namespace Innologi\Appointments\Mvc\Controller;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Exception;
 use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
@@ -360,22 +359,10 @@ class ActionController extends SettingsOverrideController {
 		try {
 			parent::mapRequestArgumentsToControllerArguments();
 		} catch (InvalidArgumentValueException|TargetNotFoundException $e) {
-			GeneralUtility::sysLog(
-				'An appointment disappeared while an feuser tried to interact with it: ' . $e->getMessage(),
-				$this->extensionName,
-				1
-			);
-
 			$flashMessage = LocalizationUtility::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
 			$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 			$this->redirect('list');
 		} catch (PropertyDeleted|Exception $e) {
-			GeneralUtility::sysLog(
-				'An appointment is missing a property which was most likely deleted by a backend user: ' . $e->getMessage(),
-				$this->extensionName,
-				3
-			);
-
 			$flashMessage = LocalizationUtility::translate('tx_appointments.appointment_property_deleted', $this->extensionName);
 			$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 

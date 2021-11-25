@@ -131,23 +131,20 @@ class EmailService implements SingletonInterface {
 	public function sendAction($action, Appointment $appointment) {
 		$returnVal = FALSE;
 		$errorMsg = 'Could not send email because of error: ';
-		try {
+		//try {
 			$this->sendEmailAction($action, $appointment);
 			$this->sendCalendarAction($action, $appointment);
 			$returnVal = TRUE;
-		} catch (PropertyDeleted $e) { //a property was deleted
-			GeneralUtility::sysLog($errorMsg . $e->getMessage(), $this->extensionName, 3);
-		// @TODO TYPO3 v11 introduces an RFC validator, maybe use that?
+		// @TODO the original try/catch wasn't adequate, and currently a failure here will fail the appointment creation
+			// but at least the exception will be logged in the TYPO3 log until we figure out a better response to exceptions here
+		/*} catch (PropertyDeleted $e) { //a property was deleted
+			// @TODO do something?
+		} catch (\Swift_RfcComplianceException $e) { //one or more email properties does not comply with RFC (e.g. sender email)
+			// @TODO TYPO3 v11 introduces an RFC validator, maybe use that instead?
 			// @see https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Mail/Index.html#validators
-		/*} catch (\Swift_RfcComplianceException $e) { //one or more email properties does not comply with RFC (e.g. sender email)
-			GeneralUtility::sysLog(
-				'One or more email-related configuration settings are not set or invalid: ' . $e->getMessage(),
-				$this->extensionName,
-				3
-			);*/
 		} catch (\Exception $e) {
-			GeneralUtility::sysLog($errorMsg . $e->getMessage(), $this->extensionName, 3);
-		}
+			// @TODO do something?
+		}*/
 		return $returnVal;
 	}
 
