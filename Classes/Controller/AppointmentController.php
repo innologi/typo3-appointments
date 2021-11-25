@@ -350,6 +350,8 @@ class AppointmentController extends ActionController {
 
 			//when a validation error ensues, we don't want the unfinished appointment being re-added, hence the check
 			if ($appointment->_isNew()) {
+				// sets reservations time etc
+				$appointment->setCreationProgress(Appointment::UNFINISHED);
 				// currently, persist happens within add
 				// because $appointment is used as argument @ redirect() and thus to be serialized by uriBuilder (which requires an uid)
 					// we NEED it to be persisted. Of course, the real reason is that we want to reserve the timeslots from the start
@@ -681,6 +683,7 @@ class AppointmentController extends ActionController {
 		$remainingSeconds = GeneralUtility::getTimerRemainingSeconds(
 			$appointment, (int) $this->settings['freeSlotInMinutes']
 		);
+		var_dump($remainingSeconds);
 
 		//when the appointment was flagged 'expired' in the current pagehit, (e.g. page refresh)
 		//this $appointment reference might not yet be up to date, so we have to check
