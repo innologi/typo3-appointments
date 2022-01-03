@@ -264,5 +264,11 @@ return [
 				'type' => 'passthrough',
 			],
 		],
+		// we need this to be available in our model objects, and with the replaced persistence mapping feature, this does not work without a TCA definition
+		'sorting' => [
+			'config' => [
+				'type' => 'passthrough',
+			],
+		],
 	],
 ];
