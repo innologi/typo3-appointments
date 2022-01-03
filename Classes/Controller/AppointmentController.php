@@ -604,8 +604,6 @@ class AppointmentController extends ActionController {
 
 		$formFields = $formFields->toArray(); //formFields is lazy, a count on a lazy objectstorage will give the wrong number if a detach took place
 		if (count($formFields)) {
-			$newStorage = new ObjectStorage();
-
 			//formfieldvalues to add
 			foreach ($formFields as $formField) {
 				$uid = $formField->getUid();
@@ -614,13 +612,15 @@ class AppointmentController extends ActionController {
 				$items[$uid] = $formFieldValue;
 				$order[$uid] = $formField->getSorting();
 			}
+		}
 
+		if (!empty($order)) {
+			$newStorage = new ObjectStorage();
 			//NOTE: extbase will set sorting value to the currently arranged order, when persisted
 			natsort($order);
 			foreach($order as $uid=>$sorting) {
 				$newStorage->attach($items[$uid]);
 			}
-
 			//newStorage will not contain formfieldvalues which belonged to formfield that have been removed
 			return $newStorage;
 		}
