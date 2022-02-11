@@ -29,6 +29,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
 use Innologi\Appointments\Domain\Model\{Appointment, Address, SimpleEmailContainer};
+use Symfony\Component\Mime\Part\TextPart;
 /**
  * Facilitates email functionality.
  *
@@ -364,8 +365,10 @@ class EmailService implements SingletonInterface {
 
 			$mail = $this->initializeMail();
 			$mail->subject($this->getActionSubject($action, 'calendar'));
-			$mail->text($ics);
-			$mail->getHeaders()->addTextHeader('Content-type', 'text/calendar; charset="utf-8"; method=REQUEST');
+			$mail->setBody(new TextPart($ics, 'utf-8', 'calendar'));
+			$mail->attach($ics, 'invite.ics', 'application/ics');
+			# @todo can we add "; method=REQUEST" to the content-type somehow? Symfony mailer doesn't seem to allow it if not using a custom implementation
+			#$mail->getHeaders()->get('Content-Type')->setBody('text/calendar; charset=utf-8; method=REQUEST');
 
 			// uses the old TYPO3 swiftmailer API for [ email => name ]
 			$mail->setFrom($this->getSender());
@@ -374,9 +377,6 @@ class EmailService implements SingletonInterface {
 			//$mail->addPart($description,'text/plain');
 			//$mail->addPart($description,'text/html');
 			//$mail->addPart($ics,'text/calendar');
-			// $ics serialization needed?
-			// example gist: https://gist.github.com/ptasker/7680134
-			//$mail->attach(\Swift_Attachment::newInstance($ics,'invite.ics','application/ics'));
 
 			$toArray = $this->getRecipientEmailArray(
 					$agenda->getCalendarInviteAddress()->toArray()
