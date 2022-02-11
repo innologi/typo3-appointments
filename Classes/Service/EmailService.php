@@ -170,7 +170,8 @@ class EmailService implements SingletonInterface {
 			$toArray = $this->getRecipientEmailArray($recipientArray);
 			// send to each recipient separately
 			foreach ($toArray as $to) {
-				$mail->to($to)->send();
+				$sendMail = clone $mail;
+				$sendMail->to($to)->send();
 			}
 		}
 	}
@@ -382,7 +383,8 @@ class EmailService implements SingletonInterface {
 			);
 			// send to each recipient separately
 			foreach ($toArray as $to) {
-				$mail->to($to)->send();
+				$sendMail = clone $mail;
+				$sendMail->to($to)->send();
 			}
 		}
 	}
