@@ -247,18 +247,8 @@ CREATE TABLE tx_appointments_domain_model_formfield (
 #
 CREATE TABLE tt_address (
 
-	first_name tinytext NOT NULL,
-	middle_name tinytext NOT NULL,
-	last_name tinytext NOT NULL,
-	name tinytext NOT NULL,
-	gender varchar(1) DEFAULT '' NOT NULL,
-	birthday int(11) DEFAULT '0' NOT NULL,
-	email varchar(80) DEFAULT '' NOT NULL,
-	address tinytext NOT NULL,
-	zip varchar(20) DEFAULT '' NOT NULL,
-	city varchar(80) DEFAULT '' NOT NULL,
 	tx_appointments_social_security_number varchar(255) DEFAULT '' NOT NULL,
-	tx_appointments_creation_progress tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	tx_appointments_creation_progress tinyint(1) unsigned DEFAULT '0' NOT NULL
 );
 
 #
