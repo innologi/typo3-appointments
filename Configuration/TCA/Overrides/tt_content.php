@@ -16,12 +16,12 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['appointments
 
 // register plugins
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-	'Innologi.Appointments',
+	'Appointments',
 	'Agenda',
 	'LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_plugin_agenda_title'
 );
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-	'Innologi.Appointments',
+	'Appointments',
 	'List',
 	'LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_plugin_list_title'
 );

@@ -2,10 +2,10 @@
 defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Innologi.Appointments',
+	'Appointments',
 	'Agenda',
 	array(
-		'Agenda' => 'showMonth, showWeeks, none',
+		\Innologi\Appointments\Controller\AgendaController::class => 'showMonth, showWeeks, none',
 
 	),
 	// non-cacheable actions
@@ -15,15 +15,15 @@ defined('TYPO3_MODE') or die();
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Innologi.Appointments',
+	'Appointments',
 	'List',
 	array(
-		'Appointment' => 'list, show, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free, none',
+		\Innologi\Appointments\Controller\AppointmentController::class => 'list, show, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free, none',
 
 	),
 	// non-cacheable actions
 	array(
-		'Appointment' => 'list, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free',
+		\Innologi\Appointments\Controller\AppointmentController::class => 'list, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free',
 	)
 );
 
