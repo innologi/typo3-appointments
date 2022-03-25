@@ -273,6 +273,14 @@ class EmailService implements SingletonInterface {
 					( $type->getAddressDisable() ? '' : $address->getSocialSecurityNumber() ),
 					$body
 			);
+
+			// additional form field variables (if any)
+			$fields = $appointment->getFormFieldValues();
+			/** @var \Innologi\Appointments\Domain\Model\FormFieldValue $fV */
+			foreach ($fields as $fV) {
+				$body = str_replace('###' . \strtoupper($fV->getFormField()->getTitle()) . '###', $fV->getValue() ?? '', $body);
+			}
+
 			$this->text = $body;
 		} else {
 			$body = $this->text;
