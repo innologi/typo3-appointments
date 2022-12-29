@@ -30,9 +30,10 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Exception;
 use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Fluid\View\AbstractTemplateView;
 use TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest;
+use Innologi\TYPO3AssetProvider\ProviderControllerTrait;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Appointments Action Controller.
  *
@@ -51,6 +52,8 @@ use TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest;
  *
  */
 class ActionController extends SettingsOverrideController {
+
+	use ProviderControllerTrait;
 
 	/**
 	 * agendaRepository
@@ -82,11 +85,6 @@ class ActionController extends SettingsOverrideController {
 	 * @var \Innologi\Appointments\Domain\Service\SlotService
 	 */
 	protected $slotService;
-
-	/**
-	 * @var \Innologi\TYPO3AssetProvider\ProviderServiceInterface
-	 */
-	protected $assetProviderService;
 
 	/**
 	 * Logged in frontend user
@@ -167,38 +165,6 @@ class ActionController extends SettingsOverrideController {
 	}
 
 	/**
-	 *
-	 * @param \Innologi\TYPO3AssetProvider\ProviderServiceInterface $assetProviderService
-	 * @return void
-	 */
-	public function injectAssetProviderService(\Innologi\TYPO3AssetProvider\ProviderServiceInterface $assetProviderService)
-	{
-		$this->assetProviderService = $assetProviderService;
-	}
-
-	/**
-	 * Initializes the view before invoking an action method.
-	 *
-	 * Override this method to solve assign variables common for all actions
-	 * or prepare the view in another way before the action is called.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view The view to be initialized
-	 *
-	 * @return void
-	 * @api
-	 */
-	protected function initializeView(ViewInterface $view) {
-		if ($view instanceof AbstractTemplateView && $this->request->getFormat() === 'html') {
-			// provide assets as configured per action
-			$this->assetProviderService->provideAssets(
-				\strtolower($this->extensionName),
-				$this->request->getControllerName(),
-				$this->request->getControllerActionName()
-			);
-		}
-	}
-
-	/**
 	 * Initializes the controller before invoking an action method.
 	 *
 	 * Sets some prerequisite variables. If it fails because of any error related to these,
@@ -262,6 +228,14 @@ class ActionController extends SettingsOverrideController {
 	 * @throws StopActionException
 	 */
 	protected function validateRequest($tokenArgument = 'stoken') {
+		/** @var Typo3Version $typo3Version */
+		$typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+		if ($typo3Version->getMajorVersion() > 10) {
+			// @TODO this method no longer works in 11 because of a lack of __referrer, even though it is still used internally.
+				// investigate alternatives!
+			return TRUE;
+		}
+
 		/** @var ReferringRequest $referringRequest */
 		$referringRequest = null;
 
