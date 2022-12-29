@@ -683,7 +683,6 @@ class AppointmentController extends ActionController {
 		$remainingSeconds = GeneralUtility::getTimerRemainingSeconds(
 			$appointment, (int) $this->settings['freeSlotInMinutes']
 		);
-		var_dump($remainingSeconds);
 
 		//when the appointment was flagged 'expired' in the current pagehit, (e.g. page refresh)
 		//this $appointment reference might not yet be up to date, so we have to check
