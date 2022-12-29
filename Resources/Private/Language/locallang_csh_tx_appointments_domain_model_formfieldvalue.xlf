@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227668" source-language="en" datatype="plaintext" original="messages" date="2022-12-28T11:41:08Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="value.description" resname="value.description" >
+				<source>The value itself</source>
+			</trans-unit>
+			<trans-unit id="form_field.description" resname="form_field.description" >
+				<source>The formfield this value belongs to</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

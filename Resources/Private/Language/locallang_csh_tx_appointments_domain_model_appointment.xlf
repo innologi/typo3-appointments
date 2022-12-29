@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227663" source-language="en" datatype="plaintext" original="messages" date="2022-12-28T11:41:03Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="creation_progress.description" resname="creation_progress.description" >
+				<source>Indicates this appointment is still in the process of being made, with the possibility of disappearing if not finalized</source>
+			</trans-unit>
+			<trans-unit id="begin_time.description" resname="begin_time.description" >
+				<source>Starting time of appointment</source>
+			</trans-unit>
+			<trans-unit id="end_time.description" resname="end_time.description" >
+				<source>Ending time of appointment</source>
+			</trans-unit>
+			<trans-unit id="begin_reserved.description" resname="begin_reserved.description" >
+				<source>Starting time of the reservation block</source>
+			</trans-unit>
+			<trans-unit id="end_reserved.description" resname="end_reserved.description" >
+				<source>Ending time of the reservation block</source>
+			</trans-unit>
+			<trans-unit id="notes.description" resname="notes.description" >
+				<source>Notes</source>
+			</trans-unit>
+			<trans-unit id="notes_su.description" resname="notes_su.description" >
+				<source>Administrator Notes</source>
+			</trans-unit>
+			<trans-unit id="type.description" resname="type.description" >
+				<source>Appointment Type which this Appointment belongs to</source>
+			</trans-unit>
+			<trans-unit id="form_field_values.description" resname="form_field_values.description" >
+				<source>Form field values associated with this appointment</source>
+			</trans-unit>
+			<trans-unit id="address.description" resname="address.description" >
+				<source>Name and address information</source>
+			</trans-unit>
+			<trans-unit id="fe_user.description" resname="fe_user.description" >
+				<source>User who created this appointment or is assigned to it</source>
+			</trans-unit>
+			<trans-unit id="agenda.description" resname="agenda.description" >
+				<source>Agenda in which this appointment is made</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

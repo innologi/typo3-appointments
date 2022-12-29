@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227647" source-language="en" datatype="plaintext" original="messages" date="2022-12-28T11:40:47Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="tx_appointments_plugin_agenda_title" resname="tx_appointments_plugin_agenda_title" >
+				<source>Appointment Scheduler: Show Agenda</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_plugin_list_title" resname="tx_appointments_plugin_list_title" >
+				<source>Appointment Scheduler: Appointment List</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_subcategory_extconf" resname="tx_appointments_subcategory_extconf" >
+				<source>Extension Configuration</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_subcategory_javascript" resname="tx_appointments_subcategory_javascript" >
+				<source>Frontend Assets</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_subcategory_plugins" resname="tx_appointments_subcategory_plugins" >
+				<source>All Plugins (Flexform)</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_subcategory_agenda" resname="tx_appointments_subcategory_agenda" >
+				<source>Agenda Plugin (Flexform)</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_templateRootPath" resname="tx_appointments_constants_templateRootPath" >
+				<source>Path to template root (FE)</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_partialRootPath" resname="tx_appointments_constants_partialRootPath" >
+				<source>Path to template partials (FE)</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_layoutRootPath" resname="tx_appointments_constants_layoutRootPath" >
+				<source>Path to template layouts (FE)</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_storagePid" resname="tx_appointments_constants_storagePid" >
+				<source>Default storage PID</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_agendaUid" resname="tx_appointments_constants_agendaUid" >
+				<source>Agenda UID</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_allowCreate" resname="tx_appointments_constants_allowCreate" >
+				<source>Agenda New Appointment Buttons: If enabled, adds new appointment buttons to the agenda view</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_agendaBack" resname="tx_appointments_constants_agendaBack" >
+				<source>Agenda Navigation Back: The number of navigation units to allow backwards from the initial display</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_agendaForward" resname="tx_appointments_constants_agendaForward" >
+				<source>Agenda Navigation Forward: The number of navigation units to allow forward from the initial display</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_agendaWeeksBeforeCurrent" resname="tx_appointments_constants_agendaWeeksBeforeCurrent" >
+				<source>Agenda Weeks Before Current: The number of weeks to display before the current</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_agendaWeeksAfterCurrent" resname="tx_appointments_constants_agendaWeeksAfterCurrent" >
+				<source>Agenda Weeks After Current: The number of weeks to display after the current</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_freeSlotInMinutes" resname="tx_appointments_constants_freeSlotInMinutes" >
+				<source>Reserve Time-slot: The number of minutes a time-slot remains reserved if the appointment is not created before this number is reached, counting from start</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_shiftSlotPerInterval" resname="tx_appointments_constants_shiftSlotPerInterval" >
+				<source>Shift Time-slots Per Interval: Normally, the available timeslots shift on a daily basis at midnight, but enabling this option will shift them every X amount of minutes, where X is the relevant Appointment Type's interval</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_suGroup" resname="tx_appointments_constants_suGroup" >
+				<source>Super User Group UID</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_redirectAfterSave" resname="tx_appointments_constants_redirectAfterSave" >
+				<source>Redirect After Saving Appointment: Set the action to redirect to when an appointment is saved</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_allowResume" resname="tx_appointments_constants_allowResume" >
+				<source>Allow Resuming Appointment Creation: Enables the &quot;unfinished&quot;-list on the listAction, allowing to resume broken-off creation-processes</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_js_includeJquery" resname="tx_appointments_constants_js_includeJquery" >
+				<source>Enable jQuery inclusion: Will include the jQuery library through the configured CDN. If for some reason there already is a jQuery library present, you can disable appointments' here to prevent conflicts.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_js_includeJqueryUI" resname="tx_appointments_constants_js_includeJqueryUI" >
+				<source>Enable jQuery UI scripts inclusion: Will include a custom jQuery UI library for: Datepicker. You can disable it in case it is already present through other means or you're using a different datepicker in your templates.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_js_includeJS" resname="tx_appointments_constants_js_includeJS" >
+				<source>Enable Javascript inclusion: Will include appointments Javascript. Most is jQuery dependent, so make sure to have jQuery enabled through this extension or another way.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_js_toFooter" resname="tx_appointments_constants_js_toFooter" >
+				<source>Place Javascript in page footer: If enabled, will move the appointments Javascript out of the header and into the footer.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_js_jQueryCDN" resname="tx_appointments_constants_js_jQueryCDN" >
+				<source>jQuery CDN url: The url from which jQuery is included. Configurable to easily allow jQuery version changes.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_js_warnOnLeave" resname="tx_appointments_constants_js_warnOnLeave" >
+				<source>Set Warning On Page-Leave: If Javascript included: adds a warning message to the new-appointment forms to warn you for losing given input, which is shown when the page is refreshed or left, giving the option to 'Leave' or 'Stay' on the page, while informing the user of possible consequences.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod" resname="tx_appointments_constants_js_warnOnLeaveRespectRefreshMethod" >
+				<source>Allow Auto-Refresh With WarnOnLeave: When using page.meta.REFRESH or a REFRESH header (i.e. for automatic logout purposes), warnOnLeave might prevent it. Setting this to the appropriate method will respect that method when applied if warnOnLeave is enabled.</source>
+			</trans-unit>
+			<trans-unit id="ts_css_frontendFile" resname="ts_css_frontendFile" >
+				<source>Frontend CSS path: Provides frontend styling to plugin</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_constants_appointmentTypeList" resname="tx_appointments_constants_appointmentTypeList" >
+				<source>Appointment Types: Comma separated list of UIDs</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_appointmentTypeList" resname="tx_appointments_flexform_appointmentTypeList" >
+				<source>Appointment Types</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_select_all_types" resname="tx_appointments_flexform_select_all_types" >
+				<source>All types (selects none)</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_div_types" resname="tx_appointments_flexform_div_types" >
+				<source>__Types:__</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_extconf_emailFrom" resname="tx_appointments_extconf_emailFrom" >
+				<source>Default sending email address: overrides the default email address used for emails sent by this extension. (optional)</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_extconf_emailName" resname="tx_appointments_extconf_emailName" >
+				<source>Default email name: overrides the default name used for the sending email address. (optional)</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_task_cleanup.name" resname="tx_appointments_task_cleanup.name" >
+				<source>Clean Up Appointment Records</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_task_cleanup.description" resname="tx_appointments_task_cleanup.description" >
+				<source>Marks appointment records whose creation was never completed as deleted when expired for a certain amount of time.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_task_label.age" resname="tx_appointments_task_label.age" >
+				<source>Seconds Expired</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_task_noAge" resname="tx_appointments_task_noAge" >
+				<source>You need to supply a positive amount of seconds-expired. (e.g. 3600)</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_sheet_sDEF" resname="tx_appointments_flexform_sheet_sDEF" >
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_switchableControllerActions" resname="tx_appointments_flexform_switchableControllerActions" >
+				<source>Agenda View</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_switchableControllerActions.item1" resname="tx_appointments_flexform_switchableControllerActions.item1" >
+				<source>Month</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_switchableControllerActions.item2" resname="tx_appointments_flexform_switchableControllerActions.item2" >
+				<source>Weeks</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_tsDefault" resname="tx_appointments_flexform_tsDefault" >
+				<source>defined by TypoScript</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_agendaUid" resname="tx_appointments_flexform_agendaUid" >
+				<source>Agenda</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_div_agendas" resname="tx_appointments_flexform_div_agendas" >
+				<source>Agendas</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_div_userGroups" resname="tx_appointments_flexform_div_userGroups" >
+				<source>__User Groups:__</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_suGroup" resname="tx_appointments_flexform_suGroup" >
+				<source>Superuser group</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_allowCreate" resname="tx_appointments_flexform_allowCreate" >
+				<source>New Appointment Buttons</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_agendaNavOverride" resname="tx_appointments_flexform_agendaNavOverride" >
+				<source>Set Agenda Navigation from:</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_agendaNavOverride.item1" resname="tx_appointments_flexform_agendaNavOverride.item1" >
+				<source>TypoScript</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_agendaNavOverride.item2" resname="tx_appointments_flexform_agendaNavOverride.item2" >
+				<source>Flexform</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_agendaBack" resname="tx_appointments_flexform_agendaBack" >
+				<source>Max Agenda Navigation Back</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_agendaForward" resname="tx_appointments_flexform_agendaForward" >
+				<source>Max Agenda Navigation Forward</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_agendaWeeksBeforeCurrent" resname="tx_appointments_flexform_agendaWeeksBeforeCurrent" >
+				<source>Number Of Weeks Before Current</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_flexform_agendaWeeksAfterCurrent" resname="tx_appointments_flexform_agendaWeeksAfterCurrent" >
+				<source>Number Of Weeks After Current</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

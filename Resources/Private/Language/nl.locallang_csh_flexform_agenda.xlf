@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227651" source-language="en" target-language="nl" datatype="plaintext" original="messages" date="2022-12-28T11:40:51Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="switchableControllerActions.description" resname="switchableControllerActions.description"  approved="yes">
+				<source>Determines the view of the agenda. &quot;Month&quot; displays entire months, &quot;Weeks&quot; displays the configured amount of weeks.</source>
+				<target>Bepaalt de weergave van de agenda. &quot;Maand&quot; toont hele maanden, &quot;Weken&quot; toont het ingestelde aantal weken.</target>
+			</trans-unit>
+			<trans-unit id="settings.agendaUid.description" resname="settings.agendaUid.description"  approved="yes">
+				<source>Pick the agenda to show, or set it to depend on the associated TypoScript constant.</source>
+				<target>Kies de agenda om te tonen, of laat het afhangen van de gerelateerde TypoScript constante.</target>
+			</trans-unit>
+			<trans-unit id="settings.agendaNavOverride.description" resname="settings.agendaNavOverride.description"  approved="yes">
+				<source>It's possible to set how far back and forward you can navigate through the agenda. You can set the plugin to listen to flexform or to TypoScript values.</source>
+				<target>Het is mogelijk in te stellen hoever vooruit en terug genavigeerd kan worden in de agenda. Deze instelling bepaalt of de plugin dit uitleest uit dit formulier of uit TypoScript.</target>
+			</trans-unit>
+			<trans-unit id="settings.agendaBack.description" resname="settings.agendaBack.description"  approved="yes">
+				<source>By setting this, you allow the user to navigate a number of units back in the agenda, allowing to view anyone's appointments from previous times.</source>
+				<target>Deze instelling staat de gebruiker toe om het opgegeven aantal eenheden terug te navigeren in de agenda.</target>
+			</trans-unit>
+			<trans-unit id="settings.agendaForward.description" resname="settings.agendaForward.description"  approved="yes">
+				<source>By setting this, you allow the user to navigate a number of units forward in the agenda, allowing to view anyone's appointments ahead.</source>
+				<target>Deze instelling staat de gebruiker toe om het opgegeven aantal eenheden vooruit te navigeren in de agenda.</target>
+			</trans-unit>
+			<trans-unit id="settings.agendaWeeksBeforeCurrent.description" resname="settings.agendaWeeksBeforeCurrent.description"  approved="yes">
+				<source>Allows you to set how many weeks to display before the current week, when Agenda View is set to &quot;Weeks&quot;.</source>
+				<target>Deze instelling bepaalt hoeveel weken getoond worden vòòr de huidige week, indien de Agenda Weergave op &quot;Weken&quot; staat.</target>
+			</trans-unit>
+			<trans-unit id="settings.agendaWeeksAfterCurrent.description" resname="settings.agendaWeeksAfterCurrent.description"  approved="yes">
+				<source>Allows you to set how many weeks to display after the current week, when Agenda View is set to &quot;Weeks&quot;.</source>
+				<target>Deze instelling bepaalt hoeveel weken getoond worden ná de huidige week, indien de Agenda Weergave op &quot;Weken&quot; staat.</target>
+			</trans-unit>
+			<trans-unit id="settings.appointmentTypeList.description" resname="settings.appointmentTypeList.description"  approved="yes">
+				<source>Limit the appointment types shown on the agenda, or set it to depend on the associated TypoScript constant.</source>
+				<target>Beperk de toegestane afspraak typen die getoond worden op de agenda, of laat het afhangen van de gerelateerde TypoScript constante.</target>
+			</trans-unit>
+			<trans-unit id="settings.allowCreate.description" resname="settings.allowCreate.description"  approved="yes">
+				<source>Adds new appointment buttons to the agenda view, or set it to depend on the associated TypoScript constant.</source>
+				<target>Voegt nieuwe afspraak knoppen toe aan de Agenda Weergave, of laat het afhangen van de gerelateerde TypoScript constante.</target>
+			</trans-unit>
+			<trans-unit id="settings.suGroup.description" resname="settings.suGroup.description"  approved="yes">
+				<source>Members of the Superuser Group have additional permissions and rights.</source>
+				<target>Leden van de Superuser Groep hebben extra rechten.</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

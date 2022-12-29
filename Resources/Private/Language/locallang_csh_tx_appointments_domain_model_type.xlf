@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227671" source-language="en" datatype="plaintext" original="messages" date="2022-12-28T11:41:11Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="name.description" resname="name.description" >
+				<source>Name of appointment type</source>
+			</trans-unit>
+			<trans-unit id="superuser_only.description" resname="superuser_only.description" >
+				<source>If enabled, only lets superusers create appointments of this type</source>
+			</trans-unit>
+			<trans-unit id="exclusive_availability.description" resname="exclusive_availability.description" >
+				<source>If enabled, will make this type's availability be affected exclusively by appointments of its own type, on the same agenda</source>
+			</trans-unit>
+			<trans-unit id="dont_block_types.description" resname="dont_block_types.description" >
+				<source>If enabled, will make this type invisible to other types, on the same agenda</source>
+			</trans-unit>
+			<trans-unit id="dont_restrict_type_counts.description" resname="dont_restrict_type_counts.description" >
+				<source>If enabled, will make this type not count to other types maximum allowed appointments (per X days), on the same agenda</source>
+			</trans-unit>
+			<trans-unit id="default_duration.description" resname="default_duration.description" >
+				<source>Number of minutes an appointment of this type takes, at minimum</source>
+			</trans-unit>
+			<trans-unit id="start_time_monday.description" resname="start_time_monday.description" >
+				<source>Earliest possible time to make appointments on Mondays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="start_time_tuesday.description" resname="start_time_tuesday.description" >
+				<source>Earliest possible time to make appointments on Tuesdays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="start_time_wednesday.description" resname="start_time_wednesday.description" >
+				<source>Earliest possible time to make appointments on Wednesdays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="start_time_thursday.description" resname="start_time_thursday.description" >
+				<source>Earliest possible time to make appointments on Thursdays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="start_time_friday.description" resname="start_time_friday.description" >
+				<source>Earliest possible time to make appointments on Fridays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="start_time_saturday.description" resname="start_time_saturday.description" >
+				<source>Earliest possible time to make appointments on Saturdays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="start_time_sunday.description" resname="start_time_sunday.description" >
+				<source>Earliest possible time to make appointments on Sundays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="stop_time_monday.description" resname="stop_time_monday.description" >
+				<source>Latest possible time to make appointments on Mondays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="stop_time_tuesday.description" resname="stop_time_tuesday.description" >
+				<source>Latest possible time to make appointments on Tuesdays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="stop_time_wednesday.description" resname="stop_time_wednesday.description" >
+				<source>Latest possible time to make appointments on Wednesdays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="stop_time_thursday.description" resname="stop_time_thursday.description" >
+				<source>Latest possible time to make appointments on Thursdays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="stop_time_friday.description" resname="stop_time_friday.description" >
+				<source>Latest possible time to make appointments on Fridays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="stop_time_saturday.description" resname="stop_time_saturday.description" >
+				<source>Latest possible time to make appointments on Saturdays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="stop_time_sunday.description" resname="stop_time_sunday.description" >
+				<source>Latest possible time to make appointments on Sundays, ranging from 00:00 to 23:59</source>
+			</trans-unit>
+			<trans-unit id="exclude_holidays.description" resname="exclude_holidays.description" >
+				<source>If enabled, does not allow appointments on days marked as holiday in the agenda record</source>
+			</trans-unit>
+			<trans-unit id="max_amount_monday.description" resname="max_amount_monday.description" >
+				<source>Number of appointments allowed on Mondays (empty = 0!)</source>
+			</trans-unit>
+			<trans-unit id="max_amount_tuesday.description" resname="max_amount_tuesday.description" >
+				<source>Number of appointments allowed on Tuesdays (empty = 0!)</source>
+			</trans-unit>
+			<trans-unit id="max_amount_wednesday.description" resname="max_amount_wednesday.description" >
+				<source>Number of appointments allowed on Wednesdays (empty = 0!)</source>
+			</trans-unit>
+			<trans-unit id="max_amount_thursday.description" resname="max_amount_thursday.description" >
+				<source>Number of appointments allowed on Thursdays (empty = 0!)</source>
+			</trans-unit>
+			<trans-unit id="max_amount_friday.description" resname="max_amount_friday.description" >
+				<source>Number of appointments allowed on Fridays (empty = 0!)</source>
+			</trans-unit>
+			<trans-unit id="max_amount_saturday.description" resname="max_amount_saturday.description" >
+				<source>Number of appointments allowed on Saturdays (empty = 0!)</source>
+			</trans-unit>
+			<trans-unit id="max_amount_sunday.description" resname="max_amount_sunday.description" >
+				<source>Number of appointments allowed on Sundays (empty = 0!)</source>
+			</trans-unit>
+			<trans-unit id="minute_interval_monday.description" resname="minute_interval_monday.description" >
+				<source>Number of minutes between allowed appointment time-slots on Mondays</source>
+			</trans-unit>
+			<trans-unit id="minute_interval_tuesday.description" resname="minute_interval_tuesday.description" >
+				<source>Number of minutes between allowed appointment time-slots on Tuesdays</source>
+			</trans-unit>
+			<trans-unit id="minute_interval_wednesday.description" resname="minute_interval_wednesday.description" >
+				<source>Number of minutes between allowed appointment time-slots on Wednesdays</source>
+			</trans-unit>
+			<trans-unit id="minute_interval_thursday.description" resname="minute_interval_thursday.description" >
+				<source>Number of minutes between allowed appointment time-slots on Thursdays</source>
+			</trans-unit>
+			<trans-unit id="minute_interval_friday.description" resname="minute_interval_friday.description" >
+				<source>Number of minutes between allowed appointment time-slots on Fridays</source>
+			</trans-unit>
+			<trans-unit id="minute_interval_saturday.description" resname="minute_interval_saturday.description" >
+				<source>Number of minutes between allowed appointment time-slots on Saturdays</source>
+			</trans-unit>
+			<trans-unit id="minute_interval_sunday.description" resname="minute_interval_sunday.description" >
+				<source>Number of minutes between allowed appointment time-slots on Sundays</source>
+			</trans-unit>
+			<trans-unit id="max_amount_per_var_days.description" resname="max_amount_per_var_days.description" >
+				<source>Overrules the allowed cumulative amount of appointments per X consecutive days, where the next field is X. &lt;strong&gt;CAUTION: Setting these inappropriately adversely affects available date/timeslots.&lt;/strong&gt;</source>
+			</trans-unit>
+			<trans-unit id="per_var_days.description" resname="per_var_days.description" >
+				<source>.. per X consecutive days .. &lt;strong&gt;[see previous field]&lt;/strong&gt;</source>
+			</trans-unit>
+			<trans-unit id="per_var_days_interval.description" resname="per_var_days_interval.description" >
+				<source>If set, the number of hours before and after the cumulative amount of appointments to additionally block, if the appointments take place in consecutive timeblocks of this field's amount of hours. i.e. '12' would result in 12 hours before and after blocked if and only if the appointments take place in consecutive 12 hour blocks. &lt;strong&gt;CAUTION: Setting these inappropriately adversely affects performance.&lt;/strong&gt;</source>
+			</trans-unit>
+			<trans-unit id="between_minutes.description" resname="between_minutes.description" >
+				<source>Number of minutes reserved before, after and/or between appointments</source>
+			</trans-unit>
+			<trans-unit id="hours_mutable.description" resname="hours_mutable.description" >
+				<source>Number of hours an appointment can be changed/deleted after being scheduled</source>
+			</trans-unit>
+			<trans-unit id="blocked_hours.description" resname="blocked_hours.description" >
+				<source>Number of hours until first available appointment time-slot</source>
+			</trans-unit>
+			<trans-unit id="blocked_hours_workdays.description" resname="blocked_hours_workdays.description" >
+				<source>Number of workday hours until first available appointment time-slot, in case blocked hours fall in weekend</source>
+			</trans-unit>
+			<trans-unit id="max_days_forward.description" resname="max_days_forward.description" >
+				<source>Maximum number of days forward available to schedule, counting from the first</source>
+			</trans-unit>
+			<trans-unit id="form_fields.description" resname="form_fields.description" >
+				<source>Form Fields for this appointment type</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

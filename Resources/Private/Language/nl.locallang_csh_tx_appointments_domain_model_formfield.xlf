@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227666" source-language="en" target-language="nl" datatype="plaintext" original="messages" date="2022-12-28T11:41:06Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="title.description" resname="title.description"  approved="yes">
+				<source>Internal field title</source>
+				<target>Interne veld titel</target>
+			</trans-unit>
+			<trans-unit id="label.description" resname="label.description"  approved="yes">
+				<source>Field label as shown on Frontend</source>
+				<target>Veld label zoals getoond op Frontend</target>
+			</trans-unit>
+			<trans-unit id="csh.description" resname="csh.description"  approved="yes">
+				<source>Helptext shown on Frontend next to the field</source>
+				<target>Toelichting dat op de Frontend naast het veld wordt getoond</target>
+			</trans-unit>
+			<trans-unit id="validation_types.description" resname="validation_types.description"  approved="yes">
+				<source>Validation types can force the field to be validated as the chosen types of content. If the field content does not match the validation type, the form will inform the user and not save until corrected.</source>
+				<target>Validatie types forceren een veld om zich te valideren als het gekozen type inhoud. Als een veld niet voldoet aan een validatie type, dan zal het formulier dit aangeven en niet opgeslagen worden voor dit gecorrigeerd is.</target>
+			</trans-unit>
+			<trans-unit id="field_type.description" resname="field_type.description"  approved="yes">
+				<source>The field type determines its appearance and input method</source>
+				<target>Het veld type bepaalt zijn uiterlijk en invoerwijze</target>
+			</trans-unit>
+			<trans-unit id="choices.description" resname="choices.description"  approved="yes">
+				<source>Selection choices, one per line. You may define values that differ from their labels, if desired. See details for the different approaches.</source>
+				<target>Selectie keuzes, per regel één. U kunt de waarden en labels van elkaar laten verschillen, indien gewenst. Zie details voor de verschillende methoden.</target>
+			</trans-unit>
+			<trans-unit id="choices.details" resname="choices.details" xml:space="preserve" approved="yes">
+				<source>
+				The choices represent value/label combinations for your chosen type of field. You may explicitly define values and labels, separated by a pipe character: |
+
+				value1|label1
+				value2|label2
+				
+				If the label and value are the same, you can explicitly define both like above, or omit either one:
+
+				choice1|choice1
+				choice2
+
+				If you want to have a decorative or informative label that doesn't represent an actual value, you may provide an empty value:
+
+				|Make a choice:
+				yes
+				no
+				
+				If the last example is combined with a &quot;Not Empty&quot; Validation Type, the user becomes required to choose either yes or no before he is able to save the appointment, because the first label shown has an empty value.
+			</source>
+				<target>
+				De keuzes vertegenwoordigen waarde/label combinaties voor een selectie. U kunt expliciet een waarde en een label opgeven per keuze, gescheiden met een pipe: |
+
+				waarde1|label1
+				waarde2|label2
+				
+				Als de label en de waarde gelijk moeten zijn, kunt u zoals in het voorbeeld hierboven ze beiden expliciet noemen, of één van beiden weglaten:
+
+				keuze1|keuze1
+				keuze2
+
+				Als u een decoratieve of informatieve label wilt die niet echt een daadwerkelijke waarde vertegenwoordigd, kunt u een lege waarde gebruiken:
+
+				|Maak een keuze:
+				ja
+				nee
+				
+				Als het laatste voorbeeld gecombineerd is met een &quot;Vereist&quot; Validatie Type, dan is de gebruiker vereist om de ja of nee keuze te selecteren alvorens hij de afspraak kan opslaan, omdat de eerste label een lege waarde heeft.
+			</target>
+			</trans-unit>
+			<trans-unit id="function.description" resname="function.description"  approved="yes">
+				<source>The function sets whether the field has a special meaning. See details for the different choices.</source>
+				<target>De functie bepaalt of het veld een speciale betekenis heeft. Zie details voor verdere toelichting en aanbevelingen.</target>
+			</trans-unit>
+			<trans-unit id="function.details" resname="function.details" xml:space="preserve" approved="yes">
+				<source>
+				The field can have functionality in addition to being of informative use.
+				
+				If you choose to let it add time, its value will be interpreted as a number that will add to the appointment duration. If chosen, it is highly recommended to add the &lt;strong&gt;Natural Number&lt;/strong&gt; Validation Type!
+				
+				If you choose Email confirmation, its value will be interpreted as an email address to which confirmations could be sent, according to agenda configuration. (if disabled in agenda, the field will remain informative) The &lt;strong&gt;Email Address&lt;/strong&gt; Validation Type is recommended for this choice!
+			</source>
+				<target>
+				Een veld kan voorzien worden van extra functionaliteit, buiten zijn aanvankelijk informatieve waarde.
+				
+				Indien de keuze valt op het toevoegen van tijd, dan wordt invoer van dit veld geïnterpreteerd als een getal dat bij de tijdsduur van de afspraak wordt opgeteld. Het wordt daarom sterk aanbevolen deze keuze met het &lt;strong&gt;Natuurlijk Getal&lt;/strong&gt; Validatie Type te combineren!
+				
+				In geval van E-mail bevestiging wordt invulling van het veld geïnterpreteerd als een e-mail adres waarnaar bevestigingen gestuurd kunnen worden (mits ingesteld in de agenda!). Het wordt daarom sterk aanbevolen deze keuze met het &lt;strong&gt;E-mail Adres&lt;/strong&gt; Validatie te combineren!
+			</target>
+			</trans-unit>
+			<trans-unit id="enable_field.description" resname="enable_field.description"  approved="yes">
+				<source>The condition-field that enables the current field if the given value matches</source>
+				<target>Het conditie-veld dat bij de opgegeven waarde het huidige veld activeert</target>
+			</trans-unit>
+			<trans-unit id="enable_value.description" resname="enable_value.description"  approved="yes">
+				<source>The condition-value is case-insensitive</source>
+				<target>De conditie-waarde is hoofdletterongevoelig</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227668" source-language="en" target-language="nl" datatype="plaintext" original="messages" date="2022-12-28T11:41:08Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="value.description" resname="value.description"  approved="yes">
+				<source>The value itself</source>
+				<target>De waarde zelf</target>
+			</trans-unit>
+			<trans-unit id="form_field.description" resname="form_field.description"  approved="yes">
+				<source>The formfield this value belongs to</source>
+				<target>Het formulier veld waaraan de waarde toebehoort</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

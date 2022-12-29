@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227654" source-language="en" datatype="plaintext" original="messages" date="2022-12-28T11:40:54Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="settings.agendaUid.description" resname="settings.agendaUid.description" >
+				<source>Pick the agenda to show, or set it to depend on the associated TypoScript constant.</source>
+			</trans-unit>
+			<trans-unit id="settings.appointmentTypeList.description" resname="settings.appointmentTypeList.description" >
+				<source>Limit the allowed appointment types to the types selected here, or set it to depend on the associated TypoScript constant.</source>
+			</trans-unit>
+			<trans-unit id="settings.suGroup.description" resname="settings.suGroup.description" >
+				<source>Members of the Superuser Group have additional permissions and rights, including the ability to edit or cancel anyone's appointment at any given time.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

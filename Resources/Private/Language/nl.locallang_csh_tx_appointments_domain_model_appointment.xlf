@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227663" source-language="en" target-language="nl" datatype="plaintext" original="messages" date="2022-12-28T11:41:03Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="creation_progress.description" resname="creation_progress.description"  approved="yes">
+				<source>Indicates this appointment is still in the process of being made, with the possibility of disappearing if not finalized</source>
+				<target>Geeft aan dat de afspraak midden in het aanmaak-proces zit, met de mogelijkheid dat deze verdwijnt als hij niet definitief wordt opgeslagen</target>
+			</trans-unit>
+			<trans-unit id="begin_time.description" resname="begin_time.description"  approved="yes">
+				<source>Starting time of appointment</source>
+				<target>Begintijd van afspraak</target>
+			</trans-unit>
+			<trans-unit id="end_time.description" resname="end_time.description"  approved="yes">
+				<source>Ending time of appointment</source>
+				<target>Eindtijd van afspraak</target>
+			</trans-unit>
+			<trans-unit id="begin_reserved.description" resname="begin_reserved.description"  approved="yes">
+				<source>Starting time of the reservation block</source>
+				<target>Starttijd van het gereserveerde tijdsblok</target>
+			</trans-unit>
+			<trans-unit id="end_reserved.description" resname="end_reserved.description"  approved="yes">
+				<source>Ending time of the reservation block</source>
+				<target>Eindtijd van het gereserveerde tijdsblok</target>
+			</trans-unit>
+			<trans-unit id="notes.description" resname="notes.description"  approved="yes">
+				<source>Notes</source>
+				<target>Opmerkingen</target>
+			</trans-unit>
+			<trans-unit id="notes_su.description" resname="notes_su.description"  approved="yes">
+				<source>Administrator Notes</source>
+				<target>Opmerkingen van beheerders</target>
+			</trans-unit>
+			<trans-unit id="type.description" resname="type.description"  approved="yes">
+				<source>Appointment Type which this Appointment belongs to</source>
+				<target>Afspraken Type van deze afspraak</target>
+			</trans-unit>
+			<trans-unit id="form_field_values.description" resname="form_field_values.description"  approved="yes">
+				<source>Form field values associated with this appointment</source>
+				<target>Formulier veld waarden gerelateerd aan deze afspraak</target>
+			</trans-unit>
+			<trans-unit id="address.description" resname="address.description"  approved="yes">
+				<source>Name and address information</source>
+				<target>NAW gegevens</target>
+			</trans-unit>
+			<trans-unit id="fe_user.description" resname="fe_user.description"  approved="yes">
+				<source>User who created this appointment or is assigned to it</source>
+				<target>De gebruiker die de afspraak heeft aangemaakt of krijgt toegewezen</target>
+			</trans-unit>
+			<trans-unit id="agenda.description" resname="agenda.description"  approved="yes">
+				<source>Agenda in which this appointment is made</source>
+				<target>Agenda waaraan de afspraak wordt toegevoegd</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

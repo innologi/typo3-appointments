@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227634" source-language="en" datatype="plaintext" original="messages" date="2022-12-28T11:40:34Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="tx_appointments.login_error" resname="tx_appointments.login_error" >
+				<source>You need to be logged-in with a valid user account.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments.no_agenda" resname="tx_appointments.no_agenda" >
+				<source>No agenda set or found, please review plugin settings.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments.no_types" resname="tx_appointments.no_types" >
+				<source>No appointment-types found or associated with this agenda, please review the related records.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments.appointment_no_longer_available" resname="tx_appointments.appointment_no_longer_available" >
+				<source>The appointment is no longer available. It may have been cancelled or deleted by someone after you visited the page.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments.appointment_property_deleted" resname="tx_appointments.appointment_property_deleted" >
+				<source>The appointment is missing some property values. Someone might have deleted these manually after you visited the page.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments.csrf_invalid" resname="tx_appointments.csrf_invalid" >
+				<source>Sorry, but the action you attempted was either expired or invalid.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.no_mutate" resname="tx_appointments_list.no_mutate" >
+				<source>Sorry, but you don't have permission to change appointments you did not create yourself.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.timeslot_not_allowed" resname="tx_appointments_list.timeslot_not_allowed" >
+				<source>The timeslot you picked is no longer available, possibly because you've waited too long.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.free_state" resname="tx_appointments_list.free_state" >
+				<source>not reserved</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.minutes_remaining" resname="tx_appointments_list.minutes_remaining" >
+				<source>min remaining</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.warn_unload" resname="tx_appointments_list.warn_unload" >
+				<source>You have not yet finished creating an appointment. Your action could result in losing all unsaved data, unless you stay on the page and - when ready - finish creating the appointment first, using the button '$1' below the form.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.unfinished_header" resname="tx_appointments_list.unfinished_header" >
+				<source>Unsaved appointments</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.unfinished_body" resname="tx_appointments_list.unfinished_body" >
+				<source>You can temporarily resume the creation of appointments, or free all timeslots used by them. Previously entered data will be kept at least as long as your browser hasn't closed.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.unfinished_warning" resname="tx_appointments_list.unfinished_warning" >
+				<source>ATTENTION: Your browser does not fully support this functionality, or has no javascript-support. Previously entered data is not guaranteed to be restored.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.unfinished_session_incomplete" resname="tx_appointments_list.unfinished_session_incomplete" >
+				<source>Previously entered data for this appointment is likely incomplete!</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_new" resname="tx_appointments_list.appointment_new" >
+				<source>New appointment</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_list" resname="tx_appointments_list.appointment_list" >
+				<source>Back to list</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_edit" resname="tx_appointments_list.appointment_edit" >
+				<source>Edit</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_edit_header" resname="tx_appointments_list.appointment_edit_header" >
+				<source>Edit appointment</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_delete" resname="tx_appointments_list.appointment_delete" >
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_delete_confirm" resname="tx_appointments_list.appointment_delete_confirm" >
+				<source>Are you sure you want to cancel this appointment?</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.label_type" resname="tx_appointments_list.label_type" >
+				<source>Pick type:</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.label_date_slot" resname="tx_appointments_list.label_date_slot" >
+				<source>Pick date:</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.label_time_slot" resname="tx_appointments_list.label_time_slot" >
+				<source>Pick time:</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.submit_next_step" resname="tx_appointments_list.submit_next_step" >
+				<source>Next step</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.submit_type" resname="tx_appointments_list.submit_type" >
+				<source>Confirm type</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.submit_date_slot" resname="tx_appointments_list.submit_date_slot" >
+				<source>Confirm date</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.submit_time_expired" resname="tx_appointments_list.submit_time_expired" >
+				<source>Renew time</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.submit_new" resname="tx_appointments_list.submit_new" >
+				<source>Create appointment</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.submit_update" resname="tx_appointments_list.submit_update" >
+				<source>Save appointment</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.submit_free" resname="tx_appointments_list.submit_free" >
+				<source>Free timeslot</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.validation_errors" resname="tx_appointments_list.validation_errors" >
+				<source>There is a problem with some fields:</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.yes" resname="tx_appointments_list.yes" >
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.no" resname="tx_appointments_list.no" >
+				<source>No</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_create_success" resname="tx_appointments_list.appointment_create_success" >
+				<source>Your appointment was created.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_create_no_types" resname="tx_appointments_list.appointment_create_no_types" >
+				<source>It is not possible to schedule an appointment on the chosen day (anymore), please pick another day.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.crosstime_title" resname="tx_appointments_list.crosstime_title" >
+				<source>Conflicting times</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.crosstime_info" resname="tx_appointments_list.crosstime_info" xml:space="preserve">
+				<source>Your appointment could not be saved, because the times you desired would conflict with other appointments.
+%s</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.crosstime_begin" resname="tx_appointments_list.crosstime_begin" xml:space="preserve">
+				<source>
+- Begintime (%s) has a %d-minute overlap with an earlier appointment</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.crosstime_end" resname="tx_appointments_list.crosstime_end" xml:space="preserve">
+				<source>
+- Endtime (%s) has a %d-minute overlap with a later appointment</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_timerstart" resname="tx_appointments_list.appointment_timerstart" >
+				<source>Your chosen timeslot is now reserved temporarily by you. The timeslot is unavailable for $1 minutes, so that you can fill out the form and schedule the appointment for the chosen time. If you did not finish creating the appointment before the timer runs out, then the timeslot will be made available again for you or someone else.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_timer_header" resname="tx_appointments_list.appointment_timer_header" >
+				<source>Timeslot is reserved temporarily by you.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_timer" resname="tx_appointments_list.appointment_timer" >
+				<source>Will automatically be available again after: $1</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_timerrefresh" resname="tx_appointments_list.appointment_timerrefresh" >
+				<source>Your last chosen timeslot was still available for you. It has been reserved by you again.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_expired_header" resname="tx_appointments_list.appointment_expired_header" >
+				<source>Timeslot no longer reserved.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_expired" resname="tx_appointments_list.appointment_expired" >
+				<source>Please renew your timeslot-choice before someone else reserves it.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_update_success" resname="tx_appointments_list.appointment_update_success" >
+				<source>Your appointment was updated.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_update_crosstime" resname="tx_appointments_list.appointment_update_crosstime" >
+				<source>The appointment could not be saved, because your desired time-changes would result in an overlap of appointments. Please pick another timeslot or try again later.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_delete_success" resname="tx_appointments_list.appointment_delete_success" >
+				<source>Your appointment was cancelled.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.appointment_free_success" resname="tx_appointments_list.appointment_free_success" >
+				<source>The timeslot has been freed, you'll have to reserve a date/timeslot again before you can fill out the form any further to schedule the appointment.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.required" resname="tx_appointments_list.required" >
+				<source>required field</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.email_create_subject" resname="tx_appointments_list.email_create_subject" >
+				<source>Appointment confirmation</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.email_update_subject" resname="tx_appointments_list.email_update_subject" >
+				<source>Appointment change</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.email_delete_subject" resname="tx_appointments_list.email_delete_subject" >
+				<source>Appointment cancellation</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.calendar_create_subject" resname="tx_appointments_list.calendar_create_subject" >
+				<source>Appointment confirmation</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.calendar_update_subject" resname="tx_appointments_list.calendar_update_subject" >
+				<source>Appointment change</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.calendar_delete_subject" resname="tx_appointments_list.calendar_delete_subject" >
+				<source>Appointment cancellation</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.email_link_label" resname="tx_appointments_list.email_link_label" >
+				<source>View appointment</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.email_error" resname="tx_appointments_list.email_error" >
+				<source>Notification by email failed because of an error. Please notify the site-administrator!</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.csh" resname="tx_appointments_list.csh" >
+				<source>Help</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.formFieldValues.value.4075013371337" resname="error.appointment.formFieldValues.value.4075013371337" >
+				<source>This field adds to the appointment-duration. Please review if changing it is an option to resolve the time-conflict.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.beginTime.4075013371337" resname="error.appointment.beginTime.4075013371337" >
+				<source>If you have no other option, you might have to renew the appointment with another timeslot.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.beginTime.407501337" resname="error.appointment.beginTime.407501337" >
+				<source>Please choose a different date/time.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.address.firstName.1221560718" resname="error.appointment.address.firstName.1221560718" >
+				<source>Should not be empty.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.address.lastName.1221560718" resname="error.appointment.address.lastName.1221560718" >
+				<source>Should not be empty.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.address.birthday.1238087674" resname="error.appointment.address.birthday.1238087674" >
+				<source>Should be a valid date in 'dd-mm-yyyy' format, e.g. 24-12-1951</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.address.birthday.1307719788" resname="error.appointment.address.birthday.1307719788" >
+				<source>Should be a valid date in 'dd-mm-yyyy' format, e.g. 24-12-1951</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.address.address.1221560718" resname="error.appointment.address.address.1221560718" >
+				<source>Should not be empty.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.address.zip.1221565130" resname="error.appointment.address.zip.1221565130" >
+				<source>Should be a valid zip code, e.g. 1000AD</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.address.city.1221560718" resname="error.appointment.address.city.1221560718" >
+				<source>Should not be empty.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.formFieldValues.value.1221560494" resname="error.appointment.formFieldValues.value.1221560494" >
+				<source>Should be a (whole) number.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.formFieldValues.value.1221560718" resname="error.appointment.formFieldValues.value.1221560718" >
+				<source>Should not be empty.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.formFieldValues.value.1221560910" resname="error.appointment.formFieldValues.value.1221560910" >
+				<source>Please make a choice.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.formFieldValues.value.1238087674" resname="error.appointment.formFieldValues.value.1238087674" >
+				<source>Should be a valid date in 'dd-mm-yyyy' format, e.g. 24-12-1951</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.formFieldValues.value.1307719788" resname="error.appointment.formFieldValues.value.1307719788" >
+				<source>Should be a valid date in 'dd-mm-yyyy' format, e.g. 24-12-1951</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.formFieldValues.value.1221559976" resname="error.appointment.formFieldValues.value.1221559976" >
+				<source>Should be a valid email address.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.formFieldValues.value.1221560288" resname="error.appointment.formFieldValues.value.1221560288" >
+				<source>Should be a divisional.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.formFieldValues.value.1221563685" resname="error.appointment.formFieldValues.value.1221563685" >
+				<source>Should be a number.</source>
+			</trans-unit>
+			<trans-unit id="error.appointment.formFieldValues.value.1221561046" resname="error.appointment.formFieldValues.value.1221561046" >
+				<source>Should be a (whole) number of 0 or higher.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.day_s1" resname="tx_appointments_list.day_s1" >
+				<source>Mo</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.day_s2" resname="tx_appointments_list.day_s2" >
+				<source>Tu</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.day_s3" resname="tx_appointments_list.day_s3" >
+				<source>We</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.day_s4" resname="tx_appointments_list.day_s4" >
+				<source>Th</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.day_s5" resname="tx_appointments_list.day_s5" >
+				<source>Fr</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.day_s6" resname="tx_appointments_list.day_s6" >
+				<source>Sa</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.day_s7" resname="tx_appointments_list.day_s7" >
+				<source>Su</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.day_1" resname="tx_appointments_agenda.day_1" >
+				<source>Monday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.day_2" resname="tx_appointments_agenda.day_2" >
+				<source>Tuesday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.day_3" resname="tx_appointments_agenda.day_3" >
+				<source>Wednesday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.day_4" resname="tx_appointments_agenda.day_4" >
+				<source>Thursday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.day_5" resname="tx_appointments_agenda.day_5" >
+				<source>Friday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.day_6" resname="tx_appointments_agenda.day_6" >
+				<source>Saturday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.day_7" resname="tx_appointments_agenda.day_7" >
+				<source>Sunday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_1" resname="tx_appointments_agenda.month_1" >
+				<source>January</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_2" resname="tx_appointments_agenda.month_2" >
+				<source>February</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_3" resname="tx_appointments_agenda.month_3" >
+				<source>March</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_4" resname="tx_appointments_agenda.month_4" >
+				<source>April</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_5" resname="tx_appointments_agenda.month_5" >
+				<source>May</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_6" resname="tx_appointments_agenda.month_6" >
+				<source>June</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_7" resname="tx_appointments_agenda.month_7" >
+				<source>July</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_8" resname="tx_appointments_agenda.month_8" >
+				<source>August</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_9" resname="tx_appointments_agenda.month_9" >
+				<source>September</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_10" resname="tx_appointments_agenda.month_10" >
+				<source>October</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_11" resname="tx_appointments_agenda.month_11" >
+				<source>November</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_12" resname="tx_appointments_agenda.month_12" >
+				<source>December</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s1" resname="tx_appointments_agenda.month_s1" >
+				<source>Jan</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s2" resname="tx_appointments_agenda.month_s2" >
+				<source>Feb</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s3" resname="tx_appointments_agenda.month_s3" >
+				<source>Mar</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s4" resname="tx_appointments_agenda.month_s4" >
+				<source>Apr</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s5" resname="tx_appointments_agenda.month_s5" >
+				<source>May</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s6" resname="tx_appointments_agenda.month_s6" >
+				<source>Jun</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s7" resname="tx_appointments_agenda.month_s7" >
+				<source>Jul</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s8" resname="tx_appointments_agenda.month_s8" >
+				<source>Aug</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s9" resname="tx_appointments_agenda.month_s9" >
+				<source>Sep</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s10" resname="tx_appointments_agenda.month_s10" >
+				<source>Oct</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s11" resname="tx_appointments_agenda.month_s11" >
+				<source>Nov</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.month_s12" resname="tx_appointments_agenda.month_s12" >
+				<source>Dec</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.weeks_back" resname="tx_appointments_agenda.weeks_back" >
+				<source>Previous weeks</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.weeks_forward" resname="tx_appointments_agenda.weeks_forward" >
+				<source>Next weeks</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.caption_month" resname="tx_appointments_agenda.caption_month" >
+				<source>Agenda month overview</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.summary_month" resname="tx_appointments_agenda.summary_month" >
+				<source>This is the agenda month overview. It displays appointments of all users. You can navigate between months (if enabled) and you can view appointments by clicking on them.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.caption_weeks" resname="tx_appointments_agenda.caption_weeks" >
+				<source>Agenda weeks overview</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_agenda.summary_weeks" resname="tx_appointments_agenda.summary_weeks" >
+				<source>This is the agenda weeks overview. It displays appointments of all users. You can navigate between weeks (if enabled) and you can view appointments by clicking on them.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.caption_list" resname="tx_appointments_list.caption_list" >
+				<source>Your appointments</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.summary_list" resname="tx_appointments_list.summary_list" >
+				<source>This is a listing of future/current appointments that belong to you.</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.caption_show" resname="tx_appointments_list.caption_show" >
+				<source>Appointment details</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_list.summary_show" resname="tx_appointments_list.summary_show" >
+				<source>This is a listing of details of the the appointment you've chosen to view.</source>
+			</trans-unit>
+			<trans-unit id="property.appointment" resname="property.appointment" >
+				<source>Appointment</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.type" resname="property.appointment.type" >
+				<source>Appointment type</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.type.cshNew1" resname="property.appointment.type.cshNew1" >
+				<source>Here you may choose the appointment type. Each appointment type may differ. If you have picked a date first, the currently available choices are limited to what types are (still) possible on the chosen date.</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.type.cshNew2" resname="property.appointment.type.cshNew2" >
+				<source>You may still change the appointment type for the chosen timeslot. Please note: the currently available choices are limited to what types (still) have the chosen timeslot available. If your desired appointment type is missing, then it's not available for the chosen timeslot and you'll have to change the timeslot first.</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.type.cshEdit" resname="property.appointment.type.cshEdit" >
+				<source>The appointment type cannot be changed for any already scheduled appointment. If you wish to create a different appointment type, you will need to schedule a new appointment for that instead.</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.beginTime" resname="property.appointment.beginTime" >
+				<source>Date/Time</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.beginTime.date" resname="property.appointment.beginTime.date" >
+				<source>Appointment date</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.beginTime.date.cshNew1" resname="property.appointment.beginTime.date.cshNew1" >
+				<source>The date of the appointment. The available choices consist of all dates that (still) have timeslots available, for this particular appointment type. Different appointment types may result in different available dates.</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.beginTime.date.cshNew2" resname="property.appointment.beginTime.date.cshNew2" >
+				<source>To change the date, you'll have to free up the currently chosen timeslot first.</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.beginTime.time" resname="property.appointment.beginTime.time" >
+				<source>Time of appointment</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.beginTime.time.cshNew1" resname="property.appointment.beginTime.time.cshNew1" >
+				<source>The time of the appointment. The available choices consist of all (still) available timeslots on the picked date, for this particular appointment type. Different dates and/or appointment types may result in different available timeslots.</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.beginTime.time.cshNew2" resname="property.appointment.beginTime.time.cshNew2" >
+				<source>To change the timeslot, you'll have to free up the currently chosen timeslot first.</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.beginReserved" resname="property.appointment.beginReserved" >
+				<source>Agenda reserved</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.specialFields" resname="property.appointment.specialFields" >
+				<source>Notes</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.notes" resname="property.appointment.notes" >
+				<source>Notes</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.notes.csh" resname="property.appointment.notes.csh" >
+				<source>You may set (private) notes here, relevant to the appointment.</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.notesSu" resname="property.appointment.notesSu" >
+				<source>Administrator notes</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.notesSu.csh" resname="property.appointment.notesSu.csh" >
+				<source>You may set administrator notes here that are only viewable by administrators.</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.formFieldValues" resname="property.appointment.formFieldValues" >
+				<source>Additional information</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address" resname="property.appointment.address" >
+				<source>Name and address information</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.feUser" resname="property.appointment.feUser" >
+				<source>Created by</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.name" resname="property.appointment.address.name" >
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.firstName" resname="property.appointment.address.firstName" >
+				<source>First name</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.middleName" resname="property.appointment.address.middleName" >
+				<source>Middle name</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.lastName" resname="property.appointment.address.lastName" >
+				<source>Last name</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.gender" resname="property.appointment.address.gender" >
+				<source>Gender</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.gender.m" resname="property.appointment.address.gender.m" >
+				<source>Male</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.gender.f" resname="property.appointment.address.gender.f" >
+				<source>Female</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.birthday" resname="property.appointment.address.birthday" >
+				<source>Birthdate</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.birthday.placeholder" resname="property.appointment.address.birthday.placeholder" >
+				<source>dd-mm-yyyy</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.address" resname="property.appointment.address.address" >
+				<source>Address</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.zip" resname="property.appointment.address.zip" >
+				<source>Zip code</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.zip.placeholder" resname="property.appointment.address.zip.placeholder" >
+				<source>1000AD</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.city" resname="property.appointment.address.city" >
+				<source>City</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.socialSecurityNumber" resname="property.appointment.address.socialSecurityNumber" >
+				<source>Social Security Number</source>
+			</trans-unit>
+			<trans-unit id="property.appointment.address.email" resname="property.appointment.address.email" >
+				<source>Emailaddress</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda_month.month_back" resname="tx_appointments_domain_model_agenda_month.month_back" >
+				<source>Previous month</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda_month.month_forward" resname="tx_appointments_domain_model_agenda_month.month_forward" >
+				<source>Next month</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda_date.is_holiday" resname="tx_appointments_domain_model_agenda_date.is_holiday" >
+				<source>Holiday</source>
+			</trans-unit>
+			<trans-unit id="link.title.appointment_show" resname="link.title.appointment_show" >
+				<source>View appointment details</source>
+			</trans-unit>
+			<trans-unit id="link.title.appointment_new" resname="link.title.appointment_new" >
+				<source>Create appointment</source>
+			</trans-unit>
+			<trans-unit id="link.title.appointment_edit" resname="link.title.appointment_edit" >
+				<source>Edit appointment</source>
+			</trans-unit>
+			<trans-unit id="link.title.appointment_resume" resname="link.title.appointment_resume" >
+				<source>Resume appointment creation</source>
+			</trans-unit>
+			<trans-unit id="link.title.previous" resname="link.title.previous" >
+				<source>View previous</source>
+			</trans-unit>
+			<trans-unit id="link.title.next" resname="link.title.next" >
+				<source>View next</source>
+			</trans-unit>
+			<trans-unit id="link.title.back" resname="link.title.back" >
+				<source>Go back</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

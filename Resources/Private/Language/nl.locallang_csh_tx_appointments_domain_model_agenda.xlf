@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227660" source-language="en" target-language="nl" datatype="plaintext" original="messages" date="2022-12-28T11:41:00Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="name.description" resname="name.description"  approved="yes">
+				<source>Name of agenda</source>
+				<target>Naam van agenda</target>
+			</trans-unit>
+			<trans-unit id="holidays.description" resname="holidays.description"  approved="yes">
+				<source>Holiday dates in dd-mm-yyyy format, one per line</source>
+				<target>Feestdagen in dd-mm-jjjj formaat, per regel één</target>
+			</trans-unit>
+			<trans-unit id="email_address.description" resname="email_address.description"  approved="yes">
+				<source>Emails a confirmation on every scheduled appointment to the selected addresses</source>
+				<target>Emailt een bevestiging bij elk geplande afspraak naar de geselecteerde adressen</target>
+			</trans-unit>
+			<trans-unit id="email_text.description" resname="email_text.description"  approved="yes">
+				<source>Email body text, as it appears in the email. See details for supported variables.</source>
+				<target>E-mail tekst, zoals het te zien zal zijn in de e-mail. Zie details voor ondersteunde variabelen.</target>
+			</trans-unit>
+			<trans-unit id="email_text.details" resname="email_text.details" xml:space="preserve" approved="yes">
+				<source>
+				The following variables are supported:
+				
+				###USER### : Name of the frontend user who owns the appointment   
+				###AGENDA### : Name of the agenda
+				###TYPE### : Appointment type
+				###DATE### : Appointment date
+				###START_TIME### : Appointment start time 
+				###END_TIME### : Appointment end time
+				###NOTES### : Notes
+				###NOTES_SU### : Superuser Notes
+				###ADDRESS### : Name and address information
+				###SECURITY### : Social Security Number
+				###LINK### : Link to appointment
+			</source>
+				<target>
+				De volgende variabelen worden ondersteund:
+				
+				###USER### : Naam van de frontend gebruiker die eigenaar is van de afspraak   
+				###AGENDA### : Name van de agenda
+				###TYPE### : Afspraak type
+				###DATE### : Afspraak datum
+				###START_TIME### : Afspraak start tijd 
+				###END_TIME### : Afspraak eind tijd
+				###NOTES### : Opmerkingen
+				###NOTES_SU### : Beheerders Opmerkingen
+				###ADDRESS### : NAW gegevens
+				###SECURITY### : Burger Service Nummer 
+				###LINK### : Link naar afspraak
+			</target>
+			</trans-unit>
+			<trans-unit id="calendar_invite_address.description" resname="calendar_invite_address.description"  approved="yes">
+				<source>Emails a calendar invitation on every scheduled appointment to the selected addresses</source>
+				<target>E-mailt een kalender uitnodiging bij elk geplande afspraak naar de geselecteerde adressen</target>
+			</trans-unit>
+			<trans-unit id="calendar_invite_text.description" resname="calendar_invite_text.description"  approved="yes">
+				<source>Calendar invitation description, which is shown in the invitation. See detail helptext of 'Email Body Text' for supported variables.</source>
+				<target>Kalender uitnodiging omschrijving, getoond in de uitnodiging. Zie de detail helptekst van 'E-mail Tekst' voor de ondersteunde variabelen.</target>
+			</trans-unit>
+			<trans-unit id="email_types.description" resname="email_types.description"  approved="yes">
+				<source>Determines when to send the configured confirmation email to the configured addresses</source>
+				<target>Bepaalt wanneer een bevestigingsmail verstuurd moet worden naar de ingestelde adressen</target>
+			</trans-unit>
+			<trans-unit id="email_owner_types.description" resname="email_owner_types.description"  approved="yes">
+				<source>Determines when to send the configured confirmation email to the frontend user</source>
+				<target>Bepaalt wanneer een bevestigingsmail verstuurd moet worden naar de frontend gebruiker</target>
+			</trans-unit>
+			<trans-unit id="email_field_types.description" resname="email_field_types.description"  approved="yes">
+				<source>Determines when to send the configured confirmation email to email addresses provided by the user in &quot;Email confirmation&quot; fields.</source>
+				<target>Bepaalt wanneer een bevestigingsmail verstuurd moet worden naar de e-mail addressen ingevuld door de gebruiker in &quot;E-mail bevestiging&quot; velden.</target>
+			</trans-unit>
+			<trans-unit id="calendar_invite_types.description" resname="calendar_invite_types.description"  approved="yes">
+				<source>Determines when to send the configured calendar invitation to the configured addresses</source>
+				<target>Bepaalt wanneer een kalender uitnodiging verstuurd moet worden naar de ingestelde adressen</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

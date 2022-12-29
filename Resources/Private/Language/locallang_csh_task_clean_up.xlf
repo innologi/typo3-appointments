@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227657" source-language="en" datatype="plaintext" original="messages" date="2022-12-28T11:40:57Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="task_age.description" resname="task_age.description" >
+				<source>Number of seconds an unfinished appointment needs to have been expired before it can be marked as deleted.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

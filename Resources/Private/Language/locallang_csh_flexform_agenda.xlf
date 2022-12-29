@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227651" source-language="en" datatype="plaintext" original="messages" date="2022-12-28T11:40:51Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="switchableControllerActions.description" resname="switchableControllerActions.description" >
+				<source>Determines the view of the agenda. &quot;Month&quot; displays entire months, &quot;Weeks&quot; displays the configured amount of weeks.</source>
+			</trans-unit>
+			<trans-unit id="settings.agendaUid.description" resname="settings.agendaUid.description" >
+				<source>Pick the agenda to show, or set it to depend on the associated TypoScript constant.</source>
+			</trans-unit>
+			<trans-unit id="settings.agendaNavOverride.description" resname="settings.agendaNavOverride.description" >
+				<source>It's possible to set how far back and forward you can navigate through the agenda. You can set the plugin to listen to flexform or to TypoScript values.</source>
+			</trans-unit>
+			<trans-unit id="settings.agendaBack.description" resname="settings.agendaBack.description" >
+				<source>By setting this, you allow the user to navigate a number of units back in the agenda, allowing to view anyone's appointments from previous times.</source>
+			</trans-unit>
+			<trans-unit id="settings.agendaForward.description" resname="settings.agendaForward.description" >
+				<source>By setting this, you allow the user to navigate a number of units forward in the agenda, allowing to view anyone's appointments ahead.</source>
+			</trans-unit>
+			<trans-unit id="settings.agendaWeeksBeforeCurrent.description" resname="settings.agendaWeeksBeforeCurrent.description" >
+				<source>Allows you to set how many weeks to display before the current week, when Agenda View is set to &quot;Weeks&quot;.</source>
+			</trans-unit>
+			<trans-unit id="settings.agendaWeeksAfterCurrent.description" resname="settings.agendaWeeksAfterCurrent.description" >
+				<source>Allows you to set how many weeks to display after the current week, when Agenda View is set to &quot;Weeks&quot;.</source>
+			</trans-unit>
+			<trans-unit id="settings.appointmentTypeList.description" resname="settings.appointmentTypeList.description" >
+				<source>Limit the appointment types shown on the agenda, or set it to depend on the associated TypoScript constant.</source>
+			</trans-unit>
+			<trans-unit id="settings.allowCreate.description" resname="settings.allowCreate.description" >
+				<source>Adds new appointment buttons to the agenda view, or set it to depend on the associated TypoScript constant.</source>
+			</trans-unit>
+			<trans-unit id="settings.suGroup.description" resname="settings.suGroup.description" >
+				<source>Members of the Superuser Group have additional permissions and rights.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227666" source-language="en" datatype="plaintext" original="messages" date="2022-12-28T11:41:06Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="title.description" resname="title.description" >
+				<source>Internal field title</source>
+			</trans-unit>
+			<trans-unit id="label.description" resname="label.description" >
+				<source>Field label as shown on Frontend</source>
+			</trans-unit>
+			<trans-unit id="csh.description" resname="csh.description" >
+				<source>Helptext shown on Frontend next to the field</source>
+			</trans-unit>
+			<trans-unit id="validation_types.description" resname="validation_types.description" >
+				<source>Validation types can force the field to be validated as the chosen types of content. If the field content does not match the validation type, the form will inform the user and not save until corrected.</source>
+			</trans-unit>
+			<trans-unit id="field_type.description" resname="field_type.description" >
+				<source>The field type determines its appearance and input method</source>
+			</trans-unit>
+			<trans-unit id="choices.description" resname="choices.description" >
+				<source>Selection choices, one per line. You may define values that differ from their labels, if desired. See details for the different approaches.</source>
+			</trans-unit>
+			<trans-unit id="choices.details" resname="choices.details" xml:space="preserve">
+				<source>
+				The choices represent value/label combinations for your chosen type of field. You may explicitly define values and labels, separated by a pipe character: |
+
+				value1|label1
+				value2|label2
+				
+				If the label and value are the same, you can explicitly define both like above, or omit either one:
+
+				choice1|choice1
+				choice2
+
+				If you want to have a decorative or informative label that doesn't represent an actual value, you may provide an empty value:
+
+				|Make a choice:
+				yes
+				no
+				
+				If the last example is combined with a &quot;Not Empty&quot; Validation Type, the user becomes required to choose either yes or no before he is able to save the appointment, because the first label shown has an empty value.
+			</source>
+			</trans-unit>
+			<trans-unit id="function.description" resname="function.description" >
+				<source>The function sets whether the field has a special meaning. See details for the different choices.</source>
+			</trans-unit>
+			<trans-unit id="function.details" resname="function.details" xml:space="preserve">
+				<source>
+				The field can have functionality in addition to being of informative use.
+				
+				If you choose to let it add time, its value will be interpreted as a number that will add to the appointment duration. If chosen, it is highly recommended to add the &lt;strong&gt;Natural Number&lt;/strong&gt; Validation Type!
+				
+				If you choose Email confirmation, its value will be interpreted as an email address to which confirmations could be sent, according to agenda configuration. (if disabled in agenda, the field will remain informative) The &lt;strong&gt;Email Address&lt;/strong&gt; Validation Type is recommended for this choice!
+			</source>
+			</trans-unit>
+			<trans-unit id="enable_field.description" resname="enable_field.description" >
+				<source>The condition-field that enables the current field if the given value matches</source>
+			</trans-unit>
+			<trans-unit id="enable_value.description" resname="enable_value.description" >
+				<source>The condition-value is case-insensitive</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

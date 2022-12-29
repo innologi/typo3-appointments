@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227673" source-language="en" target-language="nl" datatype="plaintext" original="messages" date="2022-12-28T11:41:13Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="tx_appointments_domain_model_appointment" resname="tx_appointments_domain_model_appointment"  approved="yes">
+				<source>Appointment</source>
+				<target>Afspraak</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.creation_progress" resname="tx_appointments_domain_model_appointment.creation_progress"  approved="yes">
+				<source>Creation Progress</source>
+				<target>Vordering Aanmaak</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.reservation_time" resname="tx_appointments_domain_model_appointment.reservation_time"  approved="yes">
+				<source>Timer Start</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.begin_time" resname="tx_appointments_domain_model_appointment.begin_time"  approved="yes">
+				<source>Appointment Time</source>
+				<target>Begintijd</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.end_time" resname="tx_appointments_domain_model_appointment.end_time"  approved="yes">
+				<source>End Time</source>
+				<target>Eindtijd</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.begin_reserved" resname="tx_appointments_domain_model_appointment.begin_reserved"  approved="yes">
+				<source>Start Reservation Time</source>
+				<target>Start Reserveringstijd</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.end_reserved" resname="tx_appointments_domain_model_appointment.end_reserved"  approved="yes">
+				<source>End Reservation Time</source>
+				<target>Einde Reserveringstijd</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.notes" resname="tx_appointments_domain_model_appointment.notes"  approved="yes">
+				<source>Notes</source>
+				<target>Opmerkingen</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.notes_su" resname="tx_appointments_domain_model_appointment.notes_su"  approved="yes">
+				<source>Administrator Notes</source>
+				<target>Opmerkingen Beheerder</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.type" resname="tx_appointments_domain_model_appointment.type"  approved="yes">
+				<source>Appointment Type</source>
+				<target>Afspraak Type</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.form_field_values" resname="tx_appointments_domain_model_appointment.form_field_values"  approved="yes">
+				<source>Form Field Values</source>
+				<target>Formulier Veld Waardes</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.address" resname="tx_appointments_domain_model_appointment.address"  approved="yes">
+				<source>Address</source>
+				<target>Adresgegevens</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.fe_user" resname="tx_appointments_domain_model_appointment.fe_user"  approved="yes">
+				<source>User</source>
+				<target>Gebruiker</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.agenda" resname="tx_appointments_domain_model_appointment.agenda"  approved="yes">
+				<source>Agenda</source>
+				<target>Agenda</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.palette.times" resname="tx_appointments_domain_model_appointment.palette.times"  approved="yes">
+				<source>Times</source>
+				<target>Tijden</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda" resname="tx_appointments_domain_model_agenda"  approved="yes">
+				<source>Agenda</source>
+				<target>Agenda</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.name" resname="tx_appointments_domain_model_agenda.name"  approved="yes">
+				<source>Name</source>
+				<target>Naam</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.holidays" resname="tx_appointments_domain_model_agenda.holidays"  approved="yes">
+				<source>Holidays</source>
+				<target>Feestdagen</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.types" resname="tx_appointments_domain_model_agenda.types"  approved="yes">
+				<source>Appointment Types</source>
+				<target>Afspraak Typen</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.email_address" resname="tx_appointments_domain_model_agenda.email_address"  approved="yes">
+				<source>Email Address</source>
+				<target>E-mail Adres</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.email_text" resname="tx_appointments_domain_model_agenda.email_text"  approved="yes">
+				<source>Email Body Text</source>
+				<target>E-mail Tekst</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.calendar_invite_address" resname="tx_appointments_domain_model_agenda.calendar_invite_address"  approved="yes">
+				<source>Calendar Invite Address</source>
+				<target>Kalender Uitnodiging Adres</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.calendar_invite_text" resname="tx_appointments_domain_model_agenda.calendar_invite_text"  approved="yes">
+				<source>Calendar Invite Description</source>
+				<target>Kalender Uitnodiging Omschrijving</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.email_owner_types" resname="tx_appointments_domain_model_agenda.email_owner_types"  approved="yes">
+				<source>To User On:</source>
+				<target>Naar Gebruiker Bij:</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.email_field_types" resname="tx_appointments_domain_model_agenda.email_field_types"  approved="yes">
+				<source>To User-Provided Addresses On:</source>
+				<target>Naar Door Gebruiker-Opgegeven Adressen Bij:</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.email_types" resname="tx_appointments_domain_model_agenda.email_types"  approved="yes">
+				<source>To Configured Addresses On:</source>
+				<target>Naar Ingestelde Adressen Bij:</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.calendar_invite_types" resname="tx_appointments_domain_model_agenda.calendar_invite_types"  approved="yes">
+				<source>Send Calendar Invitation/Update On:</source>
+				<target>Stuur Kalender Uitnodiging/Wijziging Bij:</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.types.create" resname="tx_appointments_domain_model_agenda.types.create"  approved="yes">
+				<source>created appointments</source>
+				<target>aangemaakte afspraken</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.types.update" resname="tx_appointments_domain_model_agenda.types.update"  approved="yes">
+				<source>updated appointments</source>
+				<target>gewijzigde afspraken</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.types.delete" resname="tx_appointments_domain_model_agenda.types.delete"  approved="yes">
+				<source>cancelled appointments</source>
+				<target>geannuleerde afspraken</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.div.email" resname="tx_appointments_domain_model_agenda.div.email"  approved="yes">
+				<source>Email Settings</source>
+				<target>E-mail Instellingen</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.div.calendar_invite" resname="tx_appointments_domain_model_agenda.div.calendar_invite"  approved="yes">
+				<source>Calendar Invite Settings</source>
+				<target>Kalender Uitnodiging Instellingen</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.palette.email_types" resname="tx_appointments_domain_model_agenda.palette.email_types"  approved="yes">
+				<source>Send Confirmation Email ..</source>
+				<target>Stuur Bevestigingsmail ..</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type" resname="tx_appointments_domain_model_type"  approved="yes">
+				<source>Appointment Type</source>
+				<target>Afspraak Type</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.name" resname="tx_appointments_domain_model_type.name"  approved="yes">
+				<source>Name</source>
+				<target>Naam</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.superuser_only" resname="tx_appointments_domain_model_type.superuser_only"  approved="yes">
+				<source>Superuser Type</source>
+				<target>Superuser Type</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.exclusive_availability" resname="tx_appointments_domain_model_type.exclusive_availability"  approved="yes">
+				<source>Exclusive Availability</source>
+				<target>Exclusieve Beschikbaarheid</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.dont_block_types" resname="tx_appointments_domain_model_type.dont_block_types"  approved="yes">
+				<source>Don't Block Other Types</source>
+				<target>Blokkeer Geen Andere Types</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.dont_restrict_type_counts" resname="tx_appointments_domain_model_type.dont_restrict_type_counts"  approved="yes">
+				<source>Don't Restrict Other Type Counts</source>
+				<target>Beperk Geen Andere Types In Aantal</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.default_duration" resname="tx_appointments_domain_model_type.default_duration"  approved="yes">
+				<source>Appointment Duration</source>
+				<target>Duur Afspraak</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time" resname="tx_appointments_domain_model_type.start_time"  approved="yes">
+				<source>Start Time</source>
+				<target>Start Tijd</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_monday" resname="tx_appointments_domain_model_type.start_time_monday"  approved="yes">
+				<source>Start Time Monday</source>
+				<target>Start Tijd Maandag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_tuesday" resname="tx_appointments_domain_model_type.start_time_tuesday"  approved="yes">
+				<source>Start Time Tuesday</source>
+				<target>Start Tijd Dinsdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_wednesday" resname="tx_appointments_domain_model_type.start_time_wednesday"  approved="yes">
+				<source>Start Time Wednesday</source>
+				<target>Start Tijd Woensdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_thursday" resname="tx_appointments_domain_model_type.start_time_thursday"  approved="yes">
+				<source>Start Time Thursday</source>
+				<target>Start Tijd Donderdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_friday" resname="tx_appointments_domain_model_type.start_time_friday"  approved="yes">
+				<source>Start Time Friday</source>
+				<target>Start Tijd Vrijdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_saturday" resname="tx_appointments_domain_model_type.start_time_saturday"  approved="yes">
+				<source>Start Time Saturday</source>
+				<target>Start Tijd Zaterdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_sunday" resname="tx_appointments_domain_model_type.start_time_sunday"  approved="yes">
+				<source>Start Time Sunday</source>
+				<target>Start Tijd Zondag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time" resname="tx_appointments_domain_model_type.stop_time"  approved="yes">
+				<source>Stop Time</source>
+				<target>Stop Tijd</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_monday" resname="tx_appointments_domain_model_type.stop_time_monday"  approved="yes">
+				<source>Stop Time Monday</source>
+				<target>Stop Tijd Maandag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_tuesday" resname="tx_appointments_domain_model_type.stop_time_tuesday"  approved="yes">
+				<source>Stop Time Tuesday</source>
+				<target>Stop Tijd Dinsdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_wednesday" resname="tx_appointments_domain_model_type.stop_time_wednesday"  approved="yes">
+				<source>Stop Time Wednesday</source>
+				<target>Stop Tijd Woensdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_thursday" resname="tx_appointments_domain_model_type.stop_time_thursday"  approved="yes">
+				<source>Stop Time Thursday</source>
+				<target>Stop Tijd Donderdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_friday" resname="tx_appointments_domain_model_type.stop_time_friday"  approved="yes">
+				<source>Stop Time Friday</source>
+				<target>Stop Tijd Vrijdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_saturday" resname="tx_appointments_domain_model_type.stop_time_saturday"  approved="yes">
+				<source>Stop Time Saturday</source>
+				<target>Stop Tijd Zaterdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_sunday" resname="tx_appointments_domain_model_type.stop_time_sunday"  approved="yes">
+				<source>Stop Time Sunday</source>
+				<target>Stop Tijd Zondag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.exclude_holidays" resname="tx_appointments_domain_model_type.exclude_holidays"  approved="yes">
+				<source>Don't Allow Holidays</source>
+				<target>Niet Toestaan Op Feestdagen</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount" resname="tx_appointments_domain_model_type.max_amount"  approved="yes">
+				<source>Allowed Appointments</source>
+				<target>Toegestane Afspraken</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_monday" resname="tx_appointments_domain_model_type.max_amount_monday"  approved="yes">
+				<source>Allowed Appointments Monday</source>
+				<target>Toegestane Afspraken Maandag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_tuesday" resname="tx_appointments_domain_model_type.max_amount_tuesday"  approved="yes">
+				<source>Allowed Appointments Tuesday</source>
+				<target>Toegestane Afspraken Dinsdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_wednesday" resname="tx_appointments_domain_model_type.max_amount_wednesday"  approved="yes">
+				<source>Allowed Appointments Wednesday</source>
+				<target>Toegestane Afspraken Woensdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_thursday" resname="tx_appointments_domain_model_type.max_amount_thursday"  approved="yes">
+				<source>Allowed Appointments Thursday</source>
+				<target>Toegestane Afspraken Donderdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_friday" resname="tx_appointments_domain_model_type.max_amount_friday"  approved="yes">
+				<source>Allowed Appointments Friday</source>
+				<target>Toegestane Afspraken Vrijdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_saturday" resname="tx_appointments_domain_model_type.max_amount_saturday"  approved="yes">
+				<source>Allowed Appointments Saturday</source>
+				<target>Toegestane Afspraken Zaterdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_sunday" resname="tx_appointments_domain_model_type.max_amount_sunday"  approved="yes">
+				<source>Allowed Appointments Sunday</source>
+				<target>Toegestane Afspraken Zondag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval" resname="tx_appointments_domain_model_type.minute_interval"  approved="yes">
+				<source>Appointment Interval</source>
+				<target>Afspraak Interval</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_monday" resname="tx_appointments_domain_model_type.minute_interval_monday"  approved="yes">
+				<source>Appointment Interval Monday</source>
+				<target>Afspraak Interval Maandag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_tuesday" resname="tx_appointments_domain_model_type.minute_interval_tuesday"  approved="yes">
+				<source>Appointment Interval Tuesday</source>
+				<target>Afspraak Interval Dinsdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_wednesday" resname="tx_appointments_domain_model_type.minute_interval_wednesday"  approved="yes">
+				<source>Appointment Interval Wednesday</source>
+				<target>Afspraak Interval Woensdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_thursday" resname="tx_appointments_domain_model_type.minute_interval_thursday"  approved="yes">
+				<source>Appointment Interval Thursday</source>
+				<target>Afspraak Interval Donderdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_friday" resname="tx_appointments_domain_model_type.minute_interval_friday"  approved="yes">
+				<source>Appointment Interval Friday</source>
+				<target>Afspraak Interval Vrijdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_saturday" resname="tx_appointments_domain_model_type.minute_interval_saturday"  approved="yes">
+				<source>Appointment Interval Saturday</source>
+				<target>Afspraak Interval Zaterdag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_sunday" resname="tx_appointments_domain_model_type.minute_interval_sunday"  approved="yes">
+				<source>Appointment Interval Sunday</source>
+				<target>Afspraak Interval Zondag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_per_var_days" resname="tx_appointments_domain_model_type.max_amount_per_var_days"  approved="yes">
+				<source>Allowed Appointments</source>
+				<target>Toegestane Afspraken</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.per_var_days" resname="tx_appointments_domain_model_type.per_var_days"  approved="yes">
+				<source>Per .. Days</source>
+				<target>Per .. Dagen</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.per_var_days_interval" resname="tx_appointments_domain_model_type.per_var_days_interval"  approved="yes">
+				<source>Buffer</source>
+				<target>Buffer</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.between_minutes" resname="tx_appointments_domain_model_type.between_minutes"  approved="yes">
+				<source>Reserved Time Block</source>
+				<target>Reservering Tijdsblok</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.hours_mutable" resname="tx_appointments_domain_model_type.hours_mutable"  approved="yes">
+				<source>Mutable Hours</source>
+				<target>Uren Te Wijzigen</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.blocked_hours" resname="tx_appointments_domain_model_type.blocked_hours"  approved="yes">
+				<source>Hours Before First Timeslot</source>
+				<target>Uren Voor Eerste Tijdsslot</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.blocked_hours_workdays" resname="tx_appointments_domain_model_type.blocked_hours_workdays"  approved="yes">
+				<source>Workday Hours Before First Timeslot</source>
+				<target>Werkdag Uren Voor Eerste Tijdsslot</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_days_forward" resname="tx_appointments_domain_model_type.max_days_forward"  approved="yes">
+				<source>Days Available</source>
+				<target>Dagen Beschikbaar</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.form_fields" resname="tx_appointments_domain_model_type.form_fields"  approved="yes">
+				<source>Additional Form Fields</source>
+				<target>Aanvullende Formulier Velden</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.address_disable" resname="tx_appointments_domain_model_type.address_disable"  approved="yes">
+				<source>Disable All</source>
+				<target>Alles Uitschakelen</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.palette.overrule" resname="tx_appointments_domain_model_type.palette.overrule"  approved="yes">
+				<source>Overrule</source>
+				<target>Regels Met Voorrang</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.div.day_config" resname="tx_appointments_domain_model_type.div.day_config"  approved="yes">
+				<source>Per Day Configuration</source>
+				<target>Per Dag Configuratie</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.div.address_fields" resname="tx_appointments_domain_model_type.div.address_fields"  approved="yes">
+				<source>Name/Address Form Fields</source>
+				<target>NAW Formulier Velden</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield" resname="tx_appointments_domain_model_formfield"  approved="yes">
+				<source>Form Field</source>
+				<target>Formulier Veld</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.title" resname="tx_appointments_domain_model_formfield.title"  approved="yes">
+				<source>Title</source>
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.label" resname="tx_appointments_domain_model_formfield.label"  approved="yes">
+				<source>Label</source>
+				<target>Label</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.csh" resname="tx_appointments_domain_model_formfield.csh"  approved="yes">
+				<source>Helptext</source>
+				<target>Toelichtingstekst</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.required" resname="tx_appointments_domain_model_formfield.required"  approved="yes">
+				<source>Required</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types" resname="tx_appointments_domain_model_formfield.validation_types"  approved="yes">
+				<source>Validation Types</source>
+				<target>Validatie Types</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.alphanum" resname="tx_appointments_domain_model_formfield.validation_types.alphanum"  approved="yes">
+				<source>Alphanumeric</source>
+				<target>Alphanumeriek</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.datetime" resname="tx_appointments_domain_model_formfield.validation_types.datetime"  approved="yes">
+				<source>Date</source>
+				<target>Datum</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.email" resname="tx_appointments_domain_model_formfield.validation_types.email"  approved="yes">
+				<source>Email Address</source>
+				<target>E-mail Adres</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.float" resname="tx_appointments_domain_model_formfield.validation_types.float"  approved="yes">
+				<source>Float</source>
+				<target>Breuk</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.integer" resname="tx_appointments_domain_model_formfield.validation_types.integer"  approved="yes">
+				<source>Integer</source>
+				<target>Heel Getal</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.notempty" resname="tx_appointments_domain_model_formfield.validation_types.notempty"  approved="yes">
+				<source>Not Empty</source>
+				<target>Vereist</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.number" resname="tx_appointments_domain_model_formfield.validation_types.number"  approved="yes">
+				<source>Number</source>
+				<target>Nummer</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.string" resname="tx_appointments_domain_model_formfield.validation_types.string"  approved="yes">
+				<source>String</source>
+				<target>Tekenreeks</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.text" resname="tx_appointments_domain_model_formfield.validation_types.text"  approved="yes">
+				<source>Text</source>
+				<target>Tekst</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.naturalnumber" resname="tx_appointments_domain_model_formfield.validation_types.naturalnumber"  approved="yes">
+				<source>Natural Number</source>
+				<target>Natuurlijk Getal</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type" resname="tx_appointments_domain_model_formfield.field_type"  approved="yes">
+				<source>Field Type</source>
+				<target>Veld Type</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type.boolean" resname="tx_appointments_domain_model_formfield.field_type.boolean"  approved="yes">
+				<source>Checkbox</source>
+				<target>Vinkje</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type.radio" resname="tx_appointments_domain_model_formfield.field_type.radio"  approved="yes">
+				<source>Radio Button</source>
+				<target>Keuzerondje</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type.select" resname="tx_appointments_domain_model_formfield.field_type.select"  approved="yes">
+				<source>Selection Box</source>
+				<target>Selectie</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type.textsmall" resname="tx_appointments_domain_model_formfield.field_type.textsmall"  approved="yes">
+				<source>Small Textfield</source>
+				<target>Klein Tekstveld</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type.textlarge" resname="tx_appointments_domain_model_formfield.field_type.textlarge"  approved="yes">
+				<source>Large Textarea</source>
+				<target>Groot Tekstveld</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.choices" resname="tx_appointments_domain_model_formfield.choices"  approved="yes">
+				<source>Choices</source>
+				<target>Keuzes</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.function" resname="tx_appointments_domain_model_formfield.function"  approved="yes">
+				<source>Function</source>
+				<target>Functie</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.function.info" resname="tx_appointments_domain_model_formfield.function.info"  approved="yes">
+				<source>Informational</source>
+				<target>Informatief</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.function.addtime" resname="tx_appointments_domain_model_formfield.function.addtime"  approved="yes">
+				<source>Adds user-specified minutes</source>
+				<target>Telt minuten bij afspraak op</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.function.email" resname="tx_appointments_domain_model_formfield.function.email"  approved="yes">
+				<source>Email confirmation</source>
+				<target>E-mail bevestiging</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.enable_field" resname="tx_appointments_domain_model_formfield.enable_field"  approved="yes">
+				<source>Condition Field</source>
+				<target>Conditie Veld</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.enable_field.default" resname="tx_appointments_domain_model_formfield.enable_field.default"  approved="yes">
+				<source>Always Enabled</source>
+				<target>Altijd geactiveerd</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.enable_value" resname="tx_appointments_domain_model_formfield.enable_value"  approved="yes">
+				<source>Enable On Value</source>
+				<target>Conditie Waarde</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.palette.enable_field" resname="tx_appointments_domain_model_formfield.palette.enable_field"  approved="yes">
+				<source>Conditions Enabling Field</source>
+				<target>Condities Veld Activatie</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.div.enable_field" resname="tx_appointments_domain_model_formfield.div.enable_field"  approved="yes">
+				<source>Field:</source>
+				<target>Veld:</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address" resname="tx_appointments_domain_model_address"  approved="yes">
+				<source>Address</source>
+				<target>Adres</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.first_name" resname="tx_appointments_domain_model_address.first_name"  approved="yes">
+				<source>First Name</source>
+				<target>Voornaam</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.middle_name" resname="tx_appointments_domain_model_address.middle_name"  approved="yes">
+				<source>Middle Name</source>
+				<target>Tussenvoegsel</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.last_name" resname="tx_appointments_domain_model_address.last_name"  approved="yes">
+				<source>Last Name</source>
+				<target>Achternaam</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.name" resname="tx_appointments_domain_model_address.name"  approved="yes">
+				<source>Name</source>
+				<target>Naam</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.gender" resname="tx_appointments_domain_model_address.gender"  approved="yes">
+				<source>Gender</source>
+				<target>Geslacht</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.birthday" resname="tx_appointments_domain_model_address.birthday"  approved="yes">
+				<source>Birthday</source>
+				<target>Geboortedag</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.address" resname="tx_appointments_domain_model_address.address"  approved="yes">
+				<source>Address</source>
+				<target>Adres</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.zip" resname="tx_appointments_domain_model_address.zip"  approved="yes">
+				<source>Zip</source>
+				<target>Postcode</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.city" resname="tx_appointments_domain_model_address.city"  approved="yes">
+				<source>City</source>
+				<target>Plaats</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.email" resname="tx_appointments_domain_model_address.email"  approved="yes">
+				<source>Emailaddress</source>
+				<target>E-mailadres</target>
+			</trans-unit>
+			<trans-unit id="tt_address.tx_extbase_type.Tx_Appointments_Address" resname="tt_address.tx_extbase_type.Tx_Appointments_Address"  approved="yes">
+				<source>Appointment Scheduler Address</source>
+				<target>Afspraken Planner Adres</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.social_security_number" resname="tx_appointments_domain_model_address.social_security_number"  approved="yes">
+				<source>Social Security Number</source>
+				<target>BSN</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.creation_progress" resname="tx_appointments_domain_model_address.creation_progress"  approved="yes">
+				<source>Creation Progress</source>
+				<target>Vordering Aanmaak</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfieldvalue" resname="tx_appointments_domain_model_formfieldvalue"  approved="yes">
+				<source>Form Field Value</source>
+				<target>Formulier Veld Waarde</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfieldvalue.value" resname="tx_appointments_domain_model_formfieldvalue.value"  approved="yes">
+				<source>Value</source>
+				<target>Waarde</target>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfieldvalue.form_field" resname="tx_appointments_domain_model_formfieldvalue.form_field"  approved="yes">
+				<source>Form Field</source>
+				<target>Formulier Veld</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

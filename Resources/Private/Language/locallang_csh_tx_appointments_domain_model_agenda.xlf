@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227660" source-language="en" datatype="plaintext" original="messages" date="2022-12-28T11:41:00Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="name.description" resname="name.description" >
+				<source>Name of agenda</source>
+			</trans-unit>
+			<trans-unit id="holidays.description" resname="holidays.description" >
+				<source>Holiday dates in dd-mm-yyyy format, one per line</source>
+			</trans-unit>
+			<trans-unit id="email_address.description" resname="email_address.description" >
+				<source>Emails a confirmation on every scheduled appointment to the selected addresses</source>
+			</trans-unit>
+			<trans-unit id="email_text.description" resname="email_text.description" >
+				<source>Email body text, as it appears in the email. See details for supported variables.</source>
+			</trans-unit>
+			<trans-unit id="email_text.details" resname="email_text.details" xml:space="preserve">
+				<source>
+				The following variables are supported:
+				
+				###USER### : Name of the frontend user who owns the appointment   
+				###AGENDA### : Name of the agenda
+				###TYPE### : Appointment type
+				###DATE### : Appointment date
+				###START_TIME### : Appointment start time 
+				###END_TIME### : Appointment end time
+				###NOTES### : Notes
+				###NOTES_SU### : Superuser Notes
+				###ADDRESS### : Name and address information
+				###SECURITY### : Social Security Number
+				###LINK### : Link to appointment
+			</source>
+			</trans-unit>
+			<trans-unit id="calendar_invite_address.description" resname="calendar_invite_address.description" >
+				<source>Emails a calendar invitation on every scheduled appointment to the selected addresses</source>
+			</trans-unit>
+			<trans-unit id="calendar_invite_text.description" resname="calendar_invite_text.description" >
+				<source>Calendar invitation description, which is shown in the invitation. See detail helptext of 'Email Body Text' for supported variables.</source>
+			</trans-unit>
+			<trans-unit id="email_types.description" resname="email_types.description" >
+				<source>Determines when to send the configured confirmation email to the configured addresses</source>
+			</trans-unit>
+			<trans-unit id="email_owner_types.description" resname="email_owner_types.description" >
+				<source>Determines when to send the configured confirmation email to the frontend user</source>
+			</trans-unit>
+			<trans-unit id="email_field_types.description" resname="email_field_types.description" >
+				<source>Determines when to send the configured confirmation email to email addresses provided by the user in &quot;Email confirmation&quot; fields.</source>
+			</trans-unit>
+			<trans-unit id="calendar_invite_types.description" resname="calendar_invite_types.description" >
+				<source>Determines when to send the configured calendar invitation to the configured addresses</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

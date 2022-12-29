@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file id="1672227673" source-language="en" datatype="plaintext" original="messages" date="2022-12-28T11:41:13Z" product-name="appointments">
+		<header/>
+		<body>
+			<trans-unit id="tx_appointments_domain_model_appointment" resname="tx_appointments_domain_model_appointment" >
+				<source>Appointment</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.creation_progress" resname="tx_appointments_domain_model_appointment.creation_progress" >
+				<source>Creation Progress</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.reservation_time" resname="tx_appointments_domain_model_appointment.reservation_time" >
+				<source>Timer Start</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.begin_time" resname="tx_appointments_domain_model_appointment.begin_time" >
+				<source>Appointment Time</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.end_time" resname="tx_appointments_domain_model_appointment.end_time" >
+				<source>End Time</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.begin_reserved" resname="tx_appointments_domain_model_appointment.begin_reserved" >
+				<source>Start Reservation Time</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.end_reserved" resname="tx_appointments_domain_model_appointment.end_reserved" >
+				<source>End Reservation Time</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.notes" resname="tx_appointments_domain_model_appointment.notes" >
+				<source>Notes</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.notes_su" resname="tx_appointments_domain_model_appointment.notes_su" >
+				<source>Administrator Notes</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.type" resname="tx_appointments_domain_model_appointment.type" >
+				<source>Appointment Type</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.form_field_values" resname="tx_appointments_domain_model_appointment.form_field_values" >
+				<source>Form Field Values</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.address" resname="tx_appointments_domain_model_appointment.address" >
+				<source>Address</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.fe_user" resname="tx_appointments_domain_model_appointment.fe_user" >
+				<source>User</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.agenda" resname="tx_appointments_domain_model_appointment.agenda" >
+				<source>Agenda</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_appointment.palette.times" resname="tx_appointments_domain_model_appointment.palette.times" >
+				<source>Times</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda" resname="tx_appointments_domain_model_agenda" >
+				<source>Agenda</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.name" resname="tx_appointments_domain_model_agenda.name" >
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.holidays" resname="tx_appointments_domain_model_agenda.holidays" >
+				<source>Holidays</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.types" resname="tx_appointments_domain_model_agenda.types" >
+				<source>Appointment Types</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.email_address" resname="tx_appointments_domain_model_agenda.email_address" >
+				<source>Email Address</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.email_text" resname="tx_appointments_domain_model_agenda.email_text" >
+				<source>Email Body Text</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.calendar_invite_address" resname="tx_appointments_domain_model_agenda.calendar_invite_address" >
+				<source>Calendar Invite Address</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.calendar_invite_text" resname="tx_appointments_domain_model_agenda.calendar_invite_text" >
+				<source>Calendar Invite Description</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.email_owner_types" resname="tx_appointments_domain_model_agenda.email_owner_types" >
+				<source>To User On:</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.email_field_types" resname="tx_appointments_domain_model_agenda.email_field_types" >
+				<source>To User-Provided Addresses On:</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.email_types" resname="tx_appointments_domain_model_agenda.email_types" >
+				<source>To Configured Addresses On:</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.calendar_invite_types" resname="tx_appointments_domain_model_agenda.calendar_invite_types" >
+				<source>Send Calendar Invitation/Update On:</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.types.create" resname="tx_appointments_domain_model_agenda.types.create" >
+				<source>created appointments</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.types.update" resname="tx_appointments_domain_model_agenda.types.update" >
+				<source>updated appointments</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.types.delete" resname="tx_appointments_domain_model_agenda.types.delete" >
+				<source>cancelled appointments</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.div.email" resname="tx_appointments_domain_model_agenda.div.email" >
+				<source>Email Settings</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.div.calendar_invite" resname="tx_appointments_domain_model_agenda.div.calendar_invite" >
+				<source>Calendar Invite Settings</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_agenda.palette.email_types" resname="tx_appointments_domain_model_agenda.palette.email_types" >
+				<source>Send Confirmation Email ..</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type" resname="tx_appointments_domain_model_type" >
+				<source>Appointment Type</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.name" resname="tx_appointments_domain_model_type.name" >
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.superuser_only" resname="tx_appointments_domain_model_type.superuser_only" >
+				<source>Superuser Type</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.exclusive_availability" resname="tx_appointments_domain_model_type.exclusive_availability" >
+				<source>Exclusive Availability</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.dont_block_types" resname="tx_appointments_domain_model_type.dont_block_types" >
+				<source>Don't Block Other Types</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.dont_restrict_type_counts" resname="tx_appointments_domain_model_type.dont_restrict_type_counts" >
+				<source>Don't Restrict Other Type Counts</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.default_duration" resname="tx_appointments_domain_model_type.default_duration" >
+				<source>Appointment Duration</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time" resname="tx_appointments_domain_model_type.start_time" >
+				<source>Start Time</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_monday" resname="tx_appointments_domain_model_type.start_time_monday" >
+				<source>Start Time Monday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_tuesday" resname="tx_appointments_domain_model_type.start_time_tuesday" >
+				<source>Start Time Tuesday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_wednesday" resname="tx_appointments_domain_model_type.start_time_wednesday" >
+				<source>Start Time Wednesday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_thursday" resname="tx_appointments_domain_model_type.start_time_thursday" >
+				<source>Start Time Thursday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_friday" resname="tx_appointments_domain_model_type.start_time_friday" >
+				<source>Start Time Friday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_saturday" resname="tx_appointments_domain_model_type.start_time_saturday" >
+				<source>Start Time Saturday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.start_time_sunday" resname="tx_appointments_domain_model_type.start_time_sunday" >
+				<source>Start Time Sunday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time" resname="tx_appointments_domain_model_type.stop_time" >
+				<source>Stop Time</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_monday" resname="tx_appointments_domain_model_type.stop_time_monday" >
+				<source>Stop Time Monday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_tuesday" resname="tx_appointments_domain_model_type.stop_time_tuesday" >
+				<source>Stop Time Tuesday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_wednesday" resname="tx_appointments_domain_model_type.stop_time_wednesday" >
+				<source>Stop Time Wednesday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_thursday" resname="tx_appointments_domain_model_type.stop_time_thursday" >
+				<source>Stop Time Thursday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_friday" resname="tx_appointments_domain_model_type.stop_time_friday" >
+				<source>Stop Time Friday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_saturday" resname="tx_appointments_domain_model_type.stop_time_saturday" >
+				<source>Stop Time Saturday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.stop_time_sunday" resname="tx_appointments_domain_model_type.stop_time_sunday" >
+				<source>Stop Time Sunday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.exclude_holidays" resname="tx_appointments_domain_model_type.exclude_holidays" >
+				<source>Don't Allow Holidays</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount" resname="tx_appointments_domain_model_type.max_amount" >
+				<source>Allowed Appointments</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_monday" resname="tx_appointments_domain_model_type.max_amount_monday" >
+				<source>Allowed Appointments Monday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_tuesday" resname="tx_appointments_domain_model_type.max_amount_tuesday" >
+				<source>Allowed Appointments Tuesday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_wednesday" resname="tx_appointments_domain_model_type.max_amount_wednesday" >
+				<source>Allowed Appointments Wednesday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_thursday" resname="tx_appointments_domain_model_type.max_amount_thursday" >
+				<source>Allowed Appointments Thursday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_friday" resname="tx_appointments_domain_model_type.max_amount_friday" >
+				<source>Allowed Appointments Friday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_saturday" resname="tx_appointments_domain_model_type.max_amount_saturday" >
+				<source>Allowed Appointments Saturday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_sunday" resname="tx_appointments_domain_model_type.max_amount_sunday" >
+				<source>Allowed Appointments Sunday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval" resname="tx_appointments_domain_model_type.minute_interval" >
+				<source>Appointment Interval</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_monday" resname="tx_appointments_domain_model_type.minute_interval_monday" >
+				<source>Appointment Interval Monday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_tuesday" resname="tx_appointments_domain_model_type.minute_interval_tuesday" >
+				<source>Appointment Interval Tuesday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_wednesday" resname="tx_appointments_domain_model_type.minute_interval_wednesday" >
+				<source>Appointment Interval Wednesday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_thursday" resname="tx_appointments_domain_model_type.minute_interval_thursday" >
+				<source>Appointment Interval Thursday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_friday" resname="tx_appointments_domain_model_type.minute_interval_friday" >
+				<source>Appointment Interval Friday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_saturday" resname="tx_appointments_domain_model_type.minute_interval_saturday" >
+				<source>Appointment Interval Saturday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.minute_interval_sunday" resname="tx_appointments_domain_model_type.minute_interval_sunday" >
+				<source>Appointment Interval Sunday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_amount_per_var_days" resname="tx_appointments_domain_model_type.max_amount_per_var_days" >
+				<source>Allowed Appointments</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.per_var_days" resname="tx_appointments_domain_model_type.per_var_days" >
+				<source>Per .. Days</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.per_var_days_interval" resname="tx_appointments_domain_model_type.per_var_days_interval" >
+				<source>Buffer</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.between_minutes" resname="tx_appointments_domain_model_type.between_minutes" >
+				<source>Reserved Time Block</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.hours_mutable" resname="tx_appointments_domain_model_type.hours_mutable" >
+				<source>Mutable Hours</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.blocked_hours" resname="tx_appointments_domain_model_type.blocked_hours" >
+				<source>Hours Before First Timeslot</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.blocked_hours_workdays" resname="tx_appointments_domain_model_type.blocked_hours_workdays" >
+				<source>Workday Hours Before First Timeslot</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.max_days_forward" resname="tx_appointments_domain_model_type.max_days_forward" >
+				<source>Days Available</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.form_fields" resname="tx_appointments_domain_model_type.form_fields" >
+				<source>Additional Form Fields</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.address_disable" resname="tx_appointments_domain_model_type.address_disable" >
+				<source>Disable All</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.palette.overrule" resname="tx_appointments_domain_model_type.palette.overrule" >
+				<source>Overrule</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.div.day_config" resname="tx_appointments_domain_model_type.div.day_config" >
+				<source>Per Day Configuration</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_type.div.address_fields" resname="tx_appointments_domain_model_type.div.address_fields" >
+				<source>Name/Address Form Fields</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield" resname="tx_appointments_domain_model_formfield" >
+				<source>Form Field</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.title" resname="tx_appointments_domain_model_formfield.title" >
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.label" resname="tx_appointments_domain_model_formfield.label" >
+				<source>Label</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.csh" resname="tx_appointments_domain_model_formfield.csh" >
+				<source>Helptext</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.required" resname="tx_appointments_domain_model_formfield.required" >
+				<source>Required</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types" resname="tx_appointments_domain_model_formfield.validation_types" >
+				<source>Validation Types</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.alphanum" resname="tx_appointments_domain_model_formfield.validation_types.alphanum" >
+				<source>Alphanumeric</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.datetime" resname="tx_appointments_domain_model_formfield.validation_types.datetime" >
+				<source>Date</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.email" resname="tx_appointments_domain_model_formfield.validation_types.email" >
+				<source>Email Address</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.float" resname="tx_appointments_domain_model_formfield.validation_types.float" >
+				<source>Float</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.integer" resname="tx_appointments_domain_model_formfield.validation_types.integer" >
+				<source>Integer</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.notempty" resname="tx_appointments_domain_model_formfield.validation_types.notempty" >
+				<source>Not Empty</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.number" resname="tx_appointments_domain_model_formfield.validation_types.number" >
+				<source>Number</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.string" resname="tx_appointments_domain_model_formfield.validation_types.string" >
+				<source>String</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.text" resname="tx_appointments_domain_model_formfield.validation_types.text" >
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.validation_types.naturalnumber" resname="tx_appointments_domain_model_formfield.validation_types.naturalnumber" >
+				<source>Natural Number</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type" resname="tx_appointments_domain_model_formfield.field_type" >
+				<source>Field Type</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type.boolean" resname="tx_appointments_domain_model_formfield.field_type.boolean" >
+				<source>Checkbox</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type.radio" resname="tx_appointments_domain_model_formfield.field_type.radio" >
+				<source>Radio Button</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type.select" resname="tx_appointments_domain_model_formfield.field_type.select" >
+				<source>Selection Box</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type.textsmall" resname="tx_appointments_domain_model_formfield.field_type.textsmall" >
+				<source>Small Textfield</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.field_type.textlarge" resname="tx_appointments_domain_model_formfield.field_type.textlarge" >
+				<source>Large Textarea</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.choices" resname="tx_appointments_domain_model_formfield.choices" >
+				<source>Choices</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.function" resname="tx_appointments_domain_model_formfield.function" >
+				<source>Function</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.function.info" resname="tx_appointments_domain_model_formfield.function.info" >
+				<source>Informational</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.function.addtime" resname="tx_appointments_domain_model_formfield.function.addtime" >
+				<source>Adds user-specified minutes</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.function.email" resname="tx_appointments_domain_model_formfield.function.email" >
+				<source>Email confirmation</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.enable_field" resname="tx_appointments_domain_model_formfield.enable_field" >
+				<source>Condition Field</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.enable_field.default" resname="tx_appointments_domain_model_formfield.enable_field.default" >
+				<source>Always Enabled</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.enable_value" resname="tx_appointments_domain_model_formfield.enable_value" >
+				<source>Enable On Value</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.palette.enable_field" resname="tx_appointments_domain_model_formfield.palette.enable_field" >
+				<source>Conditions Enabling Field</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfield.div.enable_field" resname="tx_appointments_domain_model_formfield.div.enable_field" >
+				<source>Field:</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address" resname="tx_appointments_domain_model_address" >
+				<source>Address</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.first_name" resname="tx_appointments_domain_model_address.first_name" >
+				<source>First Name</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.middle_name" resname="tx_appointments_domain_model_address.middle_name" >
+				<source>Middle Name</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.last_name" resname="tx_appointments_domain_model_address.last_name" >
+				<source>Last Name</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.name" resname="tx_appointments_domain_model_address.name" >
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.gender" resname="tx_appointments_domain_model_address.gender" >
+				<source>Gender</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.birthday" resname="tx_appointments_domain_model_address.birthday" >
+				<source>Birthday</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.address" resname="tx_appointments_domain_model_address.address" >
+				<source>Address</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.zip" resname="tx_appointments_domain_model_address.zip" >
+				<source>Zip</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.city" resname="tx_appointments_domain_model_address.city" >
+				<source>City</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.email" resname="tx_appointments_domain_model_address.email" >
+				<source>Emailaddress</source>
+			</trans-unit>
+			<trans-unit id="tt_address.tx_extbase_type.Tx_Appointments_Address" resname="tt_address.tx_extbase_type.Tx_Appointments_Address" >
+				<source>Appointment Scheduler Address</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.social_security_number" resname="tx_appointments_domain_model_address.social_security_number" >
+				<source>Social Security Number</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_address.creation_progress" resname="tx_appointments_domain_model_address.creation_progress" >
+				<source>Creation Progress</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfieldvalue" resname="tx_appointments_domain_model_formfieldvalue" >
+				<source>Form Field Value</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfieldvalue.value" resname="tx_appointments_domain_model_formfieldvalue.value" >
+				<source>Value</source>
+			</trans-unit>
+			<trans-unit id="tx_appointments_domain_model_formfieldvalue.form_field" resname="tx_appointments_domain_model_formfieldvalue.form_field" >
+				<source>Form Field</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
