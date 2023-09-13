@@ -4,17 +4,17 @@ defined('TYPO3_MODE') or die();
 // add plugin flexform csh
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 	'tt_content.pi_flexform.appointments_agenda.list',
-	'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_agenda.xml'
+	'EXT:appointments/Resources/Private/Language/locallang_csh_flexform_agenda.xml'
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 	'tt_content.pi_flexform.appointments_list.list',
-	'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_flexform_list.xml'
+	'EXT:appointments/Resources/Private/Language/locallang_csh_flexform_list.xml'
 );
 
 // add task csh
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 	'tx_appointments_csh_task_clean_up',
-	'EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_csh_task_clean_up.xml'
+	'EXT:appointments/Resources/Private/Language/locallang_csh_task_clean_up.xml'
 );
 
 // add tca csh
