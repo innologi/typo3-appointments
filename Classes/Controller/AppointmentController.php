@@ -72,7 +72,6 @@ class AppointmentController extends ActionController {
 				LocalizationUtility::translate('tx_appointments_list.no_mutate', $this->extensionName),
 				'',
 				FlashMessage::ERROR,
-				TRUE,
 				TRUE
 			);
 			$this->redirect('list');
