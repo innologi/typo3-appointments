@@ -131,7 +131,7 @@ class EmailService implements SingletonInterface {
 	 */
 	public function sendAction($action, Appointment $appointment) {
 		$returnVal = FALSE;
-		$errorMsg = 'Could not send email because of error: ';
+		//$errorMsg = 'Could not send email because of error: ';
 		//try {
 			$this->sendEmailAction($action, $appointment);
 			$this->sendCalendarAction($action, $appointment);
