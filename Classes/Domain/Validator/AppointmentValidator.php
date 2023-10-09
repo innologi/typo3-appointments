@@ -111,12 +111,12 @@ class AppointmentValidator extends AbstractValidator {
 							}
 
 							// if the field isn't enabled, let it skip validation
-							if ($valueRegister[$enablerUid] !== strtolower($formField->getEnableValue())) {
+							if ($valueRegister[$enablerUid] !== strtolower((string) $formField->getEnableValue())) {
 								continue;
 							}
 						} else {
 							// since we don't support multi-layered enable-fields, we may register only if no enable field is set
-							$valueRegister[$formField->getUid()] = strtolower($formFieldValue->getValue());
+							$valueRegister[$formField->getUid()] = strtolower((string) $formFieldValue->getValue());
 						}
 
 						$validator = $this->getValidatorResolver()->createValidator(VariableValidator::class);

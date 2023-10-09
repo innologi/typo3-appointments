@@ -96,7 +96,7 @@ class EmailService implements SingletonInterface {
 	 * @param string $extensionName
 	 * @return void
 	 */
-	public function setExtensionName($extensionName) {
+	public function setExtensionName(string $extensionName) {
 		$this->extensionName = strtolower($extensionName);
 	}
 

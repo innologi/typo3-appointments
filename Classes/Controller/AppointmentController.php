@@ -706,7 +706,7 @@ class AppointmentController extends ActionController {
 			$this->view->assign('timerMessage', str_replace(
 				'$1',
 				'<span class="reservation-timer">' . GeneralUtility::getAppointmentTimer($appointment) . '</span>',
-				$timerMessage
+				(string) $timerMessage
 			));
 		} else { //warn of expiration
 			$this->addFlashMessage(

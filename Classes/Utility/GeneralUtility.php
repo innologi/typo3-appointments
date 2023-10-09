@@ -83,7 +83,7 @@ class GeneralUtility {
 	 * @param array $parameters
 	 * @return string
 	 */
-	public static function stripGetParameters($url, array $parameters) {
+	public static function stripGetParameters(string $url, array $parameters) {
 		foreach ($parameters as $parameter) {
 			$pos = strpos(strtolower($url), strtolower($parameter . '='));
 			if ($pos !== FALSE) {

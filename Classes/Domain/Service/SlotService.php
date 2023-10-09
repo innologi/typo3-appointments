@@ -604,7 +604,7 @@ class SlotService implements SingletonInterface {
 						if (!isset($stopTime[0])) { #@LOW remove these checks as soon as TCA regexp eval is added
 							$stopTime = '23:59';
 						}
-						$stopTimestamp = strtotime($stopTime,$timestamp);
+						$stopTimestamp = strtotime((string) $stopTime,$timestamp);
 						if ($overrideStopTime < $stopTimestamp) {
 							$stopTimestamp = $overrideStopTime;
 						}
@@ -816,7 +816,7 @@ class SlotService implements SingletonInterface {
 		$intervalMinutes = $type->$func();
 
 		#$timestamp = $dateTime->modify($startTime)->getTimestamp(); //absolute times only supported on PHP >= 5.3.6
-		$parts = explode(':',$startTime);
+		$parts = explode(':',(string) $startTime);
 		$timestamp = $dateTime->setTime(intval($parts[0]),intval($parts[1]))->getTimestamp();
 		$intervalSeconds = $intervalMinutes * 60;
 

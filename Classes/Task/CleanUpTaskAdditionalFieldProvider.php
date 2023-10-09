@@ -65,7 +65,7 @@ class CleanUpTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 		$fieldID = 'task_' . $field;
 		$additionalFields = [
 			$fieldID => [
-				'code'     => '<input type="text" name="tx_scheduler['.$field.']" id="'.$fieldID.'" value="'.htmlspecialchars($taskInfo[$field]).'" size="8" />',
+				'code'     => '<input type="text" name="tx_scheduler['.$field.']" id="'.$fieldID.'" value="'.htmlspecialchars((string) $taskInfo[$field]).'" size="8" />',
 				'label'    => 'LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_task_label.'.$field,
 				'cshKey'   => 'tx_appointments_csh_task_clean_up',
 				'cshLabel' => $fieldID

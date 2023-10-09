@@ -257,7 +257,7 @@ class ActionController extends SettingsOverrideController {
 		}
 
 		if ($referringRequest !== NULL) {
-			$objectType = strtolower($referringRequest->getControllerName());
+			$objectType = strtolower((string) $referringRequest->getControllerName());
 			if ($this->request->hasArgument($tokenArgument) &&
 				$this->request->hasArgument($objectType) &&
 				\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->validateToken(
