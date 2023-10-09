@@ -35,24 +35,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FormField extends AbstractEntity {
 
 	//constants
-	const VALIDATE_NOT_EMPTY = 1;
-	const VALIDATE_INTEGER = 2;
-	const VALIDATE_STRING = 3;
-	const VALIDATE_TEXT = 4;
-	const VALIDATE_ALPHANUMERIC = 5;
-	const VALIDATE_DATE_TIME = 6;
-	const VALIDATE_EMAIL_ADDRESS = 7;
-	const VALIDATE_FLOAT = 8;
-	const VALIDATE_NUMBER = 9;
-	const VALIDATE_NATURALNUMBER = 10;
-	const FUNCTION_INFORMATIONAL = 1;
-	const FUNCTION_EMAIL = 2;
-	const FUNCTION_ADDTIME = 3;
-	const TYPE_BOOLEAN = 1;
-	const TYPE_SELECT = 2;
-	const TYPE_TEXTSMALL = 3;
-	const TYPE_TEXTLARGE = 4;
-	const TYPE_RADIO = 5;
+	public const VALIDATE_NOT_EMPTY = 1;
+	public const VALIDATE_INTEGER = 2;
+	public const VALIDATE_STRING = 3;
+	public const VALIDATE_TEXT = 4;
+	public const VALIDATE_ALPHANUMERIC = 5;
+	public const VALIDATE_DATE_TIME = 6;
+	public const VALIDATE_EMAIL_ADDRESS = 7;
+	public const VALIDATE_FLOAT = 8;
+	public const VALIDATE_NUMBER = 9;
+	public const VALIDATE_NATURALNUMBER = 10;
+	public const FUNCTION_INFORMATIONAL = 1;
+	public const FUNCTION_EMAIL = 2;
+	public const FUNCTION_ADDTIME = 3;
+	public const TYPE_BOOLEAN = 1;
+	public const TYPE_SELECT = 2;
+	public const TYPE_TEXTSMALL = 3;
+	public const TYPE_TEXTLARGE = 4;
+	public const TYPE_RADIO = 5;
 
 	/**
 	 * Field title
@@ -344,7 +344,7 @@ class FormField extends AbstractEntity {
 		$keyArray = [];
 		$valueArray = GeneralUtility::trimExplode("\n", $choices, 1);
 		foreach ($valueArray as $key=>&$choice) {
-			if (strpos($choice,'|') === FALSE) {
+			if (!str_contains($choice,'|')) {
 				$keyArray[$key] = $choice;
 			} else {
 				$parts = explode('|',$choice,2);

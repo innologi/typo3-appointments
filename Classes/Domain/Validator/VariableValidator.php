@@ -130,7 +130,7 @@ class VariableValidator extends AbstractValidator {
 							// @TODO configurable date formats all throughout the extension
 							//results in NULL if a valid DateTime string but not in the specified format, so that you can't get away with a timestamp or some other format
 							$value = ($value === $newValue->format('d-m-Y')) ? $newValue : 1;
-						} catch (\Exception $e) { //if $value is no valid DateTime string
+						} catch (\Exception) { //if $value is no valid DateTime string
 							$value = 1;
 						}
 					}

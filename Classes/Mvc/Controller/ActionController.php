@@ -332,11 +332,11 @@ class ActionController extends SettingsOverrideController {
 	protected function mapRequestArgumentsToControllerArguments() {
 		try {
 			parent::mapRequestArgumentsToControllerArguments();
-		} catch (InvalidArgumentValueException|TargetNotFoundException $e) {
+		} catch (InvalidArgumentValueException|TargetNotFoundException) {
 			$flashMessage = LocalizationUtility::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); #@TODO __the message doesn't cover cases where the appointment was not finished
 			$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 			$this->redirect('list');
-		} catch (PropertyDeleted|Exception $e) {
+		} catch (PropertyDeleted|Exception) {
 			$flashMessage = LocalizationUtility::translate('tx_appointments.appointment_property_deleted', $this->extensionName);
 			$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 

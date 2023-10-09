@@ -36,9 +36,9 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 class Appointment extends AbstractEntity {
 
 	//creation progress constants
-	const FINISHED = 0; //appointment finalized
-	const UNFINISHED = 1; //appointment not yet finalized AND occupying a timeslot
-	const EXPIRED = 2; //appointment not yet finalized but NOT occupying a timeslot
+	public const FINISHED = 0; //appointment finalized
+	public const UNFINISHED = 1; //appointment not yet finalized AND occupying a timeslot
+	public const EXPIRED = 2; //appointment not yet finalized but NOT occupying a timeslot
 
 	/**
 	 * State of creation

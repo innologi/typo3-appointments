@@ -243,20 +243,17 @@ class EmailService implements SingletonInterface {
 	protected function getText(Appointment $appointment, $action, $bodyType = 'email', $isHTML = FALSE) {
 		if (!isset($this->text)) { //put everything not-$isHTML-related in text var
 			$agenda = $appointment->getAgenda();
-			switch ($bodyType) {
-				case 'calendar':
-					$body = $agenda->getCalendarInviteText();
-					break;
-				default:
-					$body = $agenda->getEmailText();
-			}
+			$body = match ($bodyType) {
+				'calendar' => $agenda->getCalendarInviteText(),
+				default => $agenda->getEmailText(),
+			};
 
 			$address = $appointment->getAddress();
 			$type = $appointment->getType();
 			if (!is_object($type)
 					|| ( !is_object($address) && !$type->getAddressDisable() )
 			) {
-				throw new PropertyDeleted('One or more object-properties of ' . get_class($appointment) . ':' . $appointment->getUid() . ' are not available and might have been deleted.');
+				throw new PropertyDeleted('One or more object-properties of ' . $appointment::class . ':' . $appointment->getUid() . ' are not available and might have been deleted.');
 			}
 
 			//replaces variables
@@ -287,7 +284,7 @@ class EmailService implements SingletonInterface {
 		}
 
 		// build address supports a variable separator, so we'll let $isHTML decide
-		if (strpos($body,'###ADDRESS###') !== FALSE) {
+		if (str_contains($body,'###ADDRESS###')) {
 			$body = str_replace('###ADDRESS###',
 					( $appointment->getType()->getAddressDisable() ? '' :
 							$this->buildAddress($appointment->getAddress(),
@@ -299,7 +296,7 @@ class EmailService implements SingletonInterface {
 		}
 
 		// only build a link if action is not delete
-		if (strpos($body,'###LINK###') !== FALSE) {
+		if (str_contains($body,'###LINK###')) {
 			$body = str_replace('###LINK###',
 					( $action === 'delete' ? '' : $this->buildLink($appointment,$isHTML) ),
 					$body

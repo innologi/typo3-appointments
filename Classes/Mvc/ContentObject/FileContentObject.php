@@ -41,7 +41,7 @@ class FileContentObject extends AbstractContentObject
             if (file_exists($file) && filesize($file) < 1024 * 1024) {
                 $theValue = file_get_contents($file);
             }
-        } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+        } catch (\TYPO3\CMS\Core\Resource\Exception) {
             // do nothing
         }
         $linkWrap = isset($conf['linkWrap.']) ? $this->cObj->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
