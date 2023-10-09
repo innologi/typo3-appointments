@@ -38,6 +38,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SettingsOverrideController extends ErrorOnDebugController {
 
 	/**
+	 * @var string
+	 */
+	protected $extensionName = '';
+
+	/**
 	 * Injects the configuration manager and resolves the plugin settings.
 	 *
 	 * Instead of letting the flexform dominate the plugin settings, your TypoScript
