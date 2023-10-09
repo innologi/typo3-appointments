@@ -42,9 +42,9 @@ class TypeRepository extends Repository {
 	 */
 	public function findIn($typeArray, $showSuperUserTypes = FALSE) {
 		$query = $this->createQuery();
-		$constraints = array(
+		$constraints = [
 			$query->in('uid', $typeArray)
-		);
+		];
 		if ($showSuperUserTypes === FALSE) {
 			$constraints[] = $query->equals('superuser_only', 0);
 		}

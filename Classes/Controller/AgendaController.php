@@ -186,7 +186,7 @@ class AgendaController extends ActionController {
 		$end = new \DateTime($start->format('Y-m-d\TH:i:s'),$start->getTimezone());
 		$end->modify("+$modEndModifier $modEndUnit");
 
-		$allowCreateTypes = array();
+		$allowCreateTypes = [];
 		if ($this->settings['allowCreate']) { //is this peformance hog enabled?
 			foreach ($allowTypes as $type) {
 				$dateSlotStorage = $this->slotService->getDateSlots($type, $this->agenda);

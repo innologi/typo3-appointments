@@ -47,7 +47,7 @@ class KeyObjectStorage extends ObjectStorage {
 	 */
 	public function offsetSet($object, $information) {
 		$this->isModified = TRUE;
-		$this->storage[$object->getKey()] = array('obj' => $object, 'inf' => $information);
+		$this->storage[$object->getKey()] = ['obj' => $object, 'inf' => $information];
 	}
 
 	/**
@@ -88,7 +88,7 @@ class KeyObjectStorage extends ObjectStorage {
 	 * @return array The object storage
 	 */
 	public function toArray() {
-		$array = array();
+		$array = [];
 		$storage = array_values($this->storage);
 		foreach ($storage as $key=>$item) {
 			$array[$key] = $item['obj'];

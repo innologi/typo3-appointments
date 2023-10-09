@@ -464,7 +464,7 @@ class SlotService implements SingletonInterface {
 	 * @param array $holidayArray Contains the holidays in dd-mm-yyyy format as keys
 	 * @return void
 	 */
-	protected function recalculateDateTimeForWorkdaysOffset(\DateTime $dateTime, $offsetHoursWorkdays, $now, $excludeHolidays = FALSE, $holidayArray = array()) {
+	protected function recalculateDateTimeForWorkdaysOffset(\DateTime $dateTime, $offsetHoursWorkdays, $now, $excludeHolidays = FALSE, $holidayArray = []) {
 		$endTimestamp = $dateTime->getTimestamp(); //this will also be our fallback if nothing changes
 		$workTimestamp = $dateTime->setTimestamp($now)->modify("+$offsetHoursWorkdays hours")->getTimestamp();
 		$dateTime->setTimestamp($now)->setTime(0,0); //note that we set time to 00:00, because we need to move DateTime to the START of days
@@ -555,7 +555,7 @@ class SlotService implements SingletonInterface {
 					}
 
 					//if exclusive availability enabled, only include appointments of this type in the search
-					$types = $type->getExclusiveAvailability() ? array($type) : NULL;
+					$types = $type->getExclusiveAvailability() ? [$type] : NULL;
 
 					$appointments = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, $types, 0, $excludeAppointment, 1, FALSE);
 					$appointmentsTotalAmount = count($appointments);
@@ -563,7 +563,7 @@ class SlotService implements SingletonInterface {
 					// @TODO this non-restricting stuff probably isn't necessary for appointments of exclusive availability
 					$appointmentsNonRestricting = $this->appointmentRepository->findBetween($agenda, $startDateTime, $endDateTime, $types, 0, $excludeAppointment, 1, TRUE);
 					$appointmentsNonRestricting = $this->appointmentRepository->rearrangeAppointmentArray($appointmentsNonRestricting);
-					$appointmentsCurrent = isset($appointments[$currentDate]) ? $appointments[$currentDate] : array();
+					$appointmentsCurrent = $appointments[$currentDate] ?? [];
 					$appointmentsCurrentAmount = count($appointmentsCurrent);
 					if ($appointmentsCurrentAmount < $maxAmount) {
 
@@ -664,10 +664,10 @@ class SlotService implements SingletonInterface {
 	 * @return boolean Returns FALSE if current day is excluded from availability because of a reached max amount
 	 */
 	protected function processPerVarDays($appointments, $appointmentAmount, $currentDate, \DateTime $startDateTime, \DateTime $endDateTime, $maxAmountPerVarDays) {
-		$stats = array(
+		$stats = [
 				'appointmentAmountBackward' => $appointmentAmount,
 				'appointmentAmountForward' => $appointmentAmount
-		);
+		];
 
 		//counts amount of appointments 'per var days' backward and forward, including current day
 		$f = $startDateTime->format('d-m-Y H:i:s');
@@ -715,9 +715,9 @@ class SlotService implements SingletonInterface {
 	 */
 	protected function processPerVarDaysInterval($appointments, \DateTime $startDateTime, \DateTime $endDateTime, \DateTime $dateTime, \DateTime $dateTimeEnd, $maxAmountPerVarDays, $perVarDays, $interval) {
 		//creates an accurate array representation of (un)available interval blocks
-		$blockArray = array();
+		$blockArray = [];
 		do {
-			$blockArray[$startDateTime->format('d-m-Y H:i:s')] = array();
+			$blockArray[$startDateTime->format('d-m-Y H:i:s')] = [];
 		} while ($startDateTime->modify("+$interval hours")->getTimestamp() < $endDateTime->getTimestamp());
 		$blockArray = array_merge($blockArray,$appointments);
 
@@ -728,22 +728,22 @@ class SlotService implements SingletonInterface {
 		$blocksAfter = array_splice($blockArray,$currentDayOffset);
 		$blocksBeforeReversed = array_reverse($blockArray,1); //reverse 'before', as we need to count from closest to farthest from 'current'
 
-		$stats = array(
-				'before' => array(
-						'blocks' => $blocksBeforeReversed,
-						'appointmentCount' => 0,
-						'bufferMultiplier' => 0,
-						'modifier' => '+',
-						'dateTime' => $dateTime
-				),
-				'after' => array(
-						'blocks' => $blocksAfter,
-						'appointmentCount' => 0,
-						'bufferMultiplier' => 0,
-						'modifier' => '-',
-						'dateTime' => $dateTimeEnd
-				)
-		);
+		$stats = [
+			'before' => [
+				'blocks' => $blocksBeforeReversed,
+				'appointmentCount' => 0,
+				'bufferMultiplier' => 0,
+				'modifier' => '+',
+				'dateTime' => $dateTime
+			],
+			'after' => [
+				'blocks' => $blocksAfter,
+				'appointmentCount' => 0,
+				'bufferMultiplier' => 0,
+				'modifier' => '-',
+				'dateTime' => $dateTimeEnd
+			]
+		];
 
 		foreach ($stats as $k=>$stat) {
 			//count appoints until the first free block is reached
@@ -802,7 +802,7 @@ class SlotService implements SingletonInterface {
 	 * @param array $appointments Appointments of the day
 	 * @return void
 	 */
-	protected function createTimeSlots(DateSlot $dateSlot, Type $type, $endTimestamp, $appointments = array()) {
+	protected function createTimeSlots(DateSlot $dateSlot, Type $type, $endTimestamp, $appointments = []) {
 		$originalTimestamp = $dateSlot->getTimestamp();
 		$dateTime = new \DateTime();
 		$dateTime->setTimestamp($originalTimestamp);
@@ -828,7 +828,7 @@ class SlotService implements SingletonInterface {
 			$timestamp += $intervalIncrease * $intervalSeconds;
 		}
 
-		$blockedTime = array(); //this array represents blocks of time in which no timeslots are available
+		$blockedTime = []; //this array represents blocks of time in which no timeslots are available
 		$desiredReserveBlock = $type->getBetweenMinutes() * 60;
 		$defaultDuration = $type->getDefaultDuration() * 60 - 1; //-1 or we lose the final possible timeslot before each appointment
 		foreach ($appointments as $appointment) {
@@ -838,17 +838,17 @@ class SlotService implements SingletonInterface {
 			if ($desiredReserveBlock > $thisReservedBlock) {
 				$thisEndReserved += $desiredReserveBlock - $thisReservedBlock;
 			}
-			$blockedTime[] = array(
+			$blockedTime[] = [
 				//defaultduration-1 needs to be taken from the begin timestamp, or we still get timeslots that overlap regardless
 				'begin' => $appointment->getBeginReserved()->getTimestamp() - $defaultDuration,
 				'end' => $thisEndReserved < $timestamp ? $timestamp : $thisEndReserved //if timestamp is higher, we have to set it here so the last foreach doesn't make timestamp lower
-			);
+			];
 		}
 		//the last block forces correct behaviour of the coming loop with regards to available time, either after the last appointment or lack thereof
-		$blockedTime[] = array(
+		$blockedTime[] = [
 			'begin' => $endTimestamp + 1, //+1 or we lose the final timeslot because in the next while, final $currentEndTimestamp === final $timestamp
 			'end' => $endTimestamp
-		);
+		];
 		foreach ($blockedTime as $block) {
 			$currentEndTimestamp = $block['begin'];
 			while ($timestamp < $currentEndTimestamp) {
@@ -968,7 +968,7 @@ class SlotService implements SingletonInterface {
 		$id = 'singleDateSlotStorage';
 		$data = $this->getStorageObjectFromCache($id, $type, $agenda);
 		//note that the singleStorageObject is stored per type/agenda in its entirety in a single cache record
-		if (($data === FALSE && $data = array()) || !isset($data[$dateSlotKey])) {
+		if (($data === FALSE && $data = []) || !isset($data[$dateSlotKey])) {
 			//not cached so begin building
 			$data[$dateSlotKey] = $this->buildSingleStorageObject($type, $agenda, $dateTime);
 			$this->setCache($type, $agenda, $id, $data);

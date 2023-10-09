@@ -110,10 +110,10 @@ class Tcemain {
 					$table = 'tx_appointments_domain_model_appointment';
 					$appointment = $this->getRecord($table,$ffVal['appointment']);
 					$add = ($addValue ? (intval($ffVal['value']) * 60) : 0) - $oldValue;
-					$updateValues = array(
-							'end_time' => $appointment['end_time'] + $add,
-							'end_reserved' => $appointment['end_reserved'] + $add
-					);
+					$updateValues = [
+						'end_time' => $appointment['end_time'] + $add,
+						'end_reserved' => $appointment['end_reserved'] + $add
+					];
 					$this->updateRecord($table,$ffVal['appointment'],$updateValues);
 				}
 			}

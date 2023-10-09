@@ -214,12 +214,12 @@ class EmailService implements SingletonInterface {
 			if (isset($extConf['email_from'][0])) {
 				$from = $extConf['email_from'];
 				if (isset($extConf['email_name'][0])) { #@TODO document this in manual
-					$from = array($from => $extConf['email_name']);
+					$from = [$from => $extConf['email_name']];
 				}
 			} else {
 				$from = $TYPO3_CONF_VARS['MAIL']['defaultMailFromAddress'];
 				if (isset($TYPO3_CONF_VARS['MAIL']['defaultMailFromName'][0])) {
-					$from = array($from => $TYPO3_CONF_VARS['MAIL']['defaultMailFromName']);
+					$from = [$from => $TYPO3_CONF_VARS['MAIL']['defaultMailFromName']];
 				}
 			}
 
@@ -340,7 +340,7 @@ class EmailService implements SingletonInterface {
 	 * @return array Consists of email addresses
 	 */
 	protected function getRecipientEmailArray($emailAddresses) {
-		$emailArray = array();
+		$emailArray = [];
 
 		foreach ($emailAddresses as $address) {
 			if (method_exists($address, 'getEmail')) {
@@ -441,18 +441,18 @@ class EmailService implements SingletonInterface {
 			)
 		);
 		$feUser = $appointment->getFeUser();
-		$markerArray = array(
-				'###START###' => gmdate($dateFormat, $start),
-				'###END###' => gmdate($dateFormat, $end),
-				'###CRDATE###' => gmdate($dateFormat, $appointment->getReservationTime()),
-				'###TSTAMP###' => gmdate($dateFormat),
-				'###FROM###' => is_array($sender) ? key($sender) : $sender,
-				'###FROMCN###' => ($feUser !== NULL ? $feUser->getName() : (is_array($sender) ? current($sender) : $sender)),
-				'###UID###' => $id,
-				'###DESCRIPTION###' => $description,
-				'###LOCATION###' => '',
-				'###SUBJECT###' => $appointment->getType()->getName()
-		);
+		$markerArray = [
+			'###START###' => gmdate($dateFormat, $start),
+			'###END###' => gmdate($dateFormat, $end),
+			'###CRDATE###' => gmdate($dateFormat, $appointment->getReservationTime()),
+			'###TSTAMP###' => gmdate($dateFormat),
+			'###FROM###' => is_array($sender) ? key($sender) : $sender,
+			'###FROMCN###' => ($feUser !== NULL ? $feUser->getName() : (is_array($sender) ? current($sender) : $sender)),
+			'###UID###' => $id,
+			'###DESCRIPTION###' => $description,
+			'###LOCATION###' => '',
+			'###SUBJECT###' => $appointment->getType()->getName()
+		];
 
 		//action-dependant variables
 		switch ($action) {
@@ -460,18 +460,18 @@ class EmailService implements SingletonInterface {
 				$sequence = time(); //makes sure it is always a higher sequence number than previous
 				// @LOW maybe doing this instead of +1 is what causes failed connecting of updates for google?
 			case 'create':
-				$markerArray2  = array(
+				$markerArray2  = [
 						'###METHOD###' => 'REQUEST',
 						'###STATUS###' => 'CONFIRMED',
 						'###SEQUENCE###' => $sequence
-				);
+				];
 				break;
 			case 'delete':
-				$markerArray2 = array(
+				$markerArray2 = [
 					'###METHOD###' => 'CANCEL',
 					'###STATUS###' => 'CANCELLED',
 					'###SEQUENCE###' => time()
-				);
+				];
 		}
 
 		$markerArray = array_merge($markerArray,$markerArray2);
@@ -534,7 +534,7 @@ class EmailService implements SingletonInterface {
 	 * @return array Contains recipient-objects
 	 */
 	protected function collectAllowedRecipients($action, Appointment $appointment) {
-		$recipientArray = array();
+		$recipientArray = [];
 
 		$agenda = $appointment->getAgenda();
 
@@ -581,9 +581,7 @@ class EmailService implements SingletonInterface {
 	protected function buildLink(Appointment $appointment, $isHTML = FALSE) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 
-		$arguments = array(
-			'appointment' => $appointment
-		);
+		$arguments = ['appointment' => $appointment];
 
 		$uri = $uriBuilder
 			->setCreateAbsoluteUri(TRUE)

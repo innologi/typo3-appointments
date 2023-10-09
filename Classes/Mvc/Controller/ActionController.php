@@ -176,7 +176,7 @@ class ActionController extends SettingsOverrideController {
 		parent::initializeAction();
 
 		if ($this->actionMethodName !== 'noneAction') {
-			$errors = array();
+			$errors = [];
 
 			//is user logged in as required?
 			$this->feUser = $this->userService->getCurrentUser();
@@ -342,7 +342,7 @@ class ActionController extends SettingsOverrideController {
 
 			//in case not the original argument, but one of its object-properties no longer exist, try to redirect to the appropriate action
 			$redirectTo = 'list';
-			$arguments = array();
+			$arguments = [];
 			$argumentName = 'appointment';
 			if ($this->request->hasArgument($argumentName)) {
 				$appointment = $this->request->getArgument($argumentName); //get from request, as controller argument mapping was just disrupted

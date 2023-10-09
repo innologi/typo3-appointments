@@ -160,14 +160,14 @@ class AppointmentController extends ActionController {
 			$unfinishedAppointments = $this->settings['allowResume'] ?
 				$this->appointmentRepository->findPersonalList(
 					$this->agenda, $types, $this->feUser, TRUE, new \DateTime()
-				) : array();
+				) : [];
 			//users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet
 			//a superuser can ALWAYS mutate, so 'now = 0' fixes that
 			$now = $this->userService->isInGroup($this->settings['suGroup']) ? 0 : time();
 			$this->view->assign('now', $now);
 		} else {
-			$appointments = array();
-			$unfinishedAppointments = array();
+			$appointments = [];
+			$unfinishedAppointments = [];
 		}
 		$this->view->assign('appointments', $appointments); #@TODO _can we create an undo link for cancelling? consider the consequences for the emailactions
 		$this->view->assign('unfinishedAppointments', $unfinishedAppointments);
@@ -319,9 +319,7 @@ class AppointmentController extends ActionController {
 		$this->validateMutateAttempt($appointment);
 
 		$this->appointmentRepository->update($appointment);
-		$arguments = array(
-			'appointment' => $appointment
-		);
+		$arguments = ['appointment' => $appointment];
 		$this->redirect('new2',NULL,NULL,$arguments);
 	}
 
@@ -337,7 +335,7 @@ class AppointmentController extends ActionController {
 	 * @return void
 	 */
 	public function processNewAction(Appointment $appointment) {
-		$arguments = array();
+		$arguments = [];
 		$appointment->setAgenda($this->agenda);
 		$appointment->setFeUser($this->feUser);
 
@@ -439,7 +437,7 @@ class AppointmentController extends ActionController {
 			$this->performMailingActions('create',$appointment);
 
 			$this->redirect($this->settings['redirectAfterSave'],NULL,NULL,
-					($this->settings['redirectAfterSave'] == 'show') ? array('appointment' => $appointment) : NULL
+					($this->settings['redirectAfterSave'] == 'show') ? ['appointment' => $appointment] : NULL
 			);
 		}
 	}
@@ -511,7 +509,7 @@ class AppointmentController extends ActionController {
 			$this->performMailingActions('update',$appointment);
 
 			$this->redirect($this->settings['redirectAfterSave'],NULL,NULL,
-					($this->settings['redirectAfterSave'] == 'show') ? array('appointment' => $appointment) : NULL
+					($this->settings['redirectAfterSave'] == 'show') ? ['appointment' => $appointment] : NULL
 			);
 		}
 	}
@@ -552,9 +550,7 @@ class AppointmentController extends ActionController {
 		$flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_free_success', $this->extensionName);
 		$this->addFlashMessage($flashMessage, '', FlashMessage::INFO);
 
-		$arguments = array(
-			'appointment' => $appointment
-		);
+		$arguments = ['appointment' => $appointment];
 		$this->redirect('new1',NULL,NULL,$arguments);
 	}
 
@@ -581,8 +577,8 @@ class AppointmentController extends ActionController {
 	 * @return ObjectStorage
 	 */
 	protected function addMissingFormFields(ObjectStorage $formFields, ObjectStorage $formFieldValues) { #@TODO _can we once again check if this doesn't just readd everything? There were some artifacts last time I debugged this
-		$items = array();
-		$order = array();
+		$items = [];
+		$order = [];
 
 		//formfieldvalues already available
 		foreach ($formFieldValues as $formFieldValue) {
@@ -738,8 +734,8 @@ class AppointmentController extends ActionController {
 	protected function crossAppointments(Appointment $appointment) {
 		$crossAppointments = $this->appointmentRepository->findCrossAppointments($appointment);
 		if (!empty($crossAppointments)) {
-			$beginTimeDiff = array();
-			$endTimeDiff = array();
+			$beginTimeDiff = [];
+			$endTimeDiff = [];
 
 			$beginTime = $appointment->getBeginTime()->getTimestamp();
 			$endTime = $appointment->getEndTime()->getTimestamp();
@@ -771,9 +767,9 @@ class AppointmentController extends ActionController {
 			}
 
 			#@LOW _consider adding the appointment(s) that is conflicting to the overlapArray, so we have more details for the overlapInfo
-			$overlapArray = array(
+			$overlapArray = [
 					#'changeTimeSlot' => FALSE //indicates whether we're absolutely sure the user NEEDS to change the timeslot
-			);
+			];
 			//set the largest values in the array
 			if (isset($beginTimeDiff[0])) {
 				rsort($beginTimeDiff); //sets the largest difference (between appointments and INBETWEEN reserved-times) @ pos 0
@@ -807,7 +803,7 @@ class AppointmentController extends ActionController {
 	 * @return array Contains types that have an available timeslot
 	 */
 	protected function limitTypesByDate($types, Agenda $agenda, \DateTime $dateTime) {
-		$newTypes = array();
+		$newTypes = [];
 		foreach ($types as $type) {
 			$slotStorage = $this->slotService->getSingleDateSlot($type, $agenda, clone $dateTime);
 			if ($slotStorage->valid()) { //returns true only if it contains at least one valid dateslot
@@ -826,7 +822,7 @@ class AppointmentController extends ActionController {
 	 * @return array Contains types that have an available timeslot
 	 */
 	protected function limitTypesByAppointment($types, Appointment $appointment) {
-		$newTypes = array();
+		$newTypes = [];
 		$timeSlotKey = $appointment->getBeginTime()->format(SlotService::TIMESLOT_KEY_FORMAT);
 
 		foreach ($types as $type) {
@@ -913,24 +909,24 @@ class AppointmentController extends ActionController {
 		if (isset($overlapInfo['begin'])) {
 			$messageParts .= LocalizationUtility::translate('tx_appointments_list.crosstime_begin',
 				$this->extensionName,
-				array(
+				[
 					$appointment->getBeginTime()->format('H:i'),
 					$overlapInfo['begin'] / 60
-				)
+				]
 			);
 		}
 		if (isset($overlapInfo['end'])) {
 			$messageParts .= LocalizationUtility::translate('tx_appointments_list.crosstime_end',
 				$this->extensionName,
-				array(
+				[
 					$appointment->getEndTime()->format('H:i'),
 					$overlapInfo['end'] / 60
-				)
+				]
 			);
 		}
 
 		$this->addFlashMessage(
-			LocalizationUtility::translate('tx_appointments_list.crosstime_info',$this->extensionName,array($messageParts)),
+			LocalizationUtility::translate('tx_appointments_list.crosstime_info',$this->extensionName,[$messageParts]),
 			LocalizationUtility::translate('tx_appointments_list.crosstime_title',$this->extensionName),
 			FlashMessage::ERROR
 		);
@@ -945,9 +941,9 @@ class AppointmentController extends ActionController {
 	 * @return array Sanitized formfieldvalues
 	 */
 	protected function sanitizeFormFieldValues(array $formFieldValues) {
-		$sanitized = array();
-		$enable = array();
-		$indexMap = array();
+		$sanitized = [];
+		$enable = [];
+		$indexMap = [];
 
 		foreach ($formFieldValues as $index => $value) {
 			$formField = $value->getFormField();
@@ -956,10 +952,10 @@ class AppointmentController extends ActionController {
 				$enableField = $formField->getEnableField();
 				if ($enableField !== NULL) {
 					// register enabler-data
-					$enable[$index] = array(
+					$enable[$index] = [
 						'id' => $enableField->getUid(),
 						'value' => $formField->getEnableValue()
-					);
+					];
 				}
 				$sanitized[$index] = $value;
 				$indexMap[$formField->getUid()] = $index;

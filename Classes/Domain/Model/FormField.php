@@ -341,7 +341,7 @@ class FormField extends AbstractEntity {
 	 */
 	protected function setChoicesArray($choices) {
 		$choices = str_replace("\r\n","\n",$choices);
-		$keyArray = array();
+		$keyArray = [];
 		$valueArray = GeneralUtility::trimExplode("\n", $choices, 1);
 		foreach ($valueArray as $key=>&$choice) {
 			if (strpos($choice,'|') === FALSE) {

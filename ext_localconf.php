@@ -4,27 +4,23 @@ defined('TYPO3_MODE') or die();
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
 	'Appointments',
 	'Agenda',
-	array(
+	[
 		\Innologi\Appointments\Controller\AgendaController::class => 'showMonth, showWeeks, none',
-
-	),
+	],
 	// non-cacheable actions
-	array(
-
-	)
+	[]
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
 	'Appointments',
 	'List',
-	array(
+	[
 		\Innologi\Appointments\Controller\AppointmentController::class => 'list, show, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free, none',
-
-	),
+	],
 	// non-cacheable actions
-	array(
+	[
 		\Innologi\Appointments\Controller\AppointmentController::class => 'list, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free',
-	)
+	]
 );
 
 // create a cache specifically the date/time slots
@@ -32,11 +28,11 @@ if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][
 	|| !is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['appointments_slots'])
 ) {
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['appointments_slots'] = [
-		'options' => array(
+		'options' => [
 			'defaultLifetime' => 3600,
 			'compression' => extension_loaded('zlib')
-		),
-		'groups' => array('pages', 'all')
+		],
+		'groups' => ['pages', 'all']
 	];
 }
 

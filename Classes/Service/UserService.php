@@ -45,7 +45,7 @@ class UserService implements SingletonInterface {
 	 *
 	 * @var array
 	 */
-	protected $inGroup = array();
+	protected $inGroup = [];
 
 	/**
 	 * frontendUserRepository

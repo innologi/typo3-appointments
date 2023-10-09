@@ -91,7 +91,7 @@ abstract class AbstractContainer extends AbstractEntity {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->weeks = array();
+		$this->weeks = [];
 	}
 
 	/**

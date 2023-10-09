@@ -71,7 +71,7 @@ class AppointmentRepository extends Repository {
 	 */
 	public function findPersonalList(Agenda $agenda, array $types, \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser, $unfinished = FALSE, \DateTime $start = NULL, \DateTime $end = NULL, $descending = FALSE) {
 		$query = $this->createQuery();
-		$constraints = array(
+		$constraints = [
 			$query->equals('agenda', $agenda),
 			$query->in('type',$types),
 			$query->equals('feUser', $feUser),
@@ -79,7 +79,7 @@ class AppointmentRepository extends Repository {
 				? $query->logicalNot(
 					$query->equals('creation_progress', Appointment::FINISHED)
 				) : $query->equals('creation_progress', Appointment::FINISHED)
-		);
+		];
 		if ($start !== NULL) {
 			$constraints[] = $query->greaterThanOrEqual('beginTime', $start->getTimestamp());
 		}
@@ -91,11 +91,9 @@ class AppointmentRepository extends Repository {
 				$query->logicalAnd(
 						$constraints
 				)
-		)->setOrderings(
-				array(
-					'beginTime' => $descending ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING
-				)
-		)->execute();
+		)->setOrderings([
+			'beginTime' => $descending ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING
+		])->execute();
 
 		return $result;
 	}
@@ -116,11 +114,11 @@ class AppointmentRepository extends Repository {
 	public function findBetween(Agenda $agenda, \DateTime $start, \DateTime $end, array $types = NULL, $includeExclusive = FALSE, Appointment $excludeAppointment = NULL, $includeUnfinished = FALSE, $dontRestrictTypeCounts = NULL) {
 		$query = $this->createQuery();
 
-		$constraint = array(
+		$constraint = [
 				$query->equals('agenda', $agenda),
 				$query->greaterThanOrEqual('beginTime', $start->getTimestamp()),
 				$query->lessThan('beginTime', $end->getTimestamp())
-		);
+		];
 
 		if ($types !== NULL) {
 				$constraint[] = $query->in('type', $types);
@@ -150,11 +148,9 @@ class AppointmentRepository extends Repository {
 				$query->logicalAnd(
 						$constraint
 				)
-		)->setOrderings(
-				array(
-					'beginTime' => QueryInterface::ORDER_ASCENDING
-				)
-		)->execute()->toArray();
+		)->setOrderings([
+			'beginTime' => QueryInterface::ORDER_ASCENDING
+		])->execute()->toArray();
 
 		return $result;
 	}
@@ -177,7 +173,7 @@ class AppointmentRepository extends Repository {
 		$endTime = $appointment->getEndTime()->getTimestamp();
 		$isExclusive = $appointment->getType()->getExclusiveAvailability();
 
-		$constraint = array(
+		$constraint = [
 			//apparently, if $agenda isn't validated separately, its lazy storages aren't resolved, which generates an exception, hence we'll stick with its uid
 			$query->equals('agenda', $appointment->getAgenda()->getUid()),
 			$query->logicalNot(
@@ -186,33 +182,27 @@ class AppointmentRepository extends Repository {
 			$query->logicalNot(
 					$query->equals('creation_progress', Appointment::EXPIRED)
 			),
-			$query->logicalOr( array(
-					$query->logicalAnd( array( //looks for an overlap @ beginTime
-							$query->lessThanOrEqual('beginTime', $beginTime),
-							$query->logicalOr( array( //ignores overlapping reserved blocks
-									$query->greaterThan('endTime', $beginReserved),
-									$query->greaterThan('endReserved', $beginTime)
-								)
-							)
-						)
-					),
-					$query->logicalAnd( array( //looks for an overlap @ endTime
-							$query->greaterThanOrEqual('endTime', $endTime),
-							$query->logicalOr( array( //ignores overlapping reserved blocks
-									$query->lessThan('beginTime', $endReserved),
-									$query->lessThan('beginReserved', $endTime)
-								)
-							)
-						)
-					),
-					$query->logicalAnd( array( //looks for an overlap between beginTime & endTime
-							$query->greaterThan('beginTime', $beginTime),
-							$query->lessThan('endTime', $endTime)
-						)
-					)
-				)
-			)
-		);
+			$query->logicalOr([
+				$query->logicalAnd([ //looks for an overlap @ beginTime
+					$query->lessThanOrEqual('beginTime', $beginTime),
+					$query->logicalOr([ //ignores overlapping reserved blocks
+						$query->greaterThan('endTime', $beginReserved),
+						$query->greaterThan('endReserved', $beginTime)
+					])
+				]),
+				$query->logicalAnd([ //looks for an overlap @ endTime
+					$query->greaterThanOrEqual('endTime', $endTime),
+					$query->logicalOr([ //ignores overlapping reserved blocks
+						$query->lessThan('beginTime', $endReserved),
+						$query->lessThan('beginReserved', $endTime)
+					])
+				]),
+				$query->logicalAnd([ //looks for an overlap between beginTime & endTime
+					$query->greaterThan('beginTime', $beginTime),
+					$query->lessThan('endTime', $endTime)
+				])
+			])
+		];
 
 		//if exclusive availability, will only be influenced by appointments of the same type
 		if ($isExclusive) {
@@ -244,12 +234,11 @@ class AppointmentRepository extends Repository {
 
 		$query = $this->createQuery();
 		$result = $query->matching(
-				$query->logicalAnd( array(
-						$query->equals('agenda', $agenda),
-						$query->lessThanOrEqual('reservation_time', time() - ($expireMinutes * 60)),
-						$query->equals('creation_progress', Appointment::UNFINISHED)
-					)
-				)
+			$query->logicalAnd([
+				$query->equals('agenda', $agenda),
+				$query->lessThanOrEqual('reservation_time', time() - ($expireMinutes * 60)),
+				$query->equals('creation_progress', Appointment::UNFINISHED)
+			])
 		)->execute()->toArray();
 		return $result;
 	}
@@ -266,10 +255,10 @@ class AppointmentRepository extends Repository {
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$result = $query->matching(
-				$query->logicalAnd(array(
-					$query->equals('creation_progress', Appointment::EXPIRED),
-					$query->lessThanOrEqual('tstamp', time() - $age),
-				))
+			$query->logicalAnd([
+				$query->equals('creation_progress', Appointment::EXPIRED),
+				$query->lessThanOrEqual('tstamp', time() - $age),
+			])
 		)->execute();
 
 		return $result;
@@ -292,12 +281,12 @@ class AppointmentRepository extends Repository {
 	 */
 	public function rearrangeAppointmentArray($array, $perHours = 24) {
 		//timeblock hours, includes 24 for structural purposes because of the $hour < $h check
-		$hours = array();
+		$hours = [];
 		for ($i = 0; $i <= 24; $i += $perHours) {
 			$hours[] = $i;
 		}
 
-		$resultArray = array();
+		$resultArray = [];
 		foreach ($array as $appointment) {
 			$beginTime = $appointment->getBeginTime();
 			$hour = intval($beginTime->format('G')); // 1 - 24

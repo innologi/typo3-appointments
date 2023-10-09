@@ -68,7 +68,7 @@ class SettingsOverrideController extends ErrorOnDebugController {
 				$fields = GeneralUtility::trimExplode(',',$tsOverride['checkFields'],1);
 				foreach ($fields as $field) {
 					if (isset($settings[$field]) && $settings[$field] === '--TYPOSCRIPT--') {
-						$settings[$field] = isset($tsSettings[$field]) ? $tsSettings[$field] : '';
+						$settings[$field] = $tsSettings[$field] ?? '';
 					}
 				}
 			}
@@ -81,7 +81,7 @@ class SettingsOverrideController extends ErrorOnDebugController {
 						$fields = GeneralUtility::trimExplode(';',$settings[$selectField],1);
 						foreach ($fields as $field) {
 							#@LOW make this work as overrule-setting, not overwrite
-							$settings[$field] = isset($tsSettings[$field]) ? $tsSettings[$field] : '';
+							$settings[$field] = $tsSettings[$field] ?? '';
 						}
 					}
 				}
