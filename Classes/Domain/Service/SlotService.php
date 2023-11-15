@@ -239,7 +239,7 @@ class SlotService implements SingletonInterface {
 	public function getDummyDateSlot(\DateTime $dateTime) {
 		$dateSlotStorage = new KeyObjectStorage();
 		$dateSlot = $this->createDateSlot($dateTime);
-		$dateSlot->addTimeSlot($this->createTimeSlot($dateTime->getTimestamp()));
+		$dateSlot->addTimeSlot($this->createTimeSlot($dateTime));
 		$dateSlotStorage->attach($dateSlot);
 		return $dateSlotStorage;
 	}
@@ -852,7 +852,8 @@ class SlotService implements SingletonInterface {
 		foreach ($blockedTime as $block) {
 			$currentEndTimestamp = $block['begin'];
 			while ($timestamp < $currentEndTimestamp) {
-				$dateSlot->addTimeSlot($this->createTimeSlot($timestamp));
+				$dateTime->setTimestamp($timestamp);
+				$dateSlot->addTimeSlot($this->createTimeSlot($dateTime));
 				$timestamp += $intervalSeconds;
 			}
 			$timestamp = $block['end'];
@@ -869,14 +870,14 @@ class SlotService implements SingletonInterface {
 	/**
 	 * Creates and returns a timeslot object instance.
 	 *
-	 * @param integer $timestamp The timeslot timestamp
+	 * @param \DateTime $dateTime The timeslot datetime
 	 * @return TimeSlot
 	 */
-	protected function createTimeSlot($timestamp) {
+	protected function createTimeSlot(\DateTime $dateTime) {
 		$timeSlot = new TimeSlot();
-		$timeSlot->setKey(strftime(self::TIMESLOT_KEY_FORMAT_ALT,$timestamp));
-		$timeSlot->setTimestamp($timestamp);
-		$timeSlot->setLabel(strftime('%H:%M',$timestamp));
+		$timeSlot->setKey($dateTime->format(self::TIMESLOT_KEY_FORMAT));
+		$timeSlot->setTimestamp($dateTime->getTimestamp());
+		$timeSlot->setLabel($dateTime->format('H:i'));
 		return $timeSlot;
 	}
 

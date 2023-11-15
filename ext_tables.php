@@ -52,7 +52,7 @@ defined('TYPO3_MODE') or die();
 #@TODO __add validation options to Address
 #@LOW look at / replace Resources/Public/Icons
 #@LOW unittesting
-#@TODO currently, month and day names are taken from locallang. I should see if the php locale can be changed to the typo3 locale in order to rely on strftime and/or f:format.date
+#@TODO currently, month and day names are taken from locallang. I should see if the php locale can be changed to the typo3 locale in order to rely on the Intl php ext and/or f:format.date
 #@LOW use localization $arguments parameter
 #@LOW consider using crop VH in Agenda views (not available in 4.5)
 #@TODO default templates aren't tableless

@@ -190,8 +190,9 @@ class AgendaController extends ActionController {
 		if ($this->settings['allowCreate']) { //is this peformance hog enabled?
 			foreach ($allowTypes as $type) {
 				$dateSlotStorage = $this->slotService->getDateSlots($type, $this->agenda);
+				/** @var \Innologi\Appointments\Domain\Model\DateSlot $dateSlot */
 				foreach ($dateSlotStorage as $dateSlot) {
-					$allowCreateTypes[strftime('%d-%m-%Y',$dateSlot->getTimestamp())] = 1;
+				    $allowCreateTypes[(new \DateTime())->setTimestamp($dateSlot->getTimestamp())->format('d-m-Y')] = 1;
 				}
 			}
 		}
@@ -199,7 +200,7 @@ class AgendaController extends ActionController {
 		#@TODO can we do some caching here? the container is created from scratch every single time
 		//creates date objects in week storages for the container, because each day and week contain different properties
 		$endTime = $end->getTimestamp();
-		$currentDate = strftime('%d-%m-%Y');
+		$currentDate = (new \DateTime())->format('d-m-Y');
 		$holidayArray = $agenda->getHolidayArray();
 		$appointments = $this->appointmentRepository->rearrangeAppointmentArray(
 				$this->appointmentRepository->findBetween($agenda, $start, $end, $showTypes, 1)
