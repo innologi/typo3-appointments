@@ -46,12 +46,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\Innologi\Appoin
 	'description'		=> 'LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_task_cleanup.description',
 	'additionalFields'	=> \Innologi\Appointments\Task\CleanUpTaskAdditionalFieldProvider::class
 ];
-
-// @TODO replace all TEMPLATE cases with FLUIDTEMPLATE so this becomes unnecessary
-// Add FILE alternative
-$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge(
-	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'],
-	[
-		'APPOINTMENTS_FILE' => \Innologi\Appointments\Mvc\ContentObject\FileContentObject::class
-	]
-);
