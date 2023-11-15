@@ -98,6 +98,19 @@ plugin.tx_appointments {
 						placeInFooter = 1
 						if.value = {$plugin.tx_appointments.js.includeJS}
 						if.equals = 1
+						
+						# temp workaround modern_templating_building bug
+						10.template.linkWrap =
+						10.template.wrap =
+						10.markerWrap = ###|###
+						10.relPathPrefix =
+						10.workOnSubpart =
+						10.substMarksSeparately =
+						10.nonCachedSubst =
+						10.subparts {
+						}
+						10.wraps {
+						}
 					}
 				}
 			}
