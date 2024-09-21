@@ -27,7 +27,6 @@ use Innologi\Appointments\Domain\Repository\AppointmentRepository;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 /**
  * Clean Up Scheduler Task
@@ -63,9 +62,8 @@ class CleanUpTask extends AbstractTask {
 	 * @return void
 	 */
 	protected function initRepositories() {
-		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-		$this->appointmentRepository = $objectManager->get(AppointmentRepository::class);
-		$this->persistenceManager = $objectManager->get(PersistenceManager::class);
+		$this->appointmentRepository = GeneralUtility::makeInstance(AppointmentRepository::class);
+		$this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
 	}
 
 	/**

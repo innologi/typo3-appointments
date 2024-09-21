@@ -26,7 +26,6 @@ namespace Innologi\Appointments\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 /**
  * Flash Messages Viewhelper
  *
@@ -53,7 +52,7 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FlashMessages
 		// disable cache if there are flashmessages to render
 		if (isset($content[0]) && isset($GLOBALS['TSFE'])) {
 			/** @var ConfigurationManager $configurationManager */
-			$configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManager::class);
+			$configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
 			// @extensionScannerIgnoreLine getContentObject() false positive
 			if ($configurationManager->getContentObject()->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
 				$GLOBALS['TSFE']->no_cache = 1;

@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Innologi\Appointments\:
+    resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'
+
+  Innologi\TYPO3AssetProvider\ProviderServiceInterface:
+    class: 'Innologi\TYPO3AssetProvider\ProviderService'

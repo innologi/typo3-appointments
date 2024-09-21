@@ -28,7 +28,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Innologi\Appointments\Domain\Model\{FormField, FormFieldValue};
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 /**
  * FormFieldVlaue Domain Validator.
  *
@@ -41,22 +40,44 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  */
 class VariableValidator extends AbstractValidator {
 
-	/**
-	 * @var ObjectManager
-	 */
-	protected $objectManager;
+    /**
+     *
+     * @var ValidatorResolver
+     */
+    protected $validatorResolver;
 
-	/**
-	 * Gets ObjectManager
-	 *
-	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
-	 */
-	protected function getObjectManager() {
-		if ($this->objectManager === NULL) {
-			$this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-		}
-		return $this->objectManager;
-	}
+    /**
+     *
+     * @var ConjunctionValidator
+     */
+    protected $conjunctionValidator;
+
+    /**
+     * Gets ValidatorResolver
+     *
+     * @return ValidatorResolver
+     */
+    protected function getConjunctionValidator()
+    {
+        if ($this->conjunctionValidator === NULL) {
+            // @todo use constructor injection as soon as TYPO3 stops using validator constructor args for options
+            $this->conjunctionValidator = GeneralUtility::makeInstance(ConjunctionValidator::class);
+        }
+        return $this->conjunctionValidator;
+    }
+    /**
+     * Gets ValidatorResolver
+     *
+     * @return ValidatorResolver
+     */
+    protected function getValidatorResolver()
+    {
+        if ($this->validatorResolver === NULL) {
+            // @todo use constructor injection as soon as TYPO3 stops using validator constructor args for options
+            $this->validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        }
+        return $this->validatorResolver;
+    }
 
 	/**
 	 * Checks if the given value is valid according to the validator, and returns
@@ -105,12 +126,10 @@ class VariableValidator extends AbstractValidator {
 			return;
 		}
 
-		/** @var ValidatorResolver $validatorResolver
-		 * @extensionScannerIgnoreLine false positive */
-		$validatorResolver = $this->getObjectManager()->get(ValidatorResolver::class);
-		/** @var ConjunctionValidator $validatorConjunction
-		 * @extensionScannerIgnoreLine false positive */
-		$validatorConjunction = $this->getObjectManager()->get(ConjunctionValidator::class);
+		/** @var ValidatorResolver $validatorResolver */
+		$validatorResolver = $this->getValidatorResolver();
+		/** @var ConjunctionValidator $validatorConjunction */
+		$validatorConjunction = $this->getConjunctionValidator();
 
 		$required = FALSE;
 		foreach ($validationTypes as $validationType) {
