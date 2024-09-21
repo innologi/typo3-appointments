@@ -194,11 +194,11 @@
 							<numIndex index="1">--TYPOSCRIPT--</numIndex>
 						</numIndex>
 						<numIndex index="1" type="array">
-							<numIndex index="0">LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:yes</numIndex>
+							<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes</numIndex>
 							<numIndex index="1">1</numIndex>
 						</numIndex>
 						<numIndex index="2" type="array">
-							<numIndex index="0">LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:no</numIndex>
+							<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no</numIndex>
 							<numIndex index="1">0</numIndex>
 						</numIndex>
 					</items>

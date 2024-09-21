@@ -80,24 +80,24 @@ return [
 		'sunday' => ['showitem' => 'max_amount_sunday, start_time_sunday, stop_time_sunday, minute_interval_sunday'],
 		'overrule' => ['showitem' => 'max_amount_per_var_days, per_var_days, per_var_days_interval, --linebreak--, exclude_holidays'],
 		#@TODO __CSH
-		'address_name' => ['showitem' => 'address_enable_name;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
-		'address_gender' => ['showitem' => 'address_enable_gender;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
-		'address_birthday' => ['showitem' => 'address_enable_birthday;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
-		'address_address' => ['showitem' => 'address_enable_address;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
-		'address_security' => ['showitem' => 'address_enable_security;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
-		'address_email' => ['showitem' => 'address_enable_email;LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:enable'],
+		'address_name' => ['showitem' => 'address_enable_name;LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable'],
+		'address_gender' => ['showitem' => 'address_enable_gender;LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable'],
+		'address_birthday' => ['showitem' => 'address_enable_birthday;LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable'],
+		'address_address' => ['showitem' => 'address_enable_address;LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable'],
+		'address_security' => ['showitem' => 'address_enable_security;LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable'],
+		'address_email' => ['showitem' => 'address_enable_email;LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable'],
 	],
 	'columns' => [
 		'sys_language_uid' => [
 			'exclude' => TRUE,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
 			'config' => [
 				'type' => 'language',
 			]
 		],
 		'l10n_parent' => [
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => [
 				'type' => 'select',
 				'renderType' => 'selectSingle',
@@ -116,7 +116,7 @@ return [
 			]
 		],
 		't3ver_label' => [
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
 			'config' => [
 				'type' => 'input',
 				'size' => 30,
@@ -125,14 +125,14 @@ return [
 		],
 		'hidden' => [
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
 			'config' => [
 				'type' => 'check',
 			],
 		],
 		'starttime' => [
 			'exclude' => TRUE,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
 			'config' => [
 				'type' => 'input',
 				'renderType' => 'inputDateTime',
@@ -145,7 +145,7 @@ return [
 		],
 		'endtime' => [
 			'exclude' => TRUE,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
 			'config' => [
 				'type' => 'input',
 				'renderType' => 'inputDateTime',
