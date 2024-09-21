@@ -842,8 +842,6 @@ class AppointmentController extends ActionController {
 	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to inform about
 	 */
 	protected function performMailingActions($action, Appointment $appointment) {
-		$this->emailService->setControllerContext($this->controllerContext); //can't be done @ injection because controllerContext won't be initialized yet
-
 		if (!$this->emailService->sendAction($action,$appointment)) {
 			$flashMessage = LocalizationUtility::translate('tx_appointments_list.email_error', $this->extensionName);
 			$this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);

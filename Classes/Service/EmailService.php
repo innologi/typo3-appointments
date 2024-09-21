@@ -25,6 +25,7 @@ namespace Innologi\Appointments\Service;
  ***************************************************************/
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
@@ -46,13 +47,6 @@ class EmailService implements SingletonInterface {
 	 * @var string
 	 */
 	protected $extensionName;
-
-	/**
-	 * Controller context
-	 *
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
-	 */
-	protected $controllerContext;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -78,6 +72,11 @@ class EmailService implements SingletonInterface {
 	 */
 	protected $text;
 
+	public function __construct(
+	    protected UriBuilder $uriBuilder,
+	) {
+	}
+
 	/**
 	 *
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
@@ -98,17 +97,6 @@ class EmailService implements SingletonInterface {
 	 */
 	public function setExtensionName(string $extensionName) {
 		$this->extensionName = strtolower($extensionName);
-	}
-
-	/**
-	 * Set controllerContext (REQUIRED)
-	 *
-	 * Used to access UriBuilder.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-	 */
-	public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
-		$this->controllerContext = $controllerContext;
 	}
 
 	/**
@@ -576,11 +564,10 @@ class EmailService implements SingletonInterface {
 	 * @return string The link
 	 */
 	protected function buildLink(Appointment $appointment, $isHTML = FALSE) {
-		$uriBuilder = $this->controllerContext->getUriBuilder();
-
 		$arguments = ['appointment' => $appointment];
 
-		$uri = $uriBuilder
+		$uri = $this->uriBuilder
+		    ->reset()
 			->setCreateAbsoluteUri(TRUE)
 			->uriFor('show', $arguments, 'Appointment', 'appointments', 'list');
 

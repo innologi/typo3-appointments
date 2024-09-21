@@ -193,7 +193,6 @@ class ActionController extends SettingsOverrideController {
 			//errors!
 			if (!empty($errors)) {
 				// we'll need it for the FlashMessageQueue
-				$this->controllerContext = $this->buildControllerContext();
 				foreach ($errors as $flashMessage) {
 					$this->addFlashMessage($flashMessage,'',FlashMessage::ERROR);
 				}
@@ -271,7 +270,6 @@ class ActionController extends SettingsOverrideController {
 			}
 		}
 
-		$this->controllerContext = $this->buildControllerContext();
 		$this->addFlashMessage(
 			LocalizationUtility::translate('tx_appointments.csrf_invalid', $this->extensionName),
 			'',
