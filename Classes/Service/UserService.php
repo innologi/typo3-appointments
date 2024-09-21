@@ -36,7 +36,7 @@ class UserService implements SingletonInterface {
 	/**
 	 * Logged in frontend user
 	 *
-	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
+	 * @var \Innologi\Appointments\Domain\Model\FrontendUser
 	 */
 	protected $feUser = NULL;
 
@@ -50,33 +50,33 @@ class UserService implements SingletonInterface {
 	/**
 	 * frontendUserRepository
 	 *
-	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
+	 * @var \Innologi\Appointments\Domain\Repository\FrontendUserRepository
 	 */
 	protected $frontendUserRepository;
 
 	/**
 	 * frontendUserGroupRepository
 	 *
-	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository
+	 * @var \Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository
 	 */
 	protected $frontendUserGroupRepository;
 
 	/**
 	 *
-	 * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
+	 * @param \Innologi\Appointments\Domain\Repository\FrontendUserRepository $frontendUserRepository
 	 * @return void
 	 */
-	public function injectFrontendUserRepository(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository)
+	public function injectFrontendUserRepository(\Innologi\Appointments\Domain\Repository\FrontendUserRepository $frontendUserRepository)
 	{
 		$this->frontendUserRepository = $frontendUserRepository;
 	}
 
 	/**
 	 *
-	 * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository
+	 * @param \Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository
 	 * @return void
 	 */
-	public function injectFrontendUserGroupRepository(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository)
+	public function injectFrontendUserGroupRepository(\Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository)
 	{
 		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
 	}
@@ -84,7 +84,7 @@ class UserService implements SingletonInterface {
 	/**
 	 * Returns current frontend user.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser|FALSE
+	 * @return \Innologi\Appointments\Domain\Model\FrontendUser|FALSE
 	 */
 	public function getCurrentUser() {
 		if ($this->feUser === NULL) {

@@ -62,14 +62,14 @@ class AppointmentRepository extends Repository {
 	 *
 	 * @param \Innologi\Appointments\Domain\Model\Agenda $agenda The agenda which the appointments belong to
 	 * @param array $types The types the appointments belong to
-	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser The user which the appointments belong to
+	 * @param \Innologi\Appointments\Domain\Model\FrontendUser $feUser The user which the appointments belong to
 	 * @param boolean $unfinished If TRUE: get unfinished appointments instead
 	 * @param \DateTime $start Optional start time
 	 * @param \DateTime $end Optional end time
 	 * @param boolean $descending If TRUE: sorts by begintime descending, if FALSE: ascending
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 */
-	public function findPersonalList(Agenda $agenda, array $types, \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser, $unfinished = FALSE, \DateTime $start = NULL, \DateTime $end = NULL, $descending = FALSE) {
+	public function findPersonalList(Agenda $agenda, array $types, \Innologi\Appointments\Domain\Model\FrontendUser $feUser, $unfinished = FALSE, \DateTime $start = NULL, \DateTime $end = NULL, $descending = FALSE) {
 		$query = $this->createQuery();
 		$constraints = [
 			$query->equals('agenda', $agenda),

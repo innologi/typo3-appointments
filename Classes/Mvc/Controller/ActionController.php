@@ -89,7 +89,7 @@ class ActionController extends SettingsOverrideController {
 	/**
 	 * Logged in frontend user
 	 *
-	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
+	 * @var \Innologi\Appointments\Domain\Model\FrontendUser
 	 */
 	protected $feUser;
 
