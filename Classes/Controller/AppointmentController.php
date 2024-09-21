@@ -79,44 +79,6 @@ class AppointmentController extends ActionController {
 	}
 
 	/**
-	 * Initialize Process New Action
-	 *
-	 * @return void
-	 */
-	protected function initializeProcessNewAction() {
-		if (isset($this->request->getArgument('appointment')['__identity'])) {
-			$this->validateRequest();
-		}
-	}
-
-	/**
-	 * Initialize Create Action
-	 *
-	 * @return void
-	 */
-	protected function initializeCreateAction() {
-		$this->validateRequest();
-	}
-
-	/**
-	 * Initialize Update Action
-	 *
-	 * @return void
-	 */
-	protected function initializeUpdateAction() {
-		$this->validateRequest();
-	}
-
-	/**
-	 * Initialize Delete Action
-	 *
-	 * @return void
-	 */
-	protected function initializeDeleteAction() {
-		$this->validateRequest();
-	}
-
-	/**
 	 * {@inheritDoc}
 	 * @see \Innologi\Appointments\Mvc\Controller\ActionController::initializeAction()
 	 */
@@ -334,6 +296,10 @@ class AppointmentController extends ActionController {
 	 * @return void
 	 */
 	public function processNewAction(Appointment $appointment) {
+	    if (isset($this->request->getArgument('appointment')['__identity']) && ($failureResponse = $this->validateRequest()) !== null) {
+	        return $failureResponse;
+	    }
+
 		$arguments = [];
 		$appointment->setAgenda($this->agenda);
 		$appointment->setFeUser($this->feUser);
@@ -414,6 +380,10 @@ class AppointmentController extends ActionController {
 	 * @return void
 	 */
 	public function createAction(Appointment $appointment) {
+	    if (($failureResponse = $this->validateRequest()) !== null) {
+	        return $failureResponse;
+	    }
+
 		$timeFields = $this->calculateTimes($appointment); //times can be influenced by formfields
 		#@FIX _there is no check whether timeslotisallowed, which is good for the firstavailabletime, but what about maxPerDays and all that?
 		//as a safety measure, first check if there are appointments which occupy time which this one claims
@@ -490,6 +460,10 @@ class AppointmentController extends ActionController {
 	 * @return void
 	 */
 	public function updateAction(Appointment $appointment) {
+	    if (($failureResponse = $this->validateRequest()) !== null) {
+	        return $failureResponse;
+	    }
+
 		$this->validateMutateAttempt($appointment);
 		$timeFields = $this->calculateTimes($appointment); //times can be influenced by formfields
 
@@ -521,6 +495,10 @@ class AppointmentController extends ActionController {
 	 * @return void
 	 */
 	public function deleteAction(Appointment $appointment) {
+	    if (($failureResponse = $this->validateRequest()) !== null) {
+	        return $failureResponse;
+	    }
+
 		$this->validateMutateAttempt($appointment);
 
 		$this->appointmentRepository->remove($appointment);

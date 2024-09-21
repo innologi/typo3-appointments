@@ -23,17 +23,14 @@ namespace Innologi\Appointments\Mvc\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Exception;
 use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest;
 use Innologi\TYPO3AssetProvider\ProviderControllerTrait;
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Appointments Action Controller.
  *
@@ -220,24 +217,9 @@ class ActionController extends SettingsOverrideController {
 
 	/**
 	 * Validates a request based on $tokenArgument, through TYPO3's internal
-	 * CSRF protection. If invalid, will automatically stop
-	 *
-	 * @param string $tokenArgument
-	 * @return boolean
-	 * @throws StopActionException
+	 * CSRF protection. If invalid, will return a response.
 	 */
-	protected function validateRequest($tokenArgument = 'stoken') {
-		/** @var Typo3Version $typo3Version */
-		$typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
-		if ($typo3Version->getMajorVersion() > 10) {
-			// @TODO this method no longer works in 11 because of a lack of __referrer, even though it is still used internally.
-				// investigate alternatives!
-			return TRUE;
-		}
-
-		/** @var ReferringRequest $referringRequest */
-		$referringRequest = null;
-
+	protected function validateRequest(string $tokenArgument = 'stoken'): ?ResponseInterface {
 		// @see \TYPO3\CMS\Extbase\Mvc\Controller\ActionController->forwardToReferringRequest()
 		$referringRequestArguments = $this->request->getInternalArguments()['__referrer'] ?? null;
 		if (is_string($referringRequestArguments['@request'] ?? null)) {
@@ -251,23 +233,22 @@ class ActionController extends SettingsOverrideController {
 					base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments']))
 				);
 			}
-			$referringRequest = new ReferringRequest();
-			$referringRequest->setArguments(array_replace_recursive($arguments, $referrerArray));
-		}
-
-		if ($referringRequest !== NULL) {
-			$objectType = strtolower((string) $referringRequest->getControllerName());
-			if ($this->request->hasArgument($tokenArgument) &&
-				$this->request->hasArgument($objectType) &&
-				\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->validateToken(
-					$this->request->getArgument($tokenArgument),
-					$referringRequest->getControllerName(),
-					$referringRequest->getControllerActionName(),
-					$this->request->getArgument($objectType)['__identity'] ?? ''
-				)
-			) {
-				return TRUE;
-			}
+			$replacedArguments = array_replace_recursive($arguments, $referrerArray);
+			if (!empty($replacedArguments)) {
+    		    $controllerName = (string)($replacedArguments['@controller'] ?? 'Standard');
+    		    $objectType = strtolower((string) $controllerName);
+    			if ($this->request->hasArgument($tokenArgument) &&
+    				$this->request->hasArgument($objectType) &&
+    				\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->validateToken(
+    					$this->request->getArgument($tokenArgument),
+    					$controllerName,
+    				    (string)($replacedArguments['@action'] ?? 'index'),
+    					$this->request->getArgument($objectType)['__identity'] ?? ''
+    				)
+    			) {
+    				return null;
+    			}
+		    }
 		}
 
 		$this->addFlashMessage(
@@ -275,10 +256,8 @@ class ActionController extends SettingsOverrideController {
 			'',
 			FlashMessage::ERROR
 		);
-		// this will actually end up rebuilding the referringRequest, but who cares, we're in an error state
-		$this->errorAction();
-		// in case errorAction fails to forward the request
-		throw new StopActionException('invalid request', 1503940139);
+
+		return $this->errorAction();
 	}
 
 	/**
