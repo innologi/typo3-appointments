@@ -1,43 +1,44 @@
 <?php
+
 defined('TYPO3_MODE') or die();
 
 // add plugin flexform csh
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-	'tt_content.pi_flexform.appointments_agenda.list',
-	'EXT:appointments/Resources/Private/Language/locallang_csh_flexform_agenda.xml'
+    'tt_content.pi_flexform.appointments_agenda.list',
+    'EXT:appointments/Resources/Private/Language/locallang_csh_flexform_agenda.xml',
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-	'tt_content.pi_flexform.appointments_list.list',
-	'EXT:appointments/Resources/Private/Language/locallang_csh_flexform_list.xml'
+    'tt_content.pi_flexform.appointments_list.list',
+    'EXT:appointments/Resources/Private/Language/locallang_csh_flexform_list.xml',
 );
 
 // add task csh
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-	'tx_appointments_csh_task_clean_up',
-	'EXT:appointments/Resources/Private/Language/locallang_csh_task_clean_up.xml'
+    'tx_appointments_csh_task_clean_up',
+    'EXT:appointments/Resources/Private/Language/locallang_csh_task_clean_up.xml',
 );
 
 // add tca csh
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-	'tx_appointments_domain_model_appointment',
-	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_appointment.xml'
+    'tx_appointments_domain_model_appointment',
+    'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_appointment.xml',
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-	'tx_appointments_domain_model_agenda',
-	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_agenda.xml'
+    'tx_appointments_domain_model_agenda',
+    'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_agenda.xml',
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-	'tx_appointments_domain_model_type',
-	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_type.xml'
+    'tx_appointments_domain_model_type',
+    'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_type.xml',
 );
 // @LOW it seems inline records CSH doesn't get displayed in T3 v8.7(.4), even though the mouse icon shows there is CSH
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-	'tx_appointments_domain_model_formfield',
-	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_formfield.xml'
+    'tx_appointments_domain_model_formfield',
+    'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_formfield.xml',
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-	'tx_appointments_domain_model_formfieldvalue',
-	'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_formfieldvalue.xml'
+    'tx_appointments_domain_model_formfieldvalue',
+    'EXT:appointments/Resources/Private/Language/locallang_csh_tx_appointments_domain_model_formfieldvalue.xml',
 );
 
 #@LOW is there a native datepicker [6.1+]?

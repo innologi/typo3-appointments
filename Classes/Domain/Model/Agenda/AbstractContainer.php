@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Model\Agenda;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,6 +27,7 @@ namespace Innologi\Appointments\Domain\Model\Agenda;
  ***************************************************************/
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 /**
  * Abstract Agenda Data Container
  *
@@ -32,227 +35,231 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-abstract class AbstractContainer extends AbstractEntity {
+abstract class AbstractContainer extends AbstractEntity
+{
+    /**
+     * name
+     *
+     * @var string
+     */
+    protected $name;
 
-	/**
-	 * name
-	 *
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * Year
+     *
+     * @var string
+     */
+    protected $year;
 
-	/**
-	 * Year
-	 *
-	 * @var string
-	 */
-	protected $year;
+    /**
+     * back modifier
+     *
+     * @var integer
+     */
+    protected $backModifier;
 
-	/**
-	 * back modifier
-	 *
-	 * @var integer
-	 */
-	protected $backModifier;
+    /**
+     * forward modifier
+     *
+     * @var integer
+     */
+    protected $forwardModifier;
 
-	/**
-	 * forward modifier
-	 *
-	 * @var integer
-	 */
-	protected $forwardModifier;
+    /**
+     * Maximum back modifier
+     *
+     * @var integer
+     */
+    protected $maxBack;
 
-	/**
-	 * Maximum back modifier
-	 *
-	 * @var integer
-	 */
-	protected $maxBack;
+    /**
+     * Maximum forward modifier
+     *
+     * @var integer
+     */
+    protected $maxForward;
 
-	/**
-	 * Maximum forward modifier
-	 *
-	 * @var integer
-	 */
-	protected $maxForward;
+    /**
+     * Array of week storages
+     *
+     * @var array<\TYPO3\CMS\Extbase\Persistence\ObjectStorage>
+     */
+    protected $weeks; #@LOW why not array<array> again?
 
-	/**
-	 * Array of week storages
-	 *
-	 * @var Array<\TYPO3\CMS\Extbase\Persistence\ObjectStorage>
-	 */
-	protected $weeks; #@LOW why not array<array> again?
+    /**
+     * __construct
+     */
+    public function __construct()
+    {
+        $this->weeks = [];
+    }
 
-	/**
-	 * __construct
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		$this->weeks = [];
-	}
+    /**
+     * Returns the name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * Returns the name
-	 *
-	 * @return string $name
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * Sets the name
+     *
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * Sets the name
-	 *
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
+    /**
+     * Returns the year
+     *
+     * @return string
+     */
+    public function getYear()
+    {
+        return $this->year;
+    }
 
-	/**
-	 * Returns the year
-	 *
-	 * @return string $year
-	 */
-	public function getYear() {
-		return $this->year;
-	}
+    /**
+     * Sets the year
+     *
+     * @param string $year
+     */
+    public function setYear($year)
+    {
+        $this->year = $year;
+    }
 
-	/**
-	 * Sets the year
-	 *
-	 * @param string $year
-	 * @return void
-	 */
-	public function setYear($year) {
-		$this->year = $year;
-	}
+    /**
+     * Returns the back modifier
+     *
+     * @return integer
+     */
+    public function getBackModifier()
+    {
+        return $this->backModifier;
+    }
 
-	/**
-	 * Returns the back modifier
-	 *
-	 * @return integer $backModifier
-	 */
-	public function getBackModifier() {
-		return $this->backModifier;
-	}
+    /**
+     * Sets the back modifier
+     *
+     * @param integer $backModifier
+     */
+    public function setBackModifier($backModifier)
+    {
+        $this->backModifier = $backModifier;
+    }
 
-	/**
-	 * Sets the back modifier
-	 *
-	 * @param integer $backModifier
-	 * @return void
-	 */
-	public function setBackModifier($backModifier) {
-		$this->backModifier = $backModifier;
-	}
+    /**
+     * Returns the forward modifier
+     *
+     * @return integer
+     */
+    public function getForwardModifier()
+    {
+        return $this->forwardModifier;
+    }
 
-	/**
-	 * Returns the forward modifier
-	 *
-	 * @return integer $forwardModifier
-	 */
-	public function getForwardModifier() {
-		return $this->forwardModifier;
-	}
+    /**
+     * Sets the forward modifier
+     *
+     * @param integer $forwardModifier
+     */
+    public function setForwardModifier($forwardModifier)
+    {
+        $this->forwardModifier = $forwardModifier;
+    }
 
-	/**
-	 * Sets the forward modifier
-	 *
-	 * @param integer $forwardModifier
-	 * @return void
-	 */
-	public function setForwardModifier($forwardModifier) {
-		$this->forwardModifier = $forwardModifier;
-	}
+    /**
+     * Returns maximum back modifier
+     *
+     * @return integer
+     */
+    public function getMaxBack()
+    {
+        return $this->maxBack;
+    }
 
-	/**
-	 * Returns maximum back modifier
-	 *
-	 * @return integer $maxMonthBack
-	 */
-	public function getMaxBack() {
-		return $this->maxBack;
-	}
+    /**
+     * Sets the maximum back modifier
+     *
+     * @param integer $maxBack
+     */
+    public function setMaxBack($maxBack)
+    {
+        $this->maxBack = $maxBack;
+    }
 
-	/**
-	 * Sets the maximum back modifier
-	 *
-	 * @param integer $maxBack
-	 * @return void
-	 */
-	public function setMaxBack($maxBack) {
-		$this->maxBack = $maxBack;
-	}
+    /**
+     * Returns the maximum forward modifier
+     *
+     * @return integer
+     */
+    public function getMaxForward()
+    {
+        return $this->maxForward;
+    }
 
-	/**
-	 * Returns the maximum forward modifier
-	 *
-	 * @return integer $maxForward
-	 */
-	public function getMaxForward() {
-		return $this->maxForward;
-	}
+    /**
+     * Sets the maximum forward modifier
+     *
+     * @param integer $maxForward
+     */
+    public function setMaxForward($maxForward)
+    {
+        $this->maxForward = $maxForward;
+    }
 
-	/**
-	 * Sets the maximum forward modifier
-	 *
-	 * @param integer $maxForward
-	 * @return void
-	 */
-	public function setMaxForward($maxForward) {
-		$this->maxForward = $maxForward;
-	}
+    /**
+     * Returns whether back is allowed
+     *
+     * @return boolean
+     */
+    public function getCanBack()
+    {
+        return $this->maxBack <= $this->backModifier;
+    }
 
-	/**
-	 * Returns whether back is allowed
-	 *
-	 * @return boolean
-	 */
-	public function getCanBack() {
-		return $this->maxBack <= $this->backModifier;
-	}
+    /**
+     * Returns whether forward is allowed
+     *
+     * @return boolean
+     */
+    public function getCanForward()
+    {
+        return $this->maxForward >= $this->forwardModifier;
+    }
 
-	/**
-	 * Returns whether forward is allowed
-	 *
-	 * @return boolean
-	 */
-	public function getCanForward() {
-		return $this->maxForward >= $this->forwardModifier;
-	}
+    /**
+     * Adds a week storage
+     */
+    public function addWeek(ObjectStorage $week)
+    {
+        $this->weeks[] = $week;
+    }
 
-	/**
-	 * Adds a week storage
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $week
-	 * @return void
-	 */
-	public function addWeek(ObjectStorage $week) {
-		$this->weeks[] = $week;
-	}
+    /**
+     * Returns the weeks
+     *
+     * @return array
+     */
+    public function getWeeks()
+    {
+        return $this->weeks;
+    }
 
-	/**
-	 * Returns the weeks
-	 *
-	 * @return array $weeks
-	 */
-	public function getWeeks() {
-		return $this->weeks;
-	}
-
-	/**
-	 * Sets the weeks
-	 *
-	 * @param array $weeks
-	 * @return void
-	 */
-	public function setWeeks($weeks) {
-		$this->weeks = $weeks;
-	}
-
+    /**
+     * Sets the weeks
+     *
+     * @param array $weeks
+     */
+    public function setWeeks($weeks)
+    {
+        $this->weeks = $weeks;
+    }
 }

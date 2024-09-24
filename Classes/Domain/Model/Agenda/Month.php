@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Model\Agenda;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,60 +33,60 @@ namespace Innologi\Appointments\Domain\Model\Agenda;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class Month extends AbstractContainer {
+class Month extends AbstractContainer
+{
+    /**
+     * Days before the first month day in the first week
+     *
+     * @var integer
+     */
+    protected $weekdaysBeforeFirst;
 
-	/**
-	 * Days before the first month day in the first week
-	 *
-	 * @var integer
-	 */
-	protected $weekdaysBeforeFirst;
+    /**
+     * Days after the last month day in the final week
+     *
+     * @var integer
+     */
+    protected $weekdaysAfterLast;
 
-	/**
-	 * Days after the last month day in the final week
-	 *
-	 * @var integer
-	 */
-	protected $weekdaysAfterLast;
+    /**
+     * Returns the Weekdays before first
+     *
+     * @return integer
+     */
+    public function getWeekdaysBeforeFirst()
+    {
+        return $this->weekdaysBeforeFirst;
+    }
 
-	/**
-	 * Returns the Weekdays before first
-	 *
-	 * @return integer $weekdaysBeforeFirst
-	 */
-	public function getWeekdaysBeforeFirst() {
-		return $this->weekdaysBeforeFirst;
-	}
+    /**
+     * Sets the Weekdays before first
+     *
+     * @param integer $weekdaysBeforeFirst
+     */
+    public function setWeekdaysBeforeFirst($weekdaysBeforeFirst)
+    {
+        $this->weekdaysBeforeFirst = $weekdaysBeforeFirst;
+    }
 
-	/**
-	 * Sets the Weekdays before first
-	 *
-	 * @param integer $weekdaysBeforeFirst
-	 * @return void
-	 */
-	public function setWeekdaysBeforeFirst($weekdaysBeforeFirst) {
-		$this->weekdaysBeforeFirst = $weekdaysBeforeFirst;
-	}
+    /**
+     * Returns the Weekdays after last
+     *
+     * @return integer
+     */
+    public function getWeekdaysAfterLast()
+    {
+        return $this->weekdaysAfterLast;
+    }
 
-	/**
-	 * Returns the Weekdays after last
-	 *
-	 * @return integer $weekdaysAfterLast
-	 */
-	public function getWeekdaysAfterLast() {
-		return $this->weekdaysAfterLast;
-	}
-
-	/**
-	 * Sets the Weekdays after last
-	 *
-	 * @param integer $weekdaysAfterLast
-	 * @return void
-	 */
-	public function setWeekdaysAfterLast($weekdaysAfterLast) {
-		$this->weekdaysAfterLast = $weekdaysAfterLast;
-	}
-
+    /**
+     * Sets the Weekdays after last
+     *
+     * @param integer $weekdaysAfterLast
+     */
+    public function setWeekdaysAfterLast($weekdaysAfterLast)
+    {
+        $this->weekdaysAfterLast = $weekdaysAfterLast;
+    }
 }

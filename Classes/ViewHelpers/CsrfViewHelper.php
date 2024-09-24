@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,6 +28,7 @@ namespace Innologi\Appointments\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+
 /**
  * Strip Property Index Viewhelper
  *
@@ -33,41 +36,36 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class CsrfViewHelper extends AbstractViewHelper {
-	use CompileWithRenderStatic;
+class CsrfViewHelper extends AbstractViewHelper
+{
+    use CompileWithRenderStatic;
 
-	/**
-	 * @var boolean
-	 */
-	protected $escapeChildren = TRUE;
+    /**
+     * @var boolean
+     */
+    protected $escapeChildren = true;
 
-	/**
-	 * @var boolean
-	 */
-	protected $escapeOutput = TRUE;
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = true;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('uid', 'string', 'Object identifier', TRUE);
-	}
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('uid', 'string', 'Object identifier', true);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		return \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken(
-			$renderingContext->getControllerName(),
-			$renderingContext->getControllerAction(),
-			$arguments['uid']
-		);
-	}
-
+    /**
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        return \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken(
+            $renderingContext->getControllerName(),
+            $renderingContext->getControllerAction(),
+            $arguments['uid'],
+        );
+    }
 }

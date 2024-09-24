@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,14 +27,9 @@ namespace Innologi\Appointments\Domain\Model;
  ***************************************************************/
 
 /**
- * TimeSlot
- *
  * A non-persisted entity for easy use in views.
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class TimeSlot extends AbstractSlot {
-
-}
+class TimeSlot extends AbstractSlot {}

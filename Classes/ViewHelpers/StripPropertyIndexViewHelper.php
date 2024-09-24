@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,10 +25,11 @@ namespace Innologi\Appointments\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Strip Property Index Viewhelper
  *
@@ -34,26 +37,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class StripPropertyIndexViewHelper extends AbstractViewHelper {
-	use CompileWithRenderStatic;
+class StripPropertyIndexViewHelper extends AbstractViewHelper
+{
+    use CompileWithRenderStatic;
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$parts = GeneralUtility::trimExplode('.', $renderChildrenClosure(), TRUE);
-		foreach ($parts as $i => $part) {
-			if ($part[0] === 'i' && is_numeric(substr($part, 1))) {
-				unset($parts[$i]);
-			}
-		}
+    /**
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $parts = GeneralUtility::trimExplode('.', $renderChildrenClosure(), true);
+        foreach ($parts as $i => $part) {
+            if ($part[0] === 'i' && is_numeric(substr($part, 1))) {
+                unset($parts[$i]);
+            }
+        }
 
-		return join('.', $parts);
-	}
-
+        return join('.', $parts);
+    }
 }

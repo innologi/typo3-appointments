@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,18 +25,18 @@ namespace Innologi\Appointments\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Innologi\Appointments\Domain\Model\Agenda;
+use Innologi\Appointments\Domain\Model\Agenda\{AbstractContainer, Date, Month, Weeks};
+use Innologi\Appointments\Mvc\Controller\ActionController;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use Innologi\Appointments\Mvc\Controller\ActionController;
-use Innologi\Appointments\Domain\Model\Agenda;
-use Innologi\Appointments\Domain\Model\Agenda\{Month, Weeks, Date, AbstractContainer};
-use Psr\Http\Message\ResponseInterface;
+
 /**
  * Agenda Controller
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class AgendaController extends ActionController
 {
@@ -44,13 +46,12 @@ class AgendaController extends ActionController
      *
      * @var boolean
      */
-    protected $requireLogin = FALSE; # @LOW be configurable?
+    protected $requireLogin = false; # @LOW be configurable?
 
     /**
      * action show month
      *
      * @param integer $monthModifier Modifies the displayed month
-     * @return void
      */
     public function showMonthAction($monthModifier = 0): ResponseInterface
     {
@@ -61,7 +62,6 @@ class AgendaController extends ActionController
      * action show weeks
      *
      * @param integer $weeksModifier Modifies the displayed weeks
-     * @return void
      */
     public function showWeeksAction($weeksModifier = 0): ResponseInterface
     {
@@ -91,7 +91,7 @@ class AgendaController extends ActionController
         $showTypes = $superUser ? $allowTypes : $this->agenda->getTypes()->toArray();
 
         $modifier = intval($modifier);
-        $container = $this->$creationFunction($modifier, $this->agenda, $showTypes, $allowTypes);
+        $container = $this->{$creationFunction}($modifier, $this->agenda, $showTypes, $allowTypes);
         $this->view->assign($containerName, $container);
         $this->view->assign('agenda', $this->agenda);
 
@@ -116,7 +116,7 @@ class AgendaController extends ActionController
         // adjust $start per $monthModifier
         if ($monthModifier !== 0) {
             $operator = ($monthModifier > 0) ? '+' : '';
-            $start->modify("$operator$monthModifier months");
+            $start->modify("{$operator}{$monthModifier} months");
         }
 
         // set standard month properties
@@ -154,15 +154,15 @@ class AgendaController extends ActionController
         $start = new \DateTime(); // will represent the first minute of the month
         $daysBack = $start->setTime(0, 0)->format('N') - 1;
         if ($daysBack) {
-            $start->modify("-$daysBack days");
+            $start->modify("-{$daysBack} days");
         }
-        $start->modify("-$weeksBefore weeks")->setTime(0, 0);
+        $start->modify("-{$weeksBefore} weeks")->setTime(0, 0);
         $modWeeks = 1 + $weeksBefore + $weeksAfter;
         // adjust $start per $monthModifier
         if ($weeksModifier !== 0) {
             $totalWeeks = $modWeeks * $weeksModifier;
             $operator = ($weeksModifier > 0) ? '+' : '';
-            $start->modify("$operator$totalWeeks weeks");
+            $start->modify("{$operator}{$totalWeeks} weeks");
         }
 
         $this->setGeneralContainerProperties($weeks, $weeksModifier, $modWeeks, 'weeks', $agenda, $showTypes, $allowTypes, $start);
@@ -181,19 +181,18 @@ class AgendaController extends ActionController
      * @param array $showTypes Types to show on the agenda
      * @param array $allowTypes Types to allow on the agenda
      * @param \DateTime $start container starttime
-     * @return void
      */
     protected function setGeneralContainerProperties(AbstractContainer $container, $modifier, $modEndModifier, $modEndUnit, Agenda $agenda, array $showTypes, array $allowTypes, \DateTime $start)
     {
         // set standard container properties
-        $container->setMaxBack(- intval($this->settings['agendaBack']));
+        $container->setMaxBack(-intval($this->settings['agendaBack']));
         $container->setBackModifier($modifier - 1);
         $container->setMaxForward(intval($this->settings['agendaForward']));
         $container->setForwardModifier($modifier + 1);
 
         // will represent the first minute of the next modifier unit
         $end = new \DateTime($start->format('Y-m-d\TH:i:s'), $start->getTimezone());
-        $end->modify("+$modEndModifier $modEndUnit");
+        $end->modify("+{$modEndModifier} {$modEndUnit}");
 
         $allowCreateTypes = [];
         if ($this->settings['allowCreate']) { // is this peformance hog enabled?
@@ -214,7 +213,7 @@ class AgendaController extends ActionController
         $appointments = $this->appointmentRepository->rearrangeAppointmentArray($this->appointmentRepository->findBetween($agenda, $start, $end, $showTypes, 1));
         while ($start->getTimestamp() < $endTime) {
             $week = new ObjectStorage();
-            for ($i = intval($start->format('N')); $i <= 7 && $start->getTimestamp() < $endTime; $i ++) {
+            for ($i = intval($start->format('N')); $i <= 7 && $start->getTimestamp() < $endTime; $i++) {
                 $date = new Date();
                 $date->setDayNumber($start->format('j'));
                 $monthShort = LocalizationUtility::translate('tx_appointments_agenda.month_s' . $start->format('n'), $this->extensionName); # @TODO this can be stored in an array or smth .. or not necessary if we use locales

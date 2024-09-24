@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,8 +25,9 @@ namespace Innologi\Appointments\Mvc\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+
 /**
  * Settings Override Controller.
  *
@@ -33,67 +36,63 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class SettingsOverrideController extends ErrorOnDebugController {
+class SettingsOverrideController extends ErrorOnDebugController
+{
+    /**
+     * @var string
+     */
+    protected $extensionName = '';
 
-	/**
-	 * @var string
-	 */
-	protected $extensionName = '';
+    /**
+     * Injects the configuration manager and resolves the plugin settings.
+     *
+     * Instead of letting the flexform dominate the plugin settings, your TypoScript
+     * can now control which ones don't. It supports the following TypoScript, each
+     * taking a comma-separated list of (settings.)field names:
+     *
+     * plugin.[extname].tsOverride {
+     *   checkFields: if the flexform field value equals '--TYPOSCRIPT--', takes the value from TypoScript instead
+     *   selectFields: flexform field value contains field names which are taken from TypoScript
+     * }
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
 
-	/**
-	 * Injects the configuration manager and resolves the plugin settings.
-	 *
-	 * Instead of letting the flexform dominate the plugin settings, your TypoScript
-	 * can now control which ones don't. It supports the following TypoScript, each
-	 * taking a comma-separated list of (settings.)field names:
-	 *
-	 * plugin.[extname].tsOverride {
-	 *   checkFields: if the flexform field value equals '--TYPOSCRIPT--', takes the value from TypoScript instead
-	 *   selectFields: flexform field value contains field names which are taken from TypoScript
-	 * }
-	 *
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
+        $settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
+        $ts = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
-		$settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
-		$ts = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $extensionName = strtolower($this->extensionName);
+        if (isset($ts['plugin.']['tx_' . $extensionName . '.']['tsOverride.']) && isset($ts['plugin.']['tx_' . $extensionName . '.']['settings.'])) {
+            $tsOverride = $ts['plugin.']['tx_' . $extensionName . '.']['tsOverride.'];
+            $tsSettings = $ts['plugin.']['tx_' . $extensionName . '.']['settings.'];
 
-		$extensionName = strtolower($this->extensionName);
-		if (isset($ts['plugin.']['tx_' . $extensionName . '.']['tsOverride.']) && isset($ts['plugin.']['tx_' . $extensionName . '.']['settings.'])) {
-			$tsOverride = $ts['plugin.']['tx_' . $extensionName . '.']['tsOverride.'];
-			$tsSettings = $ts['plugin.']['tx_' . $extensionName . '.']['settings.'];
+            //looks for TS values if flexform value === '--TYPOSCRIPT--'
+            if (isset($tsOverride['checkFields'])) {
+                $fields = GeneralUtility::trimExplode(',', $tsOverride['checkFields'], 1);
+                foreach ($fields as $field) {
+                    if (isset($settings[$field]) && $settings[$field] === '--TYPOSCRIPT--') {
+                        $settings[$field] = $tsSettings[$field] ?? '';
+                    }
+                }
+            }
 
-			//looks for TS values if flexform value === '--TYPOSCRIPT--'
-			if (isset($tsOverride['checkFields'])) {
-				$fields = GeneralUtility::trimExplode(',',$tsOverride['checkFields'],1);
-				foreach ($fields as $field) {
-					if (isset($settings[$field]) && $settings[$field] === '--TYPOSCRIPT--') {
-						$settings[$field] = $tsSettings[$field] ?? '';
-					}
-				}
-			}
+            //looks for TS values for the specified fields, ignoring their flexform value
+            if (isset($tsOverride['selectFields'])) {
+                $selectFields = GeneralUtility::trimExplode(',', $tsOverride['selectFields'], 1);
+                foreach ($selectFields as $selectField) {
+                    if (isset($settings[$selectField][0]) && $settings[$selectField] !== '0') {
+                        $fields = GeneralUtility::trimExplode(';', $settings[$selectField], 1);
+                        foreach ($fields as $field) {
+                            #@LOW make this work as overrule-setting, not overwrite
+                            $settings[$field] = $tsSettings[$field] ?? '';
+                        }
+                    }
+                }
+            }
+        }
 
-			//looks for TS values for the specified fields, ignoring their flexform value
-			if (isset($tsOverride['selectFields'])) {
-				$selectFields = GeneralUtility::trimExplode(',',$tsOverride['selectFields'],1);
-				foreach ($selectFields as $selectField) {
-					if (isset($settings[$selectField][0]) && $settings[$selectField] !== '0') {
-						$fields = GeneralUtility::trimExplode(';',$settings[$selectField],1);
-						foreach ($fields as $field) {
-							#@LOW make this work as overrule-setting, not overwrite
-							$settings[$field] = $tsSettings[$field] ?? '';
-						}
-					}
-				}
-			}
-		}
-
-		$this->settings = $settings;
-	}
-
+        $this->settings = $settings;
+    }
 }

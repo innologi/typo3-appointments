@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,11 +25,12 @@ namespace Innologi\Appointments\Domain\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
-use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
-use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Innologi\Appointments\Domain\Model\{FormField, FormFieldValue};
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+
 /**
  * FormFieldVlaue Domain Validator.
  *
@@ -36,18 +39,15 @@ use Innologi\Appointments\Domain\Model\{FormField, FormFieldValue};
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class VariableValidator extends AbstractValidator {
-
+class VariableValidator extends AbstractValidator
+{
     /**
-     *
      * @var ValidatorResolver
      */
     protected $validatorResolver;
 
     /**
-     *
      * @var ConjunctionValidator
      */
     protected $conjunctionValidator;
@@ -59,12 +59,13 @@ class VariableValidator extends AbstractValidator {
      */
     protected function getConjunctionValidator()
     {
-        if ($this->conjunctionValidator === NULL) {
+        if ($this->conjunctionValidator === null) {
             // @todo use constructor injection as soon as TYPO3 stops using validator constructor args for options
             $this->conjunctionValidator = GeneralUtility::makeInstance(ConjunctionValidator::class);
         }
         return $this->conjunctionValidator;
     }
+
     /**
      * Gets ValidatorResolver
      *
@@ -72,131 +73,131 @@ class VariableValidator extends AbstractValidator {
      */
     protected function getValidatorResolver()
     {
-        if ($this->validatorResolver === NULL) {
+        if ($this->validatorResolver === null) {
             // @todo use constructor injection as soon as TYPO3 stops using validator constructor args for options
             $this->validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
         }
         return $this->validatorResolver;
     }
 
-	/**
-	 * Checks if the given value is valid according to the validator, and returns
-	 * the error messages object which occurred.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return \TYPO3\CMS\Extbase\Error\Result
-	 * @api
-	 */
-	public function validate($value)
-	{
-		$this->result = new \TYPO3\CMS\Extbase\Error\Result();
-		//if ($this->acceptsEmptyValues === false || $this->isEmpty($value) === false) {
-			$this->isValid($value);
-		//}
-		return $this->result;
-	}
+    /**
+     * Checks if the given value is valid according to the validator, and returns
+     * the error messages object which occurred.
+     *
+     * @param mixed $value The value that should be validated
+     * @return \TYPO3\CMS\Extbase\Error\Result
+     * @api
+     */
+    public function validate($value)
+    {
+        $this->result = new \TYPO3\CMS\Extbase\Error\Result();
+        //if ($this->acceptsEmptyValues === false || $this->isEmpty($value) === false) {
+        $this->isValid($value);
+        //}
+        return $this->result;
+    }
 
-	/**
-	 * Tests if special properties are valid.
-	 *
-	 * @param mixed $formFieldValue The object instance to validate
-	 * @return void
-	 */
-	protected function isValid($formFieldValue) {
-		if ($formFieldValue instanceof FormFieldValue) {
-			$this->validateValue($formFieldValue->getValue(), $formFieldValue->getFormField());
-		}
-	}
-	// @LOW make it more general use ready, so we can put it in our lib
-	/**
-	 * Validates value, based on the variable formField.validationTypes
-	 *
-	 * If $formfield is not as expected, something is already terribly wrong
-	 * and there will be a catched exception anyway, so no need to catch
-	 * that here.
-	 *
-	 * @param string $value The value to validate
-	 * @param \Innologi\Appointments\Domain\Model\FormField $formField
-	 * @return void
-	 */
-	protected function validateValue($value, FormField $formField) {
-		$validationTypes = $formField->getValidationTypesArray();
-		if (empty($validationTypes)) {
-			// nothing to validate
-			return;
-		}
+    /**
+     * Tests if special properties are valid.
+     *
+     * @param mixed $formFieldValue The object instance to validate
+     */
+    protected function isValid($formFieldValue)
+    {
+        if ($formFieldValue instanceof FormFieldValue) {
+            $this->validateValue($formFieldValue->getValue(), $formFieldValue->getFormField());
+        }
+    }
 
-		/** @var ValidatorResolver $validatorResolver */
-		$validatorResolver = $this->getValidatorResolver();
-		/** @var ConjunctionValidator $validatorConjunction */
-		$validatorConjunction = $this->getConjunctionValidator();
+    // @LOW make it more general use ready, so we can put it in our lib
+    /**
+     * Validates value, based on the variable formField.validationTypes
+     *
+     * If $formfield is not as expected, something is already terribly wrong
+     * and there will be a catched exception anyway, so no need to catch
+     * that here.
+     *
+     * @param string $value The value to validate
+     * @param \Innologi\Appointments\Domain\Model\FormField $formField
+     */
+    protected function validateValue($value, FormField $formField)
+    {
+        $validationTypes = $formField->getValidationTypesArray();
+        if (empty($validationTypes)) {
+            // nothing to validate
+            return;
+        }
 
-		$required = FALSE;
-		foreach ($validationTypes as $validationType) {
-			$validationType = intval($validationType);
-			#@TODO currently tells FE the field is required if ANY of these is selected, but alphanum, string and text don't require it to be, so they're disabled in TCA. Fix this as soon as extbase is consistent @ its Validators.
-			switch ($validationType) {
-				case FormField::VALIDATE_ALPHANUMERIC: #@LOW move these outside of formfield and into the validator to lose the formfield dependence
-					$validator = $validatorResolver->createValidator('Alphanumeric');
-					break;
-				case FormField::VALIDATE_DATE_TIME:
-					$validator = $validatorResolver->createValidator('DateTime');
-					// $value is of type string, while this validator tests it for objecttype DateTime
-						// and we don't have the propertymapper available to us in this variable validator-case
-					if (!empty($value)) {
-						try {
-							$newValue = new \DateTime($value);
-							// @TODO configurable date formats all throughout the extension
-							//results in NULL if a valid DateTime string but not in the specified format, so that you can't get away with a timestamp or some other format
-							$value = ($value === $newValue->format('d-m-Y')) ? $newValue : 1;
-						} catch (\Exception) { //if $value is no valid DateTime string
-							$value = 1;
-						}
-					}
-					break;
-				case FormField::VALIDATE_EMAIL_ADDRESS:
-					$validator = $validatorResolver->createValidator('EmailAddress');
-					break;
-				case FormField::VALIDATE_FLOAT:
-					$validator = $validatorResolver->createValidator('Float');
-					break;
-				case FormField::VALIDATE_INTEGER:
-					$validator = $validatorResolver->createValidator('Integer');
-					break;
-				case FormField::VALIDATE_NOT_EMPTY:
-					$validator = $validatorResolver->createValidator('NotEmpty');
-					$required = TRUE;
-					break;
-				case FormField::VALIDATE_NUMBER:
-					$validator = $validatorResolver->createValidator('Number');
-					break;
-				case FormField::VALIDATE_STRING:
-					$validator = $validatorResolver->createValidator('String');
-					break;
-				case FormField::VALIDATE_TEXT:
-					$validator = $validatorResolver->createValidator('Text');
-					break;
-				case FormField::VALIDATE_NATURALNUMBER:
-					//without options, it sets startRange = 0 and endRange = PHP_INT_MAX
-					$validator = $validatorResolver->createValidator('NumberRange');
-					break;
-			}
-			$validatorConjunction->addValidator($validator);
-		}
+        /** @var ValidatorResolver $validatorResolver */
+        $validatorResolver = $this->getValidatorResolver();
+        /** @var ConjunctionValidator $validatorConjunction */
+        $validatorConjunction = $this->getConjunctionValidator();
 
-		// if NotEmpty is not set, and $value is empty, stop validation
-		if (!$required && $this->isEmpty($value)) {
-			return;
-		}
+        $required = false;
+        foreach ($validationTypes as $validationType) {
+            $validationType = intval($validationType);
+            #@TODO currently tells FE the field is required if ANY of these is selected, but alphanum, string and text don't require it to be, so they're disabled in TCA. Fix this as soon as extbase is consistent @ its Validators.
+            switch ($validationType) {
+                case FormField::VALIDATE_ALPHANUMERIC: #@LOW move these outside of formfield and into the validator to lose the formfield dependence
+                    $validator = $validatorResolver->createValidator('Alphanumeric');
+                    break;
+                case FormField::VALIDATE_DATE_TIME:
+                    $validator = $validatorResolver->createValidator('DateTime');
+                    // $value is of type string, while this validator tests it for objecttype DateTime
+                    // and we don't have the propertymapper available to us in this variable validator-case
+                    if (!empty($value)) {
+                        try {
+                            $newValue = new \DateTime($value);
+                            // @TODO configurable date formats all throughout the extension
+                            //results in NULL if a valid DateTime string but not in the specified format, so that you can't get away with a timestamp or some other format
+                            $value = ($value === $newValue->format('d-m-Y')) ? $newValue : 1;
+                        } catch (\Exception) { //if $value is no valid DateTime string
+                            $value = 1;
+                        }
+                    }
+                    break;
+                case FormField::VALIDATE_EMAIL_ADDRESS:
+                    $validator = $validatorResolver->createValidator('EmailAddress');
+                    break;
+                case FormField::VALIDATE_FLOAT:
+                    $validator = $validatorResolver->createValidator('Float');
+                    break;
+                case FormField::VALIDATE_INTEGER:
+                    $validator = $validatorResolver->createValidator('Integer');
+                    break;
+                case FormField::VALIDATE_NOT_EMPTY:
+                    $validator = $validatorResolver->createValidator('NotEmpty');
+                    $required = true;
+                    break;
+                case FormField::VALIDATE_NUMBER:
+                    $validator = $validatorResolver->createValidator('Number');
+                    break;
+                case FormField::VALIDATE_STRING:
+                    $validator = $validatorResolver->createValidator('String');
+                    break;
+                case FormField::VALIDATE_TEXT:
+                    $validator = $validatorResolver->createValidator('Text');
+                    break;
+                case FormField::VALIDATE_NATURALNUMBER:
+                    //without options, it sets startRange = 0 and endRange = PHP_INT_MAX
+                    $validator = $validatorResolver->createValidator('NumberRange');
+                    break;
+            }
+            $validatorConjunction->addValidator($validator);
+        }
 
-		$originalResult = $validatorConjunction->validate($value);
-		// we add our own version of the errors, with an included formfield label as title
-		if ($originalResult->hasMessages()) {
-			foreach ($originalResult->getErrors() as $error) {
-				/** @var \TYPO3\CMS\Extbase\Validation\Error $error */
-				$this->addError($error->getMessage(), $error->getCode(), $error->getArguments(), $formField->getLabel());
-			}
-		}
-	}
+        // if NotEmpty is not set, and $value is empty, stop validation
+        if (!$required && $this->isEmpty($value)) {
+            return;
+        }
 
+        $originalResult = $validatorConjunction->validate($value);
+        // we add our own version of the errors, with an included formfield label as title
+        if ($originalResult->hasMessages()) {
+            foreach ($originalResult->getErrors() as $error) {
+                /** @var \TYPO3\CMS\Extbase\Validation\Error $error */
+                $this->addError($error->getMessage(), $error->getCode(), $error->getArguments(), $formField->getLabel());
+            }
+        }
+    }
 }

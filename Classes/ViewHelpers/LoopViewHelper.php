@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,6 +28,7 @@ namespace Innologi\Appointments\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+
 /**
  * Loop Viewhelper
  *
@@ -33,42 +36,37 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class LoopViewHelper extends AbstractViewHelper {
-	use CompileWithRenderStatic;
+class LoopViewHelper extends AbstractViewHelper
+{
+    use CompileWithRenderStatic;
 
-	/**
-	 * @var boolean
-	 */
-	protected $escapeChildren = FALSE;
+    /**
+     * @var boolean
+     */
+    protected $escapeChildren = false;
 
-	/**
-	 * @var boolean
-	 */
-	protected $escapeOutput = FALSE;
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('count', 'integer', 'Number of times to loop content', TRUE);
-	}
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('count', 'integer', 'Number of times to loop content', true);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$output = '';
-		$content = $renderChildrenClosure();
-		for ($i=0; $i< $arguments['count']; $i++) {
-			$output .= $content;
-		}
-		return $output;
-	}
-
+    /**
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $output = '';
+        $content = $renderChildrenClosure();
+        for ($i = 0; $i < $arguments['count']; $i++) {
+            $output .= $content;
+        }
+        return $output;
+    }
 }

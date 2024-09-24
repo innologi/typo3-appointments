@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Mvc\Exception;
+
 /***************************************************************
  *  Copyright notice
 *
@@ -24,17 +26,16 @@ namespace Innologi\Appointments\Mvc\Exception;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 use TYPO3\CMS\Extbase\Mvc\Exception;
+
 /**
  * Property Deleted Exception
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class PropertyDeleted extends Exception {
+class PropertyDeleted extends Exception
+{
+    protected $message = 'One or more object-properties are not available.';
 
-	protected $message = 'One or more object-properties are not available.';
-
-	protected $code = 407501337;
-
+    protected $code = 407501337;
 }

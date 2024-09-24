@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Model\Agenda;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,9 +25,10 @@ namespace Innologi\Appointments\Domain\Model\Agenda;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Innologi\Appointments\Domain\Model\Appointment;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use Innologi\Appointments\Domain\Model\Appointment;
+
 /**
  * Agenda Date
  *
@@ -33,276 +36,277 @@ use Innologi\Appointments\Domain\Model\Appointment;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class Date extends AbstractEntity {
+class Date extends AbstractEntity
+{
+    /**
+     * Classes for agenda use
+     *
+     * @var string
+     */
+    protected $agendaClasses = '';
 
-	/**
-	 * Classes for agenda use
-	 *
-	 * @var string
-	 */
-	protected $agendaClasses = '';
+    /**
+     * Number of day in month
+     *
+     * @var string
+     */
+    protected $dayNumber;
 
-	/**
-	 * Number of day in month
-	 *
-	 * @var string
-	 */
-	protected $dayNumber;
+    /**
+     * Short name of month
+     *
+     * @var string
+     */
+    protected $monthShort;
 
-	/**
-	 * Short name of month
-	 *
-	 * @var string
-	 */
-	protected $monthShort;
+    /**
+     * Timestamp
+     *
+     * @var integer
+     */
+    protected $timestamp;
 
-	/**
-	 * Timestamp
-	 *
-	 * @var integer
-	 */
-	protected $timestamp;
+    /**
+     * Is a holiday
+     *
+     * @var boolean
+     */
+    protected $isHoliday = false;
 
-	/**
-	 * Is a holiday
-	 *
-	 * @var boolean
-	 */
-	protected $isHoliday = FALSE;
+    /**
+     * Is today
+     *
+     * @var boolean
+     */
+    protected $isToday = false;
 
-	/**
-	 * Is today
-	 *
-	 * @var boolean
-	 */
-	protected $isToday = FALSE;
+    /**
+     * Allows creation of new appointments
+     *
+     * @var boolean
+     */
+    protected $allowCreate = false;
 
-	/**
-	 * Allows creation of new appointments
-	 *
-	 * @var boolean
-	 */
-	protected $allowCreate = FALSE;
+    /**
+     * Appointments
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Appointment>
+     */
+    protected $appointments;
 
-	/**
-	 * Appointments
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Appointment>
-	 */
-	protected $appointments;
+    /**
+     * __construct
+     */
+    public function __construct()
+    {
+        //Do not remove the next line: It would break the functionality
+        $this->initStorageObjects();
+    }
 
-	/**
-	 * __construct
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		//Do not remove the next line: It would break the functionality
-		$this->initStorageObjects();
-	}
+    /**
+     * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
+     */
+    protected function initStorageObjects()
+    {
+        /**
+         * Do not modify this method!
+         * It will be rewritten on each save in the extension builder
+         * You may modify the constructor of this class instead
+         */
+        $this->appointments = new ObjectStorage();
+    }
 
-	/**
-	 * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
-	 *
-	 * @return void
-	 */
-	protected function initStorageObjects() {
-		/**
-		 * Do not modify this method!
-		 * It will be rewritten on each save in the extension builder
-		 * You may modify the constructor of this class instead
-		 */
-		$this->appointments = new ObjectStorage();
-	}
+    /**
+     * Returns the Agenda Classes
+     *
+     * @return string
+     */
+    public function getAgendaClasses()
+    {
+        return $this->agendaClasses;
+    }
 
-	/**
-	 * Returns the Agenda Classes
-	 *
-	 * @return string $agendaClasses
-	 */
-	public function getAgendaClasses() {
-		return $this->agendaClasses;
-	}
+    /**
+     * Sets the Agenda Classes
+     *
+     * @param string $agendaClasses
+     */
+    public function setAgendaClasses($agendaClasses)
+    {
+        $this->agendaClasses = $agendaClasses;
+    }
 
-	/**
-	 * Sets the Agenda Classes
-	 *
-	 * @param string $agendaClasses
-	 * @return void
-	 */
-	public function setAgendaClasses($agendaClasses) {
-		$this->agendaClasses = $agendaClasses;
-	}
+    /**
+     * Adds a single Agenda Class
+     *
+     * @param string $agendaClass
+     */
+    public function addAgendaClass($agendaClass)
+    {
+        $this->agendaClasses .= ' ' . $agendaClass;
+    }
 
-	/**
-	 * Adds a single Agenda Class
-	 *
-	 * @param string $agendaClass
-	 * @return void
-	 */
-	public function addAgendaClass($agendaClass) {
-		$this->agendaClasses .= ' ' . $agendaClass;
-	}
+    /**
+     * Returns the Day Number
+     *
+     * @return string
+     */
+    public function getDayNumber()
+    {
+        return $this->dayNumber;
+    }
 
-	/**
-	 * Returns the Day Number
-	 *
-	 * @return string $dayNumber
-	 */
-	public function getDayNumber() {
-		return $this->dayNumber;
-	}
+    /**
+     * Sets the Day Number
+     *
+     * @param string $dayNumber
+     */
+    public function setDayNumber($dayNumber)
+    {
+        $this->dayNumber = $dayNumber;
+    }
 
-	/**
-	 * Sets the Day Number
-	 *
-	 * @param string $dayNumber
-	 * @return void
-	 */
-	public function setDayNumber($dayNumber) {
-		$this->dayNumber = $dayNumber;
-	}
-	// @TODO monthShort is a representation choice.. just make it a month property and get the string from locallang in the template
-	/**
-	 * Returns the month short
-	 *
-	 * @return string $monthShort
-	 */
-	public function getMonthShort() {
-		return $this->monthShort;
-	}
+    // @TODO monthShort is a representation choice.. just make it a month property and get the string from locallang in the template
+    /**
+     * Returns the month short
+     *
+     * @return string
+     */
+    public function getMonthShort()
+    {
+        return $this->monthShort;
+    }
 
-	/**
-	 * Sets the month short
-	 *
-	 * @param string $monthShort
-	 * @return void
-	 */
-	public function setMonthShort($monthShort) {
-		$this->monthShort = $monthShort;
-	}
+    /**
+     * Sets the month short
+     *
+     * @param string $monthShort
+     */
+    public function setMonthShort($monthShort)
+    {
+        $this->monthShort = $monthShort;
+    }
 
-	/**
-	 * Returns the timestamp
-	 *
-	 * @return integer $timestamp
-	 */
-	public function getTimestamp() {
-		return $this->timestamp;
-	}
+    /**
+     * Returns the timestamp
+     *
+     * @return integer
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
 
-	/**
-	 * Sets the timestamp
-	 *
-	 * @param integer $timestamp
-	 * @return void
-	 */
-	public function setTimestamp($timestamp) {
-		$this->timestamp = $timestamp;
-	}
+    /**
+     * Sets the timestamp
+     *
+     * @param integer $timestamp
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+    }
 
-	/**
-	 * Returns the Is Holiday
-	 *
-	 * @return boolean $isHoliday
-	 */
-	public function getIsHoliday() {
-		return $this->isHoliday;
-	}
+    /**
+     * Returns the Is Holiday
+     *
+     * @return boolean
+     */
+    public function getIsHoliday()
+    {
+        return $this->isHoliday;
+    }
 
-	/**
-	 * Sets the Is Holiday
-	 *
-	 * @param boolean $isHoliday
-	 * @return void
-	 */
-	public function setIsHoliday($isHoliday) {
-		$this->isHoliday = $isHoliday;
-		if ($isHoliday) {
-			$this->addAgendaClass('holiday');
-		}
-	}
+    /**
+     * Sets the Is Holiday
+     *
+     * @param boolean $isHoliday
+     */
+    public function setIsHoliday($isHoliday)
+    {
+        $this->isHoliday = $isHoliday;
+        if ($isHoliday) {
+            $this->addAgendaClass('holiday');
+        }
+    }
 
-	/**
-	 * Returns IsToday
-	 *
-	 * @return boolean $isToday
-	 */
-	public function getIsToday() {
-		return $this->isToday;
-	}
+    /**
+     * Returns IsToday
+     *
+     * @return boolean
+     */
+    public function getIsToday()
+    {
+        return $this->isToday;
+    }
 
-	/**
-	 * Sets IsToday
-	 *
-	 * @param boolean $isToday
-	 * @return void
-	 */
-	public function setIsToday($isToday) {
-		$this->isToday = $isToday;
-		if ($isToday) {
-			$this->addAgendaClass('current');
-		}
-	}
+    /**
+     * Sets IsToday
+     *
+     * @param boolean $isToday
+     */
+    public function setIsToday($isToday)
+    {
+        $this->isToday = $isToday;
+        if ($isToday) {
+            $this->addAgendaClass('current');
+        }
+    }
 
-	/**
-	 * Returns allowCreate
-	 *
-	 * @return boolean $allowCreate
-	 */
-	public function getAllowCreate() {
-		return $this->allowCreate;
-	}
+    /**
+     * Returns allowCreate
+     *
+     * @return boolean
+     */
+    public function getAllowCreate()
+    {
+        return $this->allowCreate;
+    }
 
-	/**
-	 * Sets allowCreate
-	 *
-	 * @param boolean $allowCreate
-	 * @return void
-	 */
-	public function setAllowCreate($allowCreate) {
-		$this->allowCreate = $allowCreate;
-	}
+    /**
+     * Sets allowCreate
+     *
+     * @param boolean $allowCreate
+     */
+    public function setAllowCreate($allowCreate)
+    {
+        $this->allowCreate = $allowCreate;
+    }
 
-	/**
-	 * Adds an appointment
-	 *
-	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointment
-	 * @return void
-	 */
-	public function addAppointment(Appointment $appointment) {
-		$this->appointments->attach($appointment);
-	}
+    /**
+     * Adds an appointment
+     */
+    public function addAppointment(Appointment $appointment)
+    {
+        $this->appointments->attach($appointment);
+    }
 
-	/**
-	 * Removes an appointment
-	 *
-	 * @param \Innologi\Appointments\Domain\Model\Appointment $appointmentToRemove The Appointment to be removed
-	 * @return void
-	 */
-	public function removeAppointment(Appointment $appointmentToRemove) {
-		$this->appointments->detach($appointmentToRemove);
-	}
+    /**
+     * Removes an appointment
+     *
+     * @param \Innologi\Appointments\Domain\Model\Appointment $appointmentToRemove The Appointment to be removed
+     */
+    public function removeAppointment(Appointment $appointmentToRemove)
+    {
+        $this->appointments->detach($appointmentToRemove);
+    }
 
-	/**
-	 * Returns the appointments
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
-	 */
-	public function getAppointments() {
-		return $this->appointments;
-	}
+    /**
+     * Returns the appointments
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     */
+    public function getAppointments()
+    {
+        return $this->appointments;
+    }
 
-	/**
-	 * Sets the appointments
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $appointments
-	 * @return void
-	 */
-	public function setAppointments(ObjectStorage $appointments) {
-		$this->appointments = $appointments;
-	}
-
+    /**
+     * Sets the appointments
+     */
+    public function setAppointments(ObjectStorage $appointments)
+    {
+        $this->appointments = $appointments;
+    }
 }

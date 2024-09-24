@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,56 +26,58 @@ namespace Innologi\Appointments\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * Type Repository
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class TypeRepository extends Repository {
-	#@TODO _the use of this function has changed, so you might want to look if the function itself might benefit from a change
-	/**
-	 * Returns all objects of this repository belonging to the provided category
-	 *
-	 * @param array $typeArray Contains type uids
-	 * @param boolean $showSuperUserTypes Shows all types on TRUE or only the normal types on FALSE
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
-	 */
-	public function findIn($typeArray, $showSuperUserTypes = FALSE) {
-		$query = $this->createQuery();
-		$constraints = [
-			$query->in('uid', $typeArray)
-		];
-		if ($showSuperUserTypes === FALSE) {
-			$constraints[] = $query->equals('superuser_only', 0);
-		}
+class TypeRepository extends Repository
+{
+    #@TODO _the use of this function has changed, so you might want to look if the function itself might benefit from a change
+    /**
+     * Returns all objects of this repository belonging to the provided category
+     *
+     * @param array $typeArray Contains type uids
+     * @param boolean $showSuperUserTypes Shows all types on TRUE or only the normal types on FALSE
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
+     */
+    public function findIn($typeArray, $showSuperUserTypes = false)
+    {
+        $query = $this->createQuery();
+        $constraints = [
+            $query->in('uid', $typeArray),
+        ];
+        if ($showSuperUserTypes === false) {
+            $constraints[] = $query->equals('superuser_only', 0);
+        }
 
-		$result = $query->matching(
-			$query->logicalAnd(
-				$constraints
-			)
-		)->execute();
-		return $result;
-	}
+        $result = $query->matching(
+            $query->logicalAnd(
+                $constraints,
+            ),
+        )->execute();
+        return $result;
+    }
 
-	/**
-	 * Returns all objects of this repository.
-	 *
-	 * @param boolean $showSuperUserTypes Shows all types on TRUE or only the normal types on FALSE
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
-	 *         all objects, will be empty if no objects are found, will be an array if raw query results are enabled
-	 */
-	public function findAll($showSuperUserTypes = FALSE) {
-		$query = $this->createQuery();
-		if ($showSuperUserTypes === FALSE) {
-			$query->matching(
-					$query->equals('superuser_only', 0)
-			);
-		}
+    /**
+     * Returns all objects of this repository.
+     *
+     * @param boolean $showSuperUserTypes Shows all types on TRUE or only the normal types on FALSE
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
+     *         all objects, will be empty if no objects are found, will be an array if raw query results are enabled
+     */
+    public function findAll($showSuperUserTypes = false)
+    {
+        $query = $this->createQuery();
+        if ($showSuperUserTypes === false) {
+            $query->matching(
+                $query->equals('superuser_only', 0),
+            );
+        }
 
-		$result = $query->execute();
-		return $result;
-	}
-
+        $result = $query->execute();
+        return $result;
+    }
 }

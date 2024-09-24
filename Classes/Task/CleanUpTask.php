@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Task;
+
 /***************************************************************
  *  Copyright notice
 *
@@ -24,90 +26,91 @@ namespace Innologi\Appointments\Task;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 use Innologi\Appointments\Domain\Repository\AppointmentRepository;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
+
 /**
  * Clean Up Scheduler Task
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class CleanUpTask extends AbstractTask {
+class CleanUpTask extends AbstractTask
+{
+    /**
+     * Age
+     *
+     * @var integer
+     */
+    protected $age;
 
-	/**
-	 * Age
-	 *
-	 * @var integer
-	 */
-	protected $age;
+    /**
+     * appointmentRepository
+     *
+     * @var AppointmentRepository
+     */
+    protected $appointmentRepository;
 
-	/**
-	 * appointmentRepository
-	 *
-	 * @var AppointmentRepository
-	 */
-	protected $appointmentRepository;
+    /**
+     * @var PersistenceManager
+     */
+    protected $persistenceManager;
 
-	/**
-	 * @var PersistenceManager
-	 */
-	protected $persistenceManager;
+    /**
+     * Initialize repositories (DI doesn't work here)
+     */
+    protected function initRepositories()
+    {
+        $this->appointmentRepository = GeneralUtility::makeInstance(AppointmentRepository::class);
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+    }
 
-	/**
-	 * Initialize repositories (DI doesn't work here)
-	 *
-	 * @return void
-	 */
-	protected function initRepositories() {
-		$this->appointmentRepository = GeneralUtility::makeInstance(AppointmentRepository::class);
-		$this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
-	}
+    /**
+     * Returns age
+     *
+     * @return integer
+     */
+    public function getAge()
+    {
+        return $this->age;
+    }
 
-	/**
-	 * Returns age
-	 *
-	 * @return integer
-	 */
-	public function getAge() {
-		return $this->age;
-	}
+    /**
+     * Sets age
+     *
+     * @param integer $age
+     */
+    public function setAge($age)
+    {
+        $this->age = $age;
+    }
 
-	/**
-	 * Sets age
-	 *
-	 * @param integer $age
-	 * @return void
-	 */
-	public function setAge($age) {
-		$this->age = $age;
-	}
+    /**
+     * Executes task business logic
+     *
+     * @return	boolean		True on success, false on failure
+     */
+    public function execute()
+    {
+        $bootstrap = GeneralUtility::makeInstance(Bootstrap::class);
+        $bootstrap->initialize([
+            'pluginName' => 'CleanupTask',
+            'extensionName' => 'Appointments',
+            'vendorName' => 'Innologi',
+        ]);
 
-	/**
-	 * Executes task business logic
-	 *
-	 * @return	boolean		True on success, false on failure
-	 */
-	public function execute() {
-		$bootstrap = GeneralUtility::makeInstance(Bootstrap::class);
-		$bootstrap->initialize([
-			'pluginName' => 'CleanupTask',
-			'extensionName' => 'Appointments',
-			'vendorName' => 'Innologi'
-		]);
+        $this->initRepositories();
 
-		$this->initRepositories();
+        $expiredAppointments = $this->appointmentRepository->findExpiredByAge($this->age);
+        if ($expiredAppointments->count() > 0) {
+            foreach ($expiredAppointments as $appointment) {
+                $this->appointmentRepository->remove($appointment);
+            }
+            $this->persistenceManager->persistAll();
+        }
 
-		$expiredAppointments = $this->appointmentRepository->findExpiredByAge($this->age);
-		if ($expiredAppointments->count() > 0) {
-			foreach ($expiredAppointments as $appointment) {
-				$this->appointmentRepository->remove($appointment);
-			}
-			$this->persistenceManager->persistAll();
-		}
-
-		return true;
-	}
+        return true;
+    }
 }

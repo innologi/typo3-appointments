@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,71 +26,70 @@ namespace Innologi\Appointments\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * FormFieldValue domain model
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class FormFieldValue extends AbstractEntity {
+class FormFieldValue extends AbstractEntity
+{
+    /**
+     * value
+     *
+     * Validated by the FormFieldValueValidator
+     *
+     * @var string
+     */
+    protected $value;
 
-	/**
-	 * value
-	 *
-	 * Validated by the FormFieldValueValidator
-	 *
-	 * @var string
-	 */
-	protected $value;
+    /**
+     * The formfield this value belongs to
+     *
+     * No use in making these lazy, because when formFieldValues are called,
+     * formfields are ALWAYS called as well to put the value in context.
+     *
+     * @var \Innologi\Appointments\Domain\Model\FormField
+     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
+     */
+    protected $formField;
 
-	/**
-	 * The formfield this value belongs to
-	 *
-	 * No use in making these lazy, because when formFieldValues are called,
-	 * formfields are ALWAYS called as well to put the value in context.
-	 *
-	 * @var \Innologi\Appointments\Domain\Model\FormField
-	 * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
-	 */
-	protected $formField;
+    /**
+     * Returns the value
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
 
-	/**
-	 * Returns the value
-	 *
-	 * @return string $value
-	 */
-	public function getValue() {
-		return $this->value;
-	}
+    /**
+     * Sets the value
+     *
+     * @param string $value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
 
-	/**
-	 * Sets the value
-	 *
-	 * @param string $value
-	 * @return void
-	 */
-	public function setValue($value) {
-		$this->value = $value;
-	}
+    /**
+     * Returns the formField
+     *
+     * @return \Innologi\Appointments\Domain\Model\FormField
+     */
+    public function getFormField()
+    {
+        return $this->formField;
+    }
 
-	/**
-	 * Returns the formField
-	 *
-	 * @return \Innologi\Appointments\Domain\Model\FormField
-	 */
-	public function getFormField() {
-		return $this->formField;
-	}
-
-	/**
-	 * Sets the formField
-	 *
-	 * @param \Innologi\Appointments\Domain\Model\FormField $formField
-	 * @return void
-	 */
-	public function setFormField(FormField $formField) {
-		$this->formField = $formField;
-	}
-
+    /**
+     * Sets the formField
+     */
+    public function setFormField(FormField $formField)
+    {
+        $this->formField = $formField;
+    }
 }

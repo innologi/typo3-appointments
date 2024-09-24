@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,27 +31,27 @@ namespace Innologi\Appointments\Domain\Model;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class SimpleEmailContainer {
+class SimpleEmailContainer
+{
+    /**
+     * @var string
+     */
+    protected $email;
 
-	/**
-	 * @var string
-	 */
-	protected $email;
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getEmail() {
-		return $this->email;
-	}
-
-	/**
-	 * @param string $email
-	 * @return void
-	 */
-	public function setEmail($email) {
-		$this->email = $email;
-	}
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
 }

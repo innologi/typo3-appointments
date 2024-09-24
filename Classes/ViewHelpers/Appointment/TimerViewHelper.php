@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\ViewHelpers\Appointment;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,11 +25,12 @@ namespace Innologi\Appointments\ViewHelpers\Appointment;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use Innologi\Appointments\Domain\Model\Appointment;
 use Innologi\Appointments\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+
 /**
  * Timer Viewhelper
  *
@@ -40,67 +43,64 @@ use Innologi\Appointments\Utility\GeneralUtility;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class TimerViewHelper extends AbstractViewHelper {
-	use CompileWithRenderStatic;
+class TimerViewHelper extends AbstractViewHelper
+{
+    use CompileWithRenderStatic;
 
-	/**
-	 * @var boolean
-	 */
-	protected $escapeChildren = TRUE;
+    /**
+     * @var boolean
+     */
+    protected $escapeChildren = true;
 
-	/**
-	 * @var boolean
-	 */
-	protected $escapeOutput = TRUE;
+    /**
+     * @var boolean
+     */
+    protected $escapeOutput = true;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('appointment', Appointment::class, 'The appointment to show a timer for.', TRUE);
-		$this->registerArgument('timerMinutes', 'integer', 'The number of minutes it takes for a timeslot to be freed again.', FALSE, 1);
-		$this->registerArgument('format', 'string', 'The type of timer to show: timer|minutes|seconds', FALSE, 'timer');
-	}
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('appointment', Appointment::class, 'The appointment to show a timer for.', true);
+        $this->registerArgument('timerMinutes', 'integer', 'The number of minutes it takes for a timeslot to be freed again.', false, 1);
+        $this->registerArgument('format', 'string', 'The type of timer to show: timer|minutes|seconds', false, 'timer');
+    }
 
-	/**
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return boolean
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		/** @var Appointment $appointment */
-		$appointment = $arguments['appointment'];
-		$timerMinutes = (int) $arguments['timerMinutes'];
-		$timer = '';
+    /**
+     * @return boolean
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        /** @var Appointment $appointment */
+        $appointment = $arguments['appointment'];
+        $timerMinutes = (int) $arguments['timerMinutes'];
+        $timer = '';
 
-		switch ($arguments['format']) {
-			case 'timer':
-				$timer = GeneralUtility::getAppointmentTimer(
-					$appointment, $timerMinutes
-				);
-				break;
-			case 'minutes':
-				$seconds = GeneralUtility::getTimerRemainingSeconds(
-					$appointment, $timerMinutes
-				);
-				$max = ceil($seconds / 60);
-				$timer = '~' . ($max > 1 ? '1-' : '') . $max;
-				break;
-			case 'seconds':
-				$timer = GeneralUtility::getTimerRemainingSeconds(
-					$appointment, $timerMinutes
-				);
-				break;
-			default:
-				// @LOW throw exception
-		}
+        switch ($arguments['format']) {
+            case 'timer':
+                $timer = GeneralUtility::getAppointmentTimer(
+                    $appointment,
+                    $timerMinutes,
+                );
+                break;
+            case 'minutes':
+                $seconds = GeneralUtility::getTimerRemainingSeconds(
+                    $appointment,
+                    $timerMinutes,
+                );
+                $max = ceil($seconds / 60);
+                $timer = '~' . ($max > 1 ? '1-' : '') . $max;
+                break;
+            case 'seconds':
+                $timer = GeneralUtility::getTimerRemainingSeconds(
+                    $appointment,
+                    $timerMinutes,
+                );
+                break;
+            default:
+                // @LOW throw exception
+        }
 
-		return $timer;
-	}
-
+        return $timer;
+    }
 }

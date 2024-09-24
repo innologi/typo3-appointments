@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,38 +25,33 @@ namespace Innologi\Appointments\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use Innologi\Appointments\Mvc\Controller\ActionController;
-use Innologi\Appointments\Utility\GeneralUtility;
+use Innologi\Appointments\Domain\Model\{Agenda, Appointment, FormField, FormFieldValue};
 use Innologi\Appointments\Domain\Service\SlotService;
-use Innologi\Appointments\Domain\Model\{Appointment, FormFieldValue, FormField, Agenda};
-use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
-use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
-use Psr\Http\Message\ResponseInterface;
+use Innologi\Appointments\Mvc\Controller\ActionController;
 use Innologi\Appointments\Mvc\Exception\EarlyResponseThrowable;
+use Innologi\Appointments\Utility\GeneralUtility;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
 /**
  * Appointment Controller
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class AppointmentController extends ActionController
 {
-
     /**
-     *
      * @var \Innologi\Appointments\Service\EmailService
      */
     protected $emailService;
 
     /**
      * Injects the Email Service
-     *
-     * @param \Innologi\Appointments\Service\EmailService $emailService
-     * @return void
      */
     public function injectEmailService(\Innologi\Appointments\Service\EmailService $emailService)
     {
@@ -68,22 +65,18 @@ class AppointmentController extends ActionController
      * the show action, this will prevent any users sharing the usergroups, and therefore cache, can change
      * or delete anyone else's appointment.
      *
-     * @param Appointment $appointment
-     * @return void
      * @throws EarlyResponseThrowable
      */
     protected function validateMutateAttempt(Appointment $appointment)
     {
-        if (! ($this->feUser->getUid() === $appointment->getFeUser()->getUid() || $this->userService->isInGroup($this->settings['suGroup']))) {
-            $this->addFlashMessage(LocalizationUtility::translate('tx_appointments_list.no_mutate', $this->extensionName), '', FlashMessage::ERROR, TRUE);
+        if (!($this->feUser->getUid() === $appointment->getFeUser()->getUid() || $this->userService->isInGroup($this->settings['suGroup']))) {
+            $this->addFlashMessage(LocalizationUtility::translate('tx_appointments_list.no_mutate', $this->extensionName), '', FlashMessage::ERROR, true);
             throw new EarlyResponseThrowable($this->redirect('list'));
         }
     }
 
     /**
      * Initialize Process New Action
-     *
-     * @return void
      */
     protected function initializeProcessNewAction()
     {
@@ -94,8 +87,6 @@ class AppointmentController extends ActionController
 
     /**
      * Initialize Create Action
-     *
-     * @return void
      */
     protected function initializeCreateAction()
     {
@@ -104,8 +95,6 @@ class AppointmentController extends ActionController
 
     /**
      * Initialize Update Action
-     *
-     * @return void
      */
     protected function initializeUpdateAction()
     {
@@ -114,8 +103,6 @@ class AppointmentController extends ActionController
 
     /**
      * Initialize Delete Action
-     *
-     * @return void
      */
     protected function initializeDeleteAction()
     {
@@ -123,8 +110,6 @@ class AppointmentController extends ActionController
     }
 
     /**
-     *
-     * {@inheritdoc}
      * @see \Innologi\Appointments\Mvc\Controller\ActionController::initializeAction()
      */
     protected function initializeAction()
@@ -132,7 +117,7 @@ class AppointmentController extends ActionController
         // doing this in the appropriate initialize methods is too late, so..
         $this->disableRequireLogin([
             'list',
-            'show'
+            'show',
         ]);
         parent::initializeAction();
         if ($this->arguments->hasArgument('appointment')) {
@@ -154,11 +139,11 @@ class AppointmentController extends ActionController
      */
     public function listAction(): ResponseInterface
     {
-        if ($this->feUser !== FALSE) {
+        if ($this->feUser !== false) {
             $types = $this->getTypes(); // we need to include types in case a type was hidden or deleted, or we get all sorts of errors
-            $appointments = $this->appointmentRepository->findPersonalList($this->agenda, $types, $this->feUser, FALSE, new \DateTime());
+            $appointments = $this->appointmentRepository->findPersonalList($this->agenda, $types, $this->feUser, false, new \DateTime());
             # @LOW enable through flexform?
-            $unfinishedAppointments = $this->settings['allowResume'] ? $this->appointmentRepository->findPersonalList($this->agenda, $types, $this->feUser, TRUE, new \DateTime()) : [];
+            $unfinishedAppointments = $this->settings['allowResume'] ? $this->appointmentRepository->findPersonalList($this->agenda, $types, $this->feUser, true, new \DateTime()) : [];
             // users can only edit/delete appointments when the appointment type's mutable hours hasn't passed yet
             // a superuser can ALWAYS mutate, so 'now = 0' fixes that
             $now = $this->userService->isInGroup($this->settings['suGroup']) ? 0 : time();
@@ -183,7 +168,7 @@ class AppointmentController extends ActionController
     public function showAction(Appointment $appointment): ResponseInterface
     {
         // limited rights by default
-        $showMore = FALSE;
+        $showMore = false;
         $endTime = 0;
 
         if ($this->feUser) {
@@ -192,11 +177,11 @@ class AppointmentController extends ActionController
             if ($superUser) { // we're not using vhs viewhelpers for this, because we need to set $showMore anyway and a viewhelper-alternative is overkill
                 // su can edit any appointment that hasn't started yet
                 $endTime = $appointment->getBeginReserved()->getTimestamp();
-                $showMore = TRUE;
+                $showMore = true;
             } elseif ($this->feUser->getUid() == $appointment->getFeUser()->getUid()) { // check if current user is the owner of the appointment
                 // non-su can edit his own appointment if hoursMutable hasn't passed yet
                 $endTime = $appointment->getType()->getHoursMutable() * 3600 + $appointment->getReservationTime();
-                $showMore = TRUE;
+                $showMore = true;
             }
         }
         $mutable = time() < $endTime;
@@ -220,7 +205,7 @@ class AppointmentController extends ActionController
      * @param string $dateFirst The timestamp that should be set before a type was already chosen
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
      */
-    public function new1Action(Appointment $appointment = NULL, $dateFirst = NULL): ResponseInterface
+    public function new1Action(Appointment $appointment = null, $dateFirst = null): ResponseInterface
     {
         // find types
         $types = $this->getTypes();
@@ -230,7 +215,7 @@ class AppointmentController extends ActionController
             $beginTime = new \DateTime();
             $beginTime->setTimestamp($dateFirst);
             $types = $this->limitTypesByDate($types, $this->agenda, clone $beginTime);
-            if (! empty($types)) {
+            if (!empty($types)) {
                 $appointment = new Appointment();
                 $appointment->setType(current($types));
                 $appointment->setBeginTime($beginTime);
@@ -243,20 +228,20 @@ class AppointmentController extends ActionController
             }
         }
 
-        if ($appointment !== NULL) {
+        if ($appointment !== null) {
             // type chosen! (or dateFirst)
 
             $dateSlots = $this->slotService->getDateSlots($appointment->getType(), $this->agenda); # @TODO can we throw error somewhere when this one is empty, about the type not having any available timeslots?
             $this->view->assign('dateSlots', $dateSlots);
 
-            if ($appointment->getBeginTime() !== NULL) {
+            if ($appointment->getBeginTime() !== null) {
                 // date chosen! (or dateFirst)
 
                 $timeSlots = $this->slotService->getTimeSlots($dateSlots, $appointment);
                 $this->view->assign('timeSlots', $timeSlots); // an impossible type/date combo will result in $timeSlots == FALSE, so the user can't continue without re-picking
 
                 // will show disabledform, so requires formFieldValues to be assigned
-                if (! $appointment->_isNew()) {
+                if (!$appointment->_isNew()) {
                     $formFieldValues = $appointment->getFormFieldValues();
                     $formFields = clone $appointment->getType()->getFormFields(); // formFields is modified for this process but not to persist, hence clone
                     $formFieldValues = $this->addMissingFormFields($formFields, $formFieldValues);
@@ -322,9 +307,9 @@ class AppointmentController extends ActionController
 
         $this->appointmentRepository->update($appointment);
         $arguments = [
-            'appointment' => $appointment
+            'appointment' => $appointment,
         ];
-        return $this->redirect('new2', NULL, NULL, $arguments);
+        return $this->redirect('new2', null, null, $arguments);
     }
 
     /**
@@ -345,7 +330,7 @@ class AppointmentController extends ActionController
 
         if ($this->slotService->isTimeSlotAllowed($appointment)) {
             $this->calculateTimes($appointment); // set the remaining DateTime properties of appointment
-            $timerStart = FALSE;
+            $timerStart = false;
             $action = 'new2';
             $arguments['appointment'] = $appointment;
 
@@ -357,15 +342,14 @@ class AppointmentController extends ActionController
                 // because $appointment is used as argument @ redirect() and thus to be serialized by uriBuilder (which requires an uid)
                 // we NEED it to be persisted. Of course, the real reason is that we want to reserve the timeslots from the start
                 $this->appointmentRepository->add($appointment);
-                $timerStart = TRUE;
+                $timerStart = true;
             } else {
-
                 // expired appointments should be refreshed
                 if ($appointment->getCreationProgress() === Appointment::EXPIRED) { // it's possible to get here when expired and the appointment no longer exists, thus throwing an exception #@TODO caught by.. ? SettingsOverride? I don't remember!
                     // checks whether the timeslot was changed or not
                     $cleanBeginTime = $appointment->_getCleanProperty('beginTime');
                     if ($cleanBeginTime instanceof \DateTime && $cleanBeginTime->getTimestamp() !== $appointment->getBeginTime()->getTimestamp()) {
-                        $timerStart = TRUE;
+                        $timerStart = true;
                     } else {
                         // messages for the same timeslot again (refresh)
                         $flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_timerrefresh', $this->extensionName);
@@ -389,14 +373,14 @@ class AppointmentController extends ActionController
             $this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
 
             // not adding appointment as argument prevents a uriBuilder exception @ redirect() if appointment wasn't persisted yet..
-            if (! $appointment->_isNew()) { // .. but since we're not redirecting if this condition returns TRUE, there's no need for it here anyway
+            if (!$appointment->_isNew()) { // .. but since we're not redirecting if this condition returns TRUE, there's no need for it here anyway
                 $this->failTimeValidation($action);
             }
             // if appointment wasn't persisted, there is no validation error to apply as there only a type-form #@TODO _couldn't we also pass along a timestamp through the dateFirst mechanism then? that would include the date and time fields again..
         }
 
         // send to appropriate action
-        return $this->redirect($action, NULL, NULL, $arguments);
+        return $this->redirect($action, null, null, $arguments);
     }
 
     /**
@@ -420,10 +404,10 @@ class AppointmentController extends ActionController
         // as a safety measure, first check if there are appointments which occupy time which this one claims
         // this is necessary in case another appointment is created or edited before this one is saved.
         // isTimeSlotAllowed() does not suffice by itself, because of formfields that add time and can cause overlap
-        if (($overlap = $this->crossAppointments($appointment)) !== FALSE) { // an appointment was found that makes the current one's times not possible
+        if (($overlap = $this->crossAppointments($appointment)) !== false) { // an appointment was found that makes the current one's times not possible
             // updating it as expired so the fields get saved while not blocking any appointment that might have caused crossAppointment to be TRUE
             $appointment->setCreationProgress(Appointment::EXPIRED);
-            $this->appointmentRepository->update($appointment, FALSE); // not resetting the storage object just yet because this one still has a chance regaining his prematurely ended reservation
+            $this->appointmentRepository->update($appointment, false); // not resetting the storage object just yet because this one still has a chance regaining his prematurely ended reservation
 
             $this->processOverlapInfo($overlap, $appointment);
             $this->failTimeValidation('new2', 4075013371337, $timeFields);
@@ -437,9 +421,9 @@ class AppointmentController extends ActionController
 
         $this->performMailingActions('create', $appointment);
 
-        return $this->redirect($this->settings['redirectAfterSave'], NULL, NULL, ($this->settings['redirectAfterSave'] == 'show') ? [
-            'appointment' => $appointment
-        ] : NULL);
+        return $this->redirect($this->settings['redirectAfterSave'], null, null, ($this->settings['redirectAfterSave'] == 'show') ? [
+            'appointment' => $appointment,
+        ] : null);
     }
 
     /**
@@ -452,7 +436,7 @@ class AppointmentController extends ActionController
      * @param string $changedDate Changed date
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
      */
-    public function editAction(Appointment $appointment, $changedDate = NULL): ResponseInterface
+    public function editAction(Appointment $appointment, $changedDate = null): ResponseInterface
     {
         $this->validateMutateAttempt($appointment);
         $superUser = $this->userService->isInGroup($this->settings['suGroup']);
@@ -464,11 +448,11 @@ class AppointmentController extends ActionController
         # @TODO create the possibility to differentiate between shown and allowed-to-create types, so that we can encourage big changes to appointment types to happen through a copy instead, which will allow as to preserve old appointments in full glory
 
         // if the date was changed, reflect it on the form but don't persist it yet
-        if ($changedDate !== NULL) {
+        if ($changedDate !== null) {
             $appointment->setBeginTime($appointment->getBeginTime()->setDate(substr($changedDate, 0, 4), substr($changedDate, 4, 2), substr($changedDate, 6, 2))); # @LOW couldn't we do it this way with dateFirst either? Ymd instead of timestamp so we can use construct
             $appointment->_memorizeCleanState('beginTime'); // makes sure it isn't persisted automatically
         }
-        $dateSlots = $this->slotService->getDateSlotsIncludingCurrent($appointment, TRUE);
+        $dateSlots = $this->slotService->getDateSlotsIncludingCurrent($appointment, true);
         $timeSlots = $this->slotService->getTimeSlots($dateSlots, $appointment);
 
         $this->view->assign('dateSlots', $dateSlots);
@@ -494,7 +478,7 @@ class AppointmentController extends ActionController
         # @TODO betekent calculateTimes nu niet dat hij altijd als modified wordt geregistreerd?
         // as a safety measure, first check if there are appointments which occupy time which this one claims
         // this is necessary in case another appointment is created or edited before this one is saved
-        if (($overlap = $this->crossAppointments($appointment)) !== FALSE) {
+        if (($overlap = $this->crossAppointments($appointment)) !== false) {
             // an appointment was found that makes the current one's times not possible
             $this->processOverlapInfo($overlap, $appointment);
             $this->failTimeValidation('edit', 4075013371337, $timeFields);
@@ -506,9 +490,9 @@ class AppointmentController extends ActionController
 
         $this->performMailingActions('update', $appointment);
 
-        return $this->redirect($this->settings['redirectAfterSave'], NULL, NULL, ($this->settings['redirectAfterSave'] == 'show') ? [
-            'appointment' => $appointment
-        ] : NULL);
+        return $this->redirect($this->settings['redirectAfterSave'], null, null, ($this->settings['redirectAfterSave'] == 'show') ? [
+            'appointment' => $appointment,
+        ] : null);
     }
 
     /**
@@ -548,9 +532,9 @@ class AppointmentController extends ActionController
         $this->addFlashMessage($flashMessage, '', FlashMessage::INFO);
 
         $arguments = [
-            'appointment' => $appointment
+            'appointment' => $appointment,
         ];
-        return $this->redirect('new1', NULL, NULL, $arguments);
+        return $this->redirect('new1', null, null, $arguments);
     }
 
     /**
@@ -569,8 +553,6 @@ class AppointmentController extends ActionController
      *
      * Also, the explicit sorting values of FormFields are used here to re-arrange the FormFieldValues.
      *
-     * @param ObjectStorage $formFields
-     * @param ObjectStorage $formFieldValues
      * @return ObjectStorage
      */
     protected function addMissingFormFields(ObjectStorage $formFields, ObjectStorage $formFieldValues)
@@ -581,7 +563,7 @@ class AppointmentController extends ActionController
         // formfieldvalues already available
         foreach ($formFieldValues as $formFieldValue) {
             $formField = $formFieldValue->getFormField();
-            if ($formField !== NULL) {
+            if ($formField !== null) {
                 // note that this way, a formfield that isn't part of the current type will simply not be shown, NOR REMOVED!
                 // if we allow type-changes in edit, this will prove useful, but what is the consequence in TCA? #@TODO got to check this out and see if we need some damagecontrol
                 if (isset($formFields[$formField])) {
@@ -608,7 +590,7 @@ class AppointmentController extends ActionController
             }
         }
 
-        if (! empty($order)) {
+        if (!empty($order)) {
             $newStorage = new ObjectStorage();
             // NOTE: extbase will set sorting value to the currently arranged order, when persisted
             natsort($order);
@@ -657,7 +639,7 @@ class AppointmentController extends ActionController
                     case FormField::TYPE_RADIO:
                     case FormField::TYPE_SELECT:
                     case FormField::TYPE_BOOLEAN:
-                    # @TODO moet mogelijk zijn met de timeAdd optie
+                        # @TODO moet mogelijk zijn met de timeAdd optie
                 }
             }
         }
@@ -671,7 +653,6 @@ class AppointmentController extends ActionController
      * Adds the timer message for a currently reserved (or expired) timeslot.
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointment Appointment which uses the timeslot
-     * @return void
      */
     protected function addTimerMessage(Appointment $appointment)
     {
@@ -690,7 +671,7 @@ class AppointmentController extends ActionController
         if ($appointment->getCreationProgress() === Appointment::UNFINISHED) {
             // we use HTML in this flash message, but we'd need a custom VH which I'm not going to do for this single case, so:
             $messages = [
-                \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlashMessage::class, LocalizationUtility::translate('tx_appointments_list.appointment_timer', $this->extensionName), LocalizationUtility::translate('tx_appointments_list.appointment_timer_header', $this->extensionName), FlashMessage::INFO, TRUE)
+                \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlashMessage::class, LocalizationUtility::translate('tx_appointments_list.appointment_timer', $this->extensionName), LocalizationUtility::translate('tx_appointments_list.appointment_timer_header', $this->extensionName), FlashMessage::INFO, true),
             ];
 
             $timerMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve()->render($messages);
@@ -718,7 +699,7 @@ class AppointmentController extends ActionController
     protected function crossAppointments(Appointment $appointment)
     {
         $crossAppointments = $this->appointmentRepository->findCrossAppointments($appointment);
-        if (! empty($crossAppointments)) {
+        if (!empty($crossAppointments)) {
             $beginTimeDiff = [];
             $endTimeDiff = [];
 
@@ -741,7 +722,7 @@ class AppointmentController extends ActionController
                         $beginTimeDiff[] = $cer - $beginTime;
                     }
                 } else { // any appointment overlap AFTER beginTime
-                         // reversed logic of 'until beginTime'
+                    // reversed logic of 'until beginTime'
                     if ($endReserved > $cbt) {
                         $endTimeDiff[] = $endReserved - $cbt;
                     }
@@ -752,7 +733,7 @@ class AppointmentController extends ActionController
             }
 
             # @LOW _consider adding the appointment(s) that is conflicting to the overlapArray, so we have more details for the overlapInfo
-            $overlapArray = [ # 'changeTimeSlot' => FALSE //indicates whether we're absolutely sure the user NEEDS to change the timeslot
+            $overlapArray = [# 'changeTimeSlot' => FALSE //indicates whether we're absolutely sure the user NEEDS to change the timeslot
             ];
             // set the largest values in the array
             if (isset($beginTimeDiff[0])) {
@@ -775,7 +756,7 @@ class AppointmentController extends ActionController
 
             return $overlapArray;
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -803,7 +784,7 @@ class AppointmentController extends ActionController
      * Limits the allowed types based on appointment properties.
      *
      * @param \Iterator|array $types Previous types result
-     * @param \Innologi\Appointments\Domain\Model\Appointment $excludeAppointment Appointment to exclude in available timeslot calculation
+     * @param \Innologi\Appointments\Domain\Model\Appointment $appointment Appointment to exclude in available timeslot calculation
      * @return array Contains types that have an available timeslot
      */
     protected function limitTypesByAppointment($types, Appointment $appointment)
@@ -830,7 +811,7 @@ class AppointmentController extends ActionController
      */
     protected function performMailingActions($action, Appointment $appointment)
     {
-        if (! $this->emailService->sendAction($action, $appointment)) {
+        if (!$this->emailService->sendAction($action, $appointment)) {
             $flashMessage = LocalizationUtility::translate('tx_appointments_list.email_error', $this->extensionName);
             $this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
         }
@@ -843,11 +824,10 @@ class AppointmentController extends ActionController
      * @param string $action The action to forward to
      * @param integer $errorCode The errorcode
      * @param array $timeFields Contains formfield uids of time-related formfields
-     * @return void
      * @see getReferringRequest()
      * @throws EarlyResponseThrowable
      */
-    protected function failTimeValidation($action = 'new1', $errorCode = 407501337, array $timeFields = NULL)
+    protected function failTimeValidation($action = 'new1', $errorCode = 407501337, array $timeFields = null)
     {
         $errorMsg = 'Time-related validation error.';
 
@@ -858,7 +838,7 @@ class AppointmentController extends ActionController
         $appointmentResult->forProperty('beginTime')->addError(new \TYPO3\CMS\Extbase\Validation\Error($errorMsg, $errorCode));
 
         // marks all the time-related formfieldvalues
-        if ($timeFields !== NULL && ! empty($timeFields)) {
+        if ($timeFields !== null && !empty($timeFields)) {
             $formFieldValuesResult = $appointmentResult->forProperty('formFieldValues');
             /** @var \Innologi\Appointments\Domain\Model\FormField $formField */
             foreach ($timeFields as $formField) {
@@ -883,7 +863,6 @@ class AppointmentController extends ActionController
      *
      * @param array $overlapInfo As returned by crossAppointments()
      * @param Appointment $appointment The appointment that is overlapping
-     * @return void
      * @see self::crossAppointments()
      */
     protected function processOverlapInfo(array $overlapInfo, Appointment $appointment)
@@ -893,18 +872,18 @@ class AppointmentController extends ActionController
         if (isset($overlapInfo['begin'])) {
             $messageParts .= LocalizationUtility::translate('tx_appointments_list.crosstime_begin', $this->extensionName, [
                 $appointment->getBeginTime()->format('H:i'),
-                $overlapInfo['begin'] / 60
+                $overlapInfo['begin'] / 60,
             ]);
         }
         if (isset($overlapInfo['end'])) {
             $messageParts .= LocalizationUtility::translate('tx_appointments_list.crosstime_end', $this->extensionName, [
                 $appointment->getEndTime()->format('H:i'),
-                $overlapInfo['end'] / 60
+                $overlapInfo['end'] / 60,
             ]);
         }
 
         $this->addFlashMessage(LocalizationUtility::translate('tx_appointments_list.crosstime_info', $this->extensionName, [
-            $messageParts
+            $messageParts,
         ]), LocalizationUtility::translate('tx_appointments_list.crosstime_title', $this->extensionName), FlashMessage::ERROR);
     }
 
@@ -925,13 +904,13 @@ class AppointmentController extends ActionController
         foreach ($formFieldValues as $index => $value) {
             $formField = $value->getFormField();
             // dont add incomplete formfields
-            if ($formField !== NULL) {
+            if ($formField !== null) {
                 $enableField = $formField->getEnableField();
-                if ($enableField !== NULL) {
+                if ($enableField !== null) {
                     // register enabler-data
                     $enable[$index] = [
                         'id' => $enableField->getUid(),
-                        'value' => $formField->getEnableValue()
+                        'value' => $formField->getEnableValue(),
                     ];
                 }
                 $sanitized[$index] = $value;

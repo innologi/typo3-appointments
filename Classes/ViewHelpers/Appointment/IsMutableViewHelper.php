@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\ViewHelpers\Appointment;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,10 +25,11 @@ namespace Innologi\Appointments\ViewHelpers\Appointment;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Innologi\Appointments\Domain\Model\Appointment;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-use Innologi\Appointments\Domain\Model\Appointment;
+
 /**
  * Is Mutable Viewhelper
  *
@@ -34,31 +37,26 @@ use Innologi\Appointments\Domain\Model\Appointment;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class IsMutableViewHelper extends AbstractViewHelper {
-	use CompileWithRenderStatic;
+class IsMutableViewHelper extends AbstractViewHelper
+{
+    use CompileWithRenderStatic;
 
-	/**
-	 * @return void
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('appointment', Appointment::class, 'The appointment to check if it is still mutable.', TRUE);
-		$this->registerArgument('time', 'integer', 'Timestamp to evaluate with.', FALSE, $GLOBALS['EXEC_TIME']);
-	}
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('appointment', Appointment::class, 'The appointment to check if it is still mutable.', true);
+        $this->registerArgument('time', 'integer', 'Timestamp to evaluate with.', false, $GLOBALS['EXEC_TIME']);
+    }
 
-	/**
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return boolean
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		/** @var Appointment $appointment */
-		$appointment = $arguments['appointment'];
-		$mutableEndTime = ($appointment->getType()->getHoursMutable() * 3600) + $appointment->getReservationTime();
-		return $arguments['time'] < $mutableEndTime;
-	}
-
+    /**
+     * @return boolean
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        /** @var Appointment $appointment */
+        $appointment = $arguments['appointment'];
+        $mutableEndTime = ($appointment->getType()->getHoursMutable() * 3600) + $appointment->getReservationTime();
+        return $arguments['time'] < $mutableEndTime;
+    }
 }

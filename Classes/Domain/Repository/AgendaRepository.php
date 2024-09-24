@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,13 +26,11 @@ namespace Innologi\Appointments\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * Agenda Repository
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class AgendaRepository extends Repository {
-
-}
+class AgendaRepository extends Repository {}

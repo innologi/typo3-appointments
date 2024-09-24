@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Mvc\Exception;
+
 /***************************************************************
  *  Copyright notice
 *
@@ -24,12 +26,10 @@ namespace Innologi\Appointments\Mvc\Exception;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 use Psr\Http\Message\ResponseInterface;
+
 /**
- * EarlyResponseThrowable
- *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class EarlyResponseThrowable extends \Exception
 {

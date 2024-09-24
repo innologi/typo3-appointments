@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,6 +26,7 @@ namespace Innologi\Appointments\Mvc\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+
 /**
  * Error On Debug Controller.
  *
@@ -31,24 +34,22 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class ErrorOnDebugController extends ActionController {
-
-	/**
-	 * A template method for displaying custom error flash messages, or to
-	 * display no flash message at all on errors. Override this to customize
-	 * the flash message in your action controller.
-	 *
-	 * @return string|boolean The flash message or FALSE if no flash message should be set
-	 */
-	protected function getErrorFlashMessage() { #@TODO document this in manual
-		global $TYPO3_CONF_VARS;
-		if (isset($TYPO3_CONF_VARS['FE']['debug']) && $TYPO3_CONF_VARS['FE']['debug']) {
-			return parent::getErrorFlashMessage();
-		} else {
-			return FALSE;
-		}
-	}
-
+class ErrorOnDebugController extends ActionController
+{
+    /**
+     * A template method for displaying custom error flash messages, or to
+     * display no flash message at all on errors. Override this to customize
+     * the flash message in your action controller.
+     *
+     * @return string|boolean The flash message or FALSE if no flash message should be set
+     */
+    protected function getErrorFlashMessage() #@TODO document this in manual
+    {
+        global $TYPO3_CONF_VARS;
+        if (isset($TYPO3_CONF_VARS['FE']['debug']) && $TYPO3_CONF_VARS['FE']['debug']) {
+            return parent::getErrorFlashMessage();
+        }
+        return false;
+    }
 }

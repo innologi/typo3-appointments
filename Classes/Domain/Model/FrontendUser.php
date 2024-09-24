@@ -47,7 +47,6 @@ class FrontendUser extends AbstractEntity
      * Constructs a new Front-End User
      *
      * @param string $username
-     * @param string $password
      */
     public function __construct($username = '')
     {
@@ -96,8 +95,6 @@ class FrontendUser extends AbstractEntity
 
     /**
      * Adds a usergroup to the frontend user
-     *
-     * @param FrontendUserGroup $usergroup
      */
     public function addUsergroup(FrontendUserGroup $usergroup)
     {
@@ -106,8 +103,6 @@ class FrontendUser extends AbstractEntity
 
     /**
      * Removes a usergroup from the frontend user
-     *
-     * @param FrontendUserGroup $usergroup
      */
     public function removeUsergroup(FrontendUserGroup $usergroup)
     {

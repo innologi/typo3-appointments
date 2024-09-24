@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,104 +26,95 @@ namespace Innologi\Appointments\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * Facilitates user/group control.
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class UserService implements SingletonInterface {
+class UserService implements SingletonInterface
+{
+    /**
+     * Logged in frontend user
+     *
+     * @var \Innologi\Appointments\Domain\Model\FrontendUser
+     */
+    protected $feUser = null;
 
-	/**
-	 * Logged in frontend user
-	 *
-	 * @var \Innologi\Appointments\Domain\Model\FrontendUser
-	 */
-	protected $feUser = NULL;
+    /**
+     * Array containing boolean values mapped to group ID keys
+     *
+     * @var array
+     */
+    protected $inGroup = [];
 
-	/**
-	 * Array containing boolean values mapped to group ID keys
-	 *
-	 * @var array
-	 */
-	protected $inGroup = [];
+    /**
+     * frontendUserRepository
+     *
+     * @var \Innologi\Appointments\Domain\Repository\FrontendUserRepository
+     */
+    protected $frontendUserRepository;
 
-	/**
-	 * frontendUserRepository
-	 *
-	 * @var \Innologi\Appointments\Domain\Repository\FrontendUserRepository
-	 */
-	protected $frontendUserRepository;
+    /**
+     * frontendUserGroupRepository
+     *
+     * @var \Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository
+     */
+    protected $frontendUserGroupRepository;
 
-	/**
-	 * frontendUserGroupRepository
-	 *
-	 * @var \Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository
-	 */
-	protected $frontendUserGroupRepository;
+    public function injectFrontendUserRepository(\Innologi\Appointments\Domain\Repository\FrontendUserRepository $frontendUserRepository)
+    {
+        $this->frontendUserRepository = $frontendUserRepository;
+    }
 
-	/**
-	 *
-	 * @param \Innologi\Appointments\Domain\Repository\FrontendUserRepository $frontendUserRepository
-	 * @return void
-	 */
-	public function injectFrontendUserRepository(\Innologi\Appointments\Domain\Repository\FrontendUserRepository $frontendUserRepository)
-	{
-		$this->frontendUserRepository = $frontendUserRepository;
-	}
+    public function injectFrontendUserGroupRepository(\Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository)
+    {
+        $this->frontendUserGroupRepository = $frontendUserGroupRepository;
+    }
 
-	/**
-	 *
-	 * @param \Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository
-	 * @return void
-	 */
-	public function injectFrontendUserGroupRepository(\Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository)
-	{
-		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
-	}
+    /**
+     * Returns current frontend user.
+     *
+     * @return \Innologi\Appointments\Domain\Model\FrontendUser|false
+     */
+    public function getCurrentUser()
+    {
+        if ($this->feUser === null) {
+            global $TSFE;
+            $feUser = false;
+            if (isset($TSFE->fe_user->user['uid'])) {
+                $returnVal = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
+                if ($returnVal) {
+                    $feUser = $returnVal;
+                }
+            }
+            $this->feUser = $feUser;
+        }
+        return $this->feUser;
+    }
 
-	/**
-	 * Returns current frontend user.
-	 *
-	 * @return \Innologi\Appointments\Domain\Model\FrontendUser|FALSE
-	 */
-	public function getCurrentUser() {
-		if ($this->feUser === NULL) {
-			global $TSFE;
-			$feUser = FALSE;
-			if (isset($TSFE->fe_user->user['uid'])) {
-				$returnVal = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
-				if ($returnVal) {
-					$feUser = $returnVal;
-				}
-			}
-			$this->feUser = $feUser;
-		}
-		return $this->feUser;
-	}
-
-	/**
-	 * Returns whether the user is part of the usergroup.
-	 *
-	 * @param integer $groupId Usergroup ID
-	 * @return boolean
-	 */
-	public function isInGroup($groupId) {
-		if (!isset($this->inGroup[$groupId])) {
-			$inGroup = FALSE;
-			if ($groupId) {
-				$feUser = $this->getCurrentUser();
-				if ($feUser) {
-					$group = $this->frontendUserGroupRepository->findByUid($groupId);
-					if ($group && $feUser->getUsergroup()->contains($group)) {
-						$inGroup = TRUE;
-					}
-				}
-			}
-			$this->inGroup[$groupId] = $inGroup;
-		}
-		return $this->inGroup[$groupId];
-	}
-
+    /**
+     * Returns whether the user is part of the usergroup.
+     *
+     * @param integer $groupId Usergroup ID
+     * @return boolean
+     */
+    public function isInGroup($groupId)
+    {
+        if (!isset($this->inGroup[$groupId])) {
+            $inGroup = false;
+            if ($groupId) {
+                $feUser = $this->getCurrentUser();
+                if ($feUser) {
+                    $group = $this->frontendUserGroupRepository->findByUid($groupId);
+                    if ($group && $feUser->getUsergroup()->contains($group)) {
+                        $inGroup = true;
+                    }
+                }
+            }
+            $this->inGroup[$groupId] = $inGroup;
+        }
+        return $this->inGroup[$groupId];
+    }
 }

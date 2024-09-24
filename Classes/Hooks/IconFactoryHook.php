@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Hooks;
+
 /***************************************************************
  *  Copyright notice
 *
@@ -32,24 +34,23 @@ namespace Innologi\Appointments\Hooks;
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class IconFactoryHook {
-
-	/**
-	 * @param string $table
-	 * @param array $row
-	 * @param array $status
-	 * @param string $iconName
-	 * @return string the new (or given) $iconName
-	 */
-	function postOverlayPriorityLookup($table, array $row, array &$status, $iconName) {
-		if ($table === 'tx_appointments_domain_model_appointment' && isset($row['creation_progress'])) { #@TODO address too!
-			switch (intval($row['creation_progress'])) {
-				case 1:
-					return 'overlay-missing';
-				case 2:
-					return 'overlay-deleted';
-			}
-		}
-		return $iconName;
-	}
+class IconFactoryHook
+{
+    /**
+     * @param string $table
+     * @param string $iconName
+     * @return string the new (or given) $iconName
+     */
+    public function postOverlayPriorityLookup($table, array $row, array &$status, $iconName)
+    {
+        if ($table === 'tx_appointments_domain_model_appointment' && isset($row['creation_progress'])) { #@TODO address too!
+            switch (intval($row['creation_progress'])) {
+                case 1:
+                    return 'overlay-missing';
+                case 2:
+                    return 'overlay-deleted';
+            }
+        }
+        return $iconName;
+    }
 }

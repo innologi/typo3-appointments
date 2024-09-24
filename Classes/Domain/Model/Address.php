@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,332 +25,341 @@ namespace Innologi\Appointments\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Address domain model
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class Address extends AbstractEntity {
+class Address extends AbstractEntity
+{
+    /**
+     * First Name
+     *
+     * @var string
+     */
+    protected $firstName = '';
 
-	/**
-	 * First Name
-	 *
-	 * @var string
-	 */
-	protected $firstName = '';
+    /**
+     * Middle Name
+     *
+     * @var string
+     */
+    protected $middleName = '';
 
-	/**
-	 * Middle Name
-	 *
-	 * @var string
-	 */
-	protected $middleName = '';
+    /**
+     * Last Name
+     *
+     * @var string
+     */
+    protected $lastName = '';
 
-	/**
-	 * Last Name
-	 *
-	 * @var string
-	 */
-	protected $lastName = '';
+    /**
+     * Name
+     *
+     * @var string
+     */
+    protected $name = '';
 
-	/**
-	 * Name
-	 *
-	 * @var string
-	 */
-	protected $name = '';
+    /**
+     * Gender
+     *
+     * @var string
+     */
+    protected $gender; #@LOW validate StringLength(minimum=1, maximum=1) but GEMHMK doesn't want to
 
-	/**
-	 * Gender
-	 *
-	 * @var string
-	 */
-	protected $gender; #@LOW validate StringLength(minimum=1, maximum=1) but GEMHMK doesn't want to
+    /**
+     * Birthday
+     *
+     * @var \DateTime
+     */
+    protected $birthday; #@LOW is property-value in formField template still necessary?
 
-	/**
-	 * Birthday
-	 *
-	 * @var \DateTime
-	 */
-	protected $birthday; #@LOW is property-value in formField template still necessary?
+    /**
+     * Email
+     *
+     * Also used by emailService where applicable.
+     *
+     * @var string
+     */
+    protected $email;
 
-	/**
-	 * Email
-	 *
-	 * Also used by emailService where applicable.
-	 *
-	 * @var string
-	 */
-	protected $email;
+    /**
+     * @var string
+     */
+    protected $address = ''; #@LOW regex validator? but GEMHMK doesn't want to
 
-	/**
-	 * Address
-	 *
-	 * @var string
-	 */
-	protected $address = ''; #@LOW regex validator? but GEMHMK doesn't want to
+    /**
+     * Zip code
+     *
+     * @var string
+     */
+    protected $zip; #@LOW validate RegularExpression(regularExpression=/[0-9]{4}[A-Z]{2}/) but GEMHMK doesn't want to
 
-	/**
-	 * Zip code
-	 *
-	 * @var string
-	 */
-	protected $zip; #@LOW validate RegularExpression(regularExpression=/[0-9]{4}[A-Z]{2}/) but GEMHMK doesn't want to
+    /**
+     * City
+     *
+     * @var string
+     */
+    protected $city;
 
-	/**
-	 * City
-	 *
-	 * @var string
-	 */
-	protected $city;
+    /**
+     * Social Security Number
+     *
+     * @var string
+     */
+    protected $socialSecurityNumber;
 
-	/**
-	 * Social Security Number
-	 *
-	 * @var string
-	 */
-	protected $socialSecurityNumber;
+    /**
+     * State of creation
+     *
+     * @var integer
+     */
+    protected $creationProgress = Appointment::UNFINISHED;
 
-	/**
-	 * State of creation
-	 *
-	 * @var integer
-	 */
-	protected $creationProgress = Appointment::UNFINISHED;
+    /**
+     * Returns the firstName
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
 
-	/**
-	 * Returns the firstName
-	 *
-	 * @return string $firstName
-	 */
-	public function getFirstName() {
-		return $this->firstName;
-	}
+    /**
+     * Sets the firstName
+     *
+     * @param string $firstName
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+    }
 
-	/**
-	 * Sets the firstName
-	 *
-	 * @param string $firstName
-	 * @return void
-	 */
-	public function setFirstName($firstName) {
-		$this->firstName = $firstName;
-	}
+    /**
+     * Returns the middleName
+     *
+     * @return string
+     */
+    public function getMiddleName()
+    {
+        return $this->middleName;
+    }
 
-	/**
-	 * Returns the middleName
-	 *
-	 * @return string $middleName
-	 */
-	public function getMiddleName() {
-		return $this->middleName;
-	}
+    /**
+     * Sets the middleName
+     *
+     * @param string $middleName
+     */
+    public function setMiddleName($middleName)
+    {
+        $this->middleName = $middleName;
+    }
 
-	/**
-	 * Sets the middleName
-	 *
-	 * @param string $middleName
-	 * @return void
-	 */
-	public function setMiddleName($middleName) {
-		$this->middleName = $middleName;
-	}
+    /**
+     * Returns the lastName
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
 
-	/**
-	 * Returns the lastName
-	 *
-	 * @return string $lastName
-	 */
-	public function getLastName() {
-		return $this->lastName;
-	}
+    /**
+     * Sets the lastName
+     *
+     * @param string $lastName
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+    }
 
-	/**
-	 * Sets the lastName
-	 *
-	 * @param string $lastName
-	 * @return void
-	 */
-	public function setLastName($lastName) {
-		$this->lastName = $lastName;
-	}
+    /**
+     * Returns the name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        $this->setName();
+        return $this->name;
+    }
 
-	/**
-	 * Returns the name
-	 *
-	 * @return string $name
-	 */
-	public function getName() {
-		$this->setName();
-		return $this->name;
-	}
+    /**
+     * Sets the name
+     *
+     * @param string $name
+     */
+    public function setName($name = null)
+    {
+        $name = $this->firstName . ' ' . $this->middleName . ' ' . $this->lastName;
+        //clean up in case of any missing values
+        $this->name = join(' ', GeneralUtility::trimExplode(' ', $name, 1));
+    }
 
-	/**
-	 * Sets the name
-	 *
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name = NULL) {
-		$name = $this->firstName.' '.$this->middleName.' '.$this->lastName;
-		//clean up in case of any missing values
-		$this->name = join(' ', GeneralUtility::trimExplode(' ',$name,1));
-	}
+    /**
+     * Returns the gender
+     *
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
 
-	/**
-	 * Returns the gender
-	 *
-	 * @return string $gender
-	 */
-	public function getGender() {
-		return $this->gender;
-	}
+    /**
+     * Sets the gender
+     *
+     * @param string $gender
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+    }
 
-	/**
-	 * Sets the gender
-	 *
-	 * @param string $gender
-	 * @return void
-	 */
-	public function setGender($gender) {
-		$this->gender = $gender;
-	}
+    /**
+     * Returns the birthday
+     *
+     * @return \DateTime
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
+    }
 
-	/**
-	 * Returns the birthday
-	 *
-	 * @return \DateTime $birthday
-	 */
-	public function getBirthday() {
-		return $this->birthday;
-	}
+    /**
+     * Sets the birthday
+     *
+     * @param \DateTime $birthday
+     */
+    public function setBirthday($birthday)
+    {
+        $this->birthday = $birthday;
+    }
 
-	/**
-	 * Sets the birthday
-	 *
-	 * @param \DateTime $birthday
-	 * @return void
-	 */
-	public function setBirthday($birthday) {
-		$this->birthday = $birthday;
-	}
+    /**
+     * Returns the email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
-	/**
-	 * Returns the email
-	 *
-	 * @return string $email
-	 */
-	public function getEmail() {
-		return $this->email;
-	}
+    /**
+     * Sets the email
+     *
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
 
-	/**
-	 * Sets the email
-	 *
-	 * @param string $email
-	 * @return void
-	 */
-	public function setEmail($email) {
-		$this->email = $email;
-	}
+    /**
+     * Returns the address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
 
-	/**
-	 * Returns the address
-	 *
-	 * @return string $address
-	 */
-	public function getAddress() {
-		return $this->address;
-	}
+    /**
+     * Sets the address
+     *
+     * @param string $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
 
-	/**
-	 * Sets the address
-	 *
-	 * @param string $address
-	 * @return void
-	 */
-	public function setAddress($address) {
-		$this->address = $address;
-	}
+    /**
+     * Returns the zip
+     *
+     * @return string
+     */
+    public function getZip()
+    {
+        return $this->zip;
+    }
 
-	/**
-	 * Returns the zip
-	 *
-	 * @return string $zip
-	 */
-	public function getZip() {
-		return $this->zip;
-	}
+    /**
+     * Sets the zip
+     *
+     * @param string $zip
+     */
+    public function setZip($zip)
+    {
+        $this->zip = $zip;
+    }
 
-	/**
-	 * Sets the zip
-	 *
-	 * @param string $zip
-	 * @return void
-	 */
-	public function setZip($zip) {
-		$this->zip = $zip;
-	}
+    /**
+     * Returns the city
+     *
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
 
-	/**
-	 * Returns the city
-	 *
-	 * @return string $city
-	 */
-	public function getCity() {
-		return $this->city;
-	}
+    /**
+     * Sets the city
+     *
+     * @param string $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
 
-	/**
-	 * Sets the city
-	 *
-	 * @param string $city
-	 * @return void
-	 */
-	public function setCity($city) {
-		$this->city = $city;
-	}
+    /**
+     * Returns the social security number
+     *
+     * @return string
+     */
+    public function getSocialSecurityNumber()
+    {
+        return $this->socialSecurityNumber;
+    }
 
-	/**
-	 * Returns the social security number
-	 *
-	 * @return string $socialSecurityNumber
-	 */
-	public function getSocialSecurityNumber() {
-		return $this->socialSecurityNumber;
-	}
+    /**
+     * Sets the social security number
+     *
+     * @param string $socialSecurityNumber
+     */
+    public function setSocialSecurityNumber($socialSecurityNumber)
+    {
+        $this->socialSecurityNumber = $socialSecurityNumber;
+    }
 
-	/**
-	 * Sets the social security number
-	 *
-	 * @param string $socialSecurityNumber
-	 * @return void
-	 */
-	public function setSocialSecurityNumber($socialSecurityNumber) {
-		$this->socialSecurityNumber = $socialSecurityNumber;
-	}
+    /**
+     * Returns the creationProgress flag
+     *
+     * @return integer
+     */
+    public function getCreationProgress()
+    {
+        return $this->creationProgress;
+    }
 
-	/**
-	 * Returns the creationProgress flag
-	 *
-	 * @return integer $creationProgress
-	 */
-	public function getCreationProgress() {
-		return $this->creationProgress;
-	}
-
-	/**
-	 * Sets the creationProgress flag
-	 *
-	 * @param integer $creationProgress
-	 * @return void
-	 */
-	public function setCreationProgress($creationProgress) {
-		$this->creationProgress = $creationProgress;
-	}
-
+    /**
+     * Sets the creationProgress flag
+     *
+     * @param integer $creationProgress
+     */
+    public function setCreationProgress($creationProgress)
+    {
+        $this->creationProgress = $creationProgress;
+    }
 }

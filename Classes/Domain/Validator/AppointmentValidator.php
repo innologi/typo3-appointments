@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,10 +25,10 @@ namespace Innologi\Appointments\Domain\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
-use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use Innologi\Appointments\Domain\Model\Appointment;
 use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
 /**
  * Appointment Domain Validator.
@@ -36,13 +38,10 @@ use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class AppointmentValidator extends AbstractValidator
 {
-
     /**
-     *
      * @var ValidatorResolver
      */
     protected $validatorResolver;
@@ -54,7 +53,7 @@ class AppointmentValidator extends AbstractValidator
      */
     protected function getValidatorResolver()
     {
-        if ($this->validatorResolver === NULL) {
+        if ($this->validatorResolver === null) {
             // @todo use constructor injection as soon as TYPO3 stops using validator constructor args for options
             $this->validatorResolver = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ValidatorResolver::class);
         }
@@ -66,7 +65,6 @@ class AppointmentValidator extends AbstractValidator
      *
      * @param Appointment $appointment
      *            The object instance to validate
-     * @return void
      */
     protected function isValid($appointment)
     {
@@ -90,7 +88,7 @@ class AppointmentValidator extends AbstractValidator
 
             // formfieldvalue validation
             $formFieldValues = $appointment->getFormFieldValues()->toArray();
-            if (! empty($formFieldValues)) {
+            if (!empty($formFieldValues)) {
                 // registers values referred to by delayed objects
                 $valueRegister = [];
                 // adds a second pass for objects that need to be checked
@@ -98,25 +96,25 @@ class AppointmentValidator extends AbstractValidator
                 $delayedObjects = [];
                 $objects = [
                     $formFieldValues,
-                    &$delayedObjects
+                    &$delayedObjects,
                 ];
                 foreach ($objects as $container) {
                     /** @var \Innologi\Appointments\Domain\Model\FormFieldValue $formFieldValue */
                     foreach ($container as $formFieldValue) {
                         $formField = $formFieldValue->getFormField();
                         // although AppointmentController takes care of this, it has happened that a type was edited while an appointment was being finished
-                        if ($formField === NULL) {
+                        if ($formField === null) {
                             throw new PropertyDeleted();
                         }
 
                         // if the formfield is enabled by another, we'll need to exclude
                         // or delay its validation depending on the conditions
-                        if (($enableField = $formField->getEnableField()) !== NULL) {
+                        if (($enableField = $formField->getEnableField()) !== null) {
                             $enablerUid = $enableField->getUid();
                             // if the field on which we depend hasn't passed, save this one for the second run,
                             // note that this solution means we explicitly cannot enable multi-layered enable-fields
                             // and that our TCA attempts to prevent this
-                            if (! isset($valueRegister[$enablerUid])) {
+                            if (!isset($valueRegister[$enablerUid])) {
                                 $delayedObjects[] = $formFieldValue;
                                 continue;
                             }

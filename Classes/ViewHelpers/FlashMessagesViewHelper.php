@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,9 +25,10 @@ namespace Innologi\Appointments\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+
 /**
  * Flash Messages Viewhelper
  *
@@ -36,30 +39,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @package appointments
  * @see https://forge.typo3.org/issues/72703
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper {
+class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper
+{
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $content = parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
 
-	/**
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 */
-	public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$content = parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
+        // disable cache if there are flashmessages to render
+        if (isset($content[0]) && isset($GLOBALS['TSFE'])) {
+            /** @var ConfigurationManager $configurationManager */
+            $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+            // @extensionScannerIgnoreLine getContentObject() false positive
+            if ($configurationManager->getContentObject()->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
+                $GLOBALS['TSFE']->no_cache = 1;
+            }
+        }
 
-		// disable cache if there are flashmessages to render
-		if (isset($content[0]) && isset($GLOBALS['TSFE'])) {
-			/** @var ConfigurationManager $configurationManager */
-			$configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
-			// @extensionScannerIgnoreLine getContentObject() false positive
-			if ($configurationManager->getContentObject()->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
-				$GLOBALS['TSFE']->no_cache = 1;
-			}
-		}
-
-		return $content;
-	}
-
+        return $content;
+    }
 }

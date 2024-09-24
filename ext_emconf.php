@@ -32,16 +32,16 @@ $EM_CONF[$_EXTKEY] = [
             'php' => '8.0',
             'typo3' => '10.4.0-11.99.99',
             'felogin' => '10.4.0',
-            'tt_address' => '5.0.0'
+            'tt_address' => '5.0.0',
         ],
         'conflicts' => [],
         'suggests' => [
-            'scheduler' => '10.4.0'
-        ]
+            'scheduler' => '10.4.0',
+        ],
     ],
     'autoload' => [
         'psr-4' => [
-            'Innologi\\Appointments\\' => 'Classes'
-        ]
-    ]
+            'Innologi\\Appointments\\' => 'Classes',
+        ],
+    ],
 ];

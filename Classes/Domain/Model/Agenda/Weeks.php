@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Domain\Model\Agenda;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,8 +33,5 @@ namespace Innologi\Appointments\Domain\Model\Agenda;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class Weeks extends AbstractContainer {
-
-}
+class Weeks extends AbstractContainer {}

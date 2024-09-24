@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Persistence;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,6 +26,7 @@ namespace Innologi\Appointments\Persistence;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 /**
  * Modification of ObjectStorage. Instead of using hashes of objects as keys,
  * it takes the $key property of the objects as keys. This makes it possible
@@ -34,99 +37,103 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
-class KeyObjectStorage extends ObjectStorage {
+class KeyObjectStorage extends ObjectStorage
+{
+    /**
+     * Associates data to an object in the storage. offsetSet() is an alias of attach().
+     *
+     * @param object $object The object to add.
+     * @param mixed $information The data to associate with the object.
+     */
+    public function offsetSet($object, $information)
+    {
+        $this->isModified = true;
+        $this->storage[$object->getKey()] = [
+            'obj' => $object,
+            'inf' => $information,
+        ];
+    }
 
-	/**
-	 * Associates data to an object in the storage. offsetSet() is an alias of attach().
-	 *
-	 * @param object $object The object to add.
-	 * @param mixed $information The data to associate with the object.
-	 * @return void
-	 */
-	public function offsetSet($object, $information) {
-		$this->isModified = TRUE;
-		$this->storage[$object->getKey()] = ['obj' => $object, 'inf' => $information];
-	}
+    /**
+     * Checks whether an object exists in the storage.
+     *
+     * @param string $objectKey The object to look for.
+     * @return boolean
+     */
+    public function offsetExists($objectKey)
+    {
+        //this way, an isset can be performed on the objectStorage while only the key is known
+        return isset($this->storage[$objectKey]);
+    }
 
-	/**
-	 * Checks whether an object exists in the storage.
-	 *
-	 * @param string $objectKey The object to look for.
-	 * @return boolean
-	 */
-	public function offsetExists($objectKey) {
-		//this way, an isset can be performed on the objectStorage while only the key is known
-		return isset($this->storage[$objectKey]);
-	}
+    /**
+     * Removes an object from the storage. offsetUnset() is an alias of detach().
+     *
+     * @param object $object The object to remove.
+     */
+    public function offsetUnset($object)
+    {
+        $this->isModified = true;
+        unset($this->storage[$object->getKey()]);
+    }
 
-	/**
-	 * Removes an object from the storage. offsetUnset() is an alias of detach().
-	 *
-	 * @param object $object The object to remove.
-	 * @return void
-	 */
-	public function offsetUnset($object) {
-		$this->isModified = TRUE;
-		unset($this->storage[$object->getKey()]);
-	}
+    /**
+     * Returns the data associated with an object.
+     *
+     * @param string $objectKey The object to look for.
+     * @return object The object in the storage.
+     */
+    public function offsetGet($objectKey)
+    {
+        return $this->storage[$objectKey]['obj'];
+    }
 
-	/**
-	 * Returns the data associated with an object.
-	 *
-	 * @param string $objectKey The object to look for.
-	 * @return object The object in the storage.
-	 */
-	public function offsetGet($objectKey) {
-		return $this->storage[$objectKey]['obj'];
-	}
+    /**
+     * Returns this object storage as an array
+     *
+     * @return array The object storage
+     */
+    public function toArray()
+    {
+        $array = [];
+        $storage = array_values($this->storage);
+        foreach ($storage as $key => $item) {
+            $array[$key] = $item['obj'];
+        }
+        return $array;
+    }
 
-	/**
-	 * Returns this object storage as an array
-	 *
-	 * @return array The object storage
-	 */
-	public function toArray() {
-		$array = [];
-		$storage = array_values($this->storage);
-		foreach ($storage as $key=>$item) {
-			$array[$key] = $item['obj'];
-		}
-		return $array;
-	}
+    /**
+     * Gets first object in storage.
+     *
+     * @return object The first object
+     */
+    public function getFirst()
+    {
+        $this->rewind();
+        return $this->current();
+    }
 
-	/**
-	 * Gets first object in storage.
-	 *
-	 * @return object The first object
-	 */
-	public function getFirst() {
-		$this->rewind();
-		return $this->current();
-	}
+    /**
+     * The last object in storage
+     *
+     * @return object The last object
+     */
+    public function getLast()
+    {
+        end($this->storage);
+        return $this->current();
+    }
 
-	/**
-	 * The last object in storage
-	 *
-	 * @return object The last object
-	 */
-	public function getLast() {
-		end($this->storage);
-		return $this->current();
-	}
+    /**
+     * Adds all objects-data pairs from a different storage in the current storage,
+     * and then sorts all objects by key.
+     */
+    public function addAll(ObjectStorage $objectStorage)
+    {
+        parent::addAll($objectStorage);
 
-	/**
-	 * Adds all objects-data pairs from a different storage in the current storage,
-	 * and then sorts all objects by key.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage
-	 * @return void
-	 */
-	public function addAll(ObjectStorage $objectStorage) {
-		parent::addAll($objectStorage);
-
-		ksort($this->storage);
-	}
-
+        ksort($this->storage);
+    }
 }

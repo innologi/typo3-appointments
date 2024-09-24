@@ -30,8 +30,6 @@ class FrontendUserGroup extends AbstractEntity
 
     /**
      * Constructs a new Frontend User Group
-     *
-     * @param string $title
      */
     public function __construct()
     {
@@ -51,20 +49,16 @@ class FrontendUserGroup extends AbstractEntity
 
     /**
      * Adds a subgroup to the frontend user
-     *
-     * @param FrontendUserGroup $subgroup
      */
-    public function addSubgroup(FrontendUserGroup $subgroup)
+    public function addSubgroup(self $subgroup)
     {
         $this->subgroup->attach($subgroup);
     }
 
     /**
      * Removes a subgroup from the frontend user group
-     *
-     * @param FrontendUserGroup $subgroup
      */
-    public function removeSubgroup(FrontendUserGroup $subgroup)
+    public function removeSubgroup(self $subgroup)
     {
         $this->subgroup->detach($subgroup);
     }

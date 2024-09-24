@@ -1,5 +1,7 @@
 <?php
+
 namespace Innologi\Appointments\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,17 +25,17 @@ namespace Innologi\Appointments\Mvc\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
-use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Exception;
+use Innologi\Appointments\Mvc\Exception\EarlyResponseThrowable;
 use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
 use Innologi\TYPO3AssetProvider\ProviderControllerTrait;
-use TYPO3\CMS\Extbase\Http\ForwardResponse;
-use Innologi\Appointments\Mvc\Exception\EarlyResponseThrowable;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Appointments Action Controller.
@@ -50,11 +52,9 @@ use Psr\Http\Message\ResponseInterface;
  *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class ActionController extends SettingsOverrideController
 {
-
     use ProviderControllerTrait;
 
     /**
@@ -79,13 +79,11 @@ class ActionController extends SettingsOverrideController
     protected $typeRepository;
 
     /**
-     *
      * @var \Innologi\Appointments\Service\UserService
      */
     protected $userService;
 
     /**
-     *
      * @var \Innologi\Appointments\Domain\Service\SlotService
      */
     protected $slotService;
@@ -111,59 +109,33 @@ class ActionController extends SettingsOverrideController
      *
      * @var boolean
      */
-    protected $requireLogin = TRUE;
+    protected $requireLogin = true;
 
     /**
-     *
      * @var string
      */
     protected $extensionName = 'Appointments';
 
-    /**
-     *
-     * @param \Innologi\Appointments\Domain\Repository\AgendaRepository $agendaRepository
-     * @return void
-     */
     public function injectAgendaRepository(\Innologi\Appointments\Domain\Repository\AgendaRepository $agendaRepository)
     {
         $this->agendaRepository = $agendaRepository;
     }
 
-    /**
-     *
-     * @param \Innologi\Appointments\Domain\Repository\AppointmentRepository $appointmentRepository
-     * @return void
-     */
     public function injectAppointmentRepository(\Innologi\Appointments\Domain\Repository\AppointmentRepository $appointmentRepository)
     {
         $this->appointmentRepository = $appointmentRepository;
     }
 
-    /**
-     *
-     * @param \Innologi\Appointments\Domain\Repository\TypeRepository $typeRepository
-     * @return void
-     */
     public function injectTypeRepository(\Innologi\Appointments\Domain\Repository\TypeRepository $typeRepository)
     {
         $this->typeRepository = $typeRepository;
     }
 
-    /**
-     *
-     * @param \Innologi\Appointments\Service\UserService $userService
-     * @return void
-     */
     public function injectUserService(\Innologi\Appointments\Service\UserService $userService)
     {
         $this->userService = $userService;
     }
 
-    /**
-     *
-     * @param \Innologi\Appointments\Domain\Service\SlotService $slotService
-     * @return void
-     */
     public function injectSlotService(\Innologi\Appointments\Domain\Service\SlotService $slotService)
     {
         $this->slotService = $slotService;
@@ -175,7 +147,6 @@ class ActionController extends SettingsOverrideController
      * Sets some prerequisite variables. If it fails because of any error related to these,
      * it will set appropriate error messages and redirect to the appropriate action.
      *
-     * @return void
      * @throws EarlyResponseThrowable
      */
     protected function initializeAction()
@@ -187,18 +158,18 @@ class ActionController extends SettingsOverrideController
 
             // is user logged in as required?
             $this->feUser = $this->userService->getCurrentUser();
-            if ($this->requireLogin && ! $this->feUser) {
+            if ($this->requireLogin && !$this->feUser) {
                 $errors[] = LocalizationUtility::translate('tx_appointments.login_error', $this->extensionName);
             }
 
             // is an agenda record set?
             $this->agenda = $this->agendaRepository->findByUid($this->settings['agendaUid']);
-            if ($this->agenda === NULL) {
+            if ($this->agenda === null) {
                 $errors[] = LocalizationUtility::translate('tx_appointments.no_agenda', $this->extensionName);
             }
 
             // errors!
-            if (! empty($errors)) {
+            if (!empty($errors)) {
                 // we'll need it for the FlashMessageQueue
                 foreach ($errors as $flashMessage) {
                     $this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
@@ -216,11 +187,10 @@ class ActionController extends SettingsOverrideController
      *
      * @param array $actions
      *            For which to disable requireLogin
-     * @return void
      */
     protected function disableRequireLogin(array $actions = [])
     {
-        $this->requireLogin = ! in_array(substr($this->actionMethodName, 0, - 6), $actions);
+        $this->requireLogin = !in_array(substr($this->actionMethodName, 0, -6), $actions);
     }
 
     /**
@@ -241,7 +211,7 @@ class ActionController extends SettingsOverrideController
                 $arguments = unserialize(base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments'])));
             }
             $replacedArguments = array_replace_recursive($arguments, $referrerArray);
-            if (! empty($replacedArguments)) {
+            if (!empty($replacedArguments)) {
                 $controllerName = (string) ($replacedArguments['@controller'] ?? 'Standard');
                 $objectType = strtolower((string) $controllerName);
                 if ($this->request->hasArgument($tokenArgument) && $this->request->hasArgument($objectType) && \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->validateToken($this->request->getArgument($tokenArgument), $controllerName, (string) ($replacedArguments['@action'] ?? 'index'), $this->request->getArgument($objectType)['__identity'] ?? '')) {
@@ -281,7 +251,7 @@ class ActionController extends SettingsOverrideController
         # $this->typeUidArray = t3lib_div::trimExplode(',', $this->settings['appointmentTypeList'], 1); #@TODO _need to reuse this as showTypes/allowTypes or something
         # $types = empty($this->typeUidArray) ? $this->typeRepository->findAll($superUser) : $this->typeRepository->findIn($this->typeUidArray,$superUser);
         $types = $superUser ? $this->agenda->getTypes()->toArray() : $this->typeRepository->findIn($this->agenda->getTypes()->toArray())->toArray();
-        if (! empty($types)) {
+        if (!empty($types)) {
             // types found
             return $types;
         }
@@ -301,7 +271,6 @@ class ActionController extends SettingsOverrideController
      * This concerns f.e. an object that was deleted in TCA or FE or by task. An appointment
      * in the making which expired but wasn't deleted yet, will still be retrievable.
      *
-     * @return void
      * @throws EarlyResponseThrowable
      */
     protected function mapRequestArgumentsToControllerArguments()
@@ -334,7 +303,7 @@ class ActionController extends SettingsOverrideController
                     }
                 }
             }
-            throw new EarlyResponseThrowable($this->redirect($redirectTo, NULL, NULL, $arguments));
+            throw new EarlyResponseThrowable($this->redirect($redirectTo, null, null, $arguments));
         }
     }
 
