@@ -51,7 +51,7 @@ class CsrfViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = true;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('uid', 'string', 'Object identifier', true);
@@ -62,7 +62,7 @@ class CsrfViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken(
+        return \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('frontend')->generateToken(
             $renderingContext->getControllerName(),
             $renderingContext->getControllerAction(),
             $arguments['uid'],

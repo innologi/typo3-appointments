@@ -55,7 +55,7 @@ class TypeRepository extends Repository
 
         $result = $query->matching(
             $query->logicalAnd(
-                $constraints,
+                ...$constraints,
             ),
         )->execute();
         return $result;

@@ -110,7 +110,7 @@ abstract class AbstractContainer extends AbstractEntity
      *
      * @param string $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -130,7 +130,7 @@ abstract class AbstractContainer extends AbstractEntity
      *
      * @param string $year
      */
-    public function setYear($year)
+    public function setYear($year): void
     {
         $this->year = $year;
     }
@@ -150,7 +150,7 @@ abstract class AbstractContainer extends AbstractEntity
      *
      * @param integer $backModifier
      */
-    public function setBackModifier($backModifier)
+    public function setBackModifier($backModifier): void
     {
         $this->backModifier = $backModifier;
     }
@@ -170,7 +170,7 @@ abstract class AbstractContainer extends AbstractEntity
      *
      * @param integer $forwardModifier
      */
-    public function setForwardModifier($forwardModifier)
+    public function setForwardModifier($forwardModifier): void
     {
         $this->forwardModifier = $forwardModifier;
     }
@@ -190,7 +190,7 @@ abstract class AbstractContainer extends AbstractEntity
      *
      * @param integer $maxBack
      */
-    public function setMaxBack($maxBack)
+    public function setMaxBack($maxBack): void
     {
         $this->maxBack = $maxBack;
     }
@@ -210,7 +210,7 @@ abstract class AbstractContainer extends AbstractEntity
      *
      * @param integer $maxForward
      */
-    public function setMaxForward($maxForward)
+    public function setMaxForward($maxForward): void
     {
         $this->maxForward = $maxForward;
     }
@@ -238,7 +238,7 @@ abstract class AbstractContainer extends AbstractEntity
     /**
      * Adds a week storage
      */
-    public function addWeek(ObjectStorage $week)
+    public function addWeek(ObjectStorage $week): void
     {
         $this->weeks[] = $week;
     }
@@ -258,7 +258,7 @@ abstract class AbstractContainer extends AbstractEntity
      *
      * @param array $weeks
      */
-    public function setWeeks($weeks)
+    public function setWeeks($weeks): void
     {
         $this->weeks = $weeks;
     }

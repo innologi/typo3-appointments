@@ -66,7 +66,7 @@ class AppointmentValidator extends AbstractValidator
      * @param Appointment $appointment
      *            The object instance to validate
      */
-    protected function isValid($appointment)
+    protected function isValid($appointment): void
     {
         // @LOW ___did we need this check at some point during 4.5? seems rather.. redundant. see if we can get rid of it
         if ($appointment instanceof Appointment) {

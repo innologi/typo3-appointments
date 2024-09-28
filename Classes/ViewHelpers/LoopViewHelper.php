@@ -51,7 +51,7 @@ class LoopViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('count', 'integer', 'Number of times to loop content', true);

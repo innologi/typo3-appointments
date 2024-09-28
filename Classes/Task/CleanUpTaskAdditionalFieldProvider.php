@@ -107,7 +107,7 @@ class CleanUpTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
      * @param array $submittedData An array containing the data submitted by the add/edit task form
      * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the task object
      */
-    public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task): void
     {
         $task->setAge(intval($submittedData[$this->field]));
     }

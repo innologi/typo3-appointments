@@ -132,7 +132,7 @@ class Date extends AbstractEntity
      *
      * @param string $agendaClasses
      */
-    public function setAgendaClasses($agendaClasses)
+    public function setAgendaClasses($agendaClasses): void
     {
         $this->agendaClasses = $agendaClasses;
     }
@@ -142,7 +142,7 @@ class Date extends AbstractEntity
      *
      * @param string $agendaClass
      */
-    public function addAgendaClass($agendaClass)
+    public function addAgendaClass($agendaClass): void
     {
         $this->agendaClasses .= ' ' . $agendaClass;
     }
@@ -162,7 +162,7 @@ class Date extends AbstractEntity
      *
      * @param string $dayNumber
      */
-    public function setDayNumber($dayNumber)
+    public function setDayNumber($dayNumber): void
     {
         $this->dayNumber = $dayNumber;
     }
@@ -183,7 +183,7 @@ class Date extends AbstractEntity
      *
      * @param string $monthShort
      */
-    public function setMonthShort($monthShort)
+    public function setMonthShort($monthShort): void
     {
         $this->monthShort = $monthShort;
     }
@@ -203,7 +203,7 @@ class Date extends AbstractEntity
      *
      * @param integer $timestamp
      */
-    public function setTimestamp($timestamp)
+    public function setTimestamp($timestamp): void
     {
         $this->timestamp = $timestamp;
     }
@@ -223,7 +223,7 @@ class Date extends AbstractEntity
      *
      * @param boolean $isHoliday
      */
-    public function setIsHoliday($isHoliday)
+    public function setIsHoliday($isHoliday): void
     {
         $this->isHoliday = $isHoliday;
         if ($isHoliday) {
@@ -246,7 +246,7 @@ class Date extends AbstractEntity
      *
      * @param boolean $isToday
      */
-    public function setIsToday($isToday)
+    public function setIsToday($isToday): void
     {
         $this->isToday = $isToday;
         if ($isToday) {
@@ -269,7 +269,7 @@ class Date extends AbstractEntity
      *
      * @param boolean $allowCreate
      */
-    public function setAllowCreate($allowCreate)
+    public function setAllowCreate($allowCreate): void
     {
         $this->allowCreate = $allowCreate;
     }
@@ -277,7 +277,7 @@ class Date extends AbstractEntity
     /**
      * Adds an appointment
      */
-    public function addAppointment(Appointment $appointment)
+    public function addAppointment(Appointment $appointment): void
     {
         $this->appointments->attach($appointment);
     }
@@ -287,7 +287,7 @@ class Date extends AbstractEntity
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointmentToRemove The Appointment to be removed
      */
-    public function removeAppointment(Appointment $appointmentToRemove)
+    public function removeAppointment(Appointment $appointmentToRemove): void
     {
         $this->appointments->detach($appointmentToRemove);
     }
@@ -305,7 +305,7 @@ class Date extends AbstractEntity
     /**
      * Sets the appointments
      */
-    public function setAppointments(ObjectStorage $appointments)
+    public function setAppointments(ObjectStorage $appointments): void
     {
         $this->appointments = $appointments;
     }

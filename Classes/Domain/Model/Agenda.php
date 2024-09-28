@@ -166,7 +166,7 @@ class Agenda extends AbstractEntity
      *
      * @param string $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -186,7 +186,7 @@ class Agenda extends AbstractEntity
      *
      * @param string $holidays
      */
-    public function setHolidays($holidays)
+    public function setHolidays($holidays): void
     {
         $this->holidays = $holidays;
     }
@@ -207,7 +207,7 @@ class Agenda extends AbstractEntity
     /**
      * Sets the holidayArray
      */
-    public function setHolidayArray()
+    public function setHolidayArray(): void
     {
         $holidays = str_replace("\r\n", "\n", $this->holidays);
         $this->holidayArray = array_flip(GeneralUtility::trimExplode("\n", $holidays, 1));
@@ -216,7 +216,7 @@ class Agenda extends AbstractEntity
     /**
      * Adds a Type
      */
-    public function addTypes(Type $type)
+    public function addTypes(Type $type): void
     {
         $this->types->attach($type);
     }
@@ -226,7 +226,7 @@ class Agenda extends AbstractEntity
      *
      * @param \Innologi\Appointments\Domain\Model\Type $typeToRemove The Type to be removed
      */
-    public function removeTypes(Type $typeToRemove)
+    public function removeTypes(Type $typeToRemove): void
     {
         $this->types->detach($typeToRemove);
     }
@@ -244,7 +244,7 @@ class Agenda extends AbstractEntity
     /**
      * Sets types
      */
-    public function setTypes(ObjectStorage $types)
+    public function setTypes(ObjectStorage $types): void
     {
         $this->types = $types;
     }
@@ -264,7 +264,7 @@ class Agenda extends AbstractEntity
      *
      * @param integer $emailTypes
      */
-    public function setEmailTypes($emailTypes)
+    public function setEmailTypes($emailTypes): void
     {
         $this->emailTypes = $emailTypes;
     }
@@ -284,7 +284,7 @@ class Agenda extends AbstractEntity
      *
      * @param integer $emailOwnerTypes
      */
-    public function setEmailOwnerTypes($emailOwnerTypes)
+    public function setEmailOwnerTypes($emailOwnerTypes): void
     {
         $this->emailOwnerTypes = $emailOwnerTypes;
     }
@@ -304,7 +304,7 @@ class Agenda extends AbstractEntity
      *
      * @param integer $emailFieldTypes
      */
-    public function setEmailFieldTypes($emailFieldTypes)
+    public function setEmailFieldTypes($emailFieldTypes): void
     {
         $this->emailFieldTypes = $emailFieldTypes;
     }
@@ -324,7 +324,7 @@ class Agenda extends AbstractEntity
      *
      * @param integer $calendarInviteTypes
      */
-    public function setCalendarInviteTypes($calendarInviteTypes)
+    public function setCalendarInviteTypes($calendarInviteTypes): void
     {
         $this->calendarInviteTypes = $calendarInviteTypes;
     }
@@ -332,7 +332,7 @@ class Agenda extends AbstractEntity
     /**
      * Adds a Address
      */
-    public function addEmailAddress(Address $emailAddress)
+    public function addEmailAddress(Address $emailAddress): void
     {
         $this->emailAddress->attach($emailAddress);
     }
@@ -342,7 +342,7 @@ class Agenda extends AbstractEntity
      *
      * @param \Innologi\Appointments\Domain\Model\Address $emailAddressToRemove The Address to be removed
      */
-    public function removeEmailAddress(Address $emailAddressToRemove)
+    public function removeEmailAddress(Address $emailAddressToRemove): void
     {
         $this->emailAddress->detach($emailAddressToRemove);
     }
@@ -360,7 +360,7 @@ class Agenda extends AbstractEntity
     /**
      * Sets the emailAddress
      */
-    public function setEmailAddress(ObjectStorage $emailAddress)
+    public function setEmailAddress(ObjectStorage $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
     }
@@ -380,7 +380,7 @@ class Agenda extends AbstractEntity
      *
      * @param string $emailText
      */
-    public function setEmailText($emailText)
+    public function setEmailText($emailText): void
     {
         $this->emailText = $emailText;
     }
@@ -388,7 +388,7 @@ class Agenda extends AbstractEntity
     /**
      * Adds a Address
      */
-    public function addCalendarInviteAddress(Address $calendarInviteAddress)
+    public function addCalendarInviteAddress(Address $calendarInviteAddress): void
     {
         $this->calendarInviteAddress->attach($calendarInviteAddress);
     }
@@ -398,7 +398,7 @@ class Agenda extends AbstractEntity
      *
      * @param \Innologi\Appointments\Domain\Model\Address $calendarInviteAddressToRemove The Address to be removed
      */
-    public function removeCalendarInviteAddress(Address $calendarInviteAddressToRemove)
+    public function removeCalendarInviteAddress(Address $calendarInviteAddressToRemove): void
     {
         $this->calendarInviteAddress->detach($calendarInviteAddressToRemove);
     }
@@ -416,7 +416,7 @@ class Agenda extends AbstractEntity
     /**
      * Sets the calendarInviteAddress
      */
-    public function setCalendarInviteAddress(ObjectStorage $calendarInviteAddress)
+    public function setCalendarInviteAddress(ObjectStorage $calendarInviteAddress): void
     {
         $this->calendarInviteAddress = $calendarInviteAddress;
     }
@@ -436,7 +436,7 @@ class Agenda extends AbstractEntity
      *
      * @param string $calendarInviteText
      */
-    public function setCalendarInviteText($calendarInviteText)
+    public function setCalendarInviteText($calendarInviteText): void
     {
         $this->calendarInviteText = $calendarInviteText;
     }

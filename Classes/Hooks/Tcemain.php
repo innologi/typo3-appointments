@@ -59,7 +59,7 @@ class Tcemain
      * @param array $propertyArray Reference to the changes of the record
      * @param object $parentObj Parent object
      */
-    public function processDatamap_postProcessFieldArray($action, $table, $uid, &$propertyArray, $parentObj)
+    public function processDatamap_postProcessFieldArray($action, $table, $uid, &$propertyArray, $parentObj): void
     {
         // formfieldvalue
         if ($table === 'tx_appointments_domain_model_formfieldvalue') {

@@ -70,7 +70,7 @@ class FormFieldValue extends AbstractEntity
      *
      * @param string $value
      */
-    public function setValue($value)
+    public function setValue($value): void
     {
         $this->value = $value;
     }
@@ -88,7 +88,7 @@ class FormFieldValue extends AbstractEntity
     /**
      * Sets the formField
      */
-    public function setFormField(FormField $formField)
+    public function setFormField(FormField $formField): void
     {
         $this->formField = $formField;
     }

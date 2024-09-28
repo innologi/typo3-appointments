@@ -26,6 +26,7 @@ namespace Innologi\Appointments\Task;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 use Innologi\Appointments\Domain\Repository\AppointmentRepository;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -82,7 +83,7 @@ class CleanUpTask extends AbstractTask
      *
      * @param integer $age
      */
-    public function setAge($age)
+    public function setAge($age): void
     {
         $this->age = $age;
     }
@@ -99,7 +100,7 @@ class CleanUpTask extends AbstractTask
             'pluginName' => 'CleanupTask',
             'extensionName' => 'Appointments',
             'vendorName' => 'Innologi',
-        ]);
+        ], new ServerRequest());
 
         $this->initRepositories();
 

@@ -176,7 +176,7 @@ class FormField extends AbstractEntity
      *
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
@@ -196,7 +196,7 @@ class FormField extends AbstractEntity
      *
      * @param string $label
      */
-    public function setLabel($label)
+    public function setLabel($label): void
     {
         $this->label = $label;
     }
@@ -216,7 +216,7 @@ class FormField extends AbstractEntity
      *
      * @param string $csh
      */
-    public function setCsh($csh)
+    public function setCsh($csh): void
     {
         $this->csh = $csh;
     }
@@ -236,7 +236,7 @@ class FormField extends AbstractEntity
      *
      * @param string $validationTypes
      */
-    public function setValidationTypes($validationTypes)
+    public function setValidationTypes($validationTypes): void
     {
         $this->validationTypes = $validationTypes;
     }
@@ -302,7 +302,7 @@ class FormField extends AbstractEntity
      *
      * @param integer $fieldType
      */
-    public function setFieldType($fieldType)
+    public function setFieldType($fieldType): void
     {
         $this->fieldType = $fieldType;
     }
@@ -324,7 +324,7 @@ class FormField extends AbstractEntity
      *
      * @param string $choices
      */
-    public function setChoices($choices)
+    public function setChoices($choices): void
     {
         $this->choices = $choices;
     }
@@ -383,7 +383,7 @@ class FormField extends AbstractEntity
      *
      * @param integer $function
      */
-    public function setFunction($function)
+    public function setFunction($function): void
     {
         $this->function = $function;
     }
@@ -401,7 +401,7 @@ class FormField extends AbstractEntity
     /**
      * Sets the enableField
      */
-    public function setEnableField(self $enableField)
+    public function setEnableField(self $enableField): void
     {
         $this->enableField = $enableField;
     }
@@ -421,7 +421,7 @@ class FormField extends AbstractEntity
      *
      * @param string $enableValue
      */
-    public function setEnableValue($enableValue)
+    public function setEnableValue($enableValue): void
     {
         $this->enableValue = $enableValue;
     }
@@ -441,7 +441,7 @@ class FormField extends AbstractEntity
      *
      * @param integer $sorting
      */
-    public function setSorting($sorting)
+    public function setSorting($sorting): void
     {
         $this->sorting = $sorting;
     }

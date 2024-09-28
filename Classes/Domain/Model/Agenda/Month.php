@@ -65,7 +65,7 @@ class Month extends AbstractContainer
      *
      * @param integer $weekdaysBeforeFirst
      */
-    public function setWeekdaysBeforeFirst($weekdaysBeforeFirst)
+    public function setWeekdaysBeforeFirst($weekdaysBeforeFirst): void
     {
         $this->weekdaysBeforeFirst = $weekdaysBeforeFirst;
     }
@@ -85,7 +85,7 @@ class Month extends AbstractContainer
      *
      * @param integer $weekdaysAfterLast
      */
-    public function setWeekdaysAfterLast($weekdaysAfterLast)
+    public function setWeekdaysAfterLast($weekdaysAfterLast): void
     {
         $this->weekdaysAfterLast = $weekdaysAfterLast;
     }

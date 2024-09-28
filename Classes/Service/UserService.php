@@ -63,12 +63,12 @@ class UserService implements SingletonInterface
      */
     protected $frontendUserGroupRepository;
 
-    public function injectFrontendUserRepository(\Innologi\Appointments\Domain\Repository\FrontendUserRepository $frontendUserRepository)
+    public function injectFrontendUserRepository(\Innologi\Appointments\Domain\Repository\FrontendUserRepository $frontendUserRepository): void
     {
         $this->frontendUserRepository = $frontendUserRepository;
     }
 
-    public function injectFrontendUserGroupRepository(\Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository)
+    public function injectFrontendUserGroupRepository(\Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository): void
     {
         $this->frontendUserGroupRepository = $frontendUserGroupRepository;
     }

@@ -42,7 +42,7 @@ class FrontendUserGroup extends AbstractEntity
      *
      * @param ObjectStorage<FrontendUserGroup> $subgroup An object storage containing the subgroups to add
      */
-    public function setSubgroup(ObjectStorage $subgroup)
+    public function setSubgroup(ObjectStorage $subgroup): void
     {
         $this->subgroup = $subgroup;
     }
@@ -50,7 +50,7 @@ class FrontendUserGroup extends AbstractEntity
     /**
      * Adds a subgroup to the frontend user
      */
-    public function addSubgroup(self $subgroup)
+    public function addSubgroup(self $subgroup): void
     {
         $this->subgroup->attach($subgroup);
     }
@@ -58,7 +58,7 @@ class FrontendUserGroup extends AbstractEntity
     /**
      * Removes a subgroup from the frontend user group
      */
-    public function removeSubgroup(self $subgroup)
+    public function removeSubgroup(self $subgroup): void
     {
         $this->subgroup->detach($subgroup);
     }

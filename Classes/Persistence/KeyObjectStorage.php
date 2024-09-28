@@ -46,7 +46,7 @@ class KeyObjectStorage extends ObjectStorage
      * @param object $object The object to add.
      * @param mixed $information The data to associate with the object.
      */
-    public function offsetSet($object, $information)
+    public function offsetSet($object, $information): void
     {
         $this->isModified = true;
         $this->storage[$object->getKey()] = [
@@ -61,7 +61,7 @@ class KeyObjectStorage extends ObjectStorage
      * @param string $objectKey The object to look for.
      * @return boolean
      */
-    public function offsetExists($objectKey)
+    public function offsetExists($objectKey): bool
     {
         //this way, an isset can be performed on the objectStorage while only the key is known
         return isset($this->storage[$objectKey]);
@@ -72,7 +72,7 @@ class KeyObjectStorage extends ObjectStorage
      *
      * @param object $object The object to remove.
      */
-    public function offsetUnset($object)
+    public function offsetUnset($object): void
     {
         $this->isModified = true;
         unset($this->storage[$object->getKey()]);
@@ -130,7 +130,7 @@ class KeyObjectStorage extends ObjectStorage
      * Adds all objects-data pairs from a different storage in the current storage,
      * and then sorts all objects by key.
      */
-    public function addAll(ObjectStorage $objectStorage)
+    public function addAll(ObjectStorage $objectStorage): void
     {
         parent::addAll($objectStorage);
 

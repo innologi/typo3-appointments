@@ -73,7 +73,7 @@ abstract class AbstractSlot extends AbstractEntity
      *
      * @param string $key
      */
-    public function setKey($key)
+    public function setKey($key): void
     {
         $this->key = $key;
     }
@@ -93,7 +93,7 @@ abstract class AbstractSlot extends AbstractEntity
      *
      * @param string $label
      */
-    public function setLabel($label)
+    public function setLabel($label): void
     {
         $this->label = $label;
     }
@@ -113,7 +113,7 @@ abstract class AbstractSlot extends AbstractEntity
      *
      * @param integer $timestamp
      */
-    public function setTimestamp($timestamp)
+    public function setTimestamp($timestamp): void
     {
         $this->timestamp = $timestamp;
     }

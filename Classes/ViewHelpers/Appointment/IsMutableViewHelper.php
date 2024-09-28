@@ -29,6 +29,8 @@ use Innologi\Appointments\Domain\Model\Appointment;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Is Mutable Viewhelper
@@ -42,11 +44,17 @@ class IsMutableViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('appointment', Appointment::class, 'The appointment to check if it is still mutable.', true);
-        $this->registerArgument('time', 'integer', 'Timestamp to evaluate with.', false, $GLOBALS['EXEC_TIME']);
+        $this->registerArgument(
+            name: 'time',
+            type: 'integer',
+            description: 'Timestamp to evaluate with.',
+            required: false,
+            defaultValue: GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp'),
+        );
     }
 
     /**

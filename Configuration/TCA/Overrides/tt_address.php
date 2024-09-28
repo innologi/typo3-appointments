@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 #@LOW make it set a type as soon as IRRE supports it
 #if (!isset($GLOBALS['TCA']['tt_address']['ctrl']['type'])) {

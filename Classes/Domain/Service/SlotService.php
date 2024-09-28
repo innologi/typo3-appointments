@@ -97,13 +97,13 @@ class SlotService implements SingletonInterface
      */
     protected $cache;
 
-    public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager)
+    public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager): void
     {
         $this->cacheManager = $cacheManager;
         $this->cache = $cacheManager->getCache('appointments_slots');
     }
 
-    public function injectAppointmentRepository(\Innologi\Appointments\Domain\Repository\AppointmentRepository $appointmentRepository)
+    public function injectAppointmentRepository(\Innologi\Appointments\Domain\Repository\AppointmentRepository $appointmentRepository): void
     {
         $this->appointmentRepository = $appointmentRepository;
     }
@@ -115,7 +115,7 @@ class SlotService implements SingletonInterface
      * @param integer $expireMinutes Minutes after which a reserved timeslot expires
      * @param boolean $intervalBasedShifting If TRUE, enables shifting of timeslots per appointment type interval instead of a daily basis
      */
-    public function initialize($extensionName, $expireMinutes, $intervalBasedShifting)
+    public function initialize($extensionName, $expireMinutes, $intervalBasedShifting): void
     {
         $this->extensionName = $extensionName;
         $this->expireMinutes = $expireMinutes;
@@ -995,7 +995,7 @@ class SlotService implements SingletonInterface
      * @param Type $type Appointment Type to which the dateslot storage belongs to
      * @param Agenda $agenda The agenda to which the dateslot storage belongs to
      */
-    public function resetStorageObject(Type $type, Agenda $agenda)
+    public function resetStorageObject(Type $type, Agenda $agenda): void
     {
         $tags = [];
         //if the current type is exclusive, we only need to reset that one

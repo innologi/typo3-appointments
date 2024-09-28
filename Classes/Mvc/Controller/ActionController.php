@@ -116,27 +116,27 @@ class ActionController extends SettingsOverrideController
      */
     protected $extensionName = 'Appointments';
 
-    public function injectAgendaRepository(\Innologi\Appointments\Domain\Repository\AgendaRepository $agendaRepository)
+    public function injectAgendaRepository(\Innologi\Appointments\Domain\Repository\AgendaRepository $agendaRepository): void
     {
         $this->agendaRepository = $agendaRepository;
     }
 
-    public function injectAppointmentRepository(\Innologi\Appointments\Domain\Repository\AppointmentRepository $appointmentRepository)
+    public function injectAppointmentRepository(\Innologi\Appointments\Domain\Repository\AppointmentRepository $appointmentRepository): void
     {
         $this->appointmentRepository = $appointmentRepository;
     }
 
-    public function injectTypeRepository(\Innologi\Appointments\Domain\Repository\TypeRepository $typeRepository)
+    public function injectTypeRepository(\Innologi\Appointments\Domain\Repository\TypeRepository $typeRepository): void
     {
         $this->typeRepository = $typeRepository;
     }
 
-    public function injectUserService(\Innologi\Appointments\Service\UserService $userService)
+    public function injectUserService(\Innologi\Appointments\Service\UserService $userService): void
     {
         $this->userService = $userService;
     }
 
-    public function injectSlotService(\Innologi\Appointments\Domain\Service\SlotService $slotService)
+    public function injectSlotService(\Innologi\Appointments\Domain\Service\SlotService $slotService): void
     {
         $this->slotService = $slotService;
     }
@@ -203,7 +203,7 @@ class ActionController extends SettingsOverrideController
     protected function validateRequest(string $tokenArgument = 'stoken'): void
     {
         // @see \TYPO3\CMS\Extbase\Mvc\Controller\ActionController->forwardToReferringRequest()
-        $referringRequestArguments = $this->request->getInternalArguments()['__referrer'] ?? null;
+        $referringRequestArguments = $this->request->getAttribute('extbase')?->getInternalArgument('__referrer') ?? null;
         if (is_string($referringRequestArguments['@request'] ?? null)) {
             $referrerArray = json_decode($this->hashService->validateAndStripHmac($referringRequestArguments['@request']), true);
             $arguments = [];
@@ -214,7 +214,7 @@ class ActionController extends SettingsOverrideController
             if (!empty($replacedArguments)) {
                 $controllerName = (string) ($replacedArguments['@controller'] ?? 'Standard');
                 $objectType = strtolower((string) $controllerName);
-                if ($this->request->hasArgument($tokenArgument) && $this->request->hasArgument($objectType) && \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->validateToken($this->request->getArgument($tokenArgument), $controllerName, (string) ($replacedArguments['@action'] ?? 'index'), $this->request->getArgument($objectType)['__identity'] ?? '')) {
+                if ($this->request->hasArgument($tokenArgument) && $this->request->hasArgument($objectType) && \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('frontend')->validateToken($this->request->getArgument($tokenArgument), $controllerName, (string) ($replacedArguments['@action'] ?? 'index'), $this->request->getArgument($objectType)['__identity'] ?? '')) {
                     return;
                 }
             }

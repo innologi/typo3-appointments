@@ -75,7 +75,7 @@ class DateSlot extends AbstractSlot
     /**
      * Adds a TimeSlot
      */
-    public function addTimeSlot(TimeSlot $timeSlot)
+    public function addTimeSlot(TimeSlot $timeSlot): void
     {
         $this->timeSlots->attach($timeSlot);
     }
@@ -85,7 +85,7 @@ class DateSlot extends AbstractSlot
      *
      * @param \Innologi\Appointments\Domain\Model\TimeSlot $timeSlotToRemove The TimeSlot to be removed
      */
-    public function removeTimeSlot(TimeSlot $timeSlotToRemove)
+    public function removeTimeSlot(TimeSlot $timeSlotToRemove): void
     {
         $this->timeSlots->detach($timeSlotToRemove);
     }
@@ -103,7 +103,7 @@ class DateSlot extends AbstractSlot
     /**
      * Sets the timeSlots
      */
-    public function setTimeSlots(KeyObjectStorage $timeSlots)
+    public function setTimeSlots(KeyObjectStorage $timeSlots): void
     {
         $this->timeSlots = $timeSlots;
     }
@@ -113,7 +113,7 @@ class DateSlot extends AbstractSlot
      *
      * @param string $dayName
      */
-    public function setDayName($dayName)
+    public function setDayName($dayName): void
     {
         $this->dayName = $dayName;
     }

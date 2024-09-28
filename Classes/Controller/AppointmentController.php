@@ -53,7 +53,7 @@ class AppointmentController extends ActionController
     /**
      * Injects the Email Service
      */
-    public function injectEmailService(\Innologi\Appointments\Service\EmailService $emailService)
+    public function injectEmailService(\Innologi\Appointments\Service\EmailService $emailService): void
     {
         $emailService->setExtensionName($this->extensionName);
         $this->emailService = $emailService;

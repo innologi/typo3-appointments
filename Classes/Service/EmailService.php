@@ -78,7 +78,7 @@ class EmailService implements SingletonInterface
         protected UriBuilder $uriBuilder,
     ) {}
 
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
@@ -88,7 +88,7 @@ class EmailService implements SingletonInterface
      *
      * Used to access locallang files.
      */
-    public function setExtensionName(string $extensionName)
+    public function setExtensionName(string $extensionName): void
     {
         $this->extensionName = strtolower($extensionName);
     }

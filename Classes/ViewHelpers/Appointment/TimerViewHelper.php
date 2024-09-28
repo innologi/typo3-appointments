@@ -58,7 +58,7 @@ class TimerViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = true;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('appointment', Appointment::class, 'The appointment to show a timer for.', true);

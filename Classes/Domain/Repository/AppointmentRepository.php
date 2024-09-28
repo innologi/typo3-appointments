@@ -42,7 +42,7 @@ class AppointmentRepository extends Repository
      */
     protected $slotService;
 
-    public function injectSlotService(\Innologi\Appointments\Domain\Service\SlotService $slotService)
+    public function injectSlotService(\Innologi\Appointments\Domain\Service\SlotService $slotService): void
     {
         $this->slotService = $slotService;
     }
@@ -85,7 +85,7 @@ class AppointmentRepository extends Repository
 
         $result = $query->matching(
             $query->logicalAnd(
-                $constraints,
+                ...$constraints,
             ),
         )->setOrderings([
             'beginTime' => $descending ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING,
@@ -143,7 +143,7 @@ class AppointmentRepository extends Repository
 
         $result = $query->matching(
             $query->logicalAnd(
-                $constraint,
+                ...$constraint,
             ),
         )->setOrderings([
             'beginTime' => QueryInterface::ORDER_ASCENDING,
@@ -180,26 +180,26 @@ class AppointmentRepository extends Repository
             $query->logicalNot(
                 $query->equals('creation_progress', Appointment::EXPIRED),
             ),
-            $query->logicalOr([
-                $query->logicalAnd([ //looks for an overlap @ beginTime
+            $query->logicalOr(
+                $query->logicalAnd( //looks for an overlap @ beginTime
                     $query->lessThanOrEqual('beginTime', $beginTime),
-                    $query->logicalOr([ //ignores overlapping reserved blocks
+                    $query->logicalOr( //ignores overlapping reserved blocks
                         $query->greaterThan('endTime', $beginReserved),
                         $query->greaterThan('endReserved', $beginTime),
-                    ]),
-                ]),
-                $query->logicalAnd([ //looks for an overlap @ endTime
+                    ),
+                ),
+                $query->logicalAnd( //looks for an overlap @ endTime
                     $query->greaterThanOrEqual('endTime', $endTime),
-                    $query->logicalOr([ //ignores overlapping reserved blocks
+                    $query->logicalOr( //ignores overlapping reserved blocks
                         $query->lessThan('beginTime', $endReserved),
                         $query->lessThan('beginReserved', $endTime),
-                    ]),
-                ]),
-                $query->logicalAnd([ //looks for an overlap between beginTime & endTime
+                    ),
+                ),
+                $query->logicalAnd( //looks for an overlap between beginTime & endTime
                     $query->greaterThan('beginTime', $beginTime),
                     $query->lessThan('endTime', $endTime),
-                ]),
-            ]),
+                ),
+            ),
         ];
 
         //if exclusive availability, will only be influenced by appointments of the same type
@@ -210,7 +210,7 @@ class AppointmentRepository extends Repository
         }
 
         $result = $query->matching(
-            $query->logicalAnd($constraint),
+            $query->logicalAnd(...$constraint),
         )->execute()->toArray();
 
         return $result;
@@ -233,11 +233,11 @@ class AppointmentRepository extends Repository
 
         $query = $this->createQuery();
         $result = $query->matching(
-            $query->logicalAnd([
+            $query->logicalAnd(
                 $query->equals('agenda', $agenda),
                 $query->lessThanOrEqual('reservation_time', time() - ($expireMinutes * 60)),
                 $query->equals('creation_progress', Appointment::UNFINISHED),
-            ]),
+            ),
         )->execute()->toArray();
         return $result;
     }
@@ -255,10 +255,10 @@ class AppointmentRepository extends Repository
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(false);
         $result = $query->matching(
-            $query->logicalAnd([
+            $query->logicalAnd(
                 $query->equals('creation_progress', Appointment::EXPIRED),
                 $query->lessThanOrEqual('tstamp', time() - $age),
-            ]),
+            ),
         )->execute();
 
         return $result;
@@ -311,7 +311,7 @@ class AppointmentRepository extends Repository
     /**
      * Persists all changes manually.
      */
-    public function persistChanges()
+    public function persistChanges(): void
     {
         $this->persistenceManager->persistAll();
     }
@@ -321,7 +321,7 @@ class AppointmentRepository extends Repository
      *
      * @param object $object The object to add
      */
-    public function add($object)
+    public function add($object): void
     {
         parent::add($object);
         $this->persistChanges(); //because the only use add() sees requires persisting
@@ -334,7 +334,7 @@ class AppointmentRepository extends Repository
      * @param object $modifiedObject The modified object
      * @param boolean $resetStorageObject If set to FALSE, won't reset storage object automatically
      */
-    public function update($modifiedObject, $resetStorageObject = true)
+    public function update($modifiedObject, $resetStorageObject = true): void
     {
         parent::update($modifiedObject);
         if ($resetStorageObject) {
@@ -347,7 +347,7 @@ class AppointmentRepository extends Repository
      *
      * @param object $object The object to remove
      */
-    public function remove($object)
+    public function remove($object): void
     {
         parent::remove($object);
         $this->slotService->resetStorageObject($object->getType(), $object->getAgenda());

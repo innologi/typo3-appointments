@@ -210,7 +210,7 @@ class Appointment extends AbstractEntity
      *
      * @param integer $creationProgress
      */
-    public function setCreationProgress($creationProgress)
+    public function setCreationProgress($creationProgress): void
     {
         $this->creationProgress = $creationProgress;
         $address = $this->address;
@@ -237,7 +237,7 @@ class Appointment extends AbstractEntity
      *
      * @param integer $remainingSeconds
      */
-    public function setRemainingSeconds($remainingSeconds)
+    public function setRemainingSeconds($remainingSeconds): void
     {
         $this->remainingSeconds = $remainingSeconds;
     }
@@ -257,7 +257,7 @@ class Appointment extends AbstractEntity
      *
      * @param \DateTime $beginTime
      */
-    public function setBeginTime($beginTime)
+    public function setBeginTime($beginTime): void
     {
         $this->beginTime = $beginTime;
     }
@@ -277,7 +277,7 @@ class Appointment extends AbstractEntity
      *
      * @param \DateTime $endTime
      */
-    public function setEndTime($endTime)
+    public function setEndTime($endTime): void
     {
         $this->endTime = $endTime;
     }
@@ -297,7 +297,7 @@ class Appointment extends AbstractEntity
      *
      * @param \DateTime $beginReserved
      */
-    public function setBeginReserved($beginReserved)
+    public function setBeginReserved($beginReserved): void
     {
         $this->beginReserved = $beginReserved;
     }
@@ -317,7 +317,7 @@ class Appointment extends AbstractEntity
      *
      * @param \DateTime $endReserved
      */
-    public function setEndReserved($endReserved)
+    public function setEndReserved($endReserved): void
     {
         $this->endReserved = $endReserved;
     }
@@ -337,7 +337,7 @@ class Appointment extends AbstractEntity
      *
      * @param string $notes
      */
-    public function setNotes($notes)
+    public function setNotes($notes): void
     {
         $this->notes = $notes;
     }
@@ -357,7 +357,7 @@ class Appointment extends AbstractEntity
      *
      * @param string $notesSu
      */
-    public function setNotesSu($notesSu)
+    public function setNotesSu($notesSu): void
     {
         $this->notesSu = $notesSu;
     }
@@ -376,7 +376,7 @@ class Appointment extends AbstractEntity
     /**
      * Sets the type
      */
-    public function setType(Type $type)
+    public function setType(Type $type): void
     {
         $this->type = $type;
     }
@@ -384,7 +384,7 @@ class Appointment extends AbstractEntity
     /**
      * Adds a FormFieldValue
      */
-    public function addFormFieldValue(FormFieldValue $formFieldValue)
+    public function addFormFieldValue(FormFieldValue $formFieldValue): void
     {
         $this->formFieldValues->attach($formFieldValue);
     }
@@ -394,7 +394,7 @@ class Appointment extends AbstractEntity
      *
      * @param \Innologi\Appointments\Domain\Model\FormFieldValue $formFieldValueToRemove The FormFieldValue to be removed
      */
-    public function removeFormFieldValue(FormFieldValue $formFieldValueToRemove)
+    public function removeFormFieldValue(FormFieldValue $formFieldValueToRemove): void
     {
         $this->formFieldValues->detach($formFieldValueToRemove);
     }
@@ -412,7 +412,7 @@ class Appointment extends AbstractEntity
     /**
      * Sets the formFieldValues
      */
-    public function setFormFieldValues(ObjectStorage $formFieldValues)
+    public function setFormFieldValues(ObjectStorage $formFieldValues): void
     {
         $this->formFieldValues = $formFieldValues;
     }
@@ -435,7 +435,7 @@ class Appointment extends AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue> $formFieldValues
      */
-    public function setEmailFormFieldValues(ObjectStorage $formFieldValues)
+    public function setEmailFormFieldValues(ObjectStorage $formFieldValues): void
     {
         $this->emailFormFieldValues = new ObjectStorage();
         foreach ($formFieldValues as $formFieldValue) {
@@ -465,7 +465,7 @@ class Appointment extends AbstractEntity
     /**
      * Sets the address
      */
-    public function setAddress(Address $address)
+    public function setAddress(Address $address): void
     {
         $this->address = $address;
     }
@@ -484,7 +484,7 @@ class Appointment extends AbstractEntity
     /**
      * Sets the agenda
      */
-    public function setAgenda(Agenda $agenda)
+    public function setAgenda(Agenda $agenda): void
     {
         $this->agenda = $agenda;
     }
@@ -502,7 +502,7 @@ class Appointment extends AbstractEntity
     /**
      * Sets the feUser
      */
-    public function setFeUser(\Innologi\Appointments\Domain\Model\FrontendUser $feUser)
+    public function setFeUser(\Innologi\Appointments\Domain\Model\FrontendUser $feUser): void
     {
         $this->feUser = $feUser;
     }

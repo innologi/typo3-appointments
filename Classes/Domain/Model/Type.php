@@ -463,7 +463,7 @@ class Type extends AbstractEntity
      *
      * @param string $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -483,7 +483,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $superuserOnly
      */
-    public function setSuperuserOnly($superuserOnly)
+    public function setSuperuserOnly($superuserOnly): void
     {
         $this->superuserOnly = $superuserOnly;
     }
@@ -503,7 +503,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $exclusiveAvailability
      */
-    public function setExclusiveAvailability($exclusiveAvailability)
+    public function setExclusiveAvailability($exclusiveAvailability): void
     {
         $this->exclusiveAvailability = $exclusiveAvailability;
     }
@@ -523,7 +523,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $dontBlockTypes
      */
-    public function setDontBlockTypes($dontBlockTypes)
+    public function setDontBlockTypes($dontBlockTypes): void
     {
         $this->dontBlockTypes = $dontBlockTypes;
     }
@@ -543,7 +543,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $dontRestrictTypeCounts
      */
-    public function setDontRestrictTypeCounts($dontRestrictTypeCounts)
+    public function setDontRestrictTypeCounts($dontRestrictTypeCounts): void
     {
         $this->dontRestrictTypeCounts = $dontRestrictTypeCounts;
     }
@@ -563,7 +563,7 @@ class Type extends AbstractEntity
      *
      * @param integer $defaultDuration
      */
-    public function setDefaultDuration($defaultDuration)
+    public function setDefaultDuration($defaultDuration): void
     {
         $this->defaultDuration = $defaultDuration;
     }
@@ -583,7 +583,7 @@ class Type extends AbstractEntity
      *
      * @param string $startTimeMonday
      */
-    public function setStartTimeMonday($startTimeMonday)
+    public function setStartTimeMonday($startTimeMonday): void
     {
         $this->startTimeMonday = $startTimeMonday;
     }
@@ -603,7 +603,7 @@ class Type extends AbstractEntity
      *
      * @param string $startTimeTuesday
      */
-    public function setStartTimeTuesday($startTimeTuesday)
+    public function setStartTimeTuesday($startTimeTuesday): void
     {
         $this->startTimeTuesday = $startTimeTuesday;
     }
@@ -623,7 +623,7 @@ class Type extends AbstractEntity
      *
      * @param string $startTimeWednesday
      */
-    public function setStartTimeWednesday($startTimeWednesday)
+    public function setStartTimeWednesday($startTimeWednesday): void
     {
         $this->startTimeWednesday = $startTimeWednesday;
     }
@@ -643,7 +643,7 @@ class Type extends AbstractEntity
      *
      * @param string $startTimeThursday
      */
-    public function setStartTimeThursday($startTimeThursday)
+    public function setStartTimeThursday($startTimeThursday): void
     {
         $this->startTimeThursday = $startTimeThursday;
     }
@@ -663,7 +663,7 @@ class Type extends AbstractEntity
      *
      * @param string $startTimeFriday
      */
-    public function setStartTimeFriday($startTimeFriday)
+    public function setStartTimeFriday($startTimeFriday): void
     {
         $this->startTimeFriday = $startTimeFriday;
     }
@@ -683,7 +683,7 @@ class Type extends AbstractEntity
      *
      * @param string $startTimeSaturday
      */
-    public function setStartTimeSaturday($startTimeSaturday)
+    public function setStartTimeSaturday($startTimeSaturday): void
     {
         $this->startTimeSaturday = $startTimeSaturday;
     }
@@ -703,7 +703,7 @@ class Type extends AbstractEntity
      *
      * @param string $startTimeSunday
      */
-    public function setStartTimeSunday($startTimeSunday)
+    public function setStartTimeSunday($startTimeSunday): void
     {
         $this->startTimeSunday = $startTimeSunday;
     }
@@ -723,7 +723,7 @@ class Type extends AbstractEntity
      *
      * @param string $stopTimeMonday
      */
-    public function setStopTimeMonday($stopTimeMonday)
+    public function setStopTimeMonday($stopTimeMonday): void
     {
         $this->stopTimeMonday = $stopTimeMonday;
     }
@@ -743,7 +743,7 @@ class Type extends AbstractEntity
      *
      * @param string $stopTimeTuesday
      */
-    public function setStopTimeTuesday($stopTimeTuesday)
+    public function setStopTimeTuesday($stopTimeTuesday): void
     {
         $this->stopTimeTuesday = $stopTimeTuesday;
     }
@@ -763,7 +763,7 @@ class Type extends AbstractEntity
      *
      * @param string $stopTimeWednesday
      */
-    public function setStopTimeWednesday($stopTimeWednesday)
+    public function setStopTimeWednesday($stopTimeWednesday): void
     {
         $this->stopTimeWednesday = $stopTimeWednesday;
     }
@@ -783,7 +783,7 @@ class Type extends AbstractEntity
      *
      * @param string $stopTimeThursday
      */
-    public function setStopTimeThursday($stopTimeThursday)
+    public function setStopTimeThursday($stopTimeThursday): void
     {
         $this->stopTimeThursday = $stopTimeThursday;
     }
@@ -803,7 +803,7 @@ class Type extends AbstractEntity
      *
      * @param string $stopTimeFriday
      */
-    public function setStopTimeFriday($stopTimeFriday)
+    public function setStopTimeFriday($stopTimeFriday): void
     {
         $this->stopTimeFriday = $stopTimeFriday;
     }
@@ -823,7 +823,7 @@ class Type extends AbstractEntity
      *
      * @param string $stopTimeSaturday
      */
-    public function setStopTimeSaturday($stopTimeSaturday)
+    public function setStopTimeSaturday($stopTimeSaturday): void
     {
         $this->stopTimeSaturday = $stopTimeSaturday;
     }
@@ -843,7 +843,7 @@ class Type extends AbstractEntity
      *
      * @param string $stopTimeSunday
      */
-    public function setStopTimeSunday($stopTimeSunday)
+    public function setStopTimeSunday($stopTimeSunday): void
     {
         $this->stopTimeSunday = $stopTimeSunday;
     }
@@ -863,7 +863,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $excludeHolidays
      */
-    public function setExcludeHolidays($excludeHolidays)
+    public function setExcludeHolidays($excludeHolidays): void
     {
         $this->excludeHolidays = $excludeHolidays;
     }
@@ -893,7 +893,7 @@ class Type extends AbstractEntity
      *
      * @param integer $maxAmountMonday
      */
-    public function setMaxAmountMonday($maxAmountMonday)
+    public function setMaxAmountMonday($maxAmountMonday): void
     {
         $this->maxAmountMonday = $maxAmountMonday;
     }
@@ -913,7 +913,7 @@ class Type extends AbstractEntity
      *
      * @param integer $maxAmountTuesday
      */
-    public function setMaxAmountTuesday($maxAmountTuesday)
+    public function setMaxAmountTuesday($maxAmountTuesday): void
     {
         $this->maxAmountTuesday = $maxAmountTuesday;
     }
@@ -933,7 +933,7 @@ class Type extends AbstractEntity
      *
      * @param integer $maxAmountWednesday
      */
-    public function setMaxAmountWednesday($maxAmountWednesday)
+    public function setMaxAmountWednesday($maxAmountWednesday): void
     {
         $this->maxAmountWednesday = $maxAmountWednesday;
     }
@@ -953,7 +953,7 @@ class Type extends AbstractEntity
      *
      * @param integer $maxAmountThursday
      */
-    public function setMaxAmountThursday($maxAmountThursday)
+    public function setMaxAmountThursday($maxAmountThursday): void
     {
         $this->maxAmountThursday = $maxAmountThursday;
     }
@@ -973,7 +973,7 @@ class Type extends AbstractEntity
      *
      * @param integer $maxAmountFriday
      */
-    public function setMaxAmountFriday($maxAmountFriday)
+    public function setMaxAmountFriday($maxAmountFriday): void
     {
         $this->maxAmountFriday = $maxAmountFriday;
     }
@@ -993,7 +993,7 @@ class Type extends AbstractEntity
      *
      * @param integer $maxAmountSaturday
      */
-    public function setMaxAmountSaturday($maxAmountSaturday)
+    public function setMaxAmountSaturday($maxAmountSaturday): void
     {
         $this->maxAmountSaturday = $maxAmountSaturday;
     }
@@ -1013,7 +1013,7 @@ class Type extends AbstractEntity
      *
      * @param integer $maxAmountSunday
      */
-    public function setMaxAmountSunday($maxAmountSunday)
+    public function setMaxAmountSunday($maxAmountSunday): void
     {
         $this->maxAmountSunday = $maxAmountSunday;
     }
@@ -1033,7 +1033,7 @@ class Type extends AbstractEntity
      *
      * @param integer $minuteIntervalMonday
      */
-    public function setMinuteIntervalMonday($minuteIntervalMonday)
+    public function setMinuteIntervalMonday($minuteIntervalMonday): void
     {
         $this->minuteIntervalMonday = $minuteIntervalMonday;
     }
@@ -1053,7 +1053,7 @@ class Type extends AbstractEntity
      *
      * @param integer $minuteIntervalTuesday
      */
-    public function setMinuteIntervalTuesday($minuteIntervalTuesday)
+    public function setMinuteIntervalTuesday($minuteIntervalTuesday): void
     {
         $this->minuteIntervalTuesday = $minuteIntervalTuesday;
     }
@@ -1073,7 +1073,7 @@ class Type extends AbstractEntity
      *
      * @param integer $minuteIntervalWednesday
      */
-    public function setMinuteIntervalWednesday($minuteIntervalWednesday)
+    public function setMinuteIntervalWednesday($minuteIntervalWednesday): void
     {
         $this->minuteIntervalWednesday = $minuteIntervalWednesday;
     }
@@ -1093,7 +1093,7 @@ class Type extends AbstractEntity
      *
      * @param integer $minuteIntervalThursday
      */
-    public function setMinuteIntervalThursday($minuteIntervalThursday)
+    public function setMinuteIntervalThursday($minuteIntervalThursday): void
     {
         $this->minuteIntervalThursday = $minuteIntervalThursday;
     }
@@ -1113,7 +1113,7 @@ class Type extends AbstractEntity
      *
      * @param integer $minuteIntervalFriday
      */
-    public function setMinuteIntervalFriday($minuteIntervalFriday)
+    public function setMinuteIntervalFriday($minuteIntervalFriday): void
     {
         $this->minuteIntervalFriday = $minuteIntervalFriday;
     }
@@ -1133,7 +1133,7 @@ class Type extends AbstractEntity
      *
      * @param integer $minuteIntervalSaturday
      */
-    public function setMinuteIntervalSaturday($minuteIntervalSaturday)
+    public function setMinuteIntervalSaturday($minuteIntervalSaturday): void
     {
         $this->minuteIntervalSaturday = $minuteIntervalSaturday;
     }
@@ -1153,7 +1153,7 @@ class Type extends AbstractEntity
      *
      * @param integer $minuteIntervalSunday
      */
-    public function setMinuteIntervalSunday($minuteIntervalSunday)
+    public function setMinuteIntervalSunday($minuteIntervalSunday): void
     {
         $this->minuteIntervalSunday = $minuteIntervalSunday;
     }
@@ -1173,7 +1173,7 @@ class Type extends AbstractEntity
      *
      * @param integer $maxAmountPerVarDays
      */
-    public function setMaxAmountPerVarDays($maxAmountPerVarDays)
+    public function setMaxAmountPerVarDays($maxAmountPerVarDays): void
     {
         $this->maxAmountPerVarDays = $maxAmountPerVarDays;
     }
@@ -1193,7 +1193,7 @@ class Type extends AbstractEntity
      *
      * @param integer $perVarDays
      */
-    public function setPerVarDays($perVarDays)
+    public function setPerVarDays($perVarDays): void
     {
         $this->perVarDays = $perVarDays;
     }
@@ -1213,7 +1213,7 @@ class Type extends AbstractEntity
      *
      * @param integer $perVarDaysInterval
      */
-    public function setPerVarDaysInterval($perVarDaysInterval)
+    public function setPerVarDaysInterval($perVarDaysInterval): void
     {
         $this->perVarDaysInterval = $perVarDaysInterval;
     }
@@ -1233,7 +1233,7 @@ class Type extends AbstractEntity
      *
      * @param integer $betweenMinutes
      */
-    public function setBetweenMinutes($betweenMinutes)
+    public function setBetweenMinutes($betweenMinutes): void
     {
         $this->betweenMinutes = $betweenMinutes;
     }
@@ -1253,7 +1253,7 @@ class Type extends AbstractEntity
      *
      * @param integer $hoursMutable
      */
-    public function setHoursMutable($hoursMutable)
+    public function setHoursMutable($hoursMutable): void
     {
         $this->hoursMutable = $hoursMutable;
     }
@@ -1273,7 +1273,7 @@ class Type extends AbstractEntity
      *
      * @param integer $blockedHours
      */
-    public function setBlockedHours($blockedHours)
+    public function setBlockedHours($blockedHours): void
     {
         $this->blockedHours = $blockedHours;
     }
@@ -1293,7 +1293,7 @@ class Type extends AbstractEntity
      *
      * @param integer $blockedHoursWorkdays
      */
-    public function setBlockedHoursWorkdays($blockedHoursWorkdays)
+    public function setBlockedHoursWorkdays($blockedHoursWorkdays): void
     {
         $this->blockedHoursWorkdays = $blockedHoursWorkdays;
     }
@@ -1313,7 +1313,7 @@ class Type extends AbstractEntity
      *
      * @param integer $maxDaysForward
      */
-    public function setMaxDaysForward($maxDaysForward)
+    public function setMaxDaysForward($maxDaysForward): void
     {
         $this->maxDaysForward = $maxDaysForward;
     }
@@ -1333,7 +1333,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $addressDisable
      */
-    public function setAddressDisable($addressDisable)
+    public function setAddressDisable($addressDisable): void
     {
         $this->addressDisable = $addressDisable;
     }
@@ -1353,7 +1353,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $addressEnableName
      */
-    public function setAddressEnableName($addressEnableName)
+    public function setAddressEnableName($addressEnableName): void
     {
         $this->addressEnableName = $addressEnableName;
     }
@@ -1373,7 +1373,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $addressEnableGender
      */
-    public function setAddressEnableGender($addressEnableGender)
+    public function setAddressEnableGender($addressEnableGender): void
     {
         $this->addressEnableGender = $addressEnableGender;
     }
@@ -1393,7 +1393,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $addressEnableBirthday
      */
-    public function setAddressEnableBirthday($addressEnableBirthday)
+    public function setAddressEnableBirthday($addressEnableBirthday): void
     {
         $this->addressEnableBirthday = $addressEnableBirthday;
     }
@@ -1413,7 +1413,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $addressEnableAddress
      */
-    public function setAddressEnableAddress($addressEnableAddress)
+    public function setAddressEnableAddress($addressEnableAddress): void
     {
         $this->addressEnableAddress = $addressEnableAddress;
     }
@@ -1433,7 +1433,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $addressEnableSecurity
      */
-    public function setAddressEnableSecurity($addressEnableSecurity)
+    public function setAddressEnableSecurity($addressEnableSecurity): void
     {
         $this->addressEnableSecurity = $addressEnableSecurity;
     }
@@ -1453,7 +1453,7 @@ class Type extends AbstractEntity
      *
      * @param boolean $addressEnableEmail
      */
-    public function setAddressEnableEmail($addressEnableEmail)
+    public function setAddressEnableEmail($addressEnableEmail): void
     {
         $this->addressEnableEmail = $addressEnableEmail;
     }
@@ -1461,7 +1461,7 @@ class Type extends AbstractEntity
     /**
      * Adds a FormField
      */
-    public function addFormField(FormField $formField)
+    public function addFormField(FormField $formField): void
     {
         $this->formField->attach($formField);
     }
@@ -1471,7 +1471,7 @@ class Type extends AbstractEntity
      *
      * @param \Innologi\Appointments\Domain\Model\FormField $formFieldToRemove The FormField to be removed
      */
-    public function removeFormField(FormField $formFieldToRemove)
+    public function removeFormField(FormField $formFieldToRemove): void
     {
         $this->formField->detach($formFieldToRemove);
     }
@@ -1489,7 +1489,7 @@ class Type extends AbstractEntity
     /**
      * Sets the formFields
      */
-    public function setFormField(ObjectStorage $formFields)
+    public function setFormField(ObjectStorage $formFields): void
     {
         $this->formFields = $formFields;
     }

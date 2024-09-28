@@ -45,7 +45,7 @@ class IsExpiredViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('appointment', Appointment::class, 'The appointment to check if it is expired.', true);

@@ -56,11 +56,10 @@ class SettingsOverrideController extends ErrorOnDebugController
      *   selectFields: flexform field value contains field names which are taken from TypoScript
      * }
      */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
-        $this->configurationManager = $configurationManager;
+        parent::injectConfigurationManager($configurationManager);
 
-        $settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
         $ts = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
         $extensionName = strtolower($this->extensionName);
@@ -72,8 +71,8 @@ class SettingsOverrideController extends ErrorOnDebugController
             if (isset($tsOverride['checkFields'])) {
                 $fields = GeneralUtility::trimExplode(',', $tsOverride['checkFields'], 1);
                 foreach ($fields as $field) {
-                    if (isset($settings[$field]) && $settings[$field] === '--TYPOSCRIPT--') {
-                        $settings[$field] = $tsSettings[$field] ?? '';
+                    if (isset($this->settings[$field]) && $this->settings[$field] === '--TYPOSCRIPT--') {
+                        $this->settings[$field] = $tsSettings[$field] ?? '';
                     }
                 }
             }
@@ -82,17 +81,15 @@ class SettingsOverrideController extends ErrorOnDebugController
             if (isset($tsOverride['selectFields'])) {
                 $selectFields = GeneralUtility::trimExplode(',', $tsOverride['selectFields'], 1);
                 foreach ($selectFields as $selectField) {
-                    if (isset($settings[$selectField][0]) && $settings[$selectField] !== '0') {
-                        $fields = GeneralUtility::trimExplode(';', $settings[$selectField], 1);
+                    if (isset($this->settings[$selectField][0]) && $this->settings[$selectField] !== '0') {
+                        $fields = GeneralUtility::trimExplode(';', $this->settings[$selectField], 1);
                         foreach ($fields as $field) {
                             #@LOW make this work as overrule-setting, not overwrite
-                            $settings[$field] = $tsSettings[$field] ?? '';
+                            $this->settings[$field] = $tsSettings[$field] ?? '';
                         }
                     }
                 }
             }
         }
-
-        $this->settings = $settings;
     }
 }

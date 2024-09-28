@@ -135,7 +135,7 @@ class Address extends AbstractEntity
      *
      * @param string $firstName
      */
-    public function setFirstName($firstName)
+    public function setFirstName($firstName): void
     {
         $this->firstName = $firstName;
     }
@@ -155,7 +155,7 @@ class Address extends AbstractEntity
      *
      * @param string $middleName
      */
-    public function setMiddleName($middleName)
+    public function setMiddleName($middleName): void
     {
         $this->middleName = $middleName;
     }
@@ -175,7 +175,7 @@ class Address extends AbstractEntity
      *
      * @param string $lastName
      */
-    public function setLastName($lastName)
+    public function setLastName($lastName): void
     {
         $this->lastName = $lastName;
     }
@@ -196,7 +196,7 @@ class Address extends AbstractEntity
      *
      * @param string $name
      */
-    public function setName($name = null)
+    public function setName($name = null): void
     {
         $name = $this->firstName . ' ' . $this->middleName . ' ' . $this->lastName;
         //clean up in case of any missing values
@@ -218,7 +218,7 @@ class Address extends AbstractEntity
      *
      * @param string $gender
      */
-    public function setGender($gender)
+    public function setGender($gender): void
     {
         $this->gender = $gender;
     }
@@ -238,7 +238,7 @@ class Address extends AbstractEntity
      *
      * @param \DateTime $birthday
      */
-    public function setBirthday($birthday)
+    public function setBirthday($birthday): void
     {
         $this->birthday = $birthday;
     }
@@ -258,7 +258,7 @@ class Address extends AbstractEntity
      *
      * @param string $email
      */
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
@@ -278,7 +278,7 @@ class Address extends AbstractEntity
      *
      * @param string $address
      */
-    public function setAddress($address)
+    public function setAddress($address): void
     {
         $this->address = $address;
     }
@@ -298,7 +298,7 @@ class Address extends AbstractEntity
      *
      * @param string $zip
      */
-    public function setZip($zip)
+    public function setZip($zip): void
     {
         $this->zip = $zip;
     }
@@ -318,7 +318,7 @@ class Address extends AbstractEntity
      *
      * @param string $city
      */
-    public function setCity($city)
+    public function setCity($city): void
     {
         $this->city = $city;
     }
@@ -338,7 +338,7 @@ class Address extends AbstractEntity
      *
      * @param string $socialSecurityNumber
      */
-    public function setSocialSecurityNumber($socialSecurityNumber)
+    public function setSocialSecurityNumber($socialSecurityNumber): void
     {
         $this->socialSecurityNumber = $socialSecurityNumber;
     }
@@ -358,7 +358,7 @@ class Address extends AbstractEntity
      *
      * @param integer $creationProgress
      */
-    public function setCreationProgress($creationProgress)
+    public function setCreationProgress($creationProgress): void
     {
         $this->creationProgress = $creationProgress;
     }

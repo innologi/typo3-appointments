@@ -27,6 +27,7 @@ namespace Innologi\Appointments\Domain\Validator;
  ***************************************************************/
 use Innologi\Appointments\Domain\Model\{FormField, FormFieldValue};
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
@@ -85,12 +86,12 @@ class VariableValidator extends AbstractValidator
      * the error messages object which occurred.
      *
      * @param mixed $value The value that should be validated
-     * @return \TYPO3\CMS\Extbase\Error\Result
+     * @return Result
      * @api
      */
-    public function validate($value)
+    public function validate($value): Result
     {
-        $this->result = new \TYPO3\CMS\Extbase\Error\Result();
+        $this->result = new Result();
         //if ($this->acceptsEmptyValues === false || $this->isEmpty($value) === false) {
         $this->isValid($value);
         //}
@@ -102,7 +103,7 @@ class VariableValidator extends AbstractValidator
      *
      * @param mixed $formFieldValue The object instance to validate
      */
-    protected function isValid($formFieldValue)
+    protected function isValid($formFieldValue): void
     {
         if ($formFieldValue instanceof FormFieldValue) {
             $this->validateValue($formFieldValue->getValue(), $formFieldValue->getFormField());
