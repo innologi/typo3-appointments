@@ -59,9 +59,3 @@ defined('TYPO3') or die();
 #@TODO default templates aren't tableless
 #@LOW what about labelless edit/delete buttons? -->
 #@TODO use data attributes instead in frontend, once I can go HTML5-only
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_appointment');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_agenda');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_type');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_formfield');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_appointments_domain_model_formfieldvalue');

@@ -22,6 +22,9 @@ return [
             'endtime' => 'endtime',
             'tx_appointments_creation_progress' => 'creation_progress', #@TODO add to enable fields with hook $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns']
         ],
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
         'iconfile' => 'EXT:appointments/Resources/Public/Icons/tx_appointments_domain_model_appointment.gif',
     ],
     'types' => [

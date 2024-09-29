@@ -45,6 +45,9 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
         'iconfile' => 'EXT:appointments/Resources/Public/Icons/tx_appointments_domain_model_type.gif',
     ],
     'types' => [
