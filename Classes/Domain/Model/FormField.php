@@ -60,16 +60,16 @@ class FormField extends AbstractEntity
      * Field title
      *
      * @var string
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\Validate(['validator' => 'NotEmpty'])]
     protected $title;
 
     /**
      * Field label
      *
      * @var string
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\Validate(['validator' => 'NotEmpty'])]
     protected $label = '';
 
     /**
@@ -88,32 +88,32 @@ class FormField extends AbstractEntity
 
     /**
      * @var array
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Transient]
     protected $validationTypesArray;
 
     /**
      * Is date field?
      *
      * @var boolean
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Transient]
     protected $isDate;
 
     /**
      * Is time related?
      *
      * @var boolean
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Transient]
     protected $isTimeRelated;
 
     /**
      * Field fieldType: boolean, selection, textsmall or textlarge
      *
      * @var integer
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\Validate(['validator' => 'NotEmpty'])]
     protected $fieldType;
 
     /**
@@ -128,8 +128,8 @@ class FormField extends AbstractEntity
      * formatted as array
      *
      * @var array
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Transient]
     protected $choicesArray = null;
 
     /**

@@ -164,8 +164,8 @@ class AppointmentController extends ActionController
      * Certain conditions get to show more data (i.e. being superuser and/or owner)
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to show
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\IgnoreValidation(['argumentName' => 'appointment'])]
     public function showAction(Appointment $appointment): ResponseInterface
     {
         // limited rights by default
@@ -204,8 +204,8 @@ class AppointmentController extends ActionController
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
      * @param string $dateFirst The timestamp that should be set before a type was already chosen
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\IgnoreValidation(['argumentName' => 'appointment'])]
     public function new1Action(Appointment $appointment = null, $dateFirst = null): ResponseInterface
     {
         // find types
@@ -265,8 +265,8 @@ class AppointmentController extends ActionController
      * and displays a timer for the timeslot reservation.
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\IgnoreValidation(['argumentName' => 'appointment'])]
     public function new2Action(Appointment $appointment): ResponseInterface
     {
         // limit the available types by the already chosen timeslot
@@ -300,8 +300,8 @@ class AppointmentController extends ActionController
      * and displays a timer for the timeslot reservation.
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\IgnoreValidation(['argumentName' => 'appointment'])]
     public function simpleProcessNewAction(Appointment $appointment): ResponseInterface
     {
         $this->validateMutateAttempt($appointment);
@@ -321,8 +321,8 @@ class AppointmentController extends ActionController
      * the appropriate action.
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment that's being created
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\IgnoreValidation(['argumentName' => 'appointment'])]
     public function processNewAction(Appointment $appointment): ResponseInterface
     {
         $arguments = [];
@@ -396,8 +396,8 @@ class AppointmentController extends ActionController
      * now the cleanup task will prevent excessive time-differences over firstAvailableTime.
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to create
-     * @TYPO3\CMS\Extbase\Annotation\Validate(param="appointment", validator="Innologi\Appointments\Domain\Validator\AppointmentValidator")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\Validate(['param' => 'appointment', 'validator' => \Innologi\Appointments\Domain\Validator\AppointmentValidator::class])]
     public function createAction(Appointment $appointment): ResponseInterface
     {
         $timeFields = $this->calculateTimes($appointment); // times can be influenced by formfields
@@ -435,8 +435,8 @@ class AppointmentController extends ActionController
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to edit
      * @param string $changedDate Changed date
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\IgnoreValidation(['argumentName' => 'appointment'])]
     public function editAction(Appointment $appointment, $changedDate = null): ResponseInterface
     {
         $this->validateMutateAttempt($appointment);
@@ -469,8 +469,8 @@ class AppointmentController extends ActionController
      * action update
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to update
-     * @TYPO3\CMS\Extbase\Annotation\Validate(param="appointment", validator="Innologi\Appointments\Domain\Validator\AppointmentValidator")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\Validate(['param' => 'appointment', 'validator' => \Innologi\Appointments\Domain\Validator\AppointmentValidator::class])]
     public function updateAction(Appointment $appointment): ResponseInterface
     {
         $this->validateMutateAttempt($appointment);
@@ -500,8 +500,8 @@ class AppointmentController extends ActionController
      * action delete
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment to delete
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\IgnoreValidation(['argumentName' => 'appointment'])]
     public function deleteAction(Appointment $appointment): ResponseInterface
     {
         $this->validateMutateAttempt($appointment);
@@ -521,8 +521,8 @@ class AppointmentController extends ActionController
      * When an unfinished appointment is started, one is allowed to free up the chosen timeslot.
      *
      * @param \Innologi\Appointments\Domain\Model\Appointment $appointment The appointment's time to free up
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("appointment")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\IgnoreValidation(['argumentName' => 'appointment'])]
     public function freeAction(Appointment $appointment): ResponseInterface
     {
         // set it to expired to free up the timeslot, but still pass along the appointment so that it may be reconstituted in the same session

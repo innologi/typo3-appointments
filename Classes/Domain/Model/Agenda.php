@@ -55,16 +55,16 @@ class Agenda extends AbstractEntity
      * Array of the holiday dates, with the holidays as key
      *
      * @var array
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Transient]
     protected $holidayArray;
 
     /**
      * Types
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Type>
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Lazy]
     protected $types;
 
     #@FIX _perhaps we do need different storages for the types, or subTypes .. storing their status in the type themselves and relying on TYPO3's clipboard to make copy's and create the same appointment types with a different name and status is way redundant and not flexible
@@ -101,8 +101,8 @@ class Agenda extends AbstractEntity
      * Emails a confirmation on every scheduled appointment to an address
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Address>
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Lazy]
     protected $emailAddress;
 
     /**
@@ -116,8 +116,8 @@ class Agenda extends AbstractEntity
      * Emails a calendar invitation on every scheduled appointment to an address
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\Address>
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Lazy]
     protected $calendarInviteAddress;
 
     /**

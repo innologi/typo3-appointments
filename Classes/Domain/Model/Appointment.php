@@ -58,17 +58,17 @@ class Appointment extends AbstractEntity
      * Remaining seconds on chosen timeslot
      *
      * @var integer
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Transient]
     protected $remainingSeconds = null;
 
     /**
      * Start time
      *
      * @var \DateTime
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
-     * @TYPO3\CMS\Extbase\Annotation\Validate("DateTime")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\Validate(['validator' => 'NotEmpty'])]
+    #[\TYPO3\CMS\Extbase\Annotation\Validate(['validator' => 'DateTime'])]
     protected $beginTime;
 
     /**
@@ -110,9 +110,9 @@ class Appointment extends AbstractEntity
      * Type which this Appointment belongs to
      *
      * @var \Innologi\Appointments\Domain\Model\Type
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
+    #[\TYPO3\CMS\Extbase\Annotation\Validate(['validator' => 'NotEmpty'])]
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Lazy]
     protected $type;
 
     /**
@@ -122,17 +122,17 @@ class Appointment extends AbstractEntity
      * upon changing content via parentObj. But doesn't seem to be an issue on T3v8.
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Cascade(['value' => 'remove'])]
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Lazy]
     protected $formFieldValues;
 
     /**
      * FormFieldValues that are set as sending-email-address
      *
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Innologi\Appointments\Domain\Model\FormFieldValue>
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Transient]
     protected $emailFormFieldValues;
 
     /**
@@ -141,25 +141,25 @@ class Appointment extends AbstractEntity
      * Validation is done through AppointmentValidator
      *
      * @var \Innologi\Appointments\Domain\Model\Address
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Cascade(['value' => 'remove'])]
     protected $address;
 
     /**
      * User who created this appointment
      *
      * @var \Innologi\Appointments\Domain\Model\FrontendUser
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Lazy]
     protected $feUser;
 
     /**
      * Agenda in which this appointment was made
      *
      * @var \Innologi\Appointments\Domain\Model\Agenda
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
+    #[\TYPO3\CMS\Extbase\Annotation\Validate(['validator' => 'NotEmpty'])]
+    #[\TYPO3\CMS\Extbase\Annotation\ORM\Lazy]
     protected $agenda;
 
     /**
