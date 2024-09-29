@@ -136,7 +136,7 @@ return [
                 'size' => 12,
                 'checkbox' => 1,
                 'default' => time(),
-                'eval' => 'required',
+                'required' => true,
             ],
         ],
         'end_time' => [
@@ -146,7 +146,7 @@ return [
                 'type' => 'datetime',
                 'size' => 12,
                 'checkbox' => 1,
-                'eval' => 'required',
+                'required' => true,
                 #'default' => time(),
                 #'readOnly' => 1
             ],
@@ -158,7 +158,7 @@ return [
                 'type' => 'datetime',
                 'size' => 12,
                 'checkbox' => 1,
-                'eval' => 'required',
+                'required' => true,
                 #'default' => time(),
                 #'readOnly' => 1
             ],
@@ -170,7 +170,7 @@ return [
                 'type' => 'datetime',
                 'size' => 12,
                 'checkbox' => 1,
-                'eval' => 'required',
+                'required' => true,
                 #'default' => time(),
                 #'readOnly' => 1
             ],

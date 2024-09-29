@@ -110,7 +110,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
+                'required' => true,
             ],
         ],
         'label' => [
@@ -120,7 +121,8 @@ return [
                 'type' => 'text',
                 'cols' => 48,
                 'rows' => 2,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
+                'required' => true,
             ],
         ],
         'csh' => [

@@ -24,7 +24,7 @@ $appointments_type_configDefDur = $appointments_type_configMaxAmount;
 $appointments_type_configMinInt = $appointments_type_configDefDur;
 $appointments_type_configMinInt['range']['lower'] = 1;
 $appointments_type_configMinInt['default'] = 15;
-$appointments_type_configMinInt['eval'] .= ',required';
+$appointments_type_configMinInt['required'] = true;
 
 return [
     'ctrl' => [
@@ -192,7 +192,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
+                'required' => true,
             ],
         ],
         'superuser_only' => [
