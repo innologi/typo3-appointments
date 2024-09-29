@@ -87,9 +87,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
+                'type' => 'datetime',
                 'default' => 0,
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
@@ -100,9 +98,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
+                'type' => 'datetime',
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
@@ -125,10 +121,8 @@ return [
             'exclude' => 1,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.reservation_time',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 12,
-                'eval' => 'datetime',
                 'checkbox' => 1,
                 'default' => time(),
                 'readOnly' => 1,
@@ -138,23 +132,21 @@ return [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.begin_time',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 12,
-                'eval' => 'datetime,required',
                 'checkbox' => 1,
                 'default' => time(),
+                'eval' => 'required',
             ],
         ],
         'end_time' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.end_time',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 12,
-                'eval' => 'datetime,required',
                 'checkbox' => 1,
+                'eval' => 'required',
                 #'default' => time(),
                 #'readOnly' => 1
             ],
@@ -163,11 +155,10 @@ return [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.begin_reserved',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 12,
-                'eval' => 'datetime,required',
                 'checkbox' => 1,
+                'eval' => 'required',
                 #'default' => time(),
                 #'readOnly' => 1
             ],
@@ -176,11 +167,10 @@ return [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.end_reserved',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 12,
-                'eval' => 'datetime,required',
                 'checkbox' => 1,
+                'eval' => 'required',
                 #'default' => time(),
                 #'readOnly' => 1
             ],

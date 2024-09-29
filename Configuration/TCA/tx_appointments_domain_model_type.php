@@ -12,14 +12,13 @@ $appointments_type_configStartTime = [
 $appointments_type_configStopTime = $appointments_type_configStartTime;
 $appointments_type_configStopTime['default'] = '20:00';
 $appointments_type_configMaxAmount = [
-    'type' => 'input',
+    'type' => 'number',
     'size' => 4,
     'max' => 4,
     'range' => [
         'lower' => 0,
         'upper' => 1440,
     ],
-    'eval' => 'int',
 ];
 $appointments_type_configDefDur = $appointments_type_configMaxAmount;
 $appointments_type_configMinInt = $appointments_type_configDefDur;
@@ -166,9 +165,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
+                'type' => 'datetime',
                 'default' => 0,
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
@@ -179,9 +176,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
+                'type' => 'datetime',
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
@@ -385,87 +380,79 @@ return [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type.max_amount_per_var_days',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 5,
                 'max' => 5,
                 'range' => [
                     'lower' => 0,
                     'upper' => 10080,
                 ],
-                'eval' => 'int',
             ],
         ],
         'per_var_days' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type.per_var_days',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 4,
                 'max' => 1,
                 'range' => [
                     'lower' => 0,
                     'upper' => 7,
                 ],
-                'eval' => 'int',
             ],
         ],
         'per_var_days_interval' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type.per_var_days_interval',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 4,
                 'max' => 2,
                 'range' => [
                     'lower' => 0,
                     'upper' => 24,
                 ],
-                'eval' => 'int',
             ],
         ],
         'between_minutes' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type.between_minutes',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 4,
-                'eval' => 'int',
             ],
         ],
         'hours_mutable' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type.hours_mutable',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 4,
-                'eval' => 'int',
             ],
         ],
         'blocked_hours' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type.blocked_hours',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 4,
-                'eval' => 'int',
             ],
         ],
         'blocked_hours_workdays' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type.blocked_hours_workdays',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 4,
-                'eval' => 'int',
             ],
         ],
         'max_days_forward' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_type.max_days_forward',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 4,
-                'eval' => 'int',
             ],
         ],
         'form_fields' => [
