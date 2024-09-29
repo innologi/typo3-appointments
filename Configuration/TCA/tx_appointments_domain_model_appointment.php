@@ -8,7 +8,6 @@ return [
         'label' => 'begin_time',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'dividers2tabs' => true,
         'default_sortby' => 'ORDER BY begin_time DESC',
         'versioningWS' => true,
