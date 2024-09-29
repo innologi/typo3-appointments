@@ -33,6 +33,7 @@ use Innologi\Appointments\Utility\GeneralUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -70,7 +71,7 @@ class AppointmentController extends ActionController
     protected function validateMutateAttempt(Appointment $appointment)
     {
         if (!($this->feUser->getUid() === $appointment->getFeUser()->getUid() || $this->userService->isInGroup($this->settings['suGroup']))) {
-            $this->addFlashMessage(LocalizationUtility::translate('tx_appointments_list.no_mutate', $this->extensionName), '', FlashMessage::ERROR, true);
+            $this->addFlashMessage(LocalizationUtility::translate('tx_appointments_list.no_mutate', $this->extensionName), '', ContextualFeedbackSeverity::ERROR, true);
             throw new EarlyResponseThrowable($this->redirect('list'));
         }
     }
@@ -223,7 +224,7 @@ class AppointmentController extends ActionController
                 // no types available on chosen time, so no appointments either.
                 // the condition also functions as a check for a valid dateFirst
                 $flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_create_no_types', $this->extensionName);
-                $this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
+                $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::ERROR);
                 // $appointment == NULL
             }
         }
@@ -353,7 +354,7 @@ class AppointmentController extends ActionController
                     } else {
                         // messages for the same timeslot again (refresh)
                         $flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_timerrefresh', $this->extensionName);
-                        $this->addFlashMessage($flashMessage, '', FlashMessage::INFO);
+                        $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::INFO);
                     }
                     $appointment->setCreationProgress(Appointment::UNFINISHED);
                 }
@@ -365,12 +366,12 @@ class AppointmentController extends ActionController
                 $freeSlotInMinutes = (int) $this->settings['freeSlotInMinutes']; # @LOW is 0 supported everywhere? it should be, but I think I left a <1 check somewhere. Also timer messages should react to 0
                 // message for a new timeslot
                 $flashMessage = str_replace('$1', $freeSlotInMinutes, LocalizationUtility::translate('tx_appointments_list.appointment_timerstart', $this->extensionName));
-                $this->addFlashMessage($flashMessage, '', FlashMessage::INFO);
+                $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::INFO);
             }
         } else {
             $action = 'new1'; // if a timeslot is not allowed, we'll need to force the user to pick a new one
             $flashMessage = LocalizationUtility::translate('tx_appointments_list.timeslot_not_allowed', $this->extensionName);
-            $this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
+            $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::ERROR);
 
             // not adding appointment as argument prevents a uriBuilder exception @ redirect() if appointment wasn't persisted yet..
             if (!$appointment->_isNew()) { // .. but since we're not redirecting if this condition returns TRUE, there's no need for it here anyway
@@ -417,7 +418,7 @@ class AppointmentController extends ActionController
         $this->appointmentRepository->update($appointment);
 
         $flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_create_success', $this->extensionName);
-        $this->addFlashMessage($flashMessage, '', FlashMessage::OK);
+        $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::OK);
 
         $this->performMailingActions('create', $appointment);
 
@@ -486,7 +487,7 @@ class AppointmentController extends ActionController
 
         $this->appointmentRepository->update($appointment);
         $flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_update_success', $this->extensionName);
-        $this->addFlashMessage($flashMessage, '', FlashMessage::OK);
+        $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::OK);
 
         $this->performMailingActions('update', $appointment);
 
@@ -507,7 +508,7 @@ class AppointmentController extends ActionController
 
         $this->appointmentRepository->remove($appointment);
         $flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_delete_success', $this->extensionName);
-        $this->addFlashMessage($flashMessage, '', FlashMessage::OK);
+        $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::OK);
 
         $this->performMailingActions('delete', $appointment);
 
@@ -529,7 +530,7 @@ class AppointmentController extends ActionController
         $this->appointmentRepository->update($appointment);
 
         $flashMessage = LocalizationUtility::translate('tx_appointments_list.appointment_free_success', $this->extensionName);
-        $this->addFlashMessage($flashMessage, '', FlashMessage::INFO);
+        $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::INFO);
 
         $arguments = [
             'appointment' => $appointment,
@@ -671,14 +672,14 @@ class AppointmentController extends ActionController
         if ($appointment->getCreationProgress() === Appointment::UNFINISHED) {
             // we use HTML in this flash message, but we'd need a custom VH which I'm not going to do for this single case, so:
             $messages = [
-                \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlashMessage::class, LocalizationUtility::translate('tx_appointments_list.appointment_timer', $this->extensionName), LocalizationUtility::translate('tx_appointments_list.appointment_timer_header', $this->extensionName), FlashMessage::INFO, true),
+                \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlashMessage::class, LocalizationUtility::translate('tx_appointments_list.appointment_timer', $this->extensionName), LocalizationUtility::translate('tx_appointments_list.appointment_timer_header', $this->extensionName), ContextualFeedbackSeverity::INFO, true),
             ];
 
             $timerMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve()->render($messages);
 
             $this->view->assign('timerMessage', str_replace('$1', '<span class="reservation-timer">' . GeneralUtility::getAppointmentTimer($appointment) . '</span>', (string) $timerMessage));
         } else { // warn of expiration
-            $this->addFlashMessage(LocalizationUtility::translate('tx_appointments_list.appointment_expired', $this->extensionName), LocalizationUtility::translate('tx_appointments_list.appointment_expired_header', $this->extensionName), FlashMessage::WARNING);
+            $this->addFlashMessage(LocalizationUtility::translate('tx_appointments_list.appointment_expired', $this->extensionName), LocalizationUtility::translate('tx_appointments_list.appointment_expired_header', $this->extensionName), ContextualFeedbackSeverity::WARNING);
             $this->view->assign('expired', 1); // for free-time button
         }
     }
@@ -813,7 +814,7 @@ class AppointmentController extends ActionController
     {
         if (!$this->emailService->sendAction($action, $appointment)) {
             $flashMessage = LocalizationUtility::translate('tx_appointments_list.email_error', $this->extensionName);
-            $this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
+            $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::ERROR);
         }
     }
 
@@ -884,7 +885,7 @@ class AppointmentController extends ActionController
 
         $this->addFlashMessage(LocalizationUtility::translate('tx_appointments_list.crosstime_info', $this->extensionName, [
             $messageParts,
-        ]), LocalizationUtility::translate('tx_appointments_list.crosstime_title', $this->extensionName), FlashMessage::ERROR);
+        ]), LocalizationUtility::translate('tx_appointments_list.crosstime_title', $this->extensionName), ContextualFeedbackSeverity::ERROR);
     }
 
     /**

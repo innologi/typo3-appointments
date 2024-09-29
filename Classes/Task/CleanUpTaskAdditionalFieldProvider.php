@@ -25,7 +25,6 @@ namespace Innologi\Appointments\Task;
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
 
@@ -91,7 +90,7 @@ class CleanUpTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
             // @extensionScannerIgnoreLine
             $this->addMessage(
                 $GLOBALS['LANG']->sL('LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_task_noAge'),
-                FlashMessage::ERROR,
+                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR,
             );
             $result = false;
         } else {

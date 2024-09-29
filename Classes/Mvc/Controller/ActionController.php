@@ -30,7 +30,7 @@ use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
 use Innologi\TYPO3AssetProvider\ProviderControllerTrait;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -172,7 +172,7 @@ class ActionController extends SettingsOverrideController
             if (!empty($errors)) {
                 // we'll need it for the FlashMessageQueue
                 foreach ($errors as $flashMessage) {
-                    $this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
+                    $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::ERROR);
                 }
                 throw new EarlyResponseThrowable(new ForwardResponse('none'));
             }
@@ -220,7 +220,7 @@ class ActionController extends SettingsOverrideController
             }
         }
 
-        $this->addFlashMessage(LocalizationUtility::translate('tx_appointments.csrf_invalid', $this->extensionName), '', FlashMessage::ERROR);
+        $this->addFlashMessage(LocalizationUtility::translate('tx_appointments.csrf_invalid', $this->extensionName), '', ContextualFeedbackSeverity::ERROR);
 
         throw new EarlyResponseThrowable($this->errorAction());
     }
@@ -258,7 +258,7 @@ class ActionController extends SettingsOverrideController
 
         // no types found
         $flashMessage = LocalizationUtility::translate('tx_appointments.no_types', $this->extensionName);
-        $this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
+        $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::ERROR);
         throw new EarlyResponseThrowable(new ForwardResponse('none'));
     }
 
@@ -279,11 +279,11 @@ class ActionController extends SettingsOverrideController
             parent::mapRequestArgumentsToControllerArguments();
         } catch (InvalidArgumentValueException | TargetNotFoundException) {
             $flashMessage = LocalizationUtility::translate('tx_appointments.appointment_no_longer_available', $this->extensionName); # @TODO __the message doesn't cover cases where the appointment was not finished
-            $this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
+            $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::ERROR);
             throw new EarlyResponseThrowable($this->redirect('list'));
         } catch (PropertyDeleted | Exception) {
             $flashMessage = LocalizationUtility::translate('tx_appointments.appointment_property_deleted', $this->extensionName);
-            $this->addFlashMessage($flashMessage, '', FlashMessage::ERROR);
+            $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::ERROR);
 
             // in case not the original argument, but one of its object-properties no longer exist, try to redirect to the appropriate action
             $redirectTo = 'list';
