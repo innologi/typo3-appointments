@@ -11,13 +11,13 @@
 		}
 	],
 	"require": {
-		"php": ">=8.0",
-		"typo3/cms-core": "^10.4 || ^11.0",
-		"typo3/cms-felogin": "^10.4 || ^11.0",
-		"typo3/cms-scheduler": "^10.4 || ^11.0",
-		"innologi/typo3-asset-provider": "~0.4.0 || dev-develop",
-		"bmack/modern-template-building": "^1.0",
-		"friendsoftypo3/tt-address": "^5.0 || ^6.0 || ^7.0"
+		"php": ">=8.2",
+		"typo3/cms-core": "^12.4",
+		"typo3/cms-felogin": "^12.4",
+		"typo3/cms-scheduler": "^12.4",
+		"innologi/typo3-asset-provider": "~1.0.0",
+		"bmack/modern-template-building": "dev-master#88864b6e82fa78c015a8ea0d18be490782a4f096",
+		"friendsoftypo3/tt-address": "^9.0.0"
 	},
 	"extra": {
 		"typo3/cms": {
