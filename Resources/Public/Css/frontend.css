@@ -206,7 +206,7 @@
 .tx-appointments .csh:before,
 .tx-appointments .typo3-messages .alert .alert-message:before,
 .tx-appointments .validation-errors .validation-header:before {
-	background-image:url("/typo3conf/ext/appointments/Resources/Public/Icons/t3skin.png");
+	background-image:url("../Icons/t3skin.png");
 	content:"";
 	float:left;
 	height:16px;
