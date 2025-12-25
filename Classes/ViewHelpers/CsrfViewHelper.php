@@ -28,6 +28,8 @@ namespace Innologi\Appointments\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Strip Property Index Viewhelper
@@ -62,7 +64,7 @@ class CsrfViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('frontend')->generateToken(
+        return GeneralUtility::makeInstance(FormProtectionFactory::class)->createForType('frontend')->generateToken(
             $renderingContext->getControllerName(),
             $renderingContext->getControllerAction(),
             $arguments['uid'],

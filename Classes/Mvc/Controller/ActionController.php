@@ -30,6 +30,7 @@ use Innologi\Appointments\Mvc\Exception\PropertyDeleted;
 use Innologi\TYPO3AssetProvider\ProviderControllerTrait;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
@@ -115,6 +116,11 @@ class ActionController extends SettingsOverrideController
      * @var string
      */
     protected $extensionName = 'Appointments';
+
+    public function __construct(
+        protected readonly FormProtectionFactory $formProtectionFactory,
+    ) {
+    }
 
     public function injectAgendaRepository(\Innologi\Appointments\Domain\Repository\AgendaRepository $agendaRepository): void
     {
@@ -214,7 +220,7 @@ class ActionController extends SettingsOverrideController
             if (!empty($replacedArguments)) {
                 $controllerName = (string) ($replacedArguments['@controller'] ?? 'Standard');
                 $objectType = strtolower((string) $controllerName);
-                if ($this->request->hasArgument($tokenArgument) && $this->request->hasArgument($objectType) && \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('frontend')->validateToken($this->request->getArgument($tokenArgument), $controllerName, (string) ($replacedArguments['@action'] ?? 'index'), $this->request->getArgument($objectType)['__identity'] ?? '')) {
+                if ($this->request->hasArgument($tokenArgument) && $this->request->hasArgument($objectType) && $this->formProtectionFactory->createForType('frontend')->validateToken($this->request->getArgument($tokenArgument), $controllerName, (string) ($replacedArguments['@action'] ?? 'index'), $this->request->getArgument($objectType)['__identity'] ?? '')) {
                     return;
                 }
             }
