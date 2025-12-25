@@ -51,11 +51,6 @@ class EmailService implements SingletonInterface
     protected $extensionName;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-
-    /**
      * @var mixed
      */
     protected $templatePaths;
@@ -75,12 +70,9 @@ class EmailService implements SingletonInterface
     protected $text;
 
     public function __construct(
-        protected UriBuilder $uriBuilder,
-    ) {}
-
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager): void
-    {
-        $this->configurationManager = $configurationManager;
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ConfigurationManagerInterface $configurationManager,
+    ) {
     }
 
     /**

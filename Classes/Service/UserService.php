@@ -25,6 +25,8 @@ namespace Innologi\Appointments\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository;
+use Innologi\Appointments\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -49,28 +51,10 @@ class UserService implements SingletonInterface
      */
     protected $inGroup = [];
 
-    /**
-     * frontendUserRepository
-     *
-     * @var \Innologi\Appointments\Domain\Repository\FrontendUserRepository
-     */
-    protected $frontendUserRepository;
-
-    /**
-     * frontendUserGroupRepository
-     *
-     * @var \Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository
-     */
-    protected $frontendUserGroupRepository;
-
-    public function injectFrontendUserRepository(\Innologi\Appointments\Domain\Repository\FrontendUserRepository $frontendUserRepository): void
-    {
-        $this->frontendUserRepository = $frontendUserRepository;
-    }
-
-    public function injectFrontendUserGroupRepository(\Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository): void
-    {
-        $this->frontendUserGroupRepository = $frontendUserGroupRepository;
+    public function __construct(
+        protected readonly FrontendUserRepository $frontendUserRepository,
+        protected readonly FrontendUserGroupRepository $frontendUserGroupRepository,
+    ) {
     }
 
     /**
