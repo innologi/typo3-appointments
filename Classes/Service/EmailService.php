@@ -522,7 +522,7 @@ class EmailService implements SingletonInterface
                 $bit = 4;
         }
 
-        return $bitValue & $bit == $bit;
+        return ($bitValue & $bit) === $bit;
     }
 
     /**
