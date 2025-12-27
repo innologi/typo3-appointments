@@ -812,6 +812,7 @@ class AppointmentController extends ActionController
      */
     protected function performMailingActions($action, Appointment $appointment)
     {
+        $this->emailService->setRequest($this->request);
         if (!$this->emailService->sendAction($action, $appointment)) {
             $flashMessage = LocalizationUtility::translate('tx_appointments_list.email_error', $this->extensionName);
             $this->addFlashMessage($flashMessage, '', ContextualFeedbackSeverity::ERROR);

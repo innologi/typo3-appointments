@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
 
 /**
  * Facilitates email functionality.
@@ -83,6 +84,11 @@ class EmailService implements SingletonInterface
     public function setExtensionName(string $extensionName): void
     {
         $this->extensionName = strtolower($extensionName);
+    }
+
+    public function setRequest(Request $request): void
+    {
+        $this->uriBuilder->setRequest($request);
     }
 
     /**
