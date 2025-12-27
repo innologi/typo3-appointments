@@ -27,9 +27,7 @@ namespace Innologi\Appointments\ViewHelpers\Appointment;
  ***************************************************************/
 use Innologi\Appointments\Domain\Model\Appointment;
 use Innologi\Appointments\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Is Expired Viewhelper
@@ -43,8 +41,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 class IsExpiredViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -55,16 +51,16 @@ class IsExpiredViewHelper extends AbstractViewHelper
     /**
      * @return boolean
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
         /** @var Appointment $appointment */
-        $appointment = $arguments['appointment'];
+        $appointment = $this->arguments['appointment'];
         if ($appointment->getCreationProgress() === Appointment::EXPIRED) {
             return true;
         }
         $seconds = GeneralUtility::getTimerRemainingSeconds(
             $appointment,
-            (int) $arguments['timerMinutes'],
+            (int) $this->arguments['timerMinutes'],
         );
         return $seconds < 1;
     }

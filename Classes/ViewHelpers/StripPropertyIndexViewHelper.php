@@ -26,9 +26,7 @@ namespace Innologi\Appointments\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Strip Property Index Viewhelper
@@ -40,20 +38,17 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 class StripPropertyIndexViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        $parts = GeneralUtility::trimExplode('.', $renderChildrenClosure(), true);
+        $parts = GeneralUtility::trimExplode('.', $this->renderChildren(), true);
         foreach ($parts as $i => $part) {
             if ($part[0] === 'i' && is_numeric(substr($part, 1))) {
                 unset($parts[$i]);
             }
         }
-
         return join('.', $parts);
     }
 }

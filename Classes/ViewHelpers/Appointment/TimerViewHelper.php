@@ -27,9 +27,7 @@ namespace Innologi\Appointments\ViewHelpers\Appointment;
  ***************************************************************/
 use Innologi\Appointments\Domain\Model\Appointment;
 use Innologi\Appointments\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Timer Viewhelper
@@ -46,8 +44,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 class TimerViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var boolean
      */
@@ -69,14 +65,13 @@ class TimerViewHelper extends AbstractViewHelper
     /**
      * @return boolean
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
         /** @var Appointment $appointment */
-        $appointment = $arguments['appointment'];
-        $timerMinutes = (int) $arguments['timerMinutes'];
+        $appointment = $this->arguments['appointment'];
+        $timerMinutes = (int) $this->arguments['timerMinutes'];
         $timer = '';
-
-        switch ($arguments['format']) {
+        switch ($this->arguments['format']) {
             case 'timer':
                 $timer = GeneralUtility::getAppointmentTimer(
                     $appointment,
@@ -100,7 +95,6 @@ class TimerViewHelper extends AbstractViewHelper
             default:
                 // @LOW throw exception
         }
-
         return $timer;
     }
 }

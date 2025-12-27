@@ -20,13 +20,9 @@ namespace Innologi\Appointments\ViewHelpers;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ViewHelper which renders the flash messages (if there are any) as an unsorted list.
@@ -104,8 +100,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 class FlashMessagesViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * ViewHelper outputs HTML therefore output escaping has to be disabled
      *
@@ -134,14 +128,13 @@ class FlashMessagesViewHelper extends AbstractViewHelper
      * @see https://forge.typo3.org/issues/72703
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        $as = $arguments['as'];
-        $queueIdentifier = $arguments['queueIdentifier'];
+        $as = $this->arguments['as'];
+        $queueIdentifier = $this->arguments['queueIdentifier'];
+        $request = $this->renderingContext->getRequest();
 
         if ($queueIdentifier === null) {
-            /** @var RenderingContext $renderingContext */
-            $request = $renderingContext->getRequest();
             if (!$request instanceof RequestInterface) {
                 // Throw if not an extbase request
                 throw new \RuntimeException(
@@ -154,28 +147,24 @@ class FlashMessagesViewHelper extends AbstractViewHelper
             $pluginNamespace = $extensionService->getPluginNamespace($request->getControllerExtensionName(), $request->getPluginName());
             $queueIdentifier = 'extbase.flashmessages.' . $pluginNamespace;
         }
-
         $flashMessageQueue = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier($queueIdentifier);
         $flashMessages = $flashMessageQueue->getAllMessagesAndFlush();
         if (count($flashMessages) === 0) {
             return '';
         }
-
         // disable cache if we have any flashMessages
         if (isset($GLOBALS['TSFE'])) {
-            if ($renderingContext->getRequest()->getAttribute('currentContentObject')->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
+            if ($this->renderingContext->getRequest()->getAttribute('currentContentObject')->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
                 $GLOBALS['TSFE']->no_cache = 1;
             }
         }
-
         if ($as === null) {
             return GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve()->render($flashMessages);
         }
-        $templateVariableContainer = $renderingContext->getVariableProvider();
+        $templateVariableContainer = $this->renderingContext->getVariableProvider();
         $templateVariableContainer->add($as, $flashMessages);
-        $content = $renderChildrenClosure();
+        $content = $this->renderChildren();
         $templateVariableContainer->remove($as);
-
         return $content;
     }
 }

@@ -25,9 +25,7 @@ namespace Innologi\Appointments\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Loop Viewhelper
@@ -39,8 +37,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 class LoopViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var boolean
      */
@@ -60,11 +56,11 @@ class LoopViewHelper extends AbstractViewHelper
     /**
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
         $output = '';
-        $content = $renderChildrenClosure();
-        for ($i = 0; $i < $arguments['count']; $i++) {
+        $content = $this->renderChildren();
+        for ($i = 0; $i < $this->arguments['count']; $i++) {
             $output .= $content;
         }
         return $output;

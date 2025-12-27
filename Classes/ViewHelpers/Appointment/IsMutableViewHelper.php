@@ -26,9 +26,7 @@ namespace Innologi\Appointments\ViewHelpers\Appointment;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use Innologi\Appointments\Domain\Model\Appointment;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Core\Context\Context;
 
 /**
@@ -41,8 +39,6 @@ use TYPO3\CMS\Core\Context\Context;
  */
 class IsMutableViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function __construct(
         private readonly Context $context,
     ) {
@@ -64,11 +60,11 @@ class IsMutableViewHelper extends AbstractViewHelper
     /**
      * @return boolean
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
         /** @var Appointment $appointment */
-        $appointment = $arguments['appointment'];
+        $appointment = $this->arguments['appointment'];
         $mutableEndTime = ($appointment->getType()->getHoursMutable() * 3600) + $appointment->getReservationTime();
-        return $arguments['time'] < $mutableEndTime;
+        return $this->arguments['time'] < $mutableEndTime;
     }
 }

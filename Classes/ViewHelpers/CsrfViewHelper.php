@@ -25,9 +25,7 @@ namespace Innologi\Appointments\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -41,8 +39,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CsrfViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var boolean
      */
@@ -62,12 +58,12 @@ class CsrfViewHelper extends AbstractViewHelper
     /**
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
         return GeneralUtility::makeInstance(FormProtectionFactory::class)->createForType('frontend')->generateToken(
-            $renderingContext->getControllerName(),
-            $renderingContext->getControllerAction(),
-            $arguments['uid'],
+            $this->renderingContext->getControllerName(),
+            $this->renderingContext->getControllerAction(),
+            $this->arguments['uid'],
         );
     }
 }
