@@ -44,7 +44,7 @@ class ErrorOnDebugController extends ActionController
      *
      * @return string|boolean The flash message or FALSE if no flash message should be set
      */
-    protected function getErrorFlashMessage() #@TODO document this in manual
+    protected function getErrorFlashMessage(): bool|string
     {
         global $TYPO3_CONF_VARS;
         if (isset($TYPO3_CONF_VARS['FE']['debug']) && $TYPO3_CONF_VARS['FE']['debug']) {

@@ -155,7 +155,7 @@ class ActionController extends SettingsOverrideController
      *
      * @throws EarlyResponseThrowable
      */
-    protected function initializeAction()
+    protected function initializeAction(): void
     {
         parent::initializeAction();
 
@@ -279,7 +279,7 @@ class ActionController extends SettingsOverrideController
      *
      * @throws EarlyResponseThrowable
      */
-    protected function mapRequestArgumentsToControllerArguments()
+    protected function mapRequestArgumentsToControllerArguments(): void
     {
         try {
             parent::mapRequestArgumentsToControllerArguments();

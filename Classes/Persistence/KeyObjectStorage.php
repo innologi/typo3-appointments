@@ -84,7 +84,7 @@ class KeyObjectStorage extends ObjectStorage
      * @param string $objectKey The object to look for.
      * @return object The object in the storage.
      */
-    public function offsetGet($objectKey)
+    public function offsetGet($objectKey): mixed
     {
         return $this->storage[$objectKey]['obj'];
     }
@@ -94,7 +94,7 @@ class KeyObjectStorage extends ObjectStorage
      *
      * @return array The object storage
      */
-    public function toArray()
+    public function toArray(): array
     {
         $array = [];
         $storage = array_values($this->storage);
@@ -135,5 +135,11 @@ class KeyObjectStorage extends ObjectStorage
         parent::addAll($objectStorage);
 
         ksort($this->storage);
+    }
+
+    public function key(): string
+    {
+        // force string return value in case of int keys
+        return (string) key($this->storage);
     }
 }

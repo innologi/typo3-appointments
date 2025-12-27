@@ -113,7 +113,7 @@ class AppointmentController extends ActionController
     /**
      * @see \Innologi\Appointments\Mvc\Controller\ActionController::initializeAction()
      */
-    protected function initializeAction()
+    protected function initializeAction(): void
     {
         // doing this in the appropriate initialize methods is too late, so..
         $this->disableRequireLogin([
