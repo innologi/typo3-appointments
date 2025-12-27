@@ -36,6 +36,7 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
+use TYPO3\CMS\Extbase\Security\HashScope;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -211,10 +212,10 @@ class ActionController extends SettingsOverrideController
         // @see \TYPO3\CMS\Extbase\Mvc\Controller\ActionController->forwardToReferringRequest()
         $referringRequestArguments = $this->request->getAttribute('extbase')?->getInternalArgument('__referrer') ?? null;
         if (is_string($referringRequestArguments['@request'] ?? null)) {
-            $referrerArray = json_decode($this->hashService->validateAndStripHmac($referringRequestArguments['@request']), true);
+            $referrerArray = json_decode($this->hashService->validateAndStripHmac($referringRequestArguments['@request'], HashScope::ReferringRequest->prefix()), true);
             $arguments = [];
             if (is_string($referringRequestArguments['arguments'] ?? null)) {
-                $arguments = unserialize(base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments'])));
+                $arguments = unserialize(base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments'], HashScope::ReferringArguments->prefix())));
             }
             $replacedArguments = array_replace_recursive($arguments, $referrerArray);
             if (!empty($replacedArguments)) {
