@@ -26,6 +26,7 @@ namespace Innologi\Appointments\Task;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 use Innologi\Appointments\Domain\Repository\AppointmentRepository;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
@@ -95,12 +96,15 @@ class CleanUpTask extends AbstractTask
      */
     public function execute()
     {
+        $GLOBALS['TYPO3_REQUEST'] = $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+
         $bootstrap = GeneralUtility::makeInstance(Bootstrap::class);
         $bootstrap->initialize([
             'pluginName' => 'CleanupTask',
             'extensionName' => 'Appointments',
             'vendorName' => 'Innologi',
-        ], new ServerRequest());
+        ], $request);
 
         $this->initRepositories();
 
