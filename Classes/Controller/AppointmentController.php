@@ -190,7 +190,7 @@ class AppointmentController extends ActionController
 
         $this->view->assign('showMore', $showMore);
         $this->view->assign('mutable', $mutable); // edit / delete
-        $this->view->assign('superUser', $superUser);
+        $this->view->assign('superUser', $superUser ?? false);
         $this->view->assign('appointment', $appointment);
         $this->view->assign('formFieldValues', $sanitizedFormFieldValues);
         return $this->htmlResponse();
