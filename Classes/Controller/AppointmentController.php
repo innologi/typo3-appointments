@@ -206,7 +206,7 @@ class AppointmentController extends ActionController
      * @param string $dateFirst The timestamp that should be set before a type was already chosen
      */
     #[\TYPO3\CMS\Extbase\Annotation\IgnoreValidation(['argumentName' => 'appointment'])]
-    public function new1Action(Appointment $appointment = null, $dateFirst = null): ResponseInterface
+    public function new1Action(?Appointment $appointment = null, $dateFirst = null): ResponseInterface
     {
         // find types
         $types = $this->getTypes();
@@ -829,7 +829,7 @@ class AppointmentController extends ActionController
      * @see getReferringRequest()
      * @throws EarlyResponseThrowable
      */
-    protected function failTimeValidation($action = 'new1', $errorCode = 407501337, array $timeFields = null)
+    protected function failTimeValidation($action = 'new1', $errorCode = 407501337, ?array $timeFields = null)
     {
         $errorMsg = 'Time-related validation error.';
 

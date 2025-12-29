@@ -64,7 +64,7 @@ class AppointmentRepository extends Repository
      * @param boolean $descending If TRUE: sorts by begintime descending, if FALSE: ascending
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
      */
-    public function findPersonalList(Agenda $agenda, array $types, \Innologi\Appointments\Domain\Model\FrontendUser $feUser, $unfinished = false, \DateTime $start = null, \DateTime $end = null, $descending = false)
+    public function findPersonalList(Agenda $agenda, array $types, \Innologi\Appointments\Domain\Model\FrontendUser $feUser, $unfinished = false, ?\DateTime $start = null, ?\DateTime $end = null, $descending = false)
     {
         $query = $this->createQuery();
         $constraints = [
@@ -107,7 +107,7 @@ class AppointmentRepository extends Repository
      * @param boolean $dontRestrictTypeCounts If set, sets the relevant type parameter as condition
      * @return array An array of objects, empty if no objects found
      */
-    public function findBetween(Agenda $agenda, \DateTime $start, \DateTime $end, array $types = null, $includeExclusive = false, Appointment $excludeAppointment = null, $includeUnfinished = false, $dontRestrictTypeCounts = null)
+    public function findBetween(Agenda $agenda, \DateTime $start, \DateTime $end, ?array $types = null, $includeExclusive = false, ?Appointment $excludeAppointment = null, $includeUnfinished = false, $dontRestrictTypeCounts = null)
     {
         $query = $this->createQuery();
 

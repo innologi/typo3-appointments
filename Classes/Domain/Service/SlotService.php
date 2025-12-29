@@ -203,7 +203,7 @@ class SlotService implements SingletonInterface
      * @param boolean $disregardConditions If TRUE, disregards the type's firstAvailableTime and maxDaysForward conditions
      * @return KeyObjectStorage
      */
-    public function getSingleDateSlotIncludingCurrent(Appointment $appointment, Type $type = null, $disregardConditions = false)
+    public function getSingleDateSlotIncludingCurrent(Appointment $appointment, ?Type $type = null, $disregardConditions = false)
     {
         if ($type === null) {
             $type = $appointment->getType();
@@ -318,7 +318,7 @@ class SlotService implements SingletonInterface
      * @param Appointment $excludeAppointment Appointment that is ignored when building the storage
      * @return KeyObjectStorage<\Innologi\Appointments\Domain\Model\DateSlot>
      */
-    protected function buildStorageObject(Type $type, Agenda $agenda, Appointment $excludeAppointment = null)
+    protected function buildStorageObject(Type $type, Agenda $agenda, ?Appointment $excludeAppointment = null)
     {
         $dateSlotStorage = new KeyObjectStorage();
 
@@ -342,7 +342,7 @@ class SlotService implements SingletonInterface
      * @param boolean $disregardConditions If TRUE, disregards the type's firstAvailableTime and maxDaysForward conditions
      * @return KeyObjectStorage
      */
-    protected function buildSingleStorageObject(Type $type, Agenda $agenda, \DateTime $dateTime, Appointment $excludeAppointment = null, $disregardConditions = false)
+    protected function buildSingleStorageObject(Type $type, Agenda $agenda, \DateTime $dateTime, ?Appointment $excludeAppointment = null, $disregardConditions = false)
     {
         $dateSlotStorage = new KeyObjectStorage();
 
@@ -527,7 +527,7 @@ class SlotService implements SingletonInterface
      * @param integer $maxDaysAhead The amount of days ahead of $dateTime to get dateslots for
      * @param Appointment $excludeAppointment Appointment that is ignored
      */
-    protected function createDateSlots(KeyObjectStorage $dateSlotStorage, \DateTime $dateTime, Type $type, Agenda $agenda, $maxDaysAhead = 365, Appointment $excludeAppointment = null)
+    protected function createDateSlots(KeyObjectStorage $dateSlotStorage, \DateTime $dateTime, Type $type, Agenda $agenda, $maxDaysAhead = 365, ?Appointment $excludeAppointment = null)
     {
         $excludeHolidays = $type->getExcludeHolidays();
         $holidayArray = $agenda->getHolidayArray();
