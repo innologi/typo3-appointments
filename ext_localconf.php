@@ -10,6 +10,7 @@ defined('TYPO3') or die();
     ],
     // non-cacheable actions
     [],
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -22,6 +23,7 @@ defined('TYPO3') or die();
     [
         \Innologi\Appointments\Controller\AppointmentController::class => 'list, new1, new2, processNew, simpleProcessNew, create, edit, update, delete, free',
     ],
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 // create a cache specifically the date/time slots

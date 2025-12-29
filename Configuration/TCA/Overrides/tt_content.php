@@ -2,19 +2,6 @@
 
 defined('TYPO3') or die();
 
-// add the flexform
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-    'appointments_agenda',
-    'FILE:EXT:appointments/Configuration/FlexForms/flexform_agenda.xml',
-);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-    'appointments_list',
-    'FILE:EXT:appointments/Configuration/FlexForms/flexform_list.xml',
-);
-# @CGL do we still need this?
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['appointments_agenda'] = 'pi_flexform';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['appointments_list'] = 'pi_flexform';
-
 // register plugins
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'Appointments',
@@ -26,3 +13,17 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['appointments
     'List',
     'LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_plugin_list_title',
 );
+
+// add the flexform
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+    '*',
+    'FILE:EXT:appointments/Configuration/FlexForms/flexform_agenda.xml',
+    'appointments_agenda',
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+    '*',
+    'FILE:EXT:appointments/Configuration/FlexForms/flexform_list.xml',
+    'appointments_list',
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', '--div--;Configuration,pi_flexform,', 'appointments_agenda', 'after:subheader');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', '--div--;Configuration,pi_flexform,', 'appointments_list', 'after:subheader');
