@@ -153,10 +153,8 @@ class FlashMessagesViewHelper extends AbstractViewHelper
             return '';
         }
         // disable cache if we have any flashMessages
-        if (isset($GLOBALS['TSFE'])) {
-            if ($this->renderingContext->getRequest()->getAttribute('currentContentObject')->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
-                $GLOBALS['TSFE']->no_cache = 1;
-            }
+        if ($request->getAttribute('currentContentObject')->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
+            $request->getAttribute('frontend.cache.instruction')->disableCache('Template-rendered flashmessages.');
         }
         if ($as === null) {
             return GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve()->render($flashMessages);

@@ -28,6 +28,7 @@ namespace Innologi\Appointments\Service;
 use Innologi\Appointments\Domain\Repository\FrontendUserGroupRepository;
 use Innologi\Appointments\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Context\Context;
 
 /**
  * Facilitates user/group control.
@@ -54,6 +55,7 @@ class UserService implements SingletonInterface
     public function __construct(
         protected readonly FrontendUserRepository $frontendUserRepository,
         protected readonly FrontendUserGroupRepository $frontendUserGroupRepository,
+        protected readonly Context $context,
     ) {
     }
 
@@ -65,10 +67,9 @@ class UserService implements SingletonInterface
     public function getCurrentUser()
     {
         if ($this->feUser === null) {
-            global $TSFE;
-            $feUser = false;
-            if (isset($TSFE->fe_user->user['uid'])) {
-                $returnVal = $this->frontendUserRepository->findByUid($TSFE->fe_user->user['uid']);
+            $feUser = $this->context->getPropertyFromAspect('frontend.user', 'id', false);
+            if ($feUser !== false) {
+                $returnVal = $this->frontendUserRepository->findByUid($feUser);
                 if ($returnVal) {
                     $feUser = $returnVal;
                 }
