@@ -26,7 +26,7 @@ namespace Innologi\Appointments\Task;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
-use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 
 /**
  * Additional Field Provider for CleanUp Task. Adds 'Age' field.
@@ -56,7 +56,7 @@ class CleanUpTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
         $field = $this->field;
         //set field value
         if (empty($taskInfo[$field])) {
-            if ($schedulerModule->getCurrentAction()->equals(Action::EDIT)) { //existing task, meaning there is a value
+            if ($schedulerModule->getCurrentAction() === SchedulerManagementAction::EDIT) { //existing task, meaning there is a value
                 $taskInfo[$field] = $task->getAge();
             } else {
                 $taskInfo[$field] = '';
@@ -69,8 +69,6 @@ class CleanUpTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
             $fieldID => [
                 'code' => '<input type="text" name="tx_scheduler[' . $field . ']" id="' . $fieldID . '" value="' . htmlspecialchars((string) $taskInfo[$field]) . '" size="8" />',
                 'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_task_label.' . $field,
-                'cshKey' => 'tx_appointments_csh_task_clean_up',
-                'cshLabel' => $fieldID,
             ],
         ];
         return $additionalFields;
@@ -86,8 +84,8 @@ class CleanUpTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
     public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
     {
         //validate age
-        if (!is_numeric($submittedData[$this->field]) || intval($submittedData[$this->field]) < 1) {
-            // @extensionScannerIgnoreLine
+        if (! (isset($submittedData[$this->field]) && is_numeric($submittedData[$this->field]) && intval($submittedData[$this->field]) > 0) ) {
+            // @extensionScannerIgnoreLine false positive
             $this->addMessage(
                 $GLOBALS['LANG']->sL('LLL:EXT:appointments/Resources/Private/Language/locallang_be.xml:tx_appointments_task_noAge'),
                 \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR,
