@@ -1,11 +1,11 @@
 <?php
 
-namespace Innologi\Appointments\Hooks;
+namespace Innologi\Appointments\Core\EventListener;
 
 /***************************************************************
  *  Copyright notice
 *
-*  (c) 2012-2017 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
+*  (c) 2025 Frenck Lutke <typo3@innologi.nl>, www.innologi.nl
 *
 *  All rights reserved
 *
@@ -25,32 +25,28 @@ namespace Innologi\Appointments\Hooks;
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Core\Imaging\Event\ModifyRecordOverlayIconIdentifierEvent;
 
 /**
- * Hook for t3lib_iconworks.
- *
- * Provides icon overlays based on an appointments' creation progress.
- *
  * @package appointments
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class IconFactoryHook
+class ModifyRecordOverlayIconIdentifierEventListener
 {
-    /**
-     * @param string $table
-     * @param string $iconName
-     * @return string the new (or given) $iconName
-     */
-    public function postOverlayPriorityLookup($table, array $row, array &$status, $iconName)
+    #[AsEventListener('appointments/core/modify-record-overlay-icon-identifier')]
+    public function __invoke(ModifyRecordOverlayIconIdentifierEvent $event): void
     {
-        if ($table === 'tx_appointments_domain_model_appointment' && isset($row['creation_progress'])) { #@TODO address too!
-            switch (intval($row['creation_progress'])) {
+        if ($event->getTable() === 'tx_appointments_domain_model_appointment' && isset($event->getRow()['creation_progress'])) {
+            $creationProgressState = \intval($event->getRow()['creation_progress']);
+            switch ($creationProgressState) {
                 case 1:
-                    return 'overlay-missing';
+                    $event->setOverlayIconIdentifier('overlay-missing');
+                    break;
                 case 2:
-                    return 'overlay-deleted';
+                    $event->setOverlayIconIdentifier('overlay-deleted');
+                    break;
             }
         }
-        return $iconName;
     }
 }

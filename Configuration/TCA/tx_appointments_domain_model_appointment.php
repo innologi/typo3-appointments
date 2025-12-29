@@ -117,7 +117,7 @@ return [
             #'displayCond' => 'FIELD:creation_progress:>:0',
             'label' => 'LLL:EXT:appointments/Resources/Private/Language/locallang_db.xml:tx_appointments_domain_model_appointment.creation_progress',
             'config' => [
-                'type' => 'none',
+                'type' => 'passthrough',
             ],
         ],
         'reservation_time' => [
