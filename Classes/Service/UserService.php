@@ -67,12 +67,14 @@ class UserService implements SingletonInterface
     public function getCurrentUser()
     {
         if ($this->feUser === null) {
-            $feUser = $this->context->getPropertyFromAspect('frontend.user', 'id', false);
-            if ($feUser !== false) {
+            $feUser = $this->context->getPropertyFromAspect('frontend.user', 'id', 0);
+            if (\is_int($feUser) && $feUser > 0) {
                 $returnVal = $this->frontendUserRepository->findByUid($feUser);
                 if ($returnVal) {
                     $feUser = $returnVal;
                 }
+            } else {
+                $feUser = false;
             }
             $this->feUser = $feUser;
         }
