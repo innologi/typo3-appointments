@@ -5,6 +5,7 @@
 # to native line endings on checkout.
 *.php text
 *.txt text
+*.typoscript text
 *.md text
 *.sql text
 *.ts text
